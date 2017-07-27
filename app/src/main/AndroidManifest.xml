@@ -17,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- Meta Data -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAlTGdM8F8vrAcLW9dBaH-hPku8JJaFgu4"/>
+
         <!-- Activities -->
         <activity
             android:name=".activities.AppLoadActivity"
