@@ -13,6 +13,7 @@ public class Constants {
 
     // Request codes for activity results
     public static class RequestCodes {
-        public static final int INVALID = -1;
+        public static final int INVALID         = -1;
+        public static final int REGISTRATION    = 1;
     }
 }
