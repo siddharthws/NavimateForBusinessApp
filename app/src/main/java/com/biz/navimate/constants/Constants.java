@@ -16,4 +16,16 @@ public class Constants {
         public static final int INVALID         = -1;
         public static final int REGISTRATION    = 1;
     }
+
+    // User Preferences related constants
+    public static class Preferences {
+        // Shared Preferences Settings File
+        public static final String PREF_FILE        = "user_prefs";
+
+        // Shared Preferences Keys
+        public static final String KEY_NAME         = "name";
+        public static final String KEY_PHONE        = "phone";
+        public static final String KEY_EMAIL        = "email";
+        public static final String KEY_APP_ID       = "app_id";
+    }
 }
