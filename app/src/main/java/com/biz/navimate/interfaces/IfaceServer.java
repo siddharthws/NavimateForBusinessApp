@@ -12,4 +12,10 @@ public class IfaceServer {
         void onProfileReceived(User user);
         void onProfileFailed();
     }
+
+    // OtpSms Task interface
+    public interface OtpSms {
+        void onSmsSuccess();
+        void onSmsFailure();
+    }
 }

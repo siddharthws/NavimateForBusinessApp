@@ -34,11 +34,13 @@ public class Constants {
         // URLs
         private static final String URL_BASE = "http://192.168.1.10:8080";
         public static final String URL_GET_PROFILE = URL_BASE + "/api/reps/profile";
+        public static final String URL_OTP_SMS = URL_BASE + "/api/reps/otp";
 
         // JSON Keys
         public static final String KEY_ID = "id";
         public static final String KEY_NAME    = "name";
         public static final String KEY_PHONE   = "phoneNumber";
         public static final String KEY_EMAIL   = "email";
+        public static final String KEY_MESSAGE   = "message";
     }
 }
