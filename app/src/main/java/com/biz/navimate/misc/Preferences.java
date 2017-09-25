@@ -30,10 +30,10 @@ public class Preferences {
                                                                     Context.MODE_PRIVATE);
 
         // Read user information
-        user.name            = sharedPref.getString(Constants.Preferences.KEY_NAME, "");
-        user.phone           = sharedPref.getString(Constants.Preferences.KEY_PHONE, "");
-        user.email           = sharedPref.getString(Constants.Preferences.KEY_EMAIL, "");
-        user.appId           = sharedPref.getInt(Constants.Preferences.KEY_APP_ID, User.INVALID_ID);
+        user = new User(sharedPref.getString(Constants.Preferences.KEY_NAME, ""),
+                        sharedPref.getString(Constants.Preferences.KEY_PHONE, ""),
+                        sharedPref.getString(Constants.Preferences.KEY_EMAIL, ""),
+                        sharedPref.getInt(Constants.Preferences.KEY_APP_ID, User.INVALID_ID));
     }
 
     // ----------------------- Private APIs ----------------------- //

@@ -24,6 +24,9 @@ public class RegistrationActivity extends BaseActivity {
 
     @Override
     protected View InflateLayout() {
+        // Set content view
+        setContentView(R.layout.activity_registration);
+
         // Inflate layout from xml
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         return inflater.inflate(R.layout.activity_registration, null, false);
