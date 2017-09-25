@@ -242,11 +242,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     // API to Request permission
-    public void RequestPermission(String[] permissions, int requestCode)
+    public void RequestPermission(String[] permissions)
     {
-        ActivityCompat.requestPermissions(  this,
-                                            permissions,
-                                            requestCode);
+        ActivityCompat.requestPermissions(this, permissions, 0);
     }
 
     // ----------------------- Private APIs ----------------------- //
