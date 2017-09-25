@@ -1,5 +1,6 @@
 package com.biz.navimate.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,9 @@ import android.view.View;
 
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.interfaces.IfaceResult;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -19,6 +23,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+
+    // Activity result related initData
+    private int resumeRequestCode = 0, resumeResultCode = 0;
+    private Intent resumeResultIntent = null;
+
+    // Result Listeners
+    private IfaceResult.Registration  registerListener             = null;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
     // Manadatory overrides to initialize activitiy views
@@ -72,6 +84,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Set this to current activity
         App.SetCurrentActivity(this);
+
+        if (resumeRequestCode != Constants.RequestCodes.INVALID)
+        {
+            // Call current listeners
+            CallResultListeners();
+
+            // Reset initData
+            this.resumeRequestCode = Constants.RequestCodes.REGISTRATION;
+            this.resumeResultCode = 0;
+            this.resumeResultIntent = null;
+        }
     }
 
     @Override
@@ -109,6 +132,19 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         super.onBackPressed();
+    }
+
+    // Result overrides
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        // Set resume data
+        this.resumeRequestCode = requestCode;
+        this.resumeResultCode = resultCode;
+        this.resumeResultIntent = data;
+
+        // Call Super
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -149,5 +185,33 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    // APIs to set event listeners
+    public void SetRegistrationResultListener(IfaceResult.Registration listener)
+    {
+        this.registerListener = listener;
+    }
+
     // ----------------------- Private APIs ----------------------- //
+    // API to check the activity result type and call listener
+    private void CallResultListeners()
+    {
+        switch (resumeRequestCode)
+        {
+            case Constants.RequestCodes.REGISTRATION:
+            {
+                if (registerListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        registerListener.onRegisterSuccess();
+                    }
+                    else
+                    {
+                        registerListener.onRegisterFailure();
+                    }
+                }
+                break;
+            }
+        }
+    }
 }
