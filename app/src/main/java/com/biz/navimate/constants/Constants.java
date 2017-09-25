@@ -28,4 +28,10 @@ public class Constants {
         public static final String KEY_EMAIL        = "email";
         public static final String KEY_APP_ID       = "app_id";
     }
+
+    // Server related constants
+    public static class Server {
+        // URLs
+        private static final String URL_BASE = "http://192.168.1.10:8080";
+    }
 }
