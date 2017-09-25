@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Margins -->
+    <dimen name="m_small">10dp</dimen>
+
+    <!-- Text Sizing -->
+    <dimen name="text_app_load">28sp</dimen>
+
+</resources>
