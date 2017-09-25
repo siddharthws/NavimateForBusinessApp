@@ -7,4 +7,9 @@ import com.biz.navimate.objects.User;
  */
 
 public class IfaceServer {
+    // GetProfile Task interface
+    public interface GetProfile {
+        void onProfileReceived(User user);
+        void onProfileFailed();
+    }
 }
