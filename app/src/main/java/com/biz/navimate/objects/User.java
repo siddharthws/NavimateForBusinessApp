@@ -1,4 +1,4 @@
-package com.biz.navimate.user;
+package com.biz.navimate.objects;
 
 /**
  * Created by Siddharth on 24-09-2017.

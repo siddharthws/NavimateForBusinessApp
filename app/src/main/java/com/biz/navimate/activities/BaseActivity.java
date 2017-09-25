@@ -1,4 +1,4 @@
-package com.biz.navimate.base;
+package com.biz.navimate.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.biz.navimate.application.App;
-import com.biz.navimate.appload.AppLoadActivity;
 import com.biz.navimate.constants.Constants;
 
 /**

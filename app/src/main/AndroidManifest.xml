@@ -12,7 +12,7 @@
 
         <!-- Activities -->
         <activity
-            android:name=".appload.AppLoadActivity"
+            android:name=".activities.AppLoadActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -22,12 +22,12 @@
         </activity>
 
         <activity
-            android:name=".homescreen.HomescreenActivity"
+            android:name=".activities.HomescreenActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".registration.RegistrationActivity"
+            android:name=".activities.RegistrationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 

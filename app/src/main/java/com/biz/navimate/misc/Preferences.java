@@ -1,9 +1,10 @@
-package com.biz.navimate.user;
+package com.biz.navimate.misc;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.User;
 
 /**
  * Created by Siddharth on 24-09-2017.

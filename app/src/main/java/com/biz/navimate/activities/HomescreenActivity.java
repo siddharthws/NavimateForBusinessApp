@@ -1,10 +1,9 @@
-package com.biz.navimate.homescreen;
+package com.biz.navimate.activities;
 
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.biz.navimate.R;
-import com.biz.navimate.base.BaseActivity;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.viewholders.ActivityHolder;
 

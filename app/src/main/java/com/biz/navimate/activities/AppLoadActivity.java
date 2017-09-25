@@ -1,4 +1,4 @@
-package com.biz.navimate.appload;
+package com.biz.navimate.activities;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
-import com.biz.navimate.base.BaseActivity;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.viewholders.ActivityHolder;
 
