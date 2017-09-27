@@ -3,8 +3,13 @@
 
     <!-- Margins -->
     <dimen name="m_small">10dp</dimen>
+    <dimen name="m_large">20dp</dimen>
 
     <!-- Text Sizing -->
     <dimen name="text_app_load">28sp</dimen>
+    <dimen name="textsize_primary">         20sp</dimen>
+    <dimen name="textsize_primary_small">   16sp</dimen>
+    <dimen name="textsize_description">     14sp</dimen>
+    <dimen name="textsize_label">           10sp</dimen>
 
 </resources>

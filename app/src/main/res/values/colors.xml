@@ -3,4 +3,8 @@
     <color name="colorPrimary">#03A9F4</color>
     <color name="colorPrimaryDark">#0277BD</color>
     <color name="colorAccent">#FFFFFF</color>
+
+    <!-- Shades of grey -->
+    <color name="lightGrey">#bbbbbb</color>
+    <color name="darkGrey">#555555</color>
 </resources>

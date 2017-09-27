@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingTop="@dimen/m_small">
+
+    <LinearLayout
+        android:id="@+id/ll_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/iv_title_icon"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"/>
+
+        <com.navimate.views.TvCalibri
+            android:id="@+id/tv_title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/m_small"
+            app:bold="true"
+            android:textSize="@dimen/textsize_primary"
+            android:textColor="@color/darkGrey"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/vw_dialog_title_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGrey"
+        android:layout_below="@id/ll_dialog_title"
+        android:layout_marginTop="@dimen/m_large"
+        android:layout_marginRight="@dimen/m_small"
+        android:layout_marginLeft="@dimen/m_small"/>
+
+</RelativeLayout>

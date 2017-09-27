@@ -5,4 +5,10 @@
         <attr name="bold"           format="boolean" />
         <attr name="italic"         format="boolean" />
     </declare-styleable>
+
+    <!-- Dialog Title related attributes -->
+    <declare-styleable name="DialogTitle">
+        <attr name="image"         format="integer" />
+        <attr name="text"          format="string" />
+    </declare-styleable>
 </resources>
