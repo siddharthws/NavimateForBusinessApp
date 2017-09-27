@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.misc.AnimHelper;
@@ -25,7 +26,7 @@ public class RlDialog   extends     RelativeLayout
                                     Animator.AnimatorListener
 {
     // ----------------------- Constants ----------------------- //
-    public static final String TAG = "RL_DIALOG_VIEW";
+    public static final String TAG = "RL_DIALOG";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
@@ -350,6 +351,10 @@ public class RlDialog   extends     RelativeLayout
         // Init dialog view based on data type
         switch (currentData.type)
         {
+            case Dialog.TYPE_ALERT : {
+                currentDialog = new AlertDialog(getContext());
+                break;
+            }
         }
     }
 }
