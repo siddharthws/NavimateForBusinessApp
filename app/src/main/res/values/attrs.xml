@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Custom Text Attributes -->
+    <declare-styleable name="Text">
+        <attr name="bold"           format="boolean" />
+        <attr name="italic"         format="boolean" />
+    </declare-styleable>
+</resources>
