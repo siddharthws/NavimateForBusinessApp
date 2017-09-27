@@ -1,6 +1,8 @@
 package com.biz.navimate.activities;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -9,6 +11,7 @@ import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.misc.Preferences;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
 import com.biz.navimate.tasks.AppLoadTask;
 import com.biz.navimate.viewholders.ActivityHolder;
@@ -51,12 +54,20 @@ public class AppLoadActivity    extends     BaseActivity
 
     @Override
     protected void FindViews(View view) {
+        // Init view holder
+        ui = new ActivityHolder.AppLoad();
+        holder = ui;
     }
 
     @Override
     protected void SetViews() {
         // Initialize Preferences
         Preferences.Init(this);
+
+        // Set Screen size
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        Statics.SCREEN_SIZE      = new Point(metrics.widthPixels, metrics.heightPixels);
 
         // Check if user is registered
         if (Preferences.GetUser().appId == User.INVALID_ID) {

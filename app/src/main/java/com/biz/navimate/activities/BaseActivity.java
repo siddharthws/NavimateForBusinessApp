@@ -10,10 +10,13 @@ import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.viewholders.ActivityHolder;
+import com.biz.navimate.views.RlDialog;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+    // View Holder
+    protected ActivityHolder.Base holder     = null;
 
     // permission related initData
     private boolean bResumeFromPermission = false;
@@ -72,6 +77,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         // Find Views
         FindViews(view);
 
+        // Set Dialog View to this activity's layout
+        holder.rlDialog       = (RlDialog) findViewById(R.id.rl_dialog);
+        RlDialog.Set(holder.rlDialog);
+
         // Init View Data
         SetViews();
     }
@@ -98,6 +107,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Set this to current activity
         App.SetCurrentActivity(this);
+
+        // Set Dialog View to this activity's layotu
+        RlDialog.Set(holder.rlDialog);
 
         // Check for permission resume
         if (bResumeFromPermission)
@@ -157,7 +169,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed()
     {
-        super.onBackPressed();
+        if (holder.rlDialog.IsShowing())
+        {
+            RlDialog.Hide();
+        }
+        else
+        {
+            super.onBackPressed();
+        }
     }
 
     // Result overrides

@@ -7,4 +7,5 @@
     <!-- Shades of grey -->
     <color name="lightGrey">#bbbbbb</color>
     <color name="darkGrey">#555555</color>
+    <color name="alphaBlack">#77000000</color>
 </resources>

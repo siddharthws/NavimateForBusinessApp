@@ -33,6 +33,9 @@ public class HomescreenActivity extends BaseActivity {
 
     @Override
     protected void FindViews(View view) {
+        // Init view holder
+        ui = new ActivityHolder.Homescreen();
+        holder = ui;
     }
 
     @Override
