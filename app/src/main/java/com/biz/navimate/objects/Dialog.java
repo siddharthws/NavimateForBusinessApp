@@ -11,6 +11,7 @@ public class Dialog {
     public static final int TYPE_NONE                       = 0;
     public static final int TYPE_ALERT                      = 1;
     public static final int TYPE_CONFIRM                    = 2;
+    public static final int TYPE_WAITING                    = 3;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -59,6 +60,17 @@ public class Dialog {
             super(TYPE_CONFIRM, true);
             this.message = message;
             this.listener = listener;
+        }
+    }
+
+    public static class Waiting extends Base
+    {
+        public String message = "";
+
+        public Waiting(String message)
+        {
+            super(TYPE_WAITING, false);
+            this.message = message;
         }
     }
 }

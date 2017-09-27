@@ -33,4 +33,9 @@ public class DialogHolder {
         public Button btnYes = null;
         public Button btnNo = null;
     }
+
+    public static class Waiting extends Base
+    {
+        public TextView tvDialogMessage = null;
+    }
 }
