@@ -10,6 +10,7 @@ public class Dialog {
     // Dialog Types
     public static final int TYPE_NONE                       = 0;
     public static final int TYPE_ALERT                      = 1;
+    public static final int TYPE_CONFIRM                    = 2;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -39,6 +40,25 @@ public class Dialog {
         {
             super(TYPE_ALERT, true);
             this.message = message;
+        }
+    }
+
+    public static class Confirm extends Base
+    {
+        // Globals
+        public String message = "";
+        public IfaceDialog.Confirm listener = null;
+
+        public Confirm()
+        {
+            super(TYPE_CONFIRM, true);
+        }
+
+        public Confirm(String message, IfaceDialog.Confirm listener)
+        {
+            super(TYPE_CONFIRM, true);
+            this.message = message;
+            this.listener = listener;
         }
     }
 }

@@ -11,6 +11,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
+import com.biz.navimate.dialogs.ConfirmDialog;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.misc.AnimHelper;
 import com.biz.navimate.objects.Anim;
@@ -353,6 +354,10 @@ public class RlDialog   extends     RelativeLayout
         {
             case Dialog.TYPE_ALERT : {
                 currentDialog = new AlertDialog(getContext());
+                break;
+            }
+            case Dialog.TYPE_CONFIRM : {
+                currentDialog = new ConfirmDialog(getContext());
                 break;
             }
         }

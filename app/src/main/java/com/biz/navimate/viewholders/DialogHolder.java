@@ -23,4 +23,14 @@ public class DialogHolder {
         // Button
         public Button btn = null;
     }
+
+    public static class Confirm extends Base
+    {
+        // Message Text
+        public TextView tvMessage = null;
+
+        // Button
+        public Button btnYes = null;
+        public Button btnNo = null;
+    }
 }
