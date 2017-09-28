@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     tools:context="com.biz.navimate.activities.RegistrationActivity">
 
+    <com.biz.navimate.views.RlEnterPhone
+        android:id="@+id/rl_enter_phone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.biz.navimate.views.RlVerifyPhone
+        android:id="@+id/rl_verify_phone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <com.biz.navimate.views.RlDialog
         android:id="@+id/rl_dialog"
         android:layout_width="match_parent"
