@@ -22,17 +22,13 @@ public class HomescreenActivity extends BaseActivity {
     // ----------------------- Overrides ----------------------- //
     // Init Overrides
     @Override
-    protected View InflateLayout() {
+    protected void InflateLayout() {
         // Set content view
         setContentView(R.layout.activity_homescreen);
-
-        // Inflate layout from xml
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.activity_homescreen, null, false);
     }
 
     @Override
-    protected void FindViews(View view) {
+    protected void FindViews() {
         // Init view holder
         ui = new ActivityHolder.Homescreen();
         holder = ui;

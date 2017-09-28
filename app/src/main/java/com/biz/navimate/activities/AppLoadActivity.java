@@ -43,17 +43,13 @@ public class AppLoadActivity    extends     BaseActivity
     }
 
     @Override
-    protected View InflateLayout() {
+    protected void InflateLayout() {
         // Set content view
         setContentView(R.layout.activity_app_load);
-
-        // Inflate layout from xml
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        return inflater.inflate(R.layout.activity_app_load, null, false);
     }
 
     @Override
-    protected void FindViews(View view) {
+    protected void FindViews() {
         // Init view holder
         ui = new ActivityHolder.AppLoad();
         holder = ui;

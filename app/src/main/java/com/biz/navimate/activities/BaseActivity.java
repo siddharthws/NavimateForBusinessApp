@@ -53,8 +53,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
     // Manadatory overrides to initialize activitiy views
-    protected abstract View InflateLayout();
-    protected abstract void FindViews(View view);
+    protected abstract void InflateLayout();
+    protected abstract void FindViews();
     protected abstract void SetViews();
 
     // ----------------------- Overrides ----------------------- //
@@ -67,15 +67,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Load App if not initialized
         if (!App.IsInitialized()) {
+            // Start app loading activity
             AppLoadActivity.Start(this);
+
+            // Finish this activity
+            finish();
+
+            // Stop execution
             return;
         }
 
         // Inflate Layout
-        View view = InflateLayout();
+        InflateLayout();
 
         // Find Views
-        FindViews(view);
+        FindViews();
 
         // Set Dialog View to this activity's layout
         holder.rlDialog       = (RlDialog) findViewById(R.id.rl_dialog);
