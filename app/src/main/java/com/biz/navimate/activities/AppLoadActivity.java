@@ -64,6 +64,7 @@ public class AppLoadActivity    extends     BaseActivity
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         Statics.SCREEN_SIZE      = new Point(metrics.widthPixels, metrics.heightPixels);
+        Statics.SCREEN_DENSITY   = metrics.density;
 
         // Check if user is registered
         if (Preferences.GetUser().appId == User.INVALID_ID) {

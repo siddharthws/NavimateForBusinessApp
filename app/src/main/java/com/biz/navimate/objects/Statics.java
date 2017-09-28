@@ -15,10 +15,20 @@ public class Statics {
     // Screen size
     public static Point SCREEN_SIZE = null;
 
+    // Screen Density
+    public static float SCREEN_DENSITY = 0f;
+
     // ----------------------- Public APIs ----------------------- //
     // Check if this thread is UI thread
     public static boolean IsOnUiThread()
     {
         return (Looper.myLooper() == Looper.getMainLooper());
+    }
+
+    // Convert Dip into Pixels
+    public static int GetPxFromDip(int dip)
+    {
+        int px = (int) Math.ceil(dip * SCREEN_DENSITY);
+        return px;
     }
 }
