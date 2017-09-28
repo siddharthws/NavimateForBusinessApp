@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context="com.biz.navimate.activities.HomescreenActivity">
 
+    <FrameLayout
+        android:id="@+id/fl_map_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.biz.navimate.views.RlDialog
         android:id="@+id/rl_dialog"
         android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.biz.navimate.viewholders;
 
+import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
@@ -27,6 +28,7 @@ public class ActivityHolder {
 
     // Homescreen activity holder
     public static class Homescreen extends Base {
-        // Placeholder
+        // Fragments
+        public NvmMapFragment mapFragment = null;
     }
 }

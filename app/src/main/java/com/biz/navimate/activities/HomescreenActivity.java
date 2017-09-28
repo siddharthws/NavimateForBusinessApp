@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.viewholders.ActivityHolder;
 
 public class HomescreenActivity extends BaseActivity {
@@ -32,6 +33,9 @@ public class HomescreenActivity extends BaseActivity {
         // Init view holder
         ui = new ActivityHolder.Homescreen();
         holder = ui;
+
+        // Add Fragments
+        ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
     }
 
     @Override
