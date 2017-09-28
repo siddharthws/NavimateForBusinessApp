@@ -1,11 +1,13 @@
 package com.biz.navimate.server;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.objects.User;
+import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +41,12 @@ public class OtpSmsTask extends BaseServerTask {
 
     // ----------------------- Overrides ----------------------- //
     @Override
+    public void onPreExecute()
+    {
+        RlDialog.Show(new Dialog.Waiting("Sending Verification SMS..."));
+    }
+
+    @Override
     public Void doInBackground (Void... params)
     {
         // Init Request JSON
@@ -64,6 +72,9 @@ public class OtpSmsTask extends BaseServerTask {
     @Override
     public void onPostExecute (Void result)
     {
+        // Hide dialog
+        RlDialog.Hide();
+
         if (IsResponseValid())
         {
             // Call listener
@@ -74,6 +85,9 @@ public class OtpSmsTask extends BaseServerTask {
         }
         else
         {
+            // Toast error
+            Dbg.Toast(parentContext, "Unable to send SMS !!!", Toast.LENGTH_SHORT);
+
             // Call listener
             if (listener != null)
             {
