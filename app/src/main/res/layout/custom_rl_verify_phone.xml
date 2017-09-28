@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_fragment_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/m_large"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/textsize_primary"
+        app:bold="true"
+        android:text="Verifying Number"/>
+
+    <com.biz.navimate.views.EtCalibri
+        android:id="@+id/et_otp"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/m_large"
+        android:paddingLeft="@dimen/m_large"
+        android:paddingRight="@dimen/m_large"
+        android:layout_below="@id/tv_fragment_header"
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center"
+        android:textSize="@dimen/textsize_primary_small"
+        android:inputType="number"
+        android:hint="XXXXXX"
+        android:background="@drawable/bg_textbox"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_button_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_otp"
+        android:layout_marginTop="@dimen/m_large"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/btn_verify"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:stateListAnimator="@null"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="VERIFY"/>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/btn_verify"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:stateListAnimator="@null"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="CANCEL"/>
+
+        <Button
+            android:id="@+id/btn_resend"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_toRightOf="@id/btn_cancel"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:stateListAnimator="@null"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:text="RESEND (60)"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_verify_phone_descriptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_button_container"
+        android:layout_marginTop="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_large"
+        android:layout_marginRight="@dimen/m_large"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/textsize_description"
+        android:textAlignment="center"/>
+
+</RelativeLayout>

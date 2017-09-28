@@ -1,10 +1,11 @@
 package com.biz.navimate.application;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+
+import com.biz.navimate.activities.BaseActivity;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -17,7 +18,7 @@ public class App extends Application {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
-    private static Activity mCurrentActivity = null;
+    private static BaseActivity mCurrentActivity = null;
     private static boolean bAppInitialized = false;
 
     // ----------------------- Constructor ----------------------- //
@@ -42,17 +43,17 @@ public class App extends Application {
 
     // ----------------------- Public APIs ----------------------- //
     // Current Activity Related APIs
-    public static Activity GetCurrentActivity() {
+    public static BaseActivity GetCurrentActivity() {
         return mCurrentActivity;
     }
 
-    public static void SetCurrentActivity(Activity currentActivity) {
+    public static void SetCurrentActivity(BaseActivity currentActivity) {
         if (currentActivity != null) {
             mCurrentActivity = currentActivity;
         }
     }
 
-    public static void ClearCurrentActivity(Activity activity) {
+    public static void ClearCurrentActivity(BaseActivity activity) {
         if ((activity != null) && (mCurrentActivity != null)) {
             if (activity.equals(mCurrentActivity)) {
                 mCurrentActivity = null;
@@ -68,7 +69,7 @@ public class App extends Application {
         return false;
     }
 
-    public static Boolean IsCurrentActivity(Activity activity) {
+    public static Boolean IsCurrentActivity(BaseActivity activity) {
         if ((activity != null) && (mCurrentActivity != null)) {
             if (activity.equals(mCurrentActivity)) {
                 return true;
