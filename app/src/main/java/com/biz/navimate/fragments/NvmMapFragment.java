@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
 import com.biz.navimate.objects.Statics;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,7 +20,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
  */
 
 public class NvmMapFragment     extends     BaseFragment
-                                implements  OnMapReadyCallback
+                                implements  OnMapReadyCallback,
+                                            GoogleMap.OnMapLoadedCallback
 {
     // ----------------------- Constants ----------------------- //
     private final static String TAG = "NVM_MAP_FRAGMENT";
@@ -33,6 +35,9 @@ public class NvmMapFragment     extends     BaseFragment
     private TouchableSupportMapFragment supportMapFragment         = null;
     private GoogleMap                   googleMap                   = null;
 
+    // Helpers
+    public MarkerHelper markerHelper                                = null;
+
     // ----------------------- Constructor ----------------------- //
     public NvmMapFragment()
     {
@@ -44,6 +49,9 @@ public class NvmMapFragment     extends     BaseFragment
     {
         // Init Map fragment properties and return object
         NvmMapFragment fragment    = new NvmMapFragment();
+
+        // Init Helpers
+        fragment.markerHelper = new MarkerHelper();
 
         return fragment;
     }
@@ -66,6 +74,7 @@ public class NvmMapFragment     extends     BaseFragment
         return fragmentView;
     }
 
+    // Map Related Overrides
     /* Called when map is ready on screen
      */
     @Override
@@ -74,8 +83,19 @@ public class NvmMapFragment     extends     BaseFragment
         // Init Google map object
         this.googleMap = googleMap;
 
+        // Set callbacks
+        googleMap.setOnMapLoadedCallback(this);
+
         // Set compass to bottom left (else it gets hidden by toolbar)
         InitMapCompassButton();
+    }
+
+    // Called when map has been loaded on the screen
+    @Override
+    public void onMapLoaded()
+    {
+        // Load markers on map
+        markerHelper.LoadMap(googleMap);
     }
 
     // ----------------------- Public APIs ----------------------- //
