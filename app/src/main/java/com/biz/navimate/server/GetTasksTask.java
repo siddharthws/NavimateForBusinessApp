@@ -6,7 +6,6 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.FormField;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
@@ -76,13 +75,7 @@ public class GetTasksTask extends BaseServerTask {
                     JSONObject templateJson = taskJson.getJSONObject(Constants.Server.KEY_TEMPLATE);
                     String name = templateJson.getString(Constants.Server.KEY_NAME);
                     JSONArray fieldsJson = templateJson.getJSONArray(Constants.Server.KEY_DATA);
-                    ArrayList<FormField.Base> fields = new ArrayList<>();
-                    for (int j = 0; j < fieldsJson.length(); j++) {
-                        JSONObject fieldJson = fieldsJson.getJSONObject(j);
-                        FormField.Base field = FormField.FromJson(fieldJson);
-                        fields.add(field);
-                    }
-                    Form template = new Form(name, fields);
+                    Form template = new Form(name, fieldsJson);
 
                     // Add to tasks
                     tasks.add(new Task(id, lead, template));

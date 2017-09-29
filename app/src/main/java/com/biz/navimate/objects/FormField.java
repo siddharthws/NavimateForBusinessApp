@@ -1,17 +1,11 @@
 package com.biz.navimate.objects;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 /**
  * Created by Siddharth on 28-09-2017.
  */
 
 public class FormField {
-    // ----------------------- Constants ----------------------- //
+    /*// ----------------------- Constants ----------------------- //
     private static final String TAG = "FORM_FIELD";
 
     // Field Types
@@ -26,13 +20,6 @@ public class FormField {
     public static final int TYPE_TEXT           = 1;
     public static final int TYPE_NUMBER         = 2;
     public static final int TYPE_RADIO_LIST     = 3;
-
-    // JSON Fields
-    public static final String JSON_KEY_TYPE                = "type";
-    public static final String JSON_KEY_TITLE               = "title";
-    public static final String JSON_KEY_VALUE               = "value";
-    public static final String JSON_KEY_RADIO_OPTIONS       = "options";
-    public static final String JSON_KEY_RADIO_SELECTION     = "selection";
 
     // ----------------------- Classes ----------------------- //
     // Base Class for all field types
@@ -210,5 +197,5 @@ public class FormField {
             return new RadioList(json);
         }
         return null;
-    }
+    }*/
 }
