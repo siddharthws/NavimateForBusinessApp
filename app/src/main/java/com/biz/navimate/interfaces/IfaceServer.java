@@ -13,6 +13,12 @@ public class IfaceServer {
         void onProfileFailed();
     }
 
+    // GetTasks Task interface
+    public interface GetTasks {
+        void onTasksSuccess();
+        void onTasksFailed();
+    }
+
     // OtpSms Task interface
     public interface OtpSms {
         void onSmsSuccess();

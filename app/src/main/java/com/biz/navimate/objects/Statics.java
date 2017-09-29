@@ -5,6 +5,8 @@ import android.os.Looper;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
 /**
  * Created by Siddharth on 27-09-2017.
  */
@@ -19,6 +21,9 @@ public class Statics {
 
     // Screen Density
     public static float SCREEN_DENSITY = 0f;
+
+    // Current taks of rep
+    private static ArrayList<Task> currentTasks = new ArrayList<>();
 
     // ----------------------- Public APIs ----------------------- //
     // Check if this thread is UI thread
@@ -75,5 +80,15 @@ public class Statics {
         int distanceM = (int) (dist * 1609.344);
 
         return distanceM;
+    }
+
+    // Getter Setter APIs for current tasks
+    public static void SetCurrentTasks(ArrayList<Task> tasks) {
+        currentTasks.clear();
+        currentTasks.addAll(tasks);
+    }
+
+    public static ArrayList<Task> GetCurrentTasks() {
+        return currentTasks;
     }
 }
