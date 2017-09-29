@@ -7,7 +7,9 @@ import android.content.Context;
 import android.view.View;
 
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.objects.Anim;
+import com.biz.navimate.objects.Statics;
 
 /**
  * Helper class. Exposes APIs to animate views and handles different types of animations
@@ -108,6 +110,68 @@ public class AnimHelper
 
         // Start Animation
         animator.start();
+    }
+
+    public void Swap(final View exitView, final View enterView)
+    {
+        // Start exit animation
+        Animate(new Anim.Slide(exitView, new PowerInterpolator(false, 3), 0, -1 * Statics.SCREEN_SIZE.x, Anim.Slide.SLIDE_AXIS_X, new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                exitView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }));
+
+        // Start Enter Animation
+        enterView.setVisibility(View.VISIBLE);
+        Animate(new Anim.Slide(enterView, new PowerInterpolator(false, 3), Statics.SCREEN_SIZE.x, 0, Anim.Slide.SLIDE_AXIS_X, null));
+    }
+
+    public void SwapReverse(final View exitView, final View enterView)
+    {
+        // Start exit animation
+        Animate(new Anim.Slide(exitView, new PowerInterpolator(false, 3), 0, Statics.SCREEN_SIZE.x, Anim.Slide.SLIDE_AXIS_X, new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation)
+            {
+                exitView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }));
+
+        // Start Enter Animation
+        enterView.setVisibility(View.VISIBLE);
+        Animate(new Anim.Slide(enterView, new PowerInterpolator(false, 3), -1 * Statics.SCREEN_SIZE.x, 0, Anim.Slide.SLIDE_AXIS_X, null));
     }
 
     // ----------------------- Private APIs ----------------------- //

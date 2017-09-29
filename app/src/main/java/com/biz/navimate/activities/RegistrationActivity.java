@@ -1,6 +1,5 @@
 package com.biz.navimate.activities;
 
-import android.animation.Animator;
 import android.view.View;
 import android.widget.Toast;
 
@@ -8,11 +7,8 @@ import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.misc.AnimHelper;
 import com.biz.navimate.misc.Preferences;
-import com.biz.navimate.objects.Anim;
-import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
 import com.biz.navimate.server.GetProfileTask;
 import com.biz.navimate.viewholders.ActivityHolder;
@@ -106,7 +102,7 @@ public class RegistrationActivity   extends     BaseActivity
 
         // Hide Register Phone and show Verify Phone View
         ui.rlVerifyPhone.Init(user.phone);
-        SwapViews(ui.rlEnterPhone, ui.rlVerifyPhone);
+        animHelper.Swap(ui.rlEnterPhone, ui.rlVerifyPhone);
     }
 
     @Override
@@ -123,7 +119,7 @@ public class RegistrationActivity   extends     BaseActivity
     public void onVerificationCancel()
     {
         // Hide Verify Phone and show Register Phone View
-        SwapViewsReverse(ui.rlVerifyPhone, ui.rlEnterPhone);
+        animHelper.SwapReverse(ui.rlVerifyPhone, ui.rlEnterPhone);
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -132,68 +128,6 @@ public class RegistrationActivity   extends     BaseActivity
     }
 
     // ----------------------- Private APIs ----------------------- //
-    private void SwapViews(final View exitView, final View enterView)
-    {
-        // Start exit animation
-        animHelper.Animate(new Anim.Slide(exitView, new PowerInterpolator(false, 3), 0, -1 * Statics.SCREEN_SIZE.x, Anim.Slide.SLIDE_AXIS_X, new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation)
-            {
-                exitView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        }));
-
-        // Start Enter Animation
-        enterView.setVisibility(View.VISIBLE);
-        animHelper.Animate(new Anim.Slide(enterView, new PowerInterpolator(false, 3), Statics.SCREEN_SIZE.x, 0, Anim.Slide.SLIDE_AXIS_X, null));
-    }
-
-    private void SwapViewsReverse(final View exitView, final View enterView)
-    {
-        // Start exit animation
-        animHelper.Animate(new Anim.Slide(exitView, new PowerInterpolator(false, 3), 0, Statics.SCREEN_SIZE.x, Anim.Slide.SLIDE_AXIS_X, new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation)
-            {
-                exitView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        }));
-
-        // Start Enter Animation
-        enterView.setVisibility(View.VISIBLE);
-        animHelper.Animate(new Anim.Slide(enterView, new PowerInterpolator(false, 3), -1 * Statics.SCREEN_SIZE.x, 0, Anim.Slide.SLIDE_AXIS_X, null));
-    }
-
     private void RegisterUser()
     {
         // Register the user in preferences
