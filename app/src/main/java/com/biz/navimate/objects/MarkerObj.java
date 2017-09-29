@@ -14,6 +14,7 @@ public class MarkerObj {
 
     // Macros to define types of MarkerObj Objects
     public static final int MARKER_TYPE_INVALID          = 0;
+    public static final int MARKER_TYPE_TASK             = 1;
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Classes ---------------------------//
@@ -39,4 +40,23 @@ public class MarkerObj {
     }
 
     // Specialized MarkerObj classes
+
+    // Task Marker Object. Maintains Task data
+    public static class Task extends Base
+    {
+        public Task(com.biz.navimate.objects.Task task)
+        {
+            super(MARKER_TYPE_TASK, task.lead.position);
+        }
+
+        // API to get Marker Options to populate UI
+        @Override
+        public MarkerOptions GetMarkerOptions()
+        {
+            // Init marker options and assign parameters
+            MarkerOptions markerOpt = new MarkerOptions().position(position);
+
+            return markerOpt;
+        }
+    }
 }

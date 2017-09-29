@@ -18,7 +18,7 @@ public class CameraHelper {
     private static final String TAG = "CAMERA_HELPER";
 
     // Padding for bounds
-    private static final int PADDING_TOP_DP     = 20;
+    private static final int PADDING_TOP_DP     = 60;
     private static final int PADDING_BOTTOM_DP  = 20;
     private static final int PADDING_RIGHT_DP   = 20;
     private static final int PADDING_LEFT_DP    = 20;
