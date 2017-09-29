@@ -6,15 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
+import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.Marker;
 
 /**
  * Created by Siddharth on 28-09-2017.
@@ -22,7 +25,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 
 public class NvmMapFragment     extends     BaseFragment
                                 implements  OnMapReadyCallback,
-                                            GoogleMap.OnMapLoadedCallback
+                                            GoogleMap.OnMapLoadedCallback,
+                                            GoogleMap.OnMarkerClickListener
 {
     // ----------------------- Constants ----------------------- //
     private final static String TAG = "NVM_MAP_FRAGMENT";
@@ -89,6 +93,9 @@ public class NvmMapFragment     extends     BaseFragment
         // Set callbacks
         googleMap.setOnMapLoadedCallback(this);
 
+        // Set Clieck Listeners
+        googleMap.setOnMarkerClickListener(this);
+
         // Set compass to bottom left (else it gets hidden by toolbar)
         InitMapCompassButton();
     }
@@ -102,6 +109,19 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Load Camera
         cameraHelper.LoadMap(googleMap);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker)
+    {
+        // Get Marker Object from marker
+        MarkerObj.Task clickedMarker = (MarkerObj.Task) markerHelper.GetMarkerObjFromMarker(marker);
+
+        // Open Lead Dialog Box
+        Dbg.Toast(getContext(), "Marker for task : " + clickedMarker.task.id, Toast.LENGTH_SHORT);
+
+        // Consume the click
+        return true;
     }
 
     // ----------------------- Public APIs ----------------------- //

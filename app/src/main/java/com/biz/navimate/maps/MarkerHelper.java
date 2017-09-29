@@ -2,6 +2,7 @@ package com.biz.navimate.maps;
 
 import com.biz.navimate.objects.MarkerObj;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
@@ -102,6 +103,21 @@ public class MarkerHelper {
             // Add marker to map and store the marker object returned by map
             markerObj.marker = map.addMarker(markerOpt);
         }
+    }
+
+    // API to get Marker Object form google Map Marker
+    public MarkerObj.Base GetMarkerObjFromMarker(Marker mapMarker)
+    {
+        // Find marker in cache
+        for (MarkerObj.Base markerObj : cache)
+        {
+            if (mapMarker.equals(markerObj.marker))
+            {
+                return markerObj;
+            }
+        }
+
+        return null;
     }
 
     // ----------------------- Private APIs ----------------------- //

@@ -44,9 +44,12 @@ public class MarkerObj {
     // Task Marker Object. Maintains Task data
     public static class Task extends Base
     {
+        public com.biz.navimate.objects.Task task = null;
+
         public Task(com.biz.navimate.objects.Task task)
         {
             super(MARKER_TYPE_TASK, task.lead.position);
+            this.task = task;
         }
 
         // API to get Marker Options to populate UI
