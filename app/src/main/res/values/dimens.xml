@@ -12,4 +12,9 @@
     <dimen name="textsize_description">     14sp</dimen>
     <dimen name="textsize_label">           10sp</dimen>
 
+    <!-- Toolbar layout -->
+    <dimen name="toolbar_height">55dp</dimen>
+    <dimen name="toolbar_button_height_width">40dp</dimen>
+    <dimen name="toolbar_button_padding">6dp</dimen>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.biz.navimate.activities;
 
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -108,6 +109,19 @@ public class HomescreenActivity     extends     BaseActivity
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity) {
         BaseActivity.Start(activity, HomescreenActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
+    }
+
+    // Button Click APIs
+    public void ButtonClickBack(View view) {
+        finish();
+    }
+
+    public void ButtonClickMap(View view) {
+        // Placeholder
+    }
+
+    public void ButtonClickList(View view) {
+        // Placeholder
     }
 
     // ----------------------- Private APIs ----------------------- //

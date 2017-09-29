@@ -97,6 +97,9 @@ public class AppLoadActivity    extends     BaseActivity
     public void onLoadComplete() {
         // Start Homescreen
         HomescreenActivity.Start(this);
+
+        // Finish this activity
+        finish();
     }
 
     // ----------------------- Public APIs ----------------------- //
