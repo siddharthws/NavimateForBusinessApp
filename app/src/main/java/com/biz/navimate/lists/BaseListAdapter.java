@@ -79,15 +79,6 @@ public abstract class BaseListAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position)
     {
-        ListItem.Base baseItem = (ListItem.Base) getItem(position);
-
-        if (baseItem != null)
-        {
-            return baseItem.id;
-        }
-
-        Dbg.error(TAG, "Cannot get item ID");
-
         return -1;
     }
 

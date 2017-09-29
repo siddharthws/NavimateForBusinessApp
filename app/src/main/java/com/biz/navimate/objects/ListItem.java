@@ -8,6 +8,7 @@ public class ListItem {
     // ----------------------- Constants ----------------------- //
     // Types of list items
     public static final int TYPE_INVALID                = 0;
+    public static final int TYPE_TASK                   = 1;
 
     // ----------------------- Classes ---------------------------//
     // Base Class for list Item Data
@@ -15,13 +16,24 @@ public class ListItem {
     {
         // ----------------------- Globals ----------------------- //
         public int    type              = TYPE_INVALID;
-        public int    id                = -1;
 
         // ----------------------- Constructor ----------------------- //
-        public Base(int type, int id)
+        public Base(int type)
         {
             this.type               = type;
-            this.id                 = id;
+        }
+    }
+
+    // Data object for task list item
+    public static class Task extends Base {
+        // ----------------------- Globals ----------------------- //
+        public com.biz.navimate.objects.Task task = null;
+
+        // ----------------------- Constructor ----------------------- //
+        public Task(com.biz.navimate.objects.Task task)
+        {
+            super(TYPE_TASK);
+            this.task               = task;
         }
     }
 }

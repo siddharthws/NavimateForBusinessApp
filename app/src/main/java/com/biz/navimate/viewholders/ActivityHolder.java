@@ -1,5 +1,7 @@
 package com.biz.navimate.viewholders;
 
+import android.widget.ListView;
+
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlEnterPhone;
@@ -30,5 +32,8 @@ public class ActivityHolder {
     public static class Homescreen extends Base {
         // Fragments
         public NvmMapFragment mapFragment = null;
+
+        // List
+        public ListView lvTasks = null;
     }
 }

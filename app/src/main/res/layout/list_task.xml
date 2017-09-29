@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/m_small"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_white_shadow_slant">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:bold="true"
+            android:textSize="@dimen/textsize_primary_small"
+            android:text="Lead Title"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_small"
+            android:textSize="@dimen/textsize_primary_small"
+            android:text="Lead Description blah blah blah blha blah blha"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/m_small"
+        android:background="@drawable/selector_btn_bg_colored_shadow"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:text="Submit\nForm"
+        android:focusable="false"
+        android:focusableInTouchMode="false"/>
+
+</LinearLayout>
