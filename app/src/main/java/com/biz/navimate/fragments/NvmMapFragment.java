@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
 import com.biz.navimate.objects.Statics;
@@ -37,6 +38,7 @@ public class NvmMapFragment     extends     BaseFragment
 
     // Helpers
     public MarkerHelper markerHelper                                = null;
+    public CameraHelper cameraHelper                                = null;
 
     // ----------------------- Constructor ----------------------- //
     public NvmMapFragment()
@@ -52,6 +54,7 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Init Helpers
         fragment.markerHelper = new MarkerHelper();
+        fragment.cameraHelper = new CameraHelper();
 
         return fragment;
     }
@@ -96,6 +99,9 @@ public class NvmMapFragment     extends     BaseFragment
     {
         // Load markers on map
         markerHelper.LoadMap(googleMap);
+
+        // Load Camera
+        cameraHelper.LoadMap(googleMap);
     }
 
     // ----------------------- Public APIs ----------------------- //
