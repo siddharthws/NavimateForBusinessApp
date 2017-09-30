@@ -24,4 +24,10 @@ public class IfaceServer {
         void onSmsSuccess();
         void onSmsFailure();
     }
+
+    // OtpSms Task interface
+    public interface SubmitForm {
+        void onFormSubmitted();
+        void onFormSubmitFailed();
+    }
 }

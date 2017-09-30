@@ -61,4 +61,50 @@ public class Form {
             Dbg.stack(e);
         }
     }
+
+    public JSONArray GetFieldsJson() {
+        try {
+            JSONArray fieldsJson = new JSONArray();
+
+            JSONObject salesJson = new JSONObject();
+            salesJson.put(JSON_KEY_TITLE, "Sales");
+            salesJson.put(JSON_KEY_TYPE, "number");
+            salesJson.put(JSON_KEY_VALUE, sales);
+
+            JSONObject notesJson = new JSONObject();
+            notesJson.put(JSON_KEY_TITLE, "Notes");
+            notesJson.put(JSON_KEY_TYPE, "text");
+            notesJson.put(JSON_KEY_VALUE, notes);
+
+            JSONObject statusJson = new JSONObject();
+            statusJson.put(JSON_KEY_TITLE, "Status");
+            statusJson.put(JSON_KEY_TYPE, "radioList");
+            JSONObject optionsJson = new JSONObject();
+            JSONArray optionsArray = new JSONArray();
+            optionsArray.put("Waiting");
+            optionsArray.put("Failed");
+            optionsArray.put("Done");
+            optionsJson.put(JSON_KEY_RADIO_OPTIONS, optionsArray);
+            if (bDone) {
+                optionsJson.put(JSON_KEY_RADIO_SELECTION, "Done");
+            } else if (bWaiting) {
+                optionsJson.put(JSON_KEY_RADIO_SELECTION, "Waiting");
+            } else if (bFailed) {
+                optionsJson.put(JSON_KEY_RADIO_SELECTION, "Failed");
+            }
+            statusJson.put(JSON_KEY_VALUE, optionsJson);
+
+            fieldsJson.put(salesJson);
+            fieldsJson.put(notesJson);
+            fieldsJson.put(statusJson);
+
+            return fieldsJson;
+
+        } catch (JSONException e) {
+            Dbg.error(TAG, "JSON Exception while parsing tasks");
+            Dbg.stack(e);
+        }
+
+        return null;
+    }
 }
