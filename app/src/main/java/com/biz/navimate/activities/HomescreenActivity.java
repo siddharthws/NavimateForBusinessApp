@@ -1,6 +1,9 @@
 package com.biz.navimate.activities;
 
+import android.animation.Animator;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -10,14 +13,19 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.lists.TaskListAdapter;
+import com.biz.navimate.misc.AnimHelper;
+import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
+import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.server.GetTasksTask;
 import com.biz.navimate.viewholders.ActivityHolder;
+import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -35,6 +43,7 @@ public class HomescreenActivity     extends     BaseActivity
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.Homescreen ui = null;
     private TaskListAdapter adapter = null;
+    private AnimHelper animHelper = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -53,8 +62,11 @@ public class HomescreenActivity     extends     BaseActivity
         holder = ui;
 
         // Add Fragments
+        ui.flMap            = (FrameLayout) findViewById(R.id.fl_map_fragment);
         ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
         ui.lvTasks          = (ListView) findViewById(R.id.lv_tasks);
+        ui.ibList          = (ImageButton) findViewById(R.id.ib_toolbar_list);
+        ui.ibMap          = (ImageButton) findViewById(R.id.ib_toolbar_map);
     }
 
     @Override
@@ -63,10 +75,28 @@ public class HomescreenActivity     extends     BaseActivity
         adapter = new TaskListAdapter(this, ui.lvTasks);
         adapter.SetListener(this);
 
+        // Initialize animations
+        animHelper = new AnimHelper(this);
+
         // Get Tasks from server
         GetTasksTask getTasks = new GetTasksTask(this);
         getTasks.SetListener(this);
         getTasks.execute();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if (RlDialog.IsShowing()) {
+            // hide dialog if showing
+            RlDialog.Hide();
+        } else if (ui.flMap.getVisibility() == View.VISIBLE) {
+            // Go to List if map is visible
+            ButtonClickList(null);
+        } else {
+            // Finish the activity
+            finish();
+        }
     }
 
     @Override
@@ -98,7 +128,11 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onItemClick(Task task) {
+        // Center map on this task marker
+        ui.mapFragment.cameraHelper.Move(new Camera.Location(task.lead.position, 0, true));
 
+        // Perform a Map button click
+        ButtonClickMap(null);
     }
 
     @Override
@@ -113,15 +147,25 @@ public class HomescreenActivity     extends     BaseActivity
 
     // Button Click APIs
     public void ButtonClickBack(View view) {
-        finish();
+        onBackPressed();
     }
 
     public void ButtonClickMap(View view) {
-        // Placeholder
+        // Play slide animation on list and map
+        animHelper.Swap(ui.lvTasks, ui.flMap);
+
+        // Play fade anims on buttons
+        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_OUT, ui.ibMap, new PowerInterpolator(false, 1), null));
+        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, ui.ibList, new PowerInterpolator(false, 1), null));
     }
 
     public void ButtonClickList(View view) {
-        // Placeholder
+        // Play slide animation on list and map
+        animHelper.SwapReverse(ui.flMap, ui.lvTasks);
+
+        // Play fade anims on buttons
+        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_OUT, ui.ibList, new PowerInterpolator(false, 1), null));
+        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, ui.ibMap, new PowerInterpolator(false, 1), null));
     }
 
     // ----------------------- Private APIs ----------------------- //

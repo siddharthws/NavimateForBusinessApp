@@ -1,5 +1,7 @@
 package com.biz.navimate.viewholders;
 
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
@@ -30,10 +32,14 @@ public class ActivityHolder {
 
     // Homescreen activity holder
     public static class Homescreen extends Base {
-        // Fragments
+        // Map
         public NvmMapFragment mapFragment = null;
+        public FrameLayout flMap = null;
 
         // List
         public ListView lvTasks = null;
+
+        // Buttons
+        public ImageButton ibMap = null, ibList = null;
     }
 }
