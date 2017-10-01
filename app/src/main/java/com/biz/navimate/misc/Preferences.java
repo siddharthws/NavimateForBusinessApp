@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.User;
 
 /**
@@ -20,6 +21,9 @@ public class Preferences {
     // User Information
     private static User user;
 
+    // User Location cache
+    private static LocationObj lastKnowLocation         = null;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
@@ -34,6 +38,11 @@ public class Preferences {
                         sharedPref.getString(Constants.Preferences.KEY_PHONE, ""),
                         sharedPref.getString(Constants.Preferences.KEY_EMAIL, ""),
                         sharedPref.getInt(Constants.Preferences.KEY_APP_ID, User.INVALID_ID));
+
+        // Init Location Object
+        lastKnowLocation        = new LocationObj(  Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LATITUDE, "0")),
+                                                    Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LONGITUDE, "0")),
+                                                    0L, 0.0f);
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -59,6 +68,21 @@ public class Preferences {
         Preferences.user = user;
     }
 
+    public static void SetLocation(Context context, LocationObj location)
+    {
+        SharedPreferences sharedPref        = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                                                                            Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Set setting
+        prefEdit.putString(Constants.Preferences.KEY_LATITUDE,   String.valueOf(location.latlng.latitude));
+        prefEdit.putString(Constants.Preferences.KEY_LONGITUDE,  String.valueOf(location.latlng.longitude));
+        prefEdit.apply();
+
+        // Set Cache
+        lastKnowLocation = location;
+    }
+
     /*
      * GET APIs
      */
@@ -66,5 +90,10 @@ public class Preferences {
     public static User GetUser ()
     {
         return user;
+    }
+
+    public static LocationObj GetLocation()
+    {
+        return lastKnowLocation;
     }
 }

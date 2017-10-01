@@ -33,6 +33,9 @@ public class LocationCache implements LocationListener {
     {
         // Init Cache
         cache   = new ArrayList<>();
+
+        // Feed first lat lng into cache using preferences
+        AddToCache(Preferences.GetLocation());
     }
 
     public static void InitInstance()

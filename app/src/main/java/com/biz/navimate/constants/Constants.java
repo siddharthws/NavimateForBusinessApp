@@ -28,6 +28,8 @@ public class Constants {
         public static final String KEY_PHONE        = "phone";
         public static final String KEY_EMAIL        = "email";
         public static final String KEY_APP_ID       = "app_id";
+        public static final String KEY_LATITUDE     = "pref_latitude";
+        public static final String KEY_LONGITUDE    = "pref_longitude";
     }
 
     // Server related constants
