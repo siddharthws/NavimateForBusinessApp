@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_dialog_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="@dimen/m_small"
+        android:paddingRight="@dimen/m_large"
+        android:paddingBottom="@dimen/m_small"
+        android:paddingLeft="@dimen/m_large"
+        android:layout_margin="@dimen/m_large"
+        android:background="@drawable/bg_white_shadow_slant"
+        android:clickable="true">
+
+        <com.biz.navimate.views.RlDialogTitle
+            android:id="@+id/rl_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="Task Information"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_dialog_title"
+            android:layout_marginTop="@dimen/m_small"
+            app:bold="true"
+            android:textSize="@dimen/textsize_primary_small"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_marginTop="@dimen/m_small"
+            android:textSize="@dimen/textsize_primary_small"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_description"
+            android:layout_marginTop="@dimen/m_small"
+            android:textSize="@dimen/textsize_primary_small"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_phone"
+            android:layout_marginTop="@dimen/m_small"
+            android:textSize="@dimen/textsize_primary_small"/>
+
+        <Button
+            android:id="@+id/btn_submit_form"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_email"
+            android:layout_marginTop="@dimen/m_small"
+            android:textColor="@android:color/white"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:text="Submit Form"/>
+
+        <RelativeLayout
+            android:id="@+id/rlDialogButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/btn_submit_form"
+            android:layout_marginTop="@dimen/m_small">
+
+            <Button
+                android:id="@+id/btn_dismiss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:text="DISMISS"
+                android:textSize="@dimen/textsize_primary_small"
+                android:textColor="@color/colorPrimary"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

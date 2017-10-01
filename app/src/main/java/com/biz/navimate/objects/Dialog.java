@@ -13,6 +13,7 @@ public class Dialog {
     public static final int TYPE_CONFIRM                    = 2;
     public static final int TYPE_WAITING                    = 3;
     public static final int TYPE_SUBMIT_FORM                = 4;
+    public static final int TYPE_TASK_INFO                  = 5;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -93,6 +94,17 @@ public class Dialog {
                                     form.bDone);
             this.taskId = taskId;
             this.bCloseTask = bCloseTask;
+        }
+    }
+
+    public static class TaskInfo extends Base
+    {
+        public Task task = null;
+
+        public TaskInfo(Task task)
+        {
+            super(TYPE_TASK_INFO, false);
+            this.task = task;
         }
     }
 }

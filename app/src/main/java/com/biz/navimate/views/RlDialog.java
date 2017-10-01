@@ -13,6 +13,7 @@ import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.dialogs.ConfirmDialog;
 import com.biz.navimate.dialogs.SubmitFormDialog;
+import com.biz.navimate.dialogs.TaskInfoDialog;
 import com.biz.navimate.dialogs.WaitingDialog;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.misc.AnimHelper;
@@ -368,6 +369,10 @@ public class RlDialog   extends     RelativeLayout
             }
             case Dialog.TYPE_SUBMIT_FORM : {
                 currentDialog = new SubmitFormDialog(getContext());
+                break;
+            }
+            case Dialog.TYPE_TASK_INFO : {
+                currentDialog = new TaskInfoDialog(getContext());
                 break;
             }
         }

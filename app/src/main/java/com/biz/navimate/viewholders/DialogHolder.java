@@ -53,4 +53,14 @@ public class DialogHolder {
         public Button btnSubmit = null;
         public Button btnCancel = null;
     }
+
+    public static class TaskInfo extends Base
+    {
+        public TextView tvTitle = null;
+        public TextView tvDescription = null;
+        public TextView tvPhone = null;
+        public TextView tvEmail = null;
+        public Button btnSubmit = null;
+        public Button btnDismiss = null;
+    }
 }

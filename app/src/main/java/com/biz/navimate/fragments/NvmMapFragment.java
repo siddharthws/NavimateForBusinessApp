@@ -13,8 +13,10 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
+import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
@@ -118,7 +120,7 @@ public class NvmMapFragment     extends     BaseFragment
         MarkerObj.Task clickedMarker = (MarkerObj.Task) markerHelper.GetMarkerObjFromMarker(marker);
 
         // Open Lead Dialog Box
-        Dbg.Toast(getContext(), "Marker for task : " + clickedMarker.task.id, Toast.LENGTH_SHORT);
+        RlDialog.Show(new Dialog.TaskInfo(clickedMarker.task));
 
         // Consume the click
         return true;
