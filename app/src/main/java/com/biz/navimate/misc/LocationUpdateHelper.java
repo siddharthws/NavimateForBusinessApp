@@ -6,6 +6,9 @@ import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.google.android.gms.common.api.Status;
 
+import java.util.HashMap;
+import java.util.Iterator;
+
 /**
  * Created by Siddharth on 01-10-2017.
  */
@@ -32,6 +35,9 @@ public class LocationUpdateHelper {
     }
 
     // ----------------------- Globals ----------------------- //
+    // Global Location Clients alng with required update object for the client
+    private static HashMap<Integer, LocationUpdate> clients = null;
+
     private Context context = null;
 
     // ----------------------- Constructor ----------------------- //
@@ -48,12 +54,29 @@ public class LocationUpdateHelper {
     // Start() API queries the arbiter for which type of location update should be started
     public void AddClient(int tag, LocationUpdate serviceObject)
     {
-        // Place holder
+        // Init clients if null
+        if (clients == null)
+        {
+            clients = new HashMap<>();
+        }
+
+        // Add to clients
+        clients.put(tag, serviceObject);
+
+        // Restart Update Logic
+        Start();
     }
 
     public void RemoveClient(int tag)
     {
-        // Placeholder
+        if (clients != null)
+        {
+            // Remove from clients
+            clients.remove(tag);
+
+            // Restart Update Logic
+            Start();
+        }
     }
 
     // APIs to start / stop location updates
@@ -81,10 +104,24 @@ public class LocationUpdateHelper {
     // ----------------------- Private APIs ----------------------- //
     // API to get the location service object based on all the added clients
     // Process is called Location Service Arbitration
-    private LocationUpdateHelper LocationServiceArbiter()
+    private LocationUpdate LocationServiceArbiter()
     {
-        // Place holder
-        return null;
+        LocationUpdate requiredUpdates = null;
+
+        if ((clients != null) && (clients.size() > 0))
+        {
+            Iterator<Integer> tagIter = clients.keySet().iterator();
+            while (tagIter.hasNext())
+            {
+                LocationUpdate clientUpdates = clients.get(tagIter.next());
+                if ((requiredUpdates == null) || (clientUpdates.interval < requiredUpdates.interval))
+                {
+                    requiredUpdates = clientUpdates;
+                }
+            }
+        }
+
+        return requiredUpdates;
     }
 
     // Error / Success reporting to listener
