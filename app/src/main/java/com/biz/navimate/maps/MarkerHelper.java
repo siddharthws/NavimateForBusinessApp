@@ -50,6 +50,13 @@ public class MarkerHelper {
 
                 // Add marker to map and store the marker object returned by map
                 marker.marker = map.addMarker(markerOpt);
+
+                // If marker is current location, add accuracy circle as well
+                if (marker.type == MarkerObj.MARKER_TYPE_CURRENT_LOCATION)
+                {
+                    MarkerObj.CurrentLocation clMarker = (MarkerObj.CurrentLocation) marker;
+                    clMarker.accuracyCircle = map.addCircle(clMarker.GetCircleOptions());
+                }
             }
         }
     }
@@ -102,6 +109,13 @@ public class MarkerHelper {
 
             // Add marker to map and store the marker object returned by map
             markerObj.marker = map.addMarker(markerOpt);
+
+            // If marker is current location, add accuracy circle as well
+            if (markerObj.type == MarkerObj.MARKER_TYPE_CURRENT_LOCATION)
+            {
+                MarkerObj.CurrentLocation clMarker = (MarkerObj.CurrentLocation) markerObj;
+                clMarker.accuracyCircle = map.addCircle(clMarker.GetCircleOptions());
+            }
         }
     }
 

@@ -8,4 +8,8 @@
     <color name="lightGrey">#bbbbbb</color>
     <color name="darkGrey">#555555</color>
     <color name="alphaBlack">#77000000</color>
+
+    <!-- Google Map Colors -->
+    <color name="GMAP_BLUE">#4285f4</color>
+    <color name="GMAP_BLUE_SEMI_TRANSPARENT">#554285f4</color>
 </resources>

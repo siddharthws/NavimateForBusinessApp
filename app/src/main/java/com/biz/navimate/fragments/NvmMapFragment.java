@@ -1,6 +1,7 @@
 package com.biz.navimate.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,8 @@ import com.google.android.gms.maps.model.Marker;
 public class NvmMapFragment     extends     BaseFragment
                                 implements  OnMapReadyCallback,
                                             GoogleMap.OnMapLoadedCallback,
-                                            GoogleMap.OnMarkerClickListener
+                                            GoogleMap.OnMarkerClickListener,
+                                            Runnable
 {
     // ----------------------- Constants ----------------------- //
     private final static String TAG = "NVM_MAP_FRAGMENT";
@@ -44,12 +46,16 @@ public class NvmMapFragment     extends     BaseFragment
     public static final String  FRAGMENT_IDENTIFIER     = "nvm_map_fragment";
     public static final int     FRAGMENT_LAYOUT_ID      = R.id.fl_map_fragment;
 
+    // Map Update Callback time
+    public static final int MAP_UPDATE_CB_TIME_MS       = 1000;
+
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private TouchableSupportMapFragment supportMapFragment         = null;
-    private GoogleMap                   googleMap                   = null;
-    private LocationUpdateHelper locationUpdateHelper                   = null;
-    private LocationUpdateRunnable locationUpdateRunnable                   = null;
+    private GoogleMap                   googleMap                  = null;
+    private LocationUpdateHelper locationUpdateHelper              = null;
+    private LocationUpdateRunnable locationUpdateRunnable          = null;
+    private MarkerObj.CurrentLocation clMarker                     = null;
 
     // UI
     private ImageButton ibCurrentLocation = null, ibRoute = null;
@@ -57,6 +63,9 @@ public class NvmMapFragment     extends     BaseFragment
     // Helpers
     public MarkerHelper markerHelper                                = null;
     public CameraHelper cameraHelper                                = null;
+
+    // Map refresh
+    private Handler mapUpdateHandler        = null;
 
     // ----------------------- Constructor ----------------------- //
     public NvmMapFragment()
@@ -95,7 +104,15 @@ public class NvmMapFragment     extends     BaseFragment
         supportMapFragment.getMapAsync(this);
 
         // Init Location Helper
+        locationUpdateRunnable            = new LocationUpdateRunnable(getContext());
         locationUpdateHelper              = new LocationUpdateHelper(getContext());
+
+        // Add current location marker to cache
+        clMarker = new MarkerObj.CurrentLocation(getContext());
+        markerHelper.Add(clMarker);
+
+        // Init Map Update handler
+        mapUpdateHandler = new Handler();
 
         ibCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,11 +138,17 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Add Location client (since map is visible)
         locationUpdateHelper.AddClient(LocationUpdateHelper.CLIENT_TAG_MAP, LocationUpdate.FAST);
+
+        // Start map update callbacks
+        mapUpdateHandler.postDelayed(this, MAP_UPDATE_CB_TIME_MS);
     }
 
     @Override
     public void onPause()
     {
+        // Reove map update callbacks
+        mapUpdateHandler.removeCallbacks(this);
+
         // Remove Location Client since map will not be visible anymore
         locationUpdateHelper.RemoveClient(LocationUpdateHelper.CLIENT_TAG_MAP);
 
@@ -175,6 +198,16 @@ public class NvmMapFragment     extends     BaseFragment
         return true;
     }
 
+    @Override
+    public void run()
+    {
+        // Refresh Current Location marker
+        clMarker.Refresh();
+
+        // Post again a deay of 1 second
+        mapUpdateHandler.postDelayed(this, MAP_UPDATE_CB_TIME_MS);
+    }
+
     // ----------------------- Public APIs ----------------------- //
     // API to add this fragment to an activity
     public static NvmMapFragment AddFragment(FragmentManager fm)
@@ -204,7 +237,7 @@ public class NvmMapFragment     extends     BaseFragment
         if (locationUpdateHelper.IsUpdating())
         {
             // Update Camera to current position
-            cameraHelper.Move(new Camera.Location(LocationCache.instance.GetLocation().latlng, -1, true));
+            cameraHelper.Move(new Camera.Location(LocationCache.instance.GetLocation().latlng, 0, true));
         }
         else
         {
