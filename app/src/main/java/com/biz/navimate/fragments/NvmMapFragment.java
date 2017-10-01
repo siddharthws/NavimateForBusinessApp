@@ -14,9 +14,15 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
+import com.biz.navimate.misc.LocationCache;
+import com.biz.navimate.misc.LocationUpdateHelper;
+import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,6 +48,8 @@ public class NvmMapFragment     extends     BaseFragment
     // ----------------------- Globals ----------------------- //
     private TouchableSupportMapFragment supportMapFragment         = null;
     private GoogleMap                   googleMap                   = null;
+    private LocationUpdateHelper locationUpdateHelper                   = null;
+    private LocationUpdateRunnable locationUpdateRunnable                   = null;
 
     // UI
     private ImageButton ibCurrentLocation = null, ibRoute = null;
@@ -86,6 +94,9 @@ public class NvmMapFragment     extends     BaseFragment
         // Ready the map
         supportMapFragment.getMapAsync(this);
 
+        // Init Location Helper
+        locationUpdateHelper              = new LocationUpdateHelper(getContext());
+
         ibCurrentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +112,24 @@ public class NvmMapFragment     extends     BaseFragment
         });
 
         return fragmentView;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        // Add Location client (since map is visible)
+        locationUpdateHelper.AddClient(LocationUpdateHelper.CLIENT_TAG_MAP, LocationUpdate.FAST);
+    }
+
+    @Override
+    public void onPause()
+    {
+        // Remove Location Client since map will not be visible anymore
+        locationUpdateHelper.RemoveClient(LocationUpdateHelper.CLIENT_TAG_MAP);
+
+        super.onPause();
     }
 
     // Map Related Overrides
@@ -171,7 +200,28 @@ public class NvmMapFragment     extends     BaseFragment
 
     // Button Click APIs
     public void ButtonClickCurrentLocation() {
-        Dbg.Toast(getContext(), "Current Location", Toast.LENGTH_SHORT);
+        // Check if Location is Updating
+        if (locationUpdateHelper.IsUpdating())
+        {
+            // Update Camera to current position
+            cameraHelper.Move(new Camera.Location(LocationCache.instance.GetLocation().latlng, -1, true));
+        }
+        else
+        {
+            // Set Location Update listener
+            locationUpdateRunnable.SetInitListener(new LocationUpdateRunnable.IfaceRunnableLocationInit()
+            {
+                @Override
+                public void onLocationInitSuccess(LocationObj location)
+                {
+                    // Perform Button Click Logic Again if location was initialized succesfully
+                    ButtonClickCurrentLocation();
+                }
+            });
+
+            // Attempt to start location updates
+            locationUpdateRunnable.Post(0);
+        }
     }
 
     public void ButtonClickRoute() {

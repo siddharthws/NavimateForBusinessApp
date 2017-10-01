@@ -14,6 +14,9 @@ public class LocationUpdateHelper {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOCATION_UPDATE_HELPER";
 
+    // Client Tags
+    public static final int CLIENT_TAG_MAP      = 1;
+
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // interface used to convey results of location update

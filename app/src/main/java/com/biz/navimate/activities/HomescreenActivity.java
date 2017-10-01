@@ -15,6 +15,7 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.lists.TaskListAdapter;
 import com.biz.navimate.misc.AnimHelper;
+import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
@@ -22,6 +23,7 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
+import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.GetTasksTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
@@ -43,6 +45,9 @@ public class HomescreenActivity     extends     BaseActivity
     private ActivityHolder.Homescreen ui = null;
     private TaskListAdapter adapter = null;
     private AnimHelper animHelper = null;
+
+    private LocationUpdateHelper locationUdpateHelper = null;
+    private LocationUpdateRunnable locationUpdateRunnable = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -73,6 +78,10 @@ public class HomescreenActivity     extends     BaseActivity
         // Init adapter
         adapter = new TaskListAdapter(this, ui.lvTasks);
         adapter.SetListener(this);
+
+        // Initialize Location Runnable and Helper
+        locationUpdateRunnable  = new LocationUpdateRunnable(this);
+        locationUdpateHelper    = new LocationUpdateHelper(this);
 
         // Initialize animations
         animHelper = new AnimHelper(this);

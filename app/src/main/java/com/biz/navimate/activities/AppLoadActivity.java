@@ -8,7 +8,9 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.misc.GoogleApiClientHolder;
 import com.biz.navimate.misc.IconGen;
+import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
@@ -69,6 +71,12 @@ public class AppLoadActivity    extends     BaseActivity
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         Statics.SCREEN_SIZE      = new Point(metrics.widthPixels, metrics.heightPixels);
         Statics.SCREEN_DENSITY   = metrics.density;
+
+        // Initialize Location Cache
+        LocationCache.InitInstance();
+
+        // Initialize api client
+        GoogleApiClientHolder.InitInstance(this);
 
         // Check if user is registered
         if (Preferences.GetUser().appId == User.INVALID_ID) {
