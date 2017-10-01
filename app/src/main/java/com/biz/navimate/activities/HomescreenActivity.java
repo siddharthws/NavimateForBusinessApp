@@ -111,7 +111,13 @@ public class HomescreenActivity     extends     BaseActivity
         }
 
         // Update Map Camera
-        ui.mapFragment.cameraHelper.Move(new Camera.Bounds(bounds, true));
+        if (bounds.size() > 1) {
+            ui.mapFragment.cameraHelper.Move(new Camera.Bounds(bounds, true));
+        } else if (bounds.size() == 1) {
+            ui.mapFragment.cameraHelper.Move(new Camera.Location(bounds.get(0), 0, true));
+        } else {
+            // TODO : Center on current location
+        }
 
         // Add tasks to list
         adapter.Clear();

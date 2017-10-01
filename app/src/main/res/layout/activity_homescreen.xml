@@ -70,6 +70,12 @@
 
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/fl_map_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll_toolbar_homescreen"/>
+
     <ListView
         android:id="@+id/lv_tasks"
         android:layout_width="match_parent"
@@ -77,13 +83,6 @@
         android:layout_below="@id/ll_toolbar_homescreen"
         android:background="@android:color/white"
         android:divider="@android:color/transparent"/>
-
-    <FrameLayout
-        android:id="@+id/fl_map_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ll_toolbar_homescreen"
-        android:visibility="gone"/>
 
     <com.biz.navimate.views.RlDialog
         android:id="@+id/rl_dialog"

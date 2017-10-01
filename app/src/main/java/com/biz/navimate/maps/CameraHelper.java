@@ -1,5 +1,6 @@
 package com.biz.navimate.maps;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Statics;
@@ -93,7 +94,12 @@ public class CameraHelper {
         // If only location is valid, using newLatLng
         else if (Statics.IsPositionValid(camera.location))
         {
-            camUpdate = CameraUpdateFactory.newLatLng(camera.location);
+            // Ensure minimum zoom
+            if (map.getCameraPosition().zoom < Constants.Map.MIN_ZOOM) {
+                camUpdate = CameraUpdateFactory.newLatLngZoom(camera.location, Constants.Map.MIN_ZOOM);
+            } else {
+                camUpdate = CameraUpdateFactory.newLatLng(camera.location);
+            }
         }
         // If only zoom is valid, use zoomTo
         else if (camera.zoom != 0)

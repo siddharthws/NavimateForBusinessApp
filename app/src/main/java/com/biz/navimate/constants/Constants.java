@@ -55,4 +55,10 @@ public class Constants {
         public static final String KEY_TASK_ID          = "taskId";
         public static final String KEY_CLOSE_TASK       = "closeTask";
     }
+
+    // Map related constants
+    public class Map {
+        // Zoom levels
+        public static final int MIN_ZOOM = 14;
+    }
 }
