@@ -15,6 +15,7 @@ public class Constants {
     public static class RequestCodes {
         public static final int INVALID         = -1;
         public static final int REGISTRATION    = 1;
+        public static final int GPS             = 2;
     }
 
     // User Preferences related constants

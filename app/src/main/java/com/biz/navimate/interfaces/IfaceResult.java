@@ -9,4 +9,11 @@ public class IfaceResult {
         void onRegisterSuccess();
         void onRegisterFailure();
     }
+
+    // Activity Result interfaces
+    public interface ResultGps
+    {
+        void onGpsEnableSuccess();
+        void onGpsEnableFailure();
+    }
 }

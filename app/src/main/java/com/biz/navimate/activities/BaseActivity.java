@@ -48,7 +48,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private Intent resumeResultIntent = null;
 
     // Result Listeners
-    private IfaceResult.Registration  registerListener             = null;
+    private IfaceResult.Registration  registerListener          = null;
+    private IfaceResult.ResultGps     gpsListener               = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -256,6 +257,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.registerListener = listener;
     }
 
+    public void SetGpsResultListener(IfaceResult.ResultGps listener)
+    {
+        this.gpsListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -289,6 +295,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                     else
                     {
                         registerListener.onRegisterFailure();
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.GPS:
+            {
+                if (gpsListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        gpsListener.onGpsEnableSuccess();
+                    }
+                    else
+                    {
+                        gpsListener.onGpsEnableFailure();
                     }
                 }
                 break;
