@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -42,6 +43,9 @@ public class NvmMapFragment     extends     BaseFragment
     private TouchableSupportMapFragment supportMapFragment         = null;
     private GoogleMap                   googleMap                   = null;
 
+    // UI
+    private ImageButton ibCurrentLocation = null, ibRoute = null;
+
     // Helpers
     public MarkerHelper markerHelper                                = null;
     public CameraHelper cameraHelper                                = null;
@@ -76,9 +80,25 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Init UI
         supportMapFragment             = (TouchableSupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        ibCurrentLocation = (ImageButton) fragmentView.findViewById(R.id.ib_current_location);
+        ibRoute = (ImageButton) fragmentView.findViewById(R.id.ib_route);
 
         // Ready the map
         supportMapFragment.getMapAsync(this);
+
+        ibCurrentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButtonClickCurrentLocation();
+            }
+        });
+
+        ibRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButtonClickRoute();
+            }
+        });
 
         return fragmentView;
     }
@@ -147,6 +167,15 @@ public class NvmMapFragment     extends     BaseFragment
         }
 
         return fragment;
+    }
+
+    // Button Click APIs
+    public void ButtonClickCurrentLocation() {
+        Dbg.Toast(getContext(), "Current Location", Toast.LENGTH_SHORT);
+    }
+
+    public void ButtonClickRoute() {
+        Dbg.Toast(getContext(), "Get directions", Toast.LENGTH_SHORT);
     }
 
     // ----------------------- Private APIs ----------------------- //

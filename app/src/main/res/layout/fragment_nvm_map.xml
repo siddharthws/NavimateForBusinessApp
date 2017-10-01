@@ -11,4 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <LinearLayout
+        android:id="@+id/ll_map_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/m_large"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/ib_current_location"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/selector_round_buttons"
+            android:src="@mipmap/ic_cl"/>
+
+        <ImageButton
+            android:id="@+id/ib_route"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/selector_round_buttons"
+            android:src="@mipmap/ic_get_directions"/>
+
+    </LinearLayout>
+
 </RelativeLayout>
