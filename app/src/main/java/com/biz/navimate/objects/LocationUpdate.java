@@ -29,6 +29,7 @@ public class LocationUpdate {
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     public int interval = 0, expiry = 0, priority = 0;
+    public LocationRequest locationRequest = null;
 
     // ----------------------- Constructor ----------------------- //
 
@@ -37,6 +38,12 @@ public class LocationUpdate {
         this.interval    = interval;
         this.expiry      = expiry;
         this.priority    = priority;
+
+        // Initialize Location Request
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(interval);
+        locationRequest.setFastestInterval(interval);
+        locationRequest.setPriority(priority);
     }
 
     // ----------------------- Overrides ----------------------- //
