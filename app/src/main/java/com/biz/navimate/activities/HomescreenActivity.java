@@ -1,6 +1,5 @@
 package com.biz.navimate.activities;
 
-import android.animation.Animator;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -137,7 +136,7 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onSubmitFormClick(Task task) {
-
+        RlDialog.Show(new Dialog.SubmitForm(task.template, task.id, false));
     }
 
     // ----------------------- Public APIs ----------------------- //

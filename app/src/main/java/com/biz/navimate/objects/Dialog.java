@@ -12,6 +12,7 @@ public class Dialog {
     public static final int TYPE_ALERT                      = 1;
     public static final int TYPE_CONFIRM                    = 2;
     public static final int TYPE_WAITING                    = 3;
+    public static final int TYPE_SUBMIT_FORM                = 4;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -71,6 +72,27 @@ public class Dialog {
         {
             super(TYPE_WAITING, false);
             this.message = message;
+        }
+    }
+
+    public static class SubmitForm extends Base
+    {
+        public Form form = null;
+        public int taskId = -1;
+        public boolean bCloseTask = false;
+
+        public SubmitForm(Form form, int taskId, boolean bCloseTask)
+        {
+            super(TYPE_SUBMIT_FORM, false);
+
+            this.form = new Form(   form.name,
+                                    form.sales,
+                                    form.notes,
+                                    form.bFailed,
+                                    form.bWaiting,
+                                    form.bDone);
+            this.taskId = taskId;
+            this.bCloseTask = bCloseTask;
         }
     }
 }

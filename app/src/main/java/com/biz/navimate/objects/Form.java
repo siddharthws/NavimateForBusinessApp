@@ -35,6 +35,15 @@ public class Form {
         InitFields(fields);
     }
 
+    public Form (String name, int sales, String notes, boolean bFailed, boolean bWaiting, boolean bDone) {
+        this.name = name;
+        this.sales = sales;
+        this.notes = notes;
+        this.bFailed = bFailed;
+        this.bWaiting = bWaiting;
+        this.bDone = bDone;
+    }
+
     private void InitFields(JSONArray fieldsJson)
     {
         try {

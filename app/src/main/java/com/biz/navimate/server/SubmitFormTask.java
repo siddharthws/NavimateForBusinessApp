@@ -97,6 +97,9 @@ public class SubmitFormTask extends BaseServerTask {
             // Toast error
             Dbg.Toast(parentContext, "Unable to submit form !!!", Toast.LENGTH_SHORT);
 
+            // Re-launch Submit form dialog with the filled form
+            RlDialog.Show(new Dialog.SubmitForm(form, taskId, bCloseTask));
+
             // Call listener
             if (listener != null)
             {
