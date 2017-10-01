@@ -1,5 +1,7 @@
 package com.biz.navimate.objects;
 
+import com.biz.navimate.misc.IconGen;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,7 +59,9 @@ public class MarkerObj {
         public MarkerOptions GetMarkerOptions()
         {
             // Init marker options and assign parameters
-            MarkerOptions markerOpt = new MarkerOptions().position(position);
+            MarkerOptions markerOpt = new MarkerOptions()
+                                            .position(position)
+                                            .icon(BitmapDescriptorFactory.fromBitmap(IconGen.GetMarkerIcon(task.lead.title)));
 
             return markerOpt;
         }

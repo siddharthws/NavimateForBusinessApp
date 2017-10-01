@@ -10,6 +10,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.misc.IconGen;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
@@ -59,6 +60,9 @@ public class AppLoadActivity    extends     BaseActivity
     protected void SetViews() {
         // Initialize Preferences
         Preferences.Init(this);
+
+        // Initialize icon generator
+        IconGen.Init(this);
 
         // Set Screen size
         DisplayMetrics metrics = new DisplayMetrics();
