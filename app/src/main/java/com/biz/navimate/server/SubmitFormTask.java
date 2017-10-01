@@ -3,11 +3,15 @@ package com.biz.navimate.server;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.activities.HomescreenActivity;
+import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.views.RlDialog;
 
@@ -85,6 +89,17 @@ public class SubmitFormTask extends BaseServerTask {
         {
             // Toast success
             Dbg.Toast(parentContext, "Form submitted succesfully...", Toast.LENGTH_SHORT);
+
+            // Update List if task was to be closed
+            if (bCloseTask) {
+                Statics.RemoveFromTasks(taskId);
+
+                // Update homescreen list if it's showing
+                BaseActivity currentActivity = App.GetCurrentActivity();
+                if ((currentActivity != null) && (currentActivity.getClass().equals(HomescreenActivity.class))) {
+                    ((HomescreenActivity) currentActivity).onTasksSuccess();
+                }
+            }
 
             // Call listener
             if (listener != null)

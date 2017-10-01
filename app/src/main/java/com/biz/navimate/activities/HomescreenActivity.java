@@ -76,6 +76,11 @@ public class HomescreenActivity     extends     BaseActivity
 
         // Initialize animations
         animHelper = new AnimHelper(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         // Get Tasks from server
         GetTasksTask getTasks = new GetTasksTask(this);
@@ -102,6 +107,7 @@ public class HomescreenActivity     extends     BaseActivity
     public void onTasksSuccess() {
         // Add markers for all tasks in database
         ArrayList<LatLng> bounds = new ArrayList<>();
+        ui.mapFragment.markerHelper.Clear();
         for (Task task : Statics.GetCurrentTasks())
         {
             ui.mapFragment.markerHelper.Add(new MarkerObj.Task(task));

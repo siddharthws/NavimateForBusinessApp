@@ -91,4 +91,19 @@ public class Statics {
     public static ArrayList<Task> GetCurrentTasks() {
         return currentTasks;
     }
+
+    public static void RemoveFromTasks(int taskId)
+    {
+        Task taskToRemove = null;
+        for (Task task : currentTasks) {
+            if (task.id == taskId) {
+                taskToRemove = task;
+                break;
+            }
+        }
+
+        if (taskToRemove != null) {
+            currentTasks.remove(taskToRemove);
+        }
+    }
 }
