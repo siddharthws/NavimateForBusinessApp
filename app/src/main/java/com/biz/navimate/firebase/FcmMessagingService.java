@@ -5,6 +5,7 @@ import com.biz.navimate.activities.HomescreenActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.misc.NotificationHelper;
 import com.biz.navimate.server.GetTasksTask;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -92,5 +93,6 @@ public class FcmMessagingService extends FirebaseMessagingService implements Ifa
         }
 
         // Send notification
+        NotificationHelper.Notify(this);
     }
 }

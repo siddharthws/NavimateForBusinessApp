@@ -86,6 +86,10 @@ public class HomescreenActivity     extends     BaseActivity
         GetTasksTask getTasks = new GetTasksTask(this);
         getTasks.SetListener(this);
         getTasks.execute();
+
+        if (adapter.getCount() == 0) {
+            RlDialog.Show(new Dialog.Waiting("Getting tasks from server..."));
+        }
     }
 
     @Override
@@ -105,6 +109,8 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onTasksSuccess() {
+        RlDialog.Hide();
+
         // Add markers for all tasks in database
         ArrayList<LatLng> bounds = new ArrayList<>();
         ui.mapFragment.markerHelper.Clear();
@@ -134,6 +140,7 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onTasksFailed() {
+        RlDialog.Hide();
         Dbg.Toast(this, "Unable to get tasks from server...", Toast.LENGTH_SHORT);
     }
 
