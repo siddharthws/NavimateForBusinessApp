@@ -1,0 +1,86 @@
+{
+  "project_info": {
+    "project_number": "929003713526",
+    "firebase_url": "https://navimateforbusiness.firebaseio.com",
+    "project_id": "navimateforbusiness",
+    "storage_bucket": "navimateforbusiness.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929003713526:android:7245d5cac2deacb9",
+        "android_client_info": {
+          "package_name": "com.navimate.business"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929003713526-13gspu5vgidtdme94jfmjgcu2d9djrnd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.navimate.business",
+            "certificate_hash": "200984b1a3450f54116ec35dd7a48878fbbdf0dc"
+          }
+        },
+        {
+          "client_id": "929003713526-m9qbjm50g2h4km6j7kkbml4tkl8803ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvG4tUTRqfK-ONWEFNaJWUEopIIIpDLv0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "929003713526-m9qbjm50g2h4km6j7kkbml4tkl8803ru.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:929003713526:android:8ac5480bd58aa500",
+        "android_client_info": {
+          "package_name": "com.biz.navimate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "929003713526-m9qbjm50g2h4km6j7kkbml4tkl8803ru.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvG4tUTRqfK-ONWEFNaJWUEopIIIpDLv0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

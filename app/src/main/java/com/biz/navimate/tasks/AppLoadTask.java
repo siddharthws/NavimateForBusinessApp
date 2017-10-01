@@ -2,7 +2,8 @@ package com.biz.navimate.tasks;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.SystemClock;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,8 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params)
     {
-        SystemClock.sleep(3000);
+        // Wait for FCM ID Token
+        while (FirebaseInstanceId.getInstance().getToken() == null);
         return null;
     }
 

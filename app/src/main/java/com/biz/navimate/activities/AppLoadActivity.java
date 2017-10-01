@@ -3,8 +3,6 @@ package com.biz.navimate.activities;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
-import android.view.View;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
@@ -14,8 +12,10 @@ import com.biz.navimate.misc.IconGen;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
+import com.biz.navimate.server.UpdateFcmTask;
 import com.biz.navimate.tasks.AppLoadTask;
 import com.biz.navimate.viewholders.ActivityHolder;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class AppLoadActivity    extends     BaseActivity
                                 implements  IfaceResult.Registration,
@@ -99,6 +99,14 @@ public class AppLoadActivity    extends     BaseActivity
     // App Load Overrides
     @Override
     public void onLoadComplete() {
+        // Update FCM
+        String fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if (fcmToken.length() != 0)
+        {
+            UpdateFcmTask updateFcmTask = new UpdateFcmTask(this, fcmToken);
+            updateFcmTask.execute();
+        }
+
         // Start Homescreen
         HomescreenActivity.Start(this);
 

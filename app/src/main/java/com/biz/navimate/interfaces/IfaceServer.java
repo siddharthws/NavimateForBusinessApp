@@ -30,4 +30,10 @@ public class IfaceServer {
         void onFormSubmitted();
         void onFormSubmitFailed();
     }
+
+    // Update FCM Task interface
+    public interface UpdateFcm {
+        void onFcmUpdated();
+        void onFcmFailed();
+    }
 }

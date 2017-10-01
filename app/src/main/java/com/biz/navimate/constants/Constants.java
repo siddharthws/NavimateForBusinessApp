@@ -36,6 +36,7 @@ public class Constants {
         public static final String URL_GET_PROFILE = URL_BASE + "/api/reps/profile";
         public static final String URL_GET_TASKS = URL_BASE + "/api/reps/task";
         public static final String URL_OTP_SMS = URL_BASE + "/api/reps/otp";
+        public static final String URL_UPDATE_FCM = URL_BASE + "/api/reps/fcm";
 
         // JSON Keys
         public static final String KEY_ID = "id";
@@ -54,6 +55,7 @@ public class Constants {
         public static final String KEY_DATA             = "data";
         public static final String KEY_TASK_ID          = "taskId";
         public static final String KEY_CLOSE_TASK       = "closeTask";
+        public static final String KEY_FCM              = "fcmId";
     }
 
     // Map related constants
