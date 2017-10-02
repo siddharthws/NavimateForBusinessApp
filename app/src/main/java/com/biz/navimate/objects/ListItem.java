@@ -42,12 +42,14 @@ public class ListItem {
     public static class Lead extends Base {
         // ----------------------- Globals ----------------------- //
         public com.biz.navimate.objects.Lead lead = null;
+        public boolean bSelected = true;
 
         // ----------------------- Constructor ----------------------- //
-        public Lead(com.biz.navimate.objects.Lead lead)
+        public Lead(com.biz.navimate.objects.Lead lead, boolean bSelected)
         {
             super(TYPE_LEAD);
             this.lead               = lead;
+            this.bSelected          = bSelected;
         }
     }
 }

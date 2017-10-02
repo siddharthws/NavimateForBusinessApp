@@ -10,7 +10,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
+import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.activities.LeadPickerActivity;
+import com.biz.navimate.application.App;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.lists.RemovableListAdapter;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.objects.Dialog;
@@ -75,7 +79,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         // Init list
         adapter = new RemovableListAdapter(context, ui.lvLeads);
         for (Lead lead : currentData.leads) {
-            adapter.Add(new ListItem.Lead(lead));
+            adapter.Add(new ListItem.Lead(lead, false));
         }
 
         // Set Listeners
@@ -91,7 +95,18 @@ public class RouteBuilderDialog     extends     BaseDialog
         {
             case R.id.ll_add_lead :
             {
-                Dbg.Toast(context, "Pick Leads...", Toast.LENGTH_SHORT);
+                BaseActivity currentActivity = App.GetCurrentActivity();
+                if (currentActivity != null) {
+                    currentActivity.SetLeadPickerResultListener(new IfaceResult.LeadPicker() {
+                        @Override
+                        public void onLeadPicked(ArrayList<Integer> leadIds) {
+                            for (Integer leadId : leadIds) {
+                                adapter.Add(new ListItem.Lead(Statics.GetLeadById(leadId), false));
+                            }
+                        }
+                    });
+                    LeadPickerActivity.Start(currentActivity);
+                }
                 break;
             }
             case R.id.btn_build:

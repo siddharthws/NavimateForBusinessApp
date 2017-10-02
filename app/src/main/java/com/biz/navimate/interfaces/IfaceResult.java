@@ -1,5 +1,7 @@
 package com.biz.navimate.interfaces;
 
+import java.util.ArrayList;
+
 /**
  * Created by Siddharth on 25-09-2017.
  */
@@ -15,5 +17,10 @@ public class IfaceResult {
     {
         void onGpsEnableSuccess();
         void onGpsEnableFailure();
+    }
+
+    public interface LeadPicker
+    {
+        void onLeadPicked(ArrayList<Integer> leads);
     }
 }

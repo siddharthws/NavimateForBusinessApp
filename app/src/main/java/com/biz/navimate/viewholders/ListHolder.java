@@ -2,6 +2,7 @@ package com.biz.navimate.viewholders;
 
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.biz.navimate.views.TvCalibri;
 
@@ -21,6 +22,7 @@ public class ListHolder {
     public static class Lead
     {
         public TvCalibri    tvTitle;
+        public ImageView    ivTick;
     }
 
     // Removable List Item

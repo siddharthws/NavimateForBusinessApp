@@ -7,7 +7,7 @@
     android:padding="10dp"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:background="@drawable/bg_white_shadow_slant">
+    android:background="@android:color/transparent">
 
     <com.biz.navimate.views.TvCalibri
         android:id="@+id/tv_title"

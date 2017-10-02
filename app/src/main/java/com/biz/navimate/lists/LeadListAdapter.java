@@ -3,6 +3,7 @@ package com.biz.navimate.lists;
 import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
@@ -43,7 +44,9 @@ public class LeadListAdapter    extends     BaseListAdapter
     protected void SetViewHolder(View view) {
         // Init Holder
         ListHolder.Lead holder = new ListHolder.Lead();
+
         holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
+        holder.ivTick = (ImageView) view.findViewById(R.id.iv_tick);
 
         // Assign holder to view
         view.setTag(holder);
@@ -57,6 +60,12 @@ public class LeadListAdapter    extends     BaseListAdapter
 
         // Set title and description
         holder.tvTitle.setText(leadItem.lead.title);
+
+        if (leadItem.bSelected) {
+            holder.ivTick.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivTick.setVisibility(View.GONE);
+        }
     }
 
     // ListView Overrides

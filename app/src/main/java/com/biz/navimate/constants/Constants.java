@@ -16,6 +16,13 @@ public class Constants {
         public static final int INVALID         = -1;
         public static final int REGISTRATION    = 1;
         public static final int GPS             = 2;
+        public static final int LEAD_PICKER     = 3;
+    }
+
+    // Map related constants
+    public class Extras {
+        // Zoom levels
+        public static final String LEAD_PICKER = "leadPicker";
     }
 
     // User Preferences related constants

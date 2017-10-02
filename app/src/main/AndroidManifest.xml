@@ -3,9 +3,9 @@
     package="com.biz.navimate">
 
     <!-- Permissions -->
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
@@ -20,7 +20,7 @@
         <!-- Meta Data -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAlTGdM8F8vrAcLW9dBaH-hPku8JJaFgu4"/>
+            android:value="AIzaSyAlTGdM8F8vrAcLW9dBaH-hPku8JJaFgu4" />
 
         <!-- Activities -->
         <activity
@@ -32,29 +32,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.HomescreenActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.RegistrationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.LeadPickerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <!-- Services -->
-        <service
-            android:name=".firebase.FcmMessagingService">
+        <service android:name=".firebase.FcmMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service
-            android:name=".firebase.FcmIdService">
+        <service android:name=".firebase.FcmIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

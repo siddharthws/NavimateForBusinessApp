@@ -29,4 +29,23 @@ public class Lead {
         this.address = address;
         this.position = position;
     }
+
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean bEqual = false;
+
+        // Validate Object Instance
+        if ((object != null) && (object instanceof Route))
+        {
+            // Cast object to compare
+            Lead compareObject = (Lead) object;
+
+            if (compareObject.title.equals(title) && compareObject.description.equals(description) && compareObject.phone.equals(phone) && compareObject.email.equals(email)) {
+                bEqual = true;
+            }
+        }
+
+        return bEqual;
+    }
 }

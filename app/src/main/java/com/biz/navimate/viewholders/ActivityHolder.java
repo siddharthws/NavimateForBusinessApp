@@ -8,6 +8,7 @@ import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
+import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -41,5 +42,15 @@ public class ActivityHolder {
 
         // Buttons
         public ImageButton ibMap = null, ibList = null;
+    }
+
+    public static class LeadPicker extends Base
+    {
+        // Toolbar
+        public ImageButton ibDone, ibBack                        = null;
+        public TvCalibri tvSelectedCount                         = null;
+
+        // List
+        public ListView lvList                                  = null;
     }
 }

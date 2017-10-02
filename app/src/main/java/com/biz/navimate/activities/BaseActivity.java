@@ -50,6 +50,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     // Result Listeners
     private IfaceResult.Registration  registerListener          = null;
     private IfaceResult.ResultGps     gpsListener               = null;
+    private IfaceResult.LeadPicker    leadPickerListener        = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -262,6 +263,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.gpsListener = listener;
     }
 
+    public void SetLeadPickerResultListener(IfaceResult.LeadPicker listener)
+    {
+        this.leadPickerListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -310,6 +316,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                     else
                     {
                         gpsListener.onGpsEnableFailure();
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.LEAD_PICKER:
+            {
+                if (leadPickerListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        leadPickerListener.onLeadPicked((ArrayList<Integer>) resumeResultIntent.getSerializableExtra(Constants.Extras.LEAD_PICKER));
                     }
                 }
                 break;

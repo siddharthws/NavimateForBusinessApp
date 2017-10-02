@@ -123,6 +123,16 @@ public class Statics {
         return currentTasks;
     }
 
+    public static ArrayList<Lead> GetCurrentLeads() {
+        ArrayList<Lead> leads = new ArrayList<>();
+        for (Task task : currentTasks) {
+            if (!leads.contains(task.lead)) {
+                leads.add(task.lead);
+            }
+        }
+        return leads;
+    }
+
     public static void RemoveFromTasks(int taskId)
     {
         Task taskToRemove = null;
@@ -136,5 +146,15 @@ public class Statics {
         if (taskToRemove != null) {
             currentTasks.remove(taskToRemove);
         }
+    }
+
+    public static Lead GetLeadById(Integer leadId) {
+        for (Task task : currentTasks) {
+            if (task.lead.id == leadId) {
+                return task.lead;
+            }
+        }
+
+        return null;
     }
 }
