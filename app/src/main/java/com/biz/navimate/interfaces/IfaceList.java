@@ -10,4 +10,9 @@ public class IfaceList {
         void onItemClick(com.biz.navimate.objects.Task task);
         void onSubmitFormClick(com.biz.navimate.objects.Task task);
     }
+
+    // Task List Item interface
+    public interface Lead {
+        void onItemClick(com.biz.navimate.objects.Lead lead);
+    }
 }

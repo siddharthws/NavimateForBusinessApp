@@ -3,7 +3,6 @@ package com.biz.navimate.lists;
 import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
@@ -13,27 +12,27 @@ import com.biz.navimate.viewholders.ListHolder;
 import com.biz.navimate.views.TvCalibri;
 
 /**
- * Created by Siddharth on 29-09-2017.
+ * Created by Siddharth on 02-10-2017.
  */
 
-public class TaskListAdapter    extends     BaseListAdapter
+public class LeadListAdapter    extends     BaseListAdapter
                                 implements  AdapterView.OnItemClickListener
 {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "TASK_LIST_ADAPTER";
+    private static final String TAG = "LEAD_LIST_ADAPTER";
 
     // ----------------------- Interfaces ----------------------- //
-    private IfaceList.Task listener = null;
+    private IfaceList.Lead listener = null;
 
-    public void SetListener(IfaceList.Task listener) {
+    public void SetListener(IfaceList.Lead listener) {
         this.listener = listener;
     }
 
     // ----------------------- Globals ----------------------- //
 
     // ----------------------- Constructor ----------------------- //
-    public TaskListAdapter(Context parentContext, ListView lvList) {
-        super(parentContext, lvList, R.layout.list_task);
+    public LeadListAdapter(Context parentContext, ListView lvList) {
+        super(parentContext, lvList, R.layout.list_lead);
 
         // Set List Click Listener
         lvList.setOnItemClickListener(this);
@@ -43,10 +42,8 @@ public class TaskListAdapter    extends     BaseListAdapter
     @Override
     protected void SetViewHolder(View view) {
         // Init Holder
-        ListHolder.Task holder = new ListHolder.Task();
+        ListHolder.Lead holder = new ListHolder.Lead();
         holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
-        holder.tvDescription = (TvCalibri) view.findViewById(R.id.tv_description);
-        holder.btnForm = (Button) view.findViewById(R.id.btn_submit_form);
 
         // Assign holder to view
         view.setTag(holder);
@@ -55,33 +52,22 @@ public class TaskListAdapter    extends     BaseListAdapter
     @Override
     protected void SetView(View view, ListItem.Base data, int position) {
         // Gte dtaa and holder
-        final ListItem.Task taskItem = (ListItem.Task) data;
-        ListHolder.Task holder = (ListHolder.Task) view.getTag();
+        final ListItem.Lead leadItem = (ListItem.Lead) data;
+        ListHolder.Lead holder = (ListHolder.Lead) view.getTag();
 
         // Set title and description
-        holder.tvTitle.setText(taskItem.task.lead.title);
-        holder.tvDescription.setText(taskItem.task.lead.description);
-
-        // Set btn lick listeners
-        holder.btnForm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onSubmitFormClick(taskItem.task);
-                }
-            }
-        });
+        holder.tvTitle.setText(leadItem.lead.title);
     }
 
     // ListView Overrides
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Get List Item Object
-        ListItem.Task clickedItem = (ListItem.Task) getItem(position);
+        ListItem.Lead clickedItem = (ListItem.Lead) getItem(position);
 
         // Call Listener
         if (listener != null) {
-            listener.onItemClick(clickedItem.task);
+            listener.onItemClick(clickedItem.lead);
         }
     }
 

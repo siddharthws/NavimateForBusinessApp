@@ -9,6 +9,7 @@ public class ListItem {
     // Types of list items
     public static final int TYPE_INVALID                = 0;
     public static final int TYPE_TASK                   = 1;
+    public static final int TYPE_LEAD                   = 2;
 
     // ----------------------- Classes ---------------------------//
     // Base Class for list Item Data
@@ -34,6 +35,19 @@ public class ListItem {
         {
             super(TYPE_TASK);
             this.task               = task;
+        }
+    }
+
+    // Data object for task list item
+    public static class Lead extends Base {
+        // ----------------------- Globals ----------------------- //
+        public com.biz.navimate.objects.Lead lead = null;
+
+        // ----------------------- Constructor ----------------------- //
+        public Lead(com.biz.navimate.objects.Lead lead)
+        {
+            super(TYPE_LEAD);
+            this.lead               = lead;
         }
     }
 }
