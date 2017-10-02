@@ -4,6 +4,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -62,5 +64,14 @@ public class DialogHolder {
         public TextView tvEmail = null;
         public Button btnSubmit = null;
         public Button btnDismiss = null;
+    }
+
+    public static class RouteBuilder extends Base
+    {
+        public LinearLayout llAddLeads = null;
+        public ListView lvLeads = null;
+
+        public Button btnBuild = null;
+        public Button btnCancel = null;
     }
 }

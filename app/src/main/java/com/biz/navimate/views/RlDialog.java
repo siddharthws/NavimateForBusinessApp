@@ -12,6 +12,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.dialogs.ConfirmDialog;
+import com.biz.navimate.dialogs.RouteBuilderDialog;
 import com.biz.navimate.dialogs.SubmitFormDialog;
 import com.biz.navimate.dialogs.TaskInfoDialog;
 import com.biz.navimate.dialogs.WaitingDialog;
@@ -373,6 +374,10 @@ public class RlDialog   extends     RelativeLayout
             }
             case Dialog.TYPE_TASK_INFO : {
                 currentDialog = new TaskInfoDialog(getContext());
+                break;
+            }
+            case Dialog.TYPE_ROUTE_BUILDER : {
+                currentDialog = new RouteBuilderDialog(getContext());
                 break;
             }
         }

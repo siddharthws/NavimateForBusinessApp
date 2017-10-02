@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_dialog_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="@dimen/m_small"
+        android:paddingRight="@dimen/m_large"
+        android:paddingBottom="@dimen/m_small"
+        android:paddingLeft="@dimen/m_large"
+        android:layout_margin="@dimen/m_large"
+        android:background="@drawable/bg_white_shadow_slant"
+        android:clickable="true">
+
+        <com.biz.navimate.views.RlDialogTitle
+            android:id="@+id/rl_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:text="Build Route"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_lead_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl_dialog_title"
+            android:layout_marginTop="@dimen/m_small"
+            android:background="@drawable/shape_border">
+
+            <LinearLayout
+                android:id="@+id/ll_add_lead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/m_small">
+
+                <ImageView
+                    android:id="@+id/iv_add_lead"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/icon_add_grey"
+                    android:scaleType="fitXY"/>
+
+                <com.biz.navimate.views.TvCalibri
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="@dimen/textsize_primary_small"
+                    android:textColor="@color/darkGrey"
+                    app:bold="true"
+                    android:text="Add Leads"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_leads"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/ll_add_lead"
+                android:layout_margin="@dimen/m_small" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlDialogButtonContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/rl_lead_picker"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btn_build"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:text="BUILD"
+                android:textSize="@dimen/textsize_primary_small"
+                android:textColor="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:layout_toRightOf="@id/btn_build"
+                android:layout_marginLeft="10dp"
+                android:text="CANCEL"
+                android:textSize="@dimen/textsize_primary_small"
+                android:textColor="@color/colorPrimary"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

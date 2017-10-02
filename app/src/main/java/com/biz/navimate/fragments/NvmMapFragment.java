@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceDialog;
 import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
 import com.biz.navimate.maps.RouteHelper;
@@ -20,15 +20,19 @@ import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.MarkerObj;
+import com.biz.navimate.objects.Route;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 28-09-2017.
@@ -264,7 +268,15 @@ public class NvmMapFragment     extends     BaseFragment
     }
 
     public void ButtonClickRoute() {
-        Dbg.Toast(getContext(), "Get directions", Toast.LENGTH_SHORT);
+        // Launch route builder dialog
+        RlDialog.Show(new Dialog.RouteBuilder(new ArrayList<Lead>(), new IfaceDialog.RouteBuilder() {
+            @Override
+            public void onRouteBuilt(Route.Base route) {
+                // Clear routes form map and add this one
+                routeHelper.Clear();
+                routeHelper.Add(route);
+            }
+        }));
     }
 
     // ----------------------- Private APIs ----------------------- //

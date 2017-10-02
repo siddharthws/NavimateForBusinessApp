@@ -1,6 +1,10 @@
 package com.biz.navimate.objects;
 
+import android.support.annotation.NonNull;
+
 import com.biz.navimate.interfaces.IfaceDialog;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 27-09-2017.
@@ -14,6 +18,7 @@ public class Dialog {
     public static final int TYPE_WAITING                    = 3;
     public static final int TYPE_SUBMIT_FORM                = 4;
     public static final int TYPE_TASK_INFO                  = 5;
+    public static final int TYPE_ROUTE_BUILDER              = 6;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -105,6 +110,19 @@ public class Dialog {
         {
             super(TYPE_TASK_INFO, false);
             this.task = task;
+        }
+    }
+
+    public static class RouteBuilder extends Base
+    {
+        public ArrayList<Lead> leads = null;
+        public IfaceDialog.RouteBuilder listener = null;
+
+        public RouteBuilder(@NonNull ArrayList<Lead> leads, IfaceDialog.RouteBuilder listener)
+        {
+            super(TYPE_ROUTE_BUILDER, false);
+            this.leads = leads;
+            this.listener = listener;
         }
     }
 }
