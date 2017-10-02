@@ -19,14 +19,12 @@ public class Route {
     public static class Step
     {
         // Start and end of this step
-        public LatLng start = null;
-        public LatLng end = null;
+        public ArrayList<LatLng> points = null;
 
         // Constructor
-        public Step(LatLng start, LatLng end)
+        public Step(ArrayList<LatLng> points)
         {
-            this.start = start;
-            this.end = end;
+            this.points = points;
         }
     }
 
@@ -48,9 +46,6 @@ public class Route {
 
         // checkpoint getter
         public abstract ArrayList<LatLng> GetCheckpoints();
-
-        // API to check if the route contains the given polyline
-        public abstract boolean hasPolyline(Polyline polyline);
 
         // Equals
         public abstract boolean equals(Object object);
@@ -74,7 +69,7 @@ public class Route {
 
     // A single route is a collection of position on map in a sequential order
     // starting from a source and ending at a destination
-    public static class Single extends Base
+    public static class Leg extends Base
     {
         // List of steps in this route
         public ArrayList<Step> steps    = null;
@@ -84,7 +79,7 @@ public class Route {
         private int distanceM = 0;
 
         // Constructor
-        public Single(ArrayList<Step> steps, int durationS, int distanceM)
+        public Leg(ArrayList<Step> steps, int durationS, int distanceM)
         {
             this.steps = steps;
             this.durationS = durationS;
@@ -111,14 +106,10 @@ public class Route {
 
             if ((steps != null) && (steps.size() > 0))
             {
-                // Add start of first step
-                points.add(steps.get(0).start);
-
-                // Add end of all steps
+                // Add all points from all steps
                 for (Step step :steps)
                 {
-                    // Add Start & end
-                    points.add(step.end);
+                    points.addAll(step.points);
                 }
             }
 
@@ -133,24 +124,14 @@ public class Route {
             if ((steps != null) && (steps.size() > 0))
             {
                 // Add Start
-                checkpoints.add(steps.get(0).start);
+                checkpoints.add(steps.get(0).points.get(0));
 
-                // Add End
-                checkpoints.add(steps.get(steps.size() - 1).end);
+                // Add last point of last step
+                Step lastStep = steps.get(steps.size() - 1);
+                checkpoints.add(lastStep.points.get(lastStep.points.size() - 1));
             }
 
             return checkpoints;
-        }
-
-        @Override
-        public boolean hasPolyline(Polyline polyline)
-        {
-            if ((this.polyline != null) && (this.polyline.equals(polyline)))
-            {
-                return true;
-            }
-
-            return false;
         }
 
         @Override
@@ -159,10 +140,10 @@ public class Route {
             boolean bEqual = false;
 
             // Validate Object Instance
-            if ((object != null) && (object instanceof Single))
+            if ((object != null) && (object instanceof Leg))
             {
                 // Cast object to compare
-                Single compareObject = (Single) object;
+                Leg compareObject = (Leg) object;
 
                 // Get Checkpoints
                 ArrayList<LatLng> compareCheckpoints = compareObject.GetCheckpoints();
@@ -196,16 +177,16 @@ public class Route {
     // A multi route is a collection of single routes.
     // A multi route has the ability to maintain waypoints. I.e. the number of checkpoints.
     // In a single route the checkpoints are limited to 2 (start and end)
-    // Multi route can contain more than 2 checkpoints
-    public static class Multi extends Base
+    // Route route can contain more than 2 checkpoints
+    public static class Way extends Base
     {
         // List of routes in this route
-        public ArrayList<Single> routes = null;
+        public ArrayList<Leg> legs = null;
 
         // Constructor
-        public Multi(ArrayList<Single> routes)
+        public Way(ArrayList<Leg> legs)
         {
-            this.routes = routes;
+            this.legs = legs;
         }
 
         // Overrides
@@ -215,9 +196,9 @@ public class Route {
             // Add duration of all routes
             int durationS = 0;
 
-            for (Single route : routes)
+            for (Leg leg : legs)
             {
-                durationS += route.durationS;
+                durationS += leg.durationS;
             }
 
             return durationS;
@@ -229,9 +210,9 @@ public class Route {
             // Add distance of all routes
             int distanceM = 0;
 
-            for (Single route : routes)
+            for (Leg leg : legs)
             {
-                distanceM += route.distanceM;
+                distanceM += leg.distanceM;
             }
 
             return distanceM;
@@ -242,23 +223,10 @@ public class Route {
         {
             ArrayList<LatLng> points = new ArrayList<>();
 
-            if ((routes != null) && (routes.size() > 0))
+            // Add all points of all legs
+            for (Leg leg : legs)
             {
-                // Add first point of first route
-                points.add(routes.get(0).GetAllPoints().get(0));
-
-                // Add all points of consecutive routes
-                for (Single route : routes)
-                {
-                    ArrayList<LatLng> routePoints = route.GetAllPoints();
-
-                    // Remove first point in this route since it was already added for previous route
-                    routePoints.remove(0);
-
-                    // Add to multi route points
-                    points.addAll(routePoints);
-
-                }
+                points.addAll(leg.GetAllPoints());
             }
 
             return points;
@@ -267,35 +235,21 @@ public class Route {
         @Override
         public ArrayList<LatLng> GetCheckpoints()
         {
-            ArrayList<LatLng> places = new ArrayList<>();
+            ArrayList<LatLng> checkpoints = new ArrayList<>();
 
-            if ((routes != null) && (routes.size() > 0))
+            if ((legs != null) && (legs.size() > 0))
             {
-                // Add start of first route
-                places.add(routes.get(0).GetCheckpoints().get(0));
+                // Add start of first leg
+                checkpoints.add(legs.get(0).GetCheckpoints().get(0));
 
-                // Add end of all routes
-                for (Single route : routes)
+                // Add end of all legs
+                for (Leg leg : legs)
                 {
-                    places.add(route.GetCheckpoints().get(1));
+                    checkpoints.add(leg.GetCheckpoints().get(1));
                 }
             }
 
-            return places;
-        }
-
-        @Override
-        public boolean hasPolyline(Polyline polyline)
-        {
-            for (Single route : routes)
-            {
-                if (route.hasPolyline(polyline))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return checkpoints;
         }
 
         @Override
@@ -304,10 +258,10 @@ public class Route {
             boolean bEqual = false;
 
             // Validate Object Instance
-            if ((object != null) && (object instanceof Multi))
+            if ((object != null) && (object instanceof Route))
             {
                 // Cast object to compare
-                Multi compareObject = (Multi) object;
+                Way compareObject = (Way) object;
 
                 // Get Checkpoints
                 ArrayList<LatLng> compareCheckpoints = compareObject.GetCheckpoints();

@@ -15,6 +15,6 @@ public class IfaceDialog {
 
     // Confirm dialog interface
     public interface RouteBuilder {
-        void onRouteBuilt(Route.Base route);
+        void onRouteBuilt(Route.Way route);
     }
 }

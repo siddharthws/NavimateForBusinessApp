@@ -1,8 +1,12 @@
 package com.biz.navimate.objects;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.os.Looper;
 
+import com.biz.navimate.debug.Dbg;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -37,6 +41,33 @@ public class Statics {
     {
         int px = (int) Math.ceil(dip * SCREEN_DENSITY);
         return px;
+    }
+
+    // Get API key from Manifest's Meta data TAG
+    public static String GetApiKey(Context context)
+    {
+        String key = "";
+
+        try
+        {
+            // Get Application Info
+            ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
+                                        context.getPackageName(),
+                                        PackageManager.GET_META_DATA);
+
+            // Get From Meta Data
+            if (appInfo.metaData != null)
+            {
+                key = appInfo.metaData.getString("com.google.android.geo.API_KEY");
+            }
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            Dbg.error(TAG, "Error while retrieving API Key");
+            Dbg.stack(e);
+        }
+
+        return key;
     }
 
     // Position validity check

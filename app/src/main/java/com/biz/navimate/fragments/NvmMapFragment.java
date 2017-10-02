@@ -271,7 +271,7 @@ public class NvmMapFragment     extends     BaseFragment
         // Launch route builder dialog
         RlDialog.Show(new Dialog.RouteBuilder(new ArrayList<Lead>(), new IfaceDialog.RouteBuilder() {
             @Override
-            public void onRouteBuilt(Route.Base route) {
+            public void onRouteBuilt(Route.Way route) {
                 // Clear routes form map and add this one
                 routeHelper.Clear();
                 routeHelper.Add(route);
