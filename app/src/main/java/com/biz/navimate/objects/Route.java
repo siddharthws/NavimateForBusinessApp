@@ -2,6 +2,7 @@ package com.biz.navimate.objects;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,16 @@ public class Route {
     // Inherited classes must implement the APIs as per the route structure
     public static abstract class Base
     {
+        // Globals
+        public Polyline polyline        = null;
+
         // Abstracts
         // Distance / Duration getter
         public abstract int GetDurationS();
         public abstract int GetDistanceM();
+
+        // API to get alll points on this route
+        public abstract ArrayList<LatLng> GetAllPoints();
 
         // checkpoint getter
         public abstract ArrayList<LatLng> GetCheckpoints();
@@ -47,6 +54,22 @@ public class Route {
 
         // Equals
         public abstract boolean equals(Object object);
+
+        // Public APIs
+        // API to provide polyline options to populate UI of route on map. Should be implemented by derived classes.
+        public PolylineOptions GetPolylineOptions()
+        {
+            // Init polyline options
+            PolylineOptions polyOptions = new PolylineOptions();
+
+            // Add points on the route
+            polyOptions.addAll(GetAllPoints());
+
+            // Init width of polyline
+            polyOptions.width(15);
+
+            return polyOptions;
+        }
     }
 
     // A single route is a collection of position on map in a sequential order
@@ -55,7 +78,6 @@ public class Route {
     {
         // List of steps in this route
         public ArrayList<Step> steps    = null;
-        public Polyline polyline        = null;
 
         // Distance / Duration of route
         private int durationS = 0;
@@ -80,6 +102,27 @@ public class Route {
         public int GetDistanceM()
         {
             return distanceM;
+        }
+
+        @Override
+        public ArrayList<LatLng> GetAllPoints()
+        {
+            ArrayList<LatLng> points = new ArrayList<>();
+
+            if ((steps != null) && (steps.size() > 0))
+            {
+                // Add start of first step
+                points.add(steps.get(0).start);
+
+                // Add end of all steps
+                for (Step step :steps)
+                {
+                    // Add Start & end
+                    points.add(step.end);
+                }
+            }
+
+            return points;
         }
 
         @Override
@@ -192,6 +235,33 @@ public class Route {
             }
 
             return distanceM;
+        }
+
+        @Override
+        public ArrayList<LatLng> GetAllPoints()
+        {
+            ArrayList<LatLng> points = new ArrayList<>();
+
+            if ((routes != null) && (routes.size() > 0))
+            {
+                // Add first point of first route
+                points.add(routes.get(0).GetAllPoints().get(0));
+
+                // Add all points of consecutive routes
+                for (Single route : routes)
+                {
+                    ArrayList<LatLng> routePoints = route.GetAllPoints();
+
+                    // Remove first point in this route since it was already added for previous route
+                    routePoints.remove(0);
+
+                    // Add to multi route points
+                    points.addAll(routePoints);
+
+                }
+            }
+
+            return points;
         }
 
         @Override
