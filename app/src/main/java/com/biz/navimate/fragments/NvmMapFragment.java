@@ -14,6 +14,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.maps.CameraHelper;
 import com.biz.navimate.maps.MarkerHelper;
+import com.biz.navimate.maps.RouteHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
@@ -62,6 +63,7 @@ public class NvmMapFragment     extends     BaseFragment
 
     // Helpers
     public MarkerHelper markerHelper                                = null;
+    public RouteHelper  routeHelper                                 = null;
     public CameraHelper cameraHelper                                = null;
 
     // Map refresh
@@ -81,6 +83,7 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Init Helpers
         fragment.markerHelper = new MarkerHelper();
+        fragment.routeHelper    = new RouteHelper();
         fragment.cameraHelper = new CameraHelper();
 
         return fragment;
@@ -180,6 +183,9 @@ public class NvmMapFragment     extends     BaseFragment
     {
         // Load markers on map
         markerHelper.LoadMap(googleMap);
+
+        // Load Routes on map
+        routeHelper.LoadMap(googleMap);
 
         // Load Camera
         cameraHelper.LoadMap(googleMap);
