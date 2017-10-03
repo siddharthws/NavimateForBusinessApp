@@ -2,6 +2,7 @@ package com.biz.navimate.misc;
 
 import android.Manifest;
 import android.content.Context;
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +15,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -326,24 +328,23 @@ public class LocationUpdateHelper {
             // Check if Location is available through Last Location API
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED)
             {
-                // Wait for 5 seconds for location to become available
-                long startTimeMs = System.currentTimeMillis();
-
-                while ((System.currentTimeMillis() - startTimeMs) < 5000)
-                {
-                    if (IsUpdating())
-                    {
-                        break;
-                    }
-                }
-
                 if (IsUpdating())
                 {
                     ReportSuccess(LocationCache.instance.GetLocation());
                 }
                 else
                 {
-                    ReportError(ERROR_UPDATES_ERROR, status);
+                    Location lastKnowLocation = LocationServices.FusedLocationApi.getLastLocation(GoogleApiClientHolder.instance.apiClient);
+                    if (lastKnowLocation != null) {
+                        LocationCache.instance.onLocationChanged(lastKnowLocation);
+                        if (IsUpdating()) {
+                            ReportSuccess(LocationCache.instance.GetLocation());
+                        } else {
+                            ReportError(ERROR_UPDATES_ERROR, status);
+                        }
+                    } else {
+                        ReportError(ERROR_UPDATES_ERROR, status);
+                    }
                 }
             }
         }

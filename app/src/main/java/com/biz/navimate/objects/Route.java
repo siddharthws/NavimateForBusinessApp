@@ -1,5 +1,6 @@
 package com.biz.navimate.objects;
 
+import com.biz.navimate.misc.ColorHelper;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -62,6 +63,7 @@ public class Route {
 
             // Init width of polyline
             polyOptions.width(15);
+            polyOptions.color(ColorHelper.primaryDark);
 
             return polyOptions;
         }

@@ -61,12 +61,13 @@ public class DirectionsTask extends AsyncTask<Void, Integer, Route.Way>
 
     private Context context = null;
 
-    private LatLng[] checkpoints = null;
+    private ArrayList<LatLng> checkpoints = null;
     private int currentIndex = 0;
     private boolean bShowDialogs = false;
+    private boolean bOptimize = false;
 
     // ----------------------- Constructor ----------------------- //
-    public DirectionsTask(Context context, boolean bShowDialogs, LatLng... checkpoints)
+    public DirectionsTask(Context context, boolean bShowDialogs, boolean bOptimize, ArrayList<LatLng> checkpoints)
     {
         if (cache == null)
         {
@@ -76,6 +77,7 @@ public class DirectionsTask extends AsyncTask<Void, Integer, Route.Way>
         this.context = context;
         this.bShowDialogs = bShowDialogs;
         this.checkpoints = checkpoints;
+        this.bOptimize = bOptimize;
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -93,10 +95,27 @@ public class DirectionsTask extends AsyncTask<Void, Integer, Route.Way>
     protected Route.Way doInBackground(Void... params)
     {
         // Validate there are more than 1 point in array
-        if (checkpoints.length <= 1)
+        if (checkpoints.size() <= 1)
         {
             Dbg.error(TAG, "Invalid number of checkpoints. Not getting directions");
             return null;
+        }
+
+        if (bOptimize) {
+            // Restructure checkpoints so that farthest destination is the last one
+            int farthestIdx = -1;
+            double maxDistance = 0;
+            for (int i = 1; i < checkpoints.size(); i++) {
+                double distanceFromCl = Statics.GetDistanceBetweenCoordinates(checkpoints.get(0), checkpoints.get(i));
+                if (distanceFromCl > maxDistance) {
+                    maxDistance = distanceFromCl;
+                    farthestIdx = i;
+                }
+            }
+
+            LatLng farthestPoint = checkpoints.get(farthestIdx);
+            checkpoints.remove(farthestIdx);
+            checkpoints.add(farthestPoint);
         }
 
         return GetDirections();
@@ -143,20 +162,26 @@ public class DirectionsTask extends AsyncTask<Void, Integer, Route.Way>
         String urlAddress = DIRECTION_URL_BASE;
 
         // Feed source and destination to URL
-        LatLng start = checkpoints[0];
-        LatLng end = checkpoints[checkpoints.length - 1];
+        LatLng start = checkpoints.get(0);
+        LatLng end = checkpoints.get(checkpoints.size() - 1);
         urlAddress += DIRECTION_URL_ORIGIN + start.latitude + "," + start.longitude + "&";
         urlAddress += DIRECTION_URL_DESTINATION + end.latitude + "," + end.longitude + "&";
 
         // Add Waypoints to URL
-        if (checkpoints.length > 2)
+        if (checkpoints.size() > 2)
         {
-            urlAddress += DIRECTION_URL_WAYPOINTS + DIRECTION_URL_OPTIMIZE;
+            urlAddress += DIRECTION_URL_WAYPOINTS;
+            if (bOptimize) {
+                urlAddress += DIRECTION_URL_OPTIMIZE + "|";
+            }
 
             // Feed all waypoints to URL
-            for (int i = 1; i < (checkpoints.length - 1); i++)
+            for (int i = 1; i < (checkpoints.size() - 1); i++)
             {
-                urlAddress += "|" + checkpoints[i].latitude + "," + checkpoints[i].longitude;
+                if (i > 1) {
+                    urlAddress += '|';
+                }
+                urlAddress += checkpoints.get(i).latitude + "," + checkpoints.get(i).longitude;
             }
 
             // Add '&'
@@ -242,6 +267,7 @@ public class DirectionsTask extends AsyncTask<Void, Integer, Route.Way>
         // Extract Legs Array. Number of legs depend on the no. of waypoints given in URL
         JSONArray legsJson = primaryRouteJson.getJSONArray("legs");
         ArrayList<Route.Leg> legs = new ArrayList<>();
+        Dbg.info(TAG, "Waypoiint order = " + primaryRouteJson.getJSONArray("waypoint_order").toString());
         for (int i = 0; i < legsJson.length(); i++)
         {
             // Get Leg JSON Object

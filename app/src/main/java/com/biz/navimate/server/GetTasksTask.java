@@ -9,7 +9,6 @@ import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
-import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -99,9 +98,6 @@ public class GetTasksTask extends BaseServerTask {
     @Override
     public void onPostExecute (Void result)
     {
-        // Hide dialog
-        RlDialog.Hide();
-
         if (IsResponseValid())
         {
             // Call listener

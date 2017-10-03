@@ -199,7 +199,12 @@ public class NvmMapFragment     extends     BaseFragment
     public boolean onMarkerClick(Marker marker)
     {
         // Get Marker Object from marker
-        MarkerObj.Task clickedMarker = (MarkerObj.Task) markerHelper.GetMarkerObjFromMarker(marker);
+        MarkerObj.Base markerObj = markerHelper.GetMarkerObjFromMarker(marker);
+        if (markerObj.type == MarkerObj.MARKER_TYPE_CURRENT_LOCATION) {
+            return true;
+        }
+
+        MarkerObj.Task clickedMarker = (MarkerObj.Task) markerObj;
 
         // Open Lead Dialog Box
         RlDialog.Show(new Dialog.TaskInfo(clickedMarker.task));

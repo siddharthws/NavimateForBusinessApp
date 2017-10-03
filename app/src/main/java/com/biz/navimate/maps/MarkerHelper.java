@@ -1,5 +1,6 @@
 package com.biz.navimate.maps;
 
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.MarkerObj;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -36,27 +37,31 @@ public class MarkerHelper {
     // API used to add markers on map
     public void Add(MarkerObj.Base marker)
     {
-        // Don't add if marker is already present in cache
-        if (!cache.contains(marker))
+        // Check if a marker already exists on this position
+        for (MarkerObj.Base markerObj : cache) {
+            if (markerObj.position.equals(marker.position)) {
+                return;
+            }
+        }
+
+        // Add object to cache
+        cache.add(marker);
+
+        // Show on map if map is available
+        if (map != null)
         {
-            // Add object to cache
-            cache.add(marker);
 
-            // Show on map if map is available
-            if (map != null)
+            // Get Marker Options from Marker Object
+            MarkerOptions markerOpt = marker.GetMarkerOptions();
+
+            // Add marker to map and store the marker object returned by map
+            marker.marker = map.addMarker(markerOpt);
+
+            // If marker is current location, add accuracy circle as well
+            if (marker.type == MarkerObj.MARKER_TYPE_CURRENT_LOCATION)
             {
-                // Get Marker Options from Marker Object
-                MarkerOptions markerOpt = marker.GetMarkerOptions();
-
-                // Add marker to map and store the marker object returned by map
-                marker.marker = map.addMarker(markerOpt);
-
-                // If marker is current location, add accuracy circle as well
-                if (marker.type == MarkerObj.MARKER_TYPE_CURRENT_LOCATION)
-                {
-                    MarkerObj.CurrentLocation clMarker = (MarkerObj.CurrentLocation) marker;
-                    clMarker.accuracyCircle = map.addCircle(clMarker.GetCircleOptions());
-                }
+                MarkerObj.CurrentLocation clMarker = (MarkerObj.CurrentLocation) marker;
+                clMarker.accuracyCircle = map.addCircle(clMarker.GetCircleOptions());
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.biz.navimate.dialogs;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         // Find Views
         ui.llAddLeads = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_add_lead);
         ui.lvLeads      = (ListView) ui.dialogView.findViewById(R.id.lv_leads);
+        ui.cbOptimize      = (AppCompatCheckBox) ui.dialogView.findViewById(R.id.cb_optimize);
         ui.btnBuild  = (Button)     ui.dialogView.findViewById(R.id.btn_build);
         ui.btnCancel  = (Button)     ui.dialogView.findViewById(R.id.btn_cancel);
     }
@@ -176,7 +178,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         }
 
         // Start Directions Task
-        directionsTask = new DirectionsTask(context, true, checkpoints.toArray(new LatLng[checkpoints.size()]));
+        directionsTask = new DirectionsTask(context, true, ui.cbOptimize.isChecked(), checkpoints);
         directionsTask.SetOnDirectionResultListener(this);
         directionsTask.execute();
     }

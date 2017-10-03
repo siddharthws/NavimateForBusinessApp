@@ -1,5 +1,6 @@
 package com.biz.navimate.viewholders;
 
+import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,6 +71,7 @@ public class DialogHolder {
     {
         public LinearLayout llAddLeads = null;
         public ListView lvLeads = null;
+        public AppCompatCheckBox cbOptimize = null;
 
         public Button btnBuild = null;
         public Button btnCancel = null;

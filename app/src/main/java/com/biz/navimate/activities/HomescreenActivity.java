@@ -118,11 +118,12 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onTasksSuccess() {
-        RlDialog.Hide();
+        if (adapter.getCount() == 0) {
+            RlDialog.Hide();
+        }
 
         // Add markers for all tasks in database
         ArrayList<LatLng> bounds = new ArrayList<>();
-        ui.mapFragment.markerHelper.Clear();
         for (Task task : Statics.GetCurrentTasks())
         {
             ui.mapFragment.markerHelper.Add(new MarkerObj.Task(task));

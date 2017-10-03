@@ -2,11 +2,14 @@ package com.biz.navimate.objects;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * Created by Siddharth on 28-09-2017.
  */
 
-public class Lead {
+public class Lead implements Serializable {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LEAD";
 
@@ -36,7 +39,7 @@ public class Lead {
         boolean bEqual = false;
 
         // Validate Object Instance
-        if ((object != null) && (object instanceof Route))
+        if ((object != null) && (object instanceof Lead))
         {
             // Cast object to compare
             Lead compareObject = (Lead) object;

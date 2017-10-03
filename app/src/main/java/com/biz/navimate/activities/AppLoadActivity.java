@@ -8,6 +8,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.misc.ColorHelper;
 import com.biz.navimate.misc.GoogleApiClientHolder;
 import com.biz.navimate.misc.IconGen;
 import com.biz.navimate.misc.LocationCache;
@@ -65,6 +66,7 @@ public class AppLoadActivity    extends     BaseActivity
 
         // Initialize icon generator
         IconGen.Init(this);
+        ColorHelper.Init(this);
 
         // Set Screen size
         DisplayMetrics metrics = new DisplayMetrics();
