@@ -123,16 +123,16 @@ public class HomescreenActivity     extends     BaseActivity
         }
 
         // Add markers for all tasks in database
+        ui.mapFragment.markerHelper.RefreshTaskMarkers();
+
+        // Update Camera to bounds
         ArrayList<LatLng> bounds = new ArrayList<>();
         for (Task task : Statics.GetCurrentTasks())
         {
-            ui.mapFragment.markerHelper.Add(new MarkerObj.Task(task));
-
             // Include in bounds for camera update
             bounds.add(task.lead.position);
         }
 
-        // Update Map Camera
         if (bounds.size() > 1) {
             ui.mapFragment.cameraHelper.Move(new Camera.Bounds(bounds, true));
         } else if (bounds.size() == 1) {

@@ -1,7 +1,8 @@
 package com.biz.navimate.maps;
 
-import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.MarkerObj;
+import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.Task;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -137,6 +138,32 @@ public class MarkerHelper {
         }
 
         return null;
+    }
+
+    // Marker refresh APIs
+    public void RefreshTaskMarkers()
+    {
+        // Remove all card markers
+        ArrayList<MarkerObj.Base> removeMarkers = new ArrayList<>();
+        for (MarkerObj.Base marker : cache)
+        {
+            if (marker.type == MarkerObj.MARKER_TYPE_TASK)
+            {
+                removeMarkers.add(marker);
+            }
+        }
+
+        for (MarkerObj.Base marker : removeMarkers)
+        {
+            Remove(marker);
+        }
+
+        // Add markers from database
+        for (Task task : Statics.GetCurrentTasks())
+        {
+            MarkerObj.Task marker = new MarkerObj.Task(task);
+            Add(marker);
+        }
     }
 
     // ----------------------- Private APIs ----------------------- //
