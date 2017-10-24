@@ -38,7 +38,7 @@ public class NotificationHelper {
         nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
         // Set specific properties for notification
-        nBuilder.setContentText("You have new tasks.");
+        nBuilder.setContentText("You tasks have been updated.");
         //nBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon));
 
         // Set pending intent
