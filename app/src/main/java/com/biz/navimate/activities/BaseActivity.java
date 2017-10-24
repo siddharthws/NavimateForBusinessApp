@@ -42,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     // Permission Listeners
     private IfacePermission.Location   locationPermissionListener  = null;
     private IfacePermission.Sms        smsPermissionListener       = null;
+    private IfacePermission.Call       callPermissionListener      = null;
 
     // Activity result related initData
     private int resumeRequestCode = 0, resumeResultCode = 0;
@@ -278,6 +279,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.smsPermissionListener = listener;
     }
 
+    public void SetCallPermissionListener(IfacePermission.Call listener)
+    {
+        this.callPermissionListener = listener;
+    }
+
     // API to Request permission
     public void RequestPermission(String[] permissions)
     {
@@ -369,6 +375,19 @@ public abstract class BaseActivity extends AppCompatActivity {
                     else
                     {
                         smsPermissionListener.onSmsPermissionFailure();
+                    }
+                }
+            } else if (permissions[i].equals(Manifest.permission.CALL_PHONE))
+            {
+                if (callPermissionListener != null)
+                {
+                    if (grantResults[i] == PermissionChecker.PERMISSION_GRANTED)
+                    {
+                        callPermissionListener.onCallPermissionSuccess();
+                    }
+                    else
+                    {
+                        callPermissionListener.onCallPermissionFailure();
                     }
                 }
             }

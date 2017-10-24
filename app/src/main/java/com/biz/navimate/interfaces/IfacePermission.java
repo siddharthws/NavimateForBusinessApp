@@ -14,4 +14,9 @@ public class IfacePermission {
         void onLocationPermissionSuccess();
         void onLocationPermissionFailure();
     }
+
+    public interface Call {
+        void onCallPermissionSuccess();
+        void onCallPermissionFailure();
+    }
 }
