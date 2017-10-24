@@ -4,11 +4,13 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.biz.navimate.views.RlFormField;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 27-09-2017.
@@ -47,11 +49,8 @@ public class DialogHolder {
 
     public static class SubmitForm extends Base
     {
-        public EditText etSales = null;
-        public EditText etNotes = null;
-        public RadioButton rbFailed = null;
-        public RadioButton rbWaiting = null;
-        public RadioButton rbDone = null;
+        public ArrayList<RlFormField> fields = null;
+        public LinearLayout llFields = null;
         public CheckBox cbCloseTask = null;
         public Button btnSubmit = null;
         public Button btnCancel = null;

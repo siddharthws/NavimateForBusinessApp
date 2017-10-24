@@ -12,8 +12,8 @@ public class Task {
 
     // ----------------------- Globals ----------------------- //
     public int  id          = INVALID_ID;
-    public Lead lead        = new Lead();
-    public Form template    = new Form();
+    public Lead lead        = null;
+    public Form template    = null;
 
     // ----------------------- Constructor ----------------------- //
     public Task () {}

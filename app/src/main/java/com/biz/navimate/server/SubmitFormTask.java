@@ -11,10 +11,11 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.FormField;
 import com.biz.navimate.objects.Statics;
-import com.biz.navimate.objects.Task;
 import com.biz.navimate.views.RlDialog;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,7 +65,11 @@ public class SubmitFormTask extends BaseServerTask {
         try
         {
             requestJson.put(Constants.Server.KEY_TASK_ID, taskId);
-            requestJson.put(Constants.Server.KEY_DATA, form.GetFieldsJson());
+            JSONArray fields = new JSONArray();
+            for (FormField.Base field : form.fields) {
+                fields.put(field.toJson());
+            }
+            requestJson.put(Constants.Server.KEY_DATA, fields);
             requestJson.put(Constants.Server.KEY_CLOSE_TASK, bCloseTask);
         }
         catch (JSONException e)

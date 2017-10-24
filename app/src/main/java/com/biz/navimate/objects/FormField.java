@@ -1,36 +1,42 @@
 package com.biz.navimate.objects;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 /**
  * Created by Siddharth on 28-09-2017.
  */
 
 public class FormField {
-    /*// ----------------------- Constants ----------------------- //
+    // ----------------------- Constants ----------------------- //
     private static final String TAG = "FORM_FIELD";
 
     // Field Types
-    public static final String TYPES[] = {
-            "",
-            "text",
-            "number",
-            "radioList"
-    };
+    public static final String TYPE_INVALID        = "";
+    public static final String TYPE_TEXT           = "text";
+    public static final String TYPE_NUMBER         = "number";
+    public static final String TYPE_RADIO_LIST     = "radioList";
 
-    public static final int TYPE_INVALID        = 0;
-    public static final int TYPE_TEXT           = 1;
-    public static final int TYPE_NUMBER         = 2;
-    public static final int TYPE_RADIO_LIST     = 3;
+    // JSON Fields
+    public static final String JSON_KEY_TYPE                = "type";
+    public static final String JSON_KEY_TITLE               = "title";
+    public static final String JSON_KEY_VALUE               = "value";
+    public static final String JSON_KEY_RADIO_OPTIONS       = "options";
+    public static final String JSON_KEY_RADIO_SELECTION     = "selection";
 
     // ----------------------- Classes ----------------------- //
     // Base Class for all field types
     public static abstract class Base
     {
         // ----------------------- Globals ----------------------- //
-        public int type = TYPE_INVALID;
+        public String type = TYPE_INVALID;
         public String title = "";
 
         // ----------------------- Constructor ----------------------- //
-        public Base(int type, String title)
+        public Base(String type, String title)
         {
             this.type = type;
             this.title = title;
@@ -38,14 +44,7 @@ public class FormField {
 
         public Base(JSONObject json) throws JSONException
         {
-            String typeString = json.getString(JSON_KEY_TYPE);
-            if (typeString.equals(TYPES[TYPE_TEXT])) {
-                this.type = TYPE_TEXT;
-            } else if (typeString.equals(TYPES[TYPE_NUMBER])) {
-                this.type = TYPE_NUMBER;
-            } else if (typeString.equals(TYPES[TYPE_RADIO_LIST])) {
-                this.type = TYPE_RADIO_LIST;
-            }
+            type = json.getString(JSON_KEY_TYPE);
             this.title = json.getString(JSON_KEY_TITLE);
         }
 
@@ -53,7 +52,7 @@ public class FormField {
         {
             JSONObject json = new JSONObject();
 
-            json.put(JSON_KEY_TYPE, TYPES[type]);
+            json.put(JSON_KEY_TYPE, type);
             json.put(JSON_KEY_TITLE, title);
 
             return json;
@@ -188,14 +187,14 @@ public class FormField {
     }
 
     public static FormField.Base FromJson(JSONObject json) throws JSONException {
-        String typeString = json.getString(JSON_KEY_TYPE);
-        if (typeString.equals(TYPES[TYPE_TEXT])) {
+        String type = json.getString(JSON_KEY_TYPE);
+        if (type.equals(TYPE_TEXT)) {
             return new Text(json);
-        } else if (typeString.equals(TYPES[TYPE_NUMBER])) {
+        } else if (type.equals(TYPE_NUMBER)) {
             return new Number(json);
-        } else if (typeString.equals(TYPES[TYPE_RADIO_LIST])) {
+        } else if (type.equals(TYPE_RADIO_LIST)) {
             return new RadioList(json);
         }
         return null;
-    }*/
+    }
 }

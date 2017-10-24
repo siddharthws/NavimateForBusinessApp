@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/m_small">
+
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_title"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/m_small"
+        android:textAlignment="center"
+        android:textSize="@dimen/textsize_primary_small"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_title"
+        android:layout_alignParentRight="true">
+
+        <com.biz.navimate.views.EtCalibri
+            android:id="@+id/et_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:minLines="3"
+            android:padding="@dimen/m_small"
+            android:background="@drawable/bg_textbox"
+            android:visibility="gone"/>
+
+        <com.biz.navimate.views.EtCalibri
+            android:id="@+id/et_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="@dimen/m_small"
+            android:background="@drawable/bg_textbox"
+            android:visibility="gone"/>
+
+        <RadioGroup
+            android:id="@+id/rg_radioList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+        </RadioGroup>
+
+    </RelativeLayout>
+
+</RelativeLayout>

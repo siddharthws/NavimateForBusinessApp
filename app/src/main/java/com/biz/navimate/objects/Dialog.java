@@ -92,11 +92,7 @@ public class Dialog {
             super(TYPE_SUBMIT_FORM, false);
 
             this.form = new Form(   form.name,
-                                    form.sales,
-                                    form.notes,
-                                    form.bFailed,
-                                    form.bWaiting,
-                                    form.bDone);
+                                    form.fields);
             this.taskId = taskId;
             this.bCloseTask = bCloseTask;
         }
