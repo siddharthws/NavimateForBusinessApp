@@ -17,6 +17,7 @@ public class Constants {
         public static final int REGISTRATION    = 1;
         public static final int GPS             = 2;
         public static final int LEAD_PICKER     = 3;
+        public static final int ZXING           = 4;
     }
 
     // Map related constants

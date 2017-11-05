@@ -1,20 +1,21 @@
 package com.biz.navimate.views;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.RadioButton;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.biz.navimate.R;
+import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.application.App;
+import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.FormField;
+import com.biz.navimate.zxing.IntentIntegrator;
 
 /**
  * Created by Siddharth on 23-10-2017.
@@ -28,6 +29,8 @@ public class RlFormField extends RelativeLayout {
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     // UI
+    private LinearLayout llText = null;
+    private ImageButton ibQr = null;
     private TvCalibri tvTitle;
     private EditText etNumber, etText = null;
     private RadioGroup rgRadioList = null;
@@ -89,6 +92,8 @@ public class RlFormField extends RelativeLayout {
         View view = inflater.inflate(R.layout.rl_form_field, this, true);
 
         // Init UI
+        llText = (LinearLayout) view.findViewById(R.id.ll_text);
+        ibQr = (ImageButton) view.findViewById(R.id.ib_qr);
         tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
@@ -99,7 +104,7 @@ public class RlFormField extends RelativeLayout {
 
         // Parse data from Field into UI
         if (field.type.equals(FormField.TYPE_TEXT)) {
-            etText.setVisibility(VISIBLE);
+            llText.setVisibility(VISIBLE);
             etText.setText(((FormField.Text) field).data);
         } else if (field.type.equals(FormField.TYPE_NUMBER)) {
             etNumber.setVisibility(VISIBLE);
@@ -121,5 +126,23 @@ public class RlFormField extends RelativeLayout {
                 }
             }
         }
+
+        // Set QR code reader
+        ibQr.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BaseActivity activity = App.GetCurrentActivity();
+                if (activity != null) {
+                    activity.SetZxingResultListener(new IfaceResult.Zxing() {
+                        @Override
+                        public void onScanResult(String data) {
+                            etText.setText(data);
+                        }
+                    });
+                    IntentIntegrator scanIntegrator = new IntentIntegrator(activity);
+                    scanIntegrator.initiateScan();
+                }
+            }
+        });
     }
 }

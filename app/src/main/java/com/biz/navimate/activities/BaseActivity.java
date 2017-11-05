@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
@@ -17,6 +16,8 @@ import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.zxing.IntentIntegrator;
+import com.biz.navimate.zxing.IntentResult;
 
 import java.util.ArrayList;
 
@@ -52,6 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private IfaceResult.Registration  registerListener          = null;
     private IfaceResult.ResultGps     gpsListener               = null;
     private IfaceResult.LeadPicker    leadPickerListener        = null;
+    private IfaceResult.Zxing         zxingListener             = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -269,6 +271,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.leadPickerListener = listener;
     }
 
+    public void SetZxingResultListener(IfaceResult.Zxing listener)
+    {
+        this.zxingListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -333,6 +340,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
                         leadPickerListener.onLeadPicked((ArrayList<Integer>) resumeResultIntent.getSerializableExtra(Constants.Extras.LEAD_PICKER));
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.ZXING:
+            {
+                if (zxingListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        IntentResult scanningResult = IntentIntegrator.parseActivityResult(resumeRequestCode, resumeResultCode, resumeResultIntent);
+                        if (scanningResult != null) {
+                            String data = scanningResult.getContents();
+                            zxingListener.onScanResult(data);
+                        }
                     }
                 }
                 break;

@@ -23,4 +23,9 @@ public class IfaceResult {
     {
         void onLeadPicked(ArrayList<Integer> leads);
     }
+
+    public interface Zxing
+    {
+        void onScanResult(String data);
+    }
 }

@@ -7,7 +7,7 @@
 
     <com.biz.navimate.views.TvCalibri
         android:id="@+id/tv_title"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
@@ -21,15 +21,34 @@
         android:layout_toRightOf="@id/tv_title"
         android:layout_alignParentRight="true">
 
-        <com.biz.navimate.views.EtCalibri
-            android:id="@+id/et_text"
+        <LinearLayout
+            android:id="@+id/ll_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:minLines="3"
-            android:padding="@dimen/m_small"
-            android:background="@drawable/bg_textbox"
-            android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:gravity="center_vertical">
+
+            <com.biz.navimate.views.EtCalibri
+                android:id="@+id/et_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:minLines="3"
+                android:padding="@dimen/m_small"
+                android:background="@drawable/bg_textbox"/>
+
+            <ImageButton
+                android:id="@+id/ib_qr"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/m_small"
+                android:padding="3dp"
+                android:src="@mipmap/ic_qr"
+                android:background="@android:color/transparent"/>
+
+        </LinearLayout>
 
         <com.biz.navimate.views.EtCalibri
             android:id="@+id/et_number"
