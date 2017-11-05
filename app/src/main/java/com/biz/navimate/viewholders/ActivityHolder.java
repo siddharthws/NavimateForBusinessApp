@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.TvCalibri;
@@ -29,6 +30,7 @@ public class ActivityHolder {
     public static class Registration extends Base {
         public RlEnterPhone rlEnterPhone                    = null;
         public RlVerifyPhone rlVerifyPhone                  = null;
+        public RlEnterName rlEnterName                      = null;
     }
 
     // Homescreen activity holder

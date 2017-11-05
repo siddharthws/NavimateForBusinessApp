@@ -48,9 +48,10 @@ public class Constants {
         public static final String URL_GET_TASKS = URL_BASE + "/api/reps/task";
         public static final String URL_OTP_SMS = URL_BASE + "/api/reps/otp";
         public static final String URL_UPDATE_FCM = URL_BASE + "/api/reps/fcm";
+        public static final String URL_REGISTER = URL_BASE + "/api/reps/register";
 
         // JSON Keys
-        public static final String KEY_ID = "id";
+        public static final String KEY_ID               = "id";
         public static final String KEY_NAME             = "name";
         public static final String KEY_PHONE            = "phoneNumber";
         public static final String KEY_EMAIL            = "email";

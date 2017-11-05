@@ -18,6 +18,12 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <com.biz.navimate.views.RlEnterName
+        android:id="@+id/rl_enter_name"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <com.biz.navimate.views.RlDialog
         android:id="@+id/rl_dialog"
         android:layout_width="match_parent"

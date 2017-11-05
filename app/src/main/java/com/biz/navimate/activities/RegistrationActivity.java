@@ -8,18 +8,18 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.AnimHelper;
-import com.biz.navimate.misc.Preferences;
-import com.biz.navimate.objects.User;
-import com.biz.navimate.server.GetProfileTask;
+import com.biz.navimate.server.RegisterTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
 
 public class RegistrationActivity   extends     BaseActivity
-                                    implements  IfaceServer.GetProfile,
-                                                RlEnterPhone.IfaceEnterPhone,
-                                                RlVerifyPhone.VerifyPhoneInterface
+                                    implements  RlEnterPhone.IfaceEnterPhone,
+                                                RlVerifyPhone.VerifyPhoneInterface,
+                                                RlEnterName.IfaceEnterName,
+                                                IfaceServer.Register
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "REGISTRATION_ACTIVITY";
@@ -31,7 +31,7 @@ public class RegistrationActivity   extends     BaseActivity
     private ActivityHolder.Registration ui = null;
 
     // Variable to hold information received from different registration views
-    private User user = null;
+    private String phoneNumber, name = null;
 
     // Animation Helper
     private AnimHelper animHelper = null;
@@ -56,6 +56,7 @@ public class RegistrationActivity   extends     BaseActivity
         // Activity View
         ui.rlEnterPhone     = (RlEnterPhone)    findViewById(R.id.rl_enter_phone);
         ui.rlVerifyPhone    = (RlVerifyPhone)   findViewById(R.id.rl_verify_phone);
+        ui.rlEnterName      = (RlEnterName)     findViewById(R.id.rl_enter_name);
     }
 
     @Override
@@ -66,6 +67,7 @@ public class RegistrationActivity   extends     BaseActivity
         // Set Listeners
         ui.rlEnterPhone.SetEnterPhoneListener(this);
         ui.rlVerifyPhone.SetVerifyPhoneInterface(this);
+        ui.rlEnterName.SetEnterNameListener(this);
     }
 
     @Override
@@ -89,30 +91,15 @@ public class RegistrationActivity   extends     BaseActivity
     @Override
     public void onValidPhoneNumberEntered(String formattedNumber)
     {
-        // get profile for entered phone number
-        GetProfileTask profileTask = new GetProfileTask(this, formattedNumber);
-        profileTask.SetListener(this);
-        profileTask.execute();
-    }
-
-    // Get Profile Task results
-    @Override
-    public void onProfileReceived(User user) {
-        this.user = user;
-
-        // Hide Register Phone and show Verify Phone View
-        ui.rlVerifyPhone.Init(user.phone);
+        this.phoneNumber = formattedNumber;
+        ui.rlVerifyPhone.Init(phoneNumber);
         animHelper.Swap(ui.rlEnterPhone, ui.rlVerifyPhone);
-    }
-
-    @Override
-    public void onProfileFailed() {
     }
 
     @Override
     public void onPhoneNumberVerified(String phoneNo)
     {
-        RegisterUser();
+        animHelper.Swap(ui.rlVerifyPhone, ui.rlEnterName);
     }
 
     @Override
@@ -122,19 +109,27 @@ public class RegistrationActivity   extends     BaseActivity
         animHelper.SwapReverse(ui.rlVerifyPhone, ui.rlEnterPhone);
     }
 
+    @Override
+    public void onNameEntered(String name) {
+        this.name = name;
+
+        // Attempt user registration
+        RegisterTask registerTask = new RegisterTask(this, phoneNumber, name);
+        registerTask.SetListener(this);
+        registerTask.execute();
+    }
+
+    @Override
+    public void onRegisterSuccess() {
+        // Finish task
+        setResult(RESULT_OK);
+        finish();
+    }
+
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity) {
         BaseActivity.Start(activity, RegistrationActivity.class, -1, null, Constants.RequestCodes.REGISTRATION, null);
     }
 
     // ----------------------- Private APIs ----------------------- //
-    private void RegisterUser()
-    {
-        // Register the user in preferences
-        Preferences.SetUser(this, user);
-
-        // Finish task
-        setResult(RESULT_OK);
-        finish();
-    }
 }

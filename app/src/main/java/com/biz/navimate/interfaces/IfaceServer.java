@@ -36,4 +36,9 @@ public class IfaceServer {
         void onFcmUpdated();
         void onFcmFailed();
     }
+
+    // Register Task Interface
+    public interface Register {
+        void onRegisterSuccess();
+    }
 }
