@@ -34,6 +34,7 @@ public class RlFormField extends RelativeLayout {
     private TvCalibri tvTitle;
     private EditText etNumber, etText = null;
     private RadioGroup rgRadioList = null;
+    private LinearLayout llCheckList = null;
 
     private FormField.Base field = null;
 
@@ -79,8 +80,16 @@ public class RlFormField extends RelativeLayout {
                     break;
                 }
             }
-        }
+        } else if (field.type.equals(FormField.TYPE_CHECK_LIST)) {
+            // Clear selection list
+            ((FormField.CheckList) field).selection.clear();
 
+            // Add all checked items to selection list
+            for (int i = 0; i < llCheckList.getChildCount(); i++) {
+                CbCustom cb = (CbCustom) llCheckList.getChildAt(i);
+                ((FormField.CheckList) field).selection.add(cb.isChecked());
+            }
+        }
         return field;
     }
 
@@ -93,6 +102,7 @@ public class RlFormField extends RelativeLayout {
 
         // Init UI
         llText = (LinearLayout) view.findViewById(R.id.ll_text);
+        llCheckList = (LinearLayout) view.findViewById(R.id.ll_checkList);
         ibQr = (ImageButton) view.findViewById(R.id.ib_qr);
         tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
@@ -124,6 +134,21 @@ public class RlFormField extends RelativeLayout {
                 if (option.equals(((FormField.RadioList) field).selection)) {
                     rb.setChecked(true);
                 }
+            }
+        } else if (field.type.equals(FormField.TYPE_CHECK_LIST)) {
+            llCheckList.setVisibility(VISIBLE);
+
+            // Add radio options
+            FormField.CheckList clField = (FormField.CheckList) field;
+            for (int i = 0; i < clField.options.size(); i++) {
+                CbCustom cb = new CbCustom(context);
+                cb.setText(clField.options.get(i));
+
+                // Add to group
+                llCheckList.addView(cb);
+
+                // Check selected
+                cb.setChecked(clField.selection.get(i));
             }
         }
 

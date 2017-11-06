@@ -19,13 +19,14 @@ public class FormField {
     public static final String TYPE_TEXT           = "text";
     public static final String TYPE_NUMBER         = "number";
     public static final String TYPE_RADIO_LIST     = "radioList";
+    public static final String TYPE_CHECK_LIST     = "checkList";
 
     // JSON Fields
     public static final String JSON_KEY_TYPE                = "type";
     public static final String JSON_KEY_TITLE               = "title";
     public static final String JSON_KEY_VALUE               = "value";
-    public static final String JSON_KEY_RADIO_OPTIONS       = "options";
-    public static final String JSON_KEY_RADIO_SELECTION     = "selection";
+    public static final String JSON_KEY_OPTIONS             = "options";
+    public static final String JSON_KEY_SELECTION           = "selection";
 
     // ----------------------- Classes ----------------------- //
     // Base Class for all field types
@@ -151,7 +152,7 @@ public class FormField {
             JSONObject radioData = json.getJSONObject(JSON_KEY_VALUE);
 
             // Get List of options and populate data
-            JSONArray radioOptions = radioData.getJSONArray(JSON_KEY_RADIO_OPTIONS);
+            JSONArray radioOptions = radioData.getJSONArray(JSON_KEY_OPTIONS);
             options = new ArrayList<>();
             for (int i = 0; i < radioOptions.length(); i++)
             {
@@ -159,7 +160,7 @@ public class FormField {
             }
 
             // Get selection index form json
-            this.selection = radioData.getString(JSON_KEY_RADIO_SELECTION);
+            this.selection = radioData.getString(JSON_KEY_SELECTION);
         }
 
         // Convert object to JSON
@@ -177,10 +178,81 @@ public class FormField {
 
             // Create JSON Object for Radio List Data
             JSONObject radioData = new JSONObject();
-            radioData.put(JSON_KEY_RADIO_OPTIONS, radioOptions);
-            radioData.put(JSON_KEY_RADIO_SELECTION, selection);
+            radioData.put(JSON_KEY_OPTIONS, radioOptions);
+            radioData.put(JSON_KEY_SELECTION, selection);
 
             json.put(JSON_KEY_VALUE, radioData);
+
+            return json;
+        }
+    }
+
+    // Radio List Form Field
+    public static class CheckList extends Base
+    {
+        // List of strings to store
+        public ArrayList<String> options = null;
+        public ArrayList<Boolean> selection = null;
+
+        public CheckList (String title, ArrayList<String> options, ArrayList<Boolean> selection)
+        {
+            super(TYPE_CHECK_LIST, title);
+            this.options = options;
+            this.selection = selection;
+        }
+
+        // Create object from JSON
+        public CheckList(JSONObject json) throws JSONException
+        {
+            // Init Super
+            super(json);
+
+            // Get Radio Data
+            JSONObject data = json.getJSONObject(JSON_KEY_VALUE);
+
+            // Get List of options and populate data
+            JSONArray jsonOptions = data.getJSONArray(JSON_KEY_OPTIONS);
+            options = new ArrayList<>();
+            for (int i = 0; i < jsonOptions.length(); i++)
+            {
+                options.add(jsonOptions.getString(i));
+            }
+
+            // Get selection index form json
+            JSONArray selectionJson = data.getJSONArray(JSON_KEY_SELECTION);
+            selection = new ArrayList<>();
+            for (int i = 0; i < selectionJson.length(); i++)
+            {
+                selection.add(selectionJson.getBoolean(i));
+            }
+        }
+
+        // Convert object to JSON
+        @Override
+        public JSONObject toJson() throws JSONException
+        {
+            JSONObject json = super.toJson();
+
+            // Feed all radio options into a JSON Array
+            JSONArray optionsJson = new JSONArray();
+            for (String option : options)
+            {
+                optionsJson.put(option);
+            }
+
+            // Feed all selection into a JSON Array
+            JSONArray selectionJson = new JSONArray();
+            for (Boolean option : selection)
+            {
+                selectionJson.put(option);
+            }
+
+            // Create JSON Object for Radio List Data
+            JSONObject data = new JSONObject();
+            data.put(JSON_KEY_OPTIONS, optionsJson);
+            data.put(JSON_KEY_SELECTION, selectionJson);
+
+            json.put(JSON_KEY_VALUE, data);
 
             return json;
         }
@@ -194,6 +266,8 @@ public class FormField {
             return new Number(json);
         } else if (type.equals(TYPE_RADIO_LIST)) {
             return new RadioList(json);
+        } else if (type.equals(TYPE_CHECK_LIST)) {
+            return new CheckList(json);
         }
         return null;
     }
