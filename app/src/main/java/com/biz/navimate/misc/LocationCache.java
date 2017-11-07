@@ -1,10 +1,10 @@
 package com.biz.navimate.misc;
 
 import android.location.Location;
-import android.os.Bundle;
 
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.objects.Statics;
 import com.google.android.gms.location.LocationListener;
 
 import java.util.ArrayList;
@@ -65,6 +65,44 @@ public class LocationCache implements LocationListener {
     public LocationObj GetLocation()
     {
         return GetLocationAtIndex(0);
+    }
+
+    public float GetSpeed()
+    {
+        float speed = 0;
+        int speedCacheSize = 2;
+
+        // Calculate Speed by averaging last 2 values
+        for (int i = 1; i <= speedCacheSize; i++)
+        {
+            if (cache.size() > i)
+            {
+                LocationObj segmentStart = GetLocationAtIndex(i);
+                LocationObj segmentEnd = GetLocationAtIndex(i-1);
+
+                // Calculate only for valid values
+                if (Statics.IsPositionValid(segmentStart.latlng) && Statics.IsPositionValid(segmentEnd.latlng))
+                {
+                    int    segmentDistanceM = Statics.GetDistanceBetweenCoordinates(segmentStart.latlng, segmentEnd.latlng);
+                    long   segmentTimeS = (segmentEnd.timestamp - segmentStart.timestamp) / 1000;
+                    if (segmentTimeS < 0)
+                    {
+                        segmentTimeS = 1;
+                    }
+
+                    double segmentSpeed = (((double) segmentDistanceM) / (double) segmentTimeS);
+                    speed += segmentSpeed;
+                }
+            }
+        }
+
+        // Average out
+        speed = speed / (float) speedCacheSize;
+
+        // Convert to km/hr
+        speed = ((speed * 18.0f) / 5.0f);
+
+        return speed;
     }
 
     // ----------------------- Private APIs ----------------------- //
