@@ -7,6 +7,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.NotificationHelper;
 import com.biz.navimate.server.GetTasksTask;
+import com.biz.navimate.services.TrackerService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -24,7 +25,8 @@ public class FcmMessagingService extends FirebaseMessagingService implements Ifa
     public static final String KEY_NOTIFICATION_TYPE = "type";
 
     // FCM Notification Types
-    public static final int TYPE_TASK_UPDATE = 1;
+    public static final int TYPE_TASK_UPDATE    = 1;
+    public static final int TYPE_TRACK          = 2;
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -72,6 +74,12 @@ public class FcmMessagingService extends FirebaseMessagingService implements Ifa
         switch (notificationType) {
             case TYPE_TASK_UPDATE: {
                 ServiceTaskUpdateNotification();
+                break;
+            }
+            case TYPE_TRACK: {
+                if (App.IsInitialized()) {
+                    TrackerService.StartService(this);
+                }
                 break;
             }
             default: {
