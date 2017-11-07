@@ -1,0 +1,67 @@
+package com.biz.navimate.server;
+
+import android.content.Context;
+
+import com.biz.navimate.constants.Constants;
+import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.misc.LocationCache;
+import com.biz.navimate.objects.LocationObj;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+/**
+ * Created by Siddharth on 28-10-2017.
+ */
+
+public class LocationUpdateTask extends BaseServerTask
+{
+    // ----------------------- Constants ----------------------- //
+    private static final String TAG = "LOCATION_UPDATE_TASK";
+
+    // ----------------------- Classes ---------------------------//
+    // ----------------------- Interfaces ----------------------- //
+    // ----------------------- Globals ----------------------- //
+    // ----------------------- Constructor ----------------------- //
+    public LocationUpdateTask(Context parentContext)
+    {
+        super(parentContext, Constants.Server.URL_TRACK);
+    }
+
+    // ----------------------- Overrides ----------------------- //
+    @Override
+    public Void doInBackground (Void... params)
+    {
+        // Init Request JSON
+        requestJson = new JSONObject();
+        try
+        {
+            // Put location
+            LocationObj currentLocation  = LocationCache.instance.GetLocation();
+            requestJson.put(Constants.Server.KEY_LATITUDE, currentLocation.latlng.latitude);
+            requestJson.put(Constants.Server.KEY_LONGITUDE, currentLocation.latlng.longitude);
+
+            // Put speed
+            requestJson.put(Constants.Server.KEY_SPEED, LocationCache.instance.GetSpeed());
+        }
+        catch (JSONException e)
+        {
+            Dbg.error(TAG, "Error while putting initData in JSON");
+            return null;
+        }
+
+        // Call Super
+        return super.doInBackground(params);
+    }
+
+    public boolean executeSync()
+    {
+        // Perform background task
+        doInBackground();
+
+        return IsResponseValid();
+    }
+
+    // ----------------------- Public APIs ----------------------- //
+    // ----------------------- Private APIs ----------------------- //
+}

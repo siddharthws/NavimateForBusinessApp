@@ -43,12 +43,13 @@ public class Constants {
     // Server related constants
     public static class Server {
         // URLs
-        private static final String URL_BASE = "http://192.168.1.10:8080";
-        public static final String URL_GET_PROFILE = URL_BASE + "/api/reps/profile";
-        public static final String URL_GET_TASKS = URL_BASE + "/api/reps/task";
-        public static final String URL_OTP_SMS = URL_BASE + "/api/reps/otp";
-        public static final String URL_UPDATE_FCM = URL_BASE + "/api/reps/fcm";
-        public static final String URL_REGISTER = URL_BASE + "/api/reps/register";
+        private static final String URL_BASE        = "http://192.168.1.10:8080";
+        public static final String URL_GET_PROFILE  = URL_BASE + "/api/reps/profile";
+        public static final String URL_GET_TASKS    = URL_BASE + "/api/reps/task";
+        public static final String URL_OTP_SMS      = URL_BASE + "/api/reps/otp";
+        public static final String URL_UPDATE_FCM   = URL_BASE + "/api/reps/fcm";
+        public static final String URL_REGISTER     = URL_BASE + "/api/reps/register";
+        public static final String URL_TRACK        = URL_BASE + "/api/track/data";
 
         // JSON Keys
         public static final String KEY_ID               = "id";
@@ -68,6 +69,7 @@ public class Constants {
         public static final String KEY_TASK_ID          = "taskId";
         public static final String KEY_CLOSE_TASK       = "closeTask";
         public static final String KEY_FCM              = "fcmId";
+        public static final String KEY_SPEED            = "speed";
     }
 
     // Map related constants
