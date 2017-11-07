@@ -47,6 +47,7 @@ public class LocationUpdateHelper {
 
     // Client Tags
     public static final int CLIENT_TAG_MAP      = 1;
+    public static final int CLIENT_TAG_TRACKER  = 2;
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
