@@ -3,6 +3,7 @@ package com.biz.navimate.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.biz.navimate.database.DbHelper;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params)
     {
+
+        //Initialise the DBHelper Class
+        DbHelper.Init(parentContext);
+
         // Wait for FCM ID Token
         while (FirebaseInstanceId.getInstance().getToken() == null);
         return null;
