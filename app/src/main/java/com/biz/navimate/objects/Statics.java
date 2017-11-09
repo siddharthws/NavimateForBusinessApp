@@ -3,8 +3,12 @@ package com.biz.navimate.objects;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Looper;
+import android.view.View;
 
 import com.biz.navimate.debug.Dbg;
 import com.google.android.gms.maps.model.LatLng;
@@ -156,5 +160,35 @@ public class Statics {
         }
 
         return null;
+    }
+
+    // Bitmap related APIs
+    public static Bitmap GetBitmapFromView(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(    view.getWidth(),
+                                                view.getHeight(),
+                                                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+        view.layout(view.getLeft(),
+                    view.getTop(),
+                    view.getRight(),
+                    view.getBottom());
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    public static Bitmap ScaleBitmap(Bitmap origBitmap) {
+        // Get scaling factor form size
+        double maxSizeB = 256 * 1024; // 256 KB Limit
+        double origSizeB = origBitmap.getByteCount();
+        double scalingFactor = Math.sqrt(origSizeB / maxSizeB);
+
+        // Get Scaled heights
+        int scaledHeight = (int) (origBitmap.getHeight() / scalingFactor);
+        int scaledWidth  = (int) (origBitmap.getWidth() / scalingFactor);
+
+        // Scale bitmap
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(origBitmap, scaledWidth, scaledHeight, true);
+        return scaledBitmap;
     }
 }

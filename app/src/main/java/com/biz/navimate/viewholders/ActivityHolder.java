@@ -1,5 +1,6 @@
 package com.biz.navimate.viewholders;
 
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -10,6 +11,7 @@ import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.TvCalibri;
+import com.biz.navimate.views.VwSignature;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -54,5 +56,11 @@ public class ActivityHolder {
 
         // List
         public ListView lvList                                  = null;
+    }
+
+    public static class Signature extends Base
+    {
+        public Button btnSave, btnBack, btnClear        = null;
+        public VwSignature vwSignature = null;
     }
 }
