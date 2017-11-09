@@ -16,9 +16,10 @@ public class Dialog {
     public static final int TYPE_ALERT                      = 1;
     public static final int TYPE_CONFIRM                    = 2;
     public static final int TYPE_WAITING                    = 3;
-    public static final int TYPE_SUBMIT_FORM                = 4;
-    public static final int TYPE_TASK_INFO                  = 5;
-    public static final int TYPE_ROUTE_BUILDER              = 6;
+    public static final int TYPE_PROGRESS                   = 4;
+    public static final int TYPE_SUBMIT_FORM                = 5;
+    public static final int TYPE_TASK_INFO                  = 6;
+    public static final int TYPE_ROUTE_BUILDER              = 7;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -78,6 +79,24 @@ public class Dialog {
         {
             super(TYPE_WAITING, false);
             this.message = message;
+        }
+    }
+
+    public static class Progress extends Base
+    {
+        public String message = "";
+        public int progress = 0;
+
+        public Progress()
+        {
+            super(TYPE_PROGRESS, false);
+        }
+
+        public Progress(String message, int progress)
+        {
+            super(TYPE_PROGRESS, false);
+            this.message = message;
+            this.progress = progress;
         }
     }
 

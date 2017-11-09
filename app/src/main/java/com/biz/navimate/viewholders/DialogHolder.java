@@ -6,9 +6,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.biz.navimate.views.RlFormField;
+import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 
@@ -45,6 +47,13 @@ public class DialogHolder {
     public static class Waiting extends Base
     {
         public TextView tvDialogMessage = null;
+    }
+
+    public static class Progress extends Base
+    {
+        public TvCalibri tvMessage = null;
+        public TvCalibri tvProgress = null;
+        public ProgressBar pbProgress = null;
     }
 
     public static class SubmitForm extends Base
