@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_dialog_root"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:paddingTop="@dimen/m_small"
+        android:paddingRight="@dimen/m_large"
+        android:paddingBottom="@dimen/m_small"
+        android:paddingLeft="@dimen/m_large"
+        android:layout_margin="@dimen/m_large"
+        android:background="@drawable/bg_white_shadow_slant"
+        android:clickable="true">
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textsize_primary_small"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/tv_message"
+            android:orientation="horizontal">
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_progress_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="%"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pb_progress"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@id/tv_message"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            style="@android:style/Widget.ProgressBar.Horizontal"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
