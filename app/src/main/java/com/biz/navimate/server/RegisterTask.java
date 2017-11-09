@@ -12,6 +12,8 @@ import com.biz.navimate.objects.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.RequestBody;
+
 /**
  * Created by Siddharth on 05-11-2017.
  */
@@ -44,7 +46,7 @@ public class RegisterTask extends BaseServerTask {
     public Void doInBackground (Void... params)
     {
         // Init Request JSON
-        requestJson = new JSONObject();
+        JSONObject requestJson = new JSONObject();
 
         try
         {
@@ -56,6 +58,9 @@ public class RegisterTask extends BaseServerTask {
             Dbg.error(TAG, "Error while putting initData in JSON");
             return null;
         }
+
+        // Add data to request Builder
+        reqBuilder.method("POST", RequestBody.create(JSON, requestJson.toString()));
 
         // Call Super
         super.doInBackground(params);

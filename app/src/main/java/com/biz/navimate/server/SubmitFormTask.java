@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import okhttp3.RequestBody;
+
 /**
  * Created by Siddharth on 29-09-2017.
  */
@@ -60,7 +62,7 @@ public class SubmitFormTask extends BaseServerTask {
     public Void doInBackground (Void... params)
     {
         // Init Request JSON
-        requestJson = new JSONObject();
+        JSONObject requestJson = new JSONObject();
 
         try
         {
@@ -77,6 +79,9 @@ public class SubmitFormTask extends BaseServerTask {
             Dbg.error(TAG, "Error while putting initData in JSON");
             return null;
         }
+
+        // Add data to request Builder
+        reqBuilder.method("POST", RequestBody.create(JSON, requestJson.toString()));
 
         // Call Super
         super.doInBackground(params);

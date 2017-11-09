@@ -17,7 +17,6 @@ import java.net.HttpURLConnection;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -41,7 +40,7 @@ public abstract class BaseServerTask extends AsyncTask<Void, Void, Void>
     private String url = null;
 
     // Request / Response Parameters
-    protected  JSONObject requestJson = null;
+    protected Request.Builder reqBuilder = null;
     protected  JSONObject responseJson = null;
 
     // ----------------------- Constructor ----------------------- //
@@ -49,6 +48,7 @@ public abstract class BaseServerTask extends AsyncTask<Void, Void, Void>
     {
         this.parentContext = parentContext;
         this.url = url;
+        this.reqBuilder = new Request.Builder();
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -88,18 +88,14 @@ public abstract class BaseServerTask extends AsyncTask<Void, Void, Void>
 
         // Build OkHttp3 Request
         OkHttpClient httpClient = new OkHttpClient();
-        Request.Builder builder = new Request.Builder()
-                                        .url(url)
-                                        .header(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
 
-        // Add JSON body in the request (if required)
-        if (requestJson != null) {
-            builder.method("POST", RequestBody.create(JSON, requestJson.toString()));
-        }
+        // Add mandatory params to builder
+        reqBuilder.url(url)
+                  .header(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
 
         try {
             // Execute request and get response
-            Request request = builder.build();
+            Request request = reqBuilder.build();
             Response response = httpClient.newCall(request).execute();
 
             // Validate and parse reponse
