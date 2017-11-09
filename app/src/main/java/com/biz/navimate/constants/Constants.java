@@ -22,8 +22,9 @@ public class Constants {
 
     // Map related constants
     public class Extras {
-        // Zoom levels
-        public static final String LEAD_PICKER = "leadPicker";
+        // Activity Result Extras
+        public static final String LEAD_PICKER  = "leadPicker";
+        public static final String SIGNATURE_BITMAP = "signature_ba";
     }
 
     // User Preferences related constants
