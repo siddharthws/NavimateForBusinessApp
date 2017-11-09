@@ -1,20 +1,29 @@
 package com.biz.navimate.views;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.activities.SignatureActivity;
 import com.biz.navimate.application.App;
+import com.biz.navimate.constants.Constants;
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.FormField;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.zxing.IntentIntegrator;
 
 /**
@@ -35,6 +44,9 @@ public class RlFormField extends RelativeLayout {
     private EditText etNumber, etText = null;
     private RadioGroup rgRadioList = null;
     private LinearLayout llCheckList = null;
+    private RelativeLayout rlPhoto = null, rlSignature = null;
+    private ImageView ivPhoto = null, ivSignature = null;
+    private TvCalibri tvPhoto = null, tvSignature = null;
 
     private FormField.Base field = null;
 
@@ -108,6 +120,12 @@ public class RlFormField extends RelativeLayout {
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
         rgRadioList = (RadioGroup) view.findViewById(R.id.rg_radioList);
+        rlPhoto = (RelativeLayout) view.findViewById(R.id.rl_photo);
+        rlSignature = (RelativeLayout)  view.findViewById(R.id.rl_signature);
+        ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
+        ivSignature = (ImageView)       view.findViewById(R.id.iv_signature);
+        tvPhoto = (TvCalibri) view.findViewById(R.id.tv_photo);
+        tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
 
         // Populate title
         tvTitle.setText(field.title);
@@ -119,6 +137,10 @@ public class RlFormField extends RelativeLayout {
         } else if (field.type.equals(FormField.TYPE_NUMBER)) {
             etNumber.setVisibility(VISIBLE);
             etNumber.setText(String.valueOf(((FormField.Number) field).data));
+        } else if (field.type.equals(FormField.TYPE_PHOTO)) {
+            rlPhoto.setVisibility(VISIBLE);
+        } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
+            rlSignature.setVisibility(VISIBLE);
         } else if (field.type.equals(FormField.TYPE_RADIO_LIST)) {
             rgRadioList.setVisibility(VISIBLE);
 
@@ -166,6 +188,68 @@ public class RlFormField extends RelativeLayout {
                     });
                     IntentIntegrator scanIntegrator = new IntentIntegrator(activity);
                     scanIntegrator.initiateScan();
+                }
+            }
+        });
+
+        // Set Photo Capture Listener
+        rlPhoto.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                BaseActivity activity = App.GetCurrentActivity();
+                if ((activity != null) && (takePictureIntent.resolveActivity(activity.getPackageManager()) != null)) {
+                    // Set Photo Result Listener
+                    activity.SetPhotoResultListener(new IfaceResult.Photo() {
+                        @Override
+                        public void onPhotoResult(Bitmap photo) {
+                            // Scale Photo
+                            Bitmap scaledPhoto = Statics.ScaleBitmap(photo);
+
+                            // Set field cache
+                            ((FormField.Photo) field).photo = scaledPhoto;
+
+                            // Preview photo in dialog
+                            tvPhoto.setVisibility(GONE);
+                            ivPhoto.setVisibility(VISIBLE);
+                            ivPhoto.setImageBitmap(scaledPhoto);
+                        }
+                    });
+
+                    // Start Image Capture Intent
+                    activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
+                } else {
+                    Dbg.Toast(getContext(), "Camera App not available...", Toast.LENGTH_SHORT);
+                }
+            }
+        });
+
+        // Set Photo Capture Listener
+        rlSignature.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Set Result Listener
+                BaseActivity activity = App.GetCurrentActivity();
+                if (activity != null) {
+                    activity.SetSignResultListener(new IfaceResult.Signature() {
+                        @Override
+                        public void onSignatureResult(Bitmap signature) {
+                            // Scale Photo
+                            Bitmap scaledSign = Statics.ScaleBitmap(signature);
+
+                            // Set field cache
+                            ((FormField.Signature) field).signature = scaledSign;
+
+                            // Preview photo in dialog
+                            tvSignature.setVisibility(GONE);
+                            ivSignature.setVisibility(VISIBLE);
+                            ivSignature.setImageBitmap(scaledSign);
+                        }
+                    });
+
+                    // Start Signature Activity
+                    SignatureActivity.Start(activity);
                 }
             }
         });

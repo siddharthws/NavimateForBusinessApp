@@ -77,6 +77,58 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/rl_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m_small"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:visibility="gone"/>
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/textsize_primary_small"
+                android:text="No Image Uploaded"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_signature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/m_small"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:background="@android:color/holo_purple"
+                android:visibility="gone"/>
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/textsize_primary_small"
+                android:text="No Signature Uploaded"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

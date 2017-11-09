@@ -3,6 +3,7 @@ package com.biz.navimate.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -54,6 +55,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     private IfaceResult.ResultGps     gpsListener               = null;
     private IfaceResult.LeadPicker    leadPickerListener        = null;
     private IfaceResult.Zxing         zxingListener             = null;
+    private IfaceResult.Photo         photoListener             = null;
+    private IfaceResult.Signature     signListener              = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -276,6 +279,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.zxingListener = listener;
     }
 
+    public void SetPhotoResultListener(IfaceResult.Photo listener)
+    {
+        this.photoListener = listener;
+    }
+
+    public void SetSignResultListener(IfaceResult.Signature listener)
+    {
+        this.signListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -359,6 +372,36 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
                 break;
             }
+            case Constants.RequestCodes.PHOTO:
+            {
+                if (photoListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        Bundle extras = resumeResultIntent.getExtras();
+                        if (extras != null) {
+                            Bitmap imageBitmap = (Bitmap) extras.get("data");
+                            photoListener.onPhotoResult(imageBitmap);
+                        }
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.SIGNATURE:
+            {
+                if (signListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        Bundle extras = resumeResultIntent.getExtras();
+                        if (extras != null) {
+                            Bitmap imageBitmap = (Bitmap) extras.get(Constants.Extras.SIGNATURE_BITMAP);
+                            signListener.onSignatureResult(imageBitmap);
+                        }
+                    }
+                }
+                break;
+            }
         }
     }
 
@@ -399,7 +442,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                         smsPermissionListener.onSmsPermissionFailure();
                     }
                 }
-            } else if (permissions[i].equals(Manifest.permission.CALL_PHONE))
+            }
+            else if (permissions[i].equals(Manifest.permission.CALL_PHONE))
             {
                 if (callPermissionListener != null)
                 {

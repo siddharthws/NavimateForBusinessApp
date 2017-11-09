@@ -18,12 +18,14 @@ public class Constants {
         public static final int GPS             = 2;
         public static final int LEAD_PICKER     = 3;
         public static final int ZXING           = 4;
+        public static final int PHOTO           = 5;
+        public static final int SIGNATURE       = 6;
     }
 
     // Map related constants
     public class Extras {
         // Activity Result Extras
-        public static final String LEAD_PICKER  = "leadPicker";
+        public static final String LEAD_PICKER      = "leadPicker";
         public static final String SIGNATURE_BITMAP = "signature_ba";
     }
 

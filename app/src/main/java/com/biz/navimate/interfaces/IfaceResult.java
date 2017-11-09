@@ -1,5 +1,7 @@
 package com.biz.navimate.interfaces;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 /**
@@ -27,5 +29,15 @@ public class IfaceResult {
     public interface Zxing
     {
         void onScanResult(String data);
+    }
+
+    public interface Photo
+    {
+        void onPhotoResult(Bitmap photo);
+    }
+
+    public interface Signature
+    {
+        void onSignatureResult(Bitmap signature);
     }
 }
