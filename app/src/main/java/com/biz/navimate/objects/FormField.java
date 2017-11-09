@@ -1,5 +1,7 @@
 package com.biz.navimate.objects;
 
+import android.graphics.Bitmap;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,8 @@ public class FormField {
     public static final String TYPE_NUMBER         = "number";
     public static final String TYPE_RADIO_LIST     = "radioList";
     public static final String TYPE_CHECK_LIST     = "checkList";
+    public static final String TYPE_PHOTO          = "photo";
+    public static final String TYPE_SIGNATURE      = "signature";
 
     // JSON Fields
     public static final String JSON_KEY_TYPE                = "type";
@@ -258,6 +262,74 @@ public class FormField {
         }
     }
 
+    // Photo Form Field
+    public static class Photo extends Base
+    {
+        // List of strings to store
+        public String filename = null;
+        public Bitmap photo = null;
+
+        public Photo (String title, String filename, Bitmap photo)
+        {
+            super(TYPE_PHOTO, title);
+            this.filename = filename;
+            this.photo = photo;
+        }
+
+        // Create object from JSON
+        public Photo(JSONObject json) throws JSONException
+        {
+            // Init Super
+            super(json);
+
+            // Get Radio Data
+            filename = json.getString(JSON_KEY_VALUE);
+        }
+
+        // Convert object to JSON
+        @Override
+        public JSONObject toJson() throws JSONException
+        {
+            JSONObject json = super.toJson();
+            json.put(JSON_KEY_VALUE, filename);
+            return json;
+        }
+    }
+
+    // Signature Form Field
+    public static class Signature extends Base
+    {
+        // List of strings to store
+        public String filename = null;
+        public Bitmap signature = null;
+
+        public Signature (String title, String filename, Bitmap signature)
+        {
+            super(TYPE_SIGNATURE, title);
+            this.filename = filename;
+            this.signature = signature;
+        }
+
+        // Create object from JSON
+        public Signature(JSONObject json) throws JSONException
+        {
+            // Init Super
+            super(json);
+
+            // Get Radio Data
+            filename = json.getString(JSON_KEY_VALUE);
+        }
+
+        // Convert object to JSON
+        @Override
+        public JSONObject toJson() throws JSONException
+        {
+            JSONObject json = super.toJson();
+            json.put(JSON_KEY_VALUE, filename);
+            return json;
+        }
+    }
+
     public static FormField.Base FromJson(JSONObject json) throws JSONException {
         String type = json.getString(JSON_KEY_TYPE);
         if (type.equals(TYPE_TEXT)) {
@@ -268,6 +340,10 @@ public class FormField {
             return new RadioList(json);
         } else if (type.equals(TYPE_CHECK_LIST)) {
             return new CheckList(json);
+        } else if (type.equals(TYPE_PHOTO)) {
+            return new Photo(json);
+        } else if (type.equals(TYPE_SIGNATURE)) {
+            return new Signature(json);
         }
         return null;
     }
