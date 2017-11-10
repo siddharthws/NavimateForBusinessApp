@@ -23,7 +23,7 @@ import okhttp3.Response;
  * Created by Siddharth on 09-04-2017.
  */
 
-public abstract class BaseServerTask extends AsyncTask<Void, Void, Void>
+public abstract class BaseServerTask extends AsyncTask<Void, Integer, Void>
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "BASE_SERVER_TASK";
