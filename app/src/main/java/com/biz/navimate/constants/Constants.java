@@ -53,6 +53,7 @@ public class Constants {
         public static final String URL_UPDATE_FCM   = URL_BASE + "/api/reps/fcm";
         public static final String URL_REGISTER     = URL_BASE + "/api/reps/register";
         public static final String URL_TRACK        = URL_BASE + "/api/track/data";
+        public static final String URL_UPLOAD_PHOTO = URL_BASE + "/api/photos/upload";
 
         // JSON Keys
         public static final String KEY_ID               = "id";
@@ -73,6 +74,7 @@ public class Constants {
         public static final String KEY_CLOSE_TASK       = "closeTask";
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
+        public static final String KEY_FILENAME         = "filename";
     }
 
     // Map related constants

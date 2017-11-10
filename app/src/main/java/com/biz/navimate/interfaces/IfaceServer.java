@@ -41,4 +41,10 @@ public class IfaceServer {
     public interface Register {
         void onRegisterSuccess();
     }
+
+    // Upload Photo Task interface
+    public interface UploadPhoto {
+        void onPhotoUploaded(String fielname);
+        void onPhotoUploadFailed();
+    }
 }
