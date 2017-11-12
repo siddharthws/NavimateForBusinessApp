@@ -1,5 +1,8 @@
 package com.biz.navimate.activities;
 
+import android.Manifest;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -20,7 +23,6 @@ import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.ListItem;
-import com.biz.navimate.objects.MarkerObj;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
@@ -88,16 +90,22 @@ public class HomescreenActivity     extends     BaseActivity
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
 
         // Get Tasks from server
         GetTasksTask getTasks = new GetTasksTask(this);
         getTasks.SetListener(this);
         getTasks.execute();
 
-        if (adapter.getCount() == 0) {
+        if (Statics.GetCurrentTasks().size() == 0) {
             RlDialog.Show(new Dialog.Waiting("Getting tasks from server..."));
+        }
+
+        // Check for location related issues and ask to resolve
+        if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) ||
+            (!Statics.IsGpsEnabled(this))){
+            locationUpdateRunnable.Post(0);
         }
     }
 
