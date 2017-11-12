@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.biz.navimate.R;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
@@ -160,6 +161,11 @@ public class SubmitFormDialog   extends     BaseDialog
     private void SubmitForm() {
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         boolean bCloseTask = ui.cbCloseTask.isChecked();
+
+        //Create an Object of Form Class to store in Local Database
+        Form formObject = new Form(currentData.form.name,currentData.form.fields);
+        DbHelper.formTable.Add(formObject);
+
         SubmitFormTask submitTask = new SubmitFormTask(context, currentData.form, currentData.taskId, bCloseTask);
         submitTask.execute();
     }
