@@ -43,7 +43,7 @@ public class ConfirmDialog  extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_confirm, container);
 
         // Find Views
-        ui.tvMessage = (TextView) ui.dialogView.findViewById(R.id.tv_message);
+        ui.tvMessage = (TextView) ui.dialogView.findViewById(R.id.tv_message_confirm);
         ui.btnYes = (Button) ui.dialogView.findViewById(R.id.btn_yes);
         ui.btnNo = (Button) ui.dialogView.findViewById(R.id.btn_no);
     }

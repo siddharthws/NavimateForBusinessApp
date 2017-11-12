@@ -6,20 +6,20 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_dialog_root"
+        android:id="@+id/rl_dialog_root_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:paddingTop="@dimen/m_small"
+        android:paddingTop="@dimen/m_large"
         android:paddingRight="@dimen/m_large"
-        android:paddingBottom="@dimen/m_small"
+        android:paddingBottom="@dimen/m_large"
         android:paddingLeft="@dimen/m_large"
         android:layout_margin="@dimen/m_large"
         android:background="@drawable/bg_white_shadow_slant"
         android:clickable="true">
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_message"
+            android:id="@+id/tv_message_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/textsize_primary_small"/>
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignBottom="@id/tv_message"
+            android:layout_alignBottom="@id/tv_message_progress"
             android:orientation="horizontal">
 
             <com.biz.navimate.views.TvCalibri
@@ -48,10 +48,10 @@
             android:id="@+id/pb_progress"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_below="@id/tv_message"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_below="@id/tv_message_progress"
+            android:layout_marginTop="@dimen/m_large"
+            android:layout_marginLeft="@dimen/m_small"
+            android:layout_marginRight="@dimen/m_small"
             style="@android:style/Widget.ProgressBar.Horizontal"/>
 
     </RelativeLayout>
