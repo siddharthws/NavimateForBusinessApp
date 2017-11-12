@@ -13,6 +13,7 @@ public class DbObject
 
     // DB Object Types
     public static final int TYPE_INVALID                = 0;
+    public static final int TYPE_FORM                   = 1;
 
     // ----------------------- Globals ----------------------- //
     public int      type        = TYPE_INVALID;
