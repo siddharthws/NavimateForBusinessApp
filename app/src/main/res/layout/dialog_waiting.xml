@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_dialog_root"
+        android:id="@+id/rl_dialog_root_waiting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -26,7 +26,7 @@
             android:indeterminateDrawable="@drawable/pb_primary"/>
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_message"
+            android:id="@+id/tv_message_waiting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/pb_waiting"

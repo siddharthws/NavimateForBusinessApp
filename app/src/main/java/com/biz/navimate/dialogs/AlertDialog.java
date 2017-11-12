@@ -46,7 +46,7 @@ public class AlertDialog    extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_alert, container);
 
         // Find Views
-        ui.tvMessage = (TextView)   ui.dialogView.findViewById(R.id.tv_message);
+        ui.tvMessage = (TextView)   ui.dialogView.findViewById(R.id.tv_message_alert);
         ui.btn       = (Button)     ui.dialogView.findViewById(R.id.btn_alert);
     }
 

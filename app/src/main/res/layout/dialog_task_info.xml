@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_dialog_root"
+        android:id="@+id/rl_dialog_root_task_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -19,7 +19,7 @@
         android:clickable="true">
 
         <com.biz.navimate.views.RlDialogTitle
-            android:id="@+id/rl_dialog_title"
+            android:id="@+id/rl_dialog_title_task_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:text="Task Information"/>
@@ -28,7 +28,7 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rl_dialog_title"
+            android:layout_below="@id/rl_dialog_title_task_info"
             android:layout_marginTop="@dimen/m_small"
             app:bold="true"
             android:textSize="@dimen/textsize_primary_small"/>

@@ -41,7 +41,7 @@ public class WaitingDialog extends BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_waiting, container);
 
         // Find Views
-        ui.tvDialogMessage = (TextView) ui.dialogView.findViewById(R.id.tv_message);
+        ui.tvDialogMessage = (TextView) ui.dialogView.findViewById(R.id.tv_message_waiting);
     }
 
     @Override

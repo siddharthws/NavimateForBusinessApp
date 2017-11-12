@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/rl_dialog_root"
+        android:id="@+id/rl_dialog_root_alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -19,17 +19,17 @@
         android:clickable="true">
 
         <com.biz.navimate.views.RlDialogTitle
-            android:id="@+id/rl_dialog_title"
+            android:id="@+id/rl_dialog_title_alert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:image="@mipmap/icon_alert_grey"
             app:text="Alert"/>
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_message"
+            android:id="@+id/tv_message_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rl_dialog_title"
+            android:layout_below="@id/rl_dialog_title_alert"
             android:layout_marginTop="@dimen/m_small"
             android:layout_centerHorizontal="true"
             android:textSize="@dimen/textsize_primary_small"/>
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/tv_message"
+            android:layout_below="@id/tv_message_alert"
             android:layout_marginTop="@dimen/m_small">
 
             <Button

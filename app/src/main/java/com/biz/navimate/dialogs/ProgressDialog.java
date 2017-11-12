@@ -41,7 +41,7 @@ public class ProgressDialog extends BaseDialog {
         ui.dialogView = inflater.inflate(R.layout.dialog_progress, container);
 
         // Find Views
-        ui.tvMessage    = (TvCalibri)   ui.dialogView.findViewById(R.id.tv_message);
+        ui.tvMessage    = (TvCalibri)   ui.dialogView.findViewById(R.id.tv_message_progress);
         ui.tvProgress   = (TvCalibri)   ui.dialogView.findViewById(R.id.tv_progress);
         ui.pbProgress   = (ProgressBar) ui.dialogView.findViewById(R.id.pb_progress);
     }
