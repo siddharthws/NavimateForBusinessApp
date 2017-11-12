@@ -24,7 +24,7 @@ public class FormTable extends BaseTable {
     public static final String COLUMN_DATA            = "form_data";
 
 
-    // Create query
+    // Create table query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS" + TABLE_NAME + " (" +
                     COLUMN_ID            + " INTEGER PRIMARY KEY," +

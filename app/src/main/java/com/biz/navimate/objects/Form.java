@@ -21,6 +21,7 @@ public class Form extends DbObject{
     public ArrayList<FormField.Base> fields = null;
 
 
+
     // ----------------------- Constructor ----------------------- //
     public Form (String name, JSONArray fields) {
         super(DbObject.TYPE_FORM,DbObject.DB_ID_INVALID);
