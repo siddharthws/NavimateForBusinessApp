@@ -16,7 +16,7 @@ public class DbHelper extends SQLiteOpenHelper
     private static final String TAG = "DB_HELPER";
 
     // DB Properties
-    private static final String  DATABASE_NAME                   = "NAVIMATE_BIZ_DATABASE";
+    private static final String  DATABASE_NAME                   = "DB_HELPER";
     private static final int     DATABASE_VERSION                = 1;
 
     // ----------------------- Globals ----------------------- //

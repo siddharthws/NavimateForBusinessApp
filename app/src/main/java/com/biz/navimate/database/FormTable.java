@@ -29,7 +29,7 @@ public class FormTable extends BaseTable {
 
     // Create query
     public static final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS" + TABLE_NAME + " (" +
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     COLUMN_ID            + " INTEGER PRIMARY KEY," +
                     COLUMN_NAME          + " TEXT," +
                     COLUMN_DATA          + " TEXT)";
