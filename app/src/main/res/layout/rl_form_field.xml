@@ -97,9 +97,11 @@
                 android:id="@+id/tv_photo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/m_large"
                 android:layout_centerInParent="true"
                 android:textSize="@dimen/textsize_primary_small"
-                android:text="No Image Uploaded"/>
+                android:text="Click here to upload image"
+                android:background="@color/lightGrey"/>
 
         </RelativeLayout>
 
@@ -123,9 +125,11 @@
                 android:id="@+id/tv_signature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/m_large"
                 android:layout_centerInParent="true"
                 android:textSize="@dimen/textsize_primary_small"
-                android:text="No Signature Uploaded"/>
+                android:text="Click here to upload signature"
+                android:background="@color/lightGrey"/>
 
         </RelativeLayout>
 
