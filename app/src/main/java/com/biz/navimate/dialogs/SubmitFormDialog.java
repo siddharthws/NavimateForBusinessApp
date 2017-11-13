@@ -128,7 +128,7 @@ public class SubmitFormDialog   extends     BaseDialog
             if (field.type.equals(FormField.TYPE_PHOTO)) {
                 FormField.Photo photoField = (FormField.Photo) field;
 
-                if (photoField.photo.getByteCount() > 0) {
+                if ((photoField.photo != null) && (photoField.photo.getByteCount() > 0)) {
                     imageUploads.add(new ImageUpload(   photoField.photo,
                                                         "Uploading " + photoField.title + "...",
                                                         photoField));
@@ -136,7 +136,7 @@ public class SubmitFormDialog   extends     BaseDialog
             } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
                 FormField.Signature signField = (FormField.Signature) field;
 
-                if (signField.signature.getByteCount() > 0) {
+                if ((signField.signature != null) && (signField.signature.getByteCount() > 0)) {
                     imageUploads.add(new ImageUpload(   signField.signature,
                                                         "Uploading " + signField.title + "...",
                                                         signField));
