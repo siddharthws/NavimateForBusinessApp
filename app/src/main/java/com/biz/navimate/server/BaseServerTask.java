@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
+import okhttp3.CacheControl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -90,7 +91,9 @@ public abstract class BaseServerTask extends AsyncTask<Void, Integer, Void>
         OkHttpClient httpClient = new OkHttpClient();
 
         // Add mandatory params to builder
+        CacheControl cc = new CacheControl.Builder().noCache().build();
         reqBuilder.url(url)
+                  .cacheControl(cc)
                   .header(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
 
         try {
