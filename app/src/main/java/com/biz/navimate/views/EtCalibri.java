@@ -3,6 +3,7 @@ package com.biz.navimate.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 
@@ -64,6 +65,6 @@ public class EtCalibri extends AppCompatEditText {
             setTypeface(calibri);
         }
 
-        setTextColor(getContext().getResources().getColor(android.R.color.black));
+        setTextColor(ContextCompat.getColor(getContext(), android.R.color.black));
     }
 }

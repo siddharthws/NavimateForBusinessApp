@@ -16,7 +16,7 @@
         app:bold="true"
         android:text="Enter Your Name"/>
 
-    <EditText
+    <com.biz.navimate.views.EtCalibri
         android:id="@+id/et_name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -28,6 +28,7 @@
         android:layout_below="@id/tv_fragment_header"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_textbox"
+        android:textCursorDrawable="@null"
         android:hint="Enter Name"
         android:textAlignment="center"
         android:textSize="@dimen/textsize_primary_small"

@@ -28,7 +28,8 @@
         android:textSize="@dimen/textsize_primary_small"
         android:inputType="number"
         android:hint="XXXXXX"
-        android:background="@drawable/bg_textbox"/>
+        android:background="@drawable/bg_textbox"
+        android:textCursorDrawable="@null"/>
 
     <RelativeLayout
         android:id="@+id/rl_button_container"

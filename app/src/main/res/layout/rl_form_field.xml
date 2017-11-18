@@ -37,7 +37,8 @@
                 android:inputType="text"
                 android:minLines="3"
                 android:padding="@dimen/m_small"
-                android:background="@drawable/bg_textbox"/>
+                android:background="@drawable/bg_textbox"
+                android:textCursorDrawable="@null"/>
 
             <ImageButton
                 android:id="@+id/ib_qr"
@@ -58,6 +59,7 @@
             android:maxLines="1"
             android:padding="@dimen/m_small"
             android:background="@drawable/bg_textbox"
+            android:textCursorDrawable="@null"
             android:visibility="gone"/>
 
         <RadioGroup
