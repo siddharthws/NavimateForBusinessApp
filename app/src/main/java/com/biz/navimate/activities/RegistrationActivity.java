@@ -68,6 +68,9 @@ public class RegistrationActivity   extends     BaseActivity
         ui.rlEnterPhone.SetEnterPhoneListener(this);
         ui.rlVerifyPhone.SetVerifyPhoneInterface(this);
         ui.rlEnterName.SetEnterNameListener(this);
+
+        // Show keybord
+        ui.rlEnterPhone.ShowKeyboard();
     }
 
     @Override
@@ -100,6 +103,9 @@ public class RegistrationActivity   extends     BaseActivity
     public void onPhoneNumberVerified(String phoneNo)
     {
         animHelper.Swap(ui.rlVerifyPhone, ui.rlEnterName);
+
+        // Show keyboard on Name EditText
+        ui.rlEnterName.ShowKeyboard();
     }
 
     @Override

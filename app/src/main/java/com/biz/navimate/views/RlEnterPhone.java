@@ -99,6 +99,11 @@ public class RlEnterPhone   extends     RelativeLayout
     }
 
     // ----------------------- Public APIs ----------------------- //
+    public void ShowKeyboard() {
+        // Display Keyboard
+        keyboardRunnable.Post(0);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     private void InitView(Context context)
     {
@@ -121,8 +126,5 @@ public class RlEnterPhone   extends     RelativeLayout
 
         // Init other globals
         keyboardRunnable = new KeyboardRunnable(getContext(), etPhoneNumber);
-
-        // Display Keyboard
-        keyboardRunnable.Post(0);
     }
 }

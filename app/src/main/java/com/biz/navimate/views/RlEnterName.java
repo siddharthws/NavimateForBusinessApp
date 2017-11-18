@@ -86,6 +86,11 @@ public class RlEnterName extends RelativeLayout implements View.OnClickListener
     }
 
     // ----------------------- Public APIs ----------------------- //
+    public void ShowKeyboard() {
+        // Display Keyboard
+        keyboardRunnable.Post(0);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     private void InitView(Context context)
     {
@@ -102,8 +107,5 @@ public class RlEnterName extends RelativeLayout implements View.OnClickListener
 
         // Init other globals
         keyboardRunnable = new KeyboardRunnable(getContext(), etName);
-
-        // Display Keyboard
-        keyboardRunnable.Post(0);
     }
 }
