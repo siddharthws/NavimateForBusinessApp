@@ -41,6 +41,7 @@ public class LocationUpdateHelper {
     public static final int ERROR_UPDATES_ERROR                 = 5;
     public static final int ERROR_PERMISSION_REQUIRED           = 6;
     public static final int ERROR_API_CLIENT                    = 7;
+    public static final int ERROR_CURRENT_LOC_UNAVAILABLE       = 8;
 
     // Timeout for Result Callbacks
     private static final int RESULT_CB_TIMEOUT_MS = 10000;
@@ -341,10 +342,10 @@ public class LocationUpdateHelper {
                         if (IsUpdating()) {
                             ReportSuccess(LocationCache.instance.GetLocation());
                         } else {
-                            ReportError(ERROR_UPDATES_ERROR, status);
+                            ReportError(ERROR_CURRENT_LOC_UNAVAILABLE, status);
                         }
                     } else {
-                        ReportError(ERROR_UPDATES_ERROR, status);
+                        ReportError(ERROR_CURRENT_LOC_UNAVAILABLE, status);
                     }
                 }
             }

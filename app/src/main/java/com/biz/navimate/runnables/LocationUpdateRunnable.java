@@ -3,6 +3,7 @@ package com.biz.navimate.runnables;
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentSender;
+import android.widget.Toast;
 
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.application.App;
@@ -39,11 +40,14 @@ public class LocationUpdateRunnable extends     BaseRunnable
     }
 
     // ----------------------- Globals ----------------------- //
+    private Context context = null;
     private LocationUpdateHelper locationUpdateHelper = null;
 
     // ----------------------- Constructor ----------------------- //
     public LocationUpdateRunnable(Context context) {
         super();
+
+        this.context = context;
 
         // Initialize Update Helper class
         locationUpdateHelper = new LocationUpdateHelper(context);
@@ -174,6 +178,12 @@ public class LocationUpdateRunnable extends     BaseRunnable
                 {
                     Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
                 }
+                break;
+            }
+            case LocationUpdateHelper.ERROR_CURRENT_LOC_UNAVAILABLE:
+            {
+                // Show error toast
+                Dbg.Toast(context, "Your location is being enabled...", Toast.LENGTH_SHORT);
                 break;
             }
             default:
