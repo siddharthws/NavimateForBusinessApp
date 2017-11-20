@@ -54,6 +54,7 @@ public class TaskInfoDialog     extends     BaseDialog
         // Find Views
         ui.tvTitle = (TextView) ui.dialogView.findViewById(R.id.tv_title);
         ui.tvDescription = (TextView) ui.dialogView.findViewById(R.id.tv_description);
+        ui.tvAddress = (TextView) ui.dialogView.findViewById(R.id.tv_address);
         ui.btnPhone = (Button) ui.dialogView.findViewById(R.id.btn_phone);
         ui.tvEmail = (TextView) ui.dialogView.findViewById(R.id.tv_email);
         ui.btnSubmit = (Button) ui.dialogView.findViewById(R.id.btn_submit_form);
@@ -68,6 +69,7 @@ public class TaskInfoDialog     extends     BaseDialog
         // Set Text
         ui.tvTitle.setText(currentData.task.lead.title);
         ui.tvDescription.setText(currentData.task.lead.description);
+        ui.tvAddress.setText(currentData.task.lead.address);
         ui.btnPhone.setText(currentData.task.lead.phone);
         ui.tvEmail.setText(currentData.task.lead.email);
 
