@@ -15,6 +15,7 @@ import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormField;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.views.RlDialog;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,14 +43,16 @@ public class SubmitFormTask extends BaseServerTask {
     private Form form;
     private int taskId;
     private boolean bCloseTask = false;
+    private LatLng location = null;
 
     // ----------------------- Constructor ----------------------- //
-    public SubmitFormTask(Context parentContext, Form form, int taskId, boolean bCloseTask)
+    public SubmitFormTask(Context parentContext, Form form, int taskId, LatLng location, boolean bCloseTask)
     {
         super(parentContext, Constants.Server.URL_GET_TASKS);
         this.form = form;
         this.taskId = taskId;
         this.bCloseTask = bCloseTask;
+        this.location = location;
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -74,6 +77,8 @@ public class SubmitFormTask extends BaseServerTask {
             }
             requestJson.put(Constants.Server.KEY_DATA, fields);
             requestJson.put(Constants.Server.KEY_CLOSE_TASK, bCloseTask);
+            requestJson.put(Constants.Server.KEY_LATITUDE, location.latitude);
+            requestJson.put(Constants.Server.KEY_LONGITUDE, location.longitude);
         }
         catch (JSONException e)
         {

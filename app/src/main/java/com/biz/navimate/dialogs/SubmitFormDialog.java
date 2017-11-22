@@ -11,14 +11,19 @@ import android.widget.LinearLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.misc.LocationCache;
+import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormField;
+import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SubmitFormTask;
 import com.biz.navimate.server.UploadPhotoTask;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -27,7 +32,8 @@ import java.util.ArrayList;
  */
 
 public class SubmitFormDialog   extends     BaseDialog
-                                implements  View.OnClickListener, IfaceServer.UploadPhoto {
+                                implements  View.OnClickListener, IfaceServer.UploadPhoto,
+                                            LocationUpdateRunnable.IfaceRunnableLocationInit {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "SUBMIT_FORM_DIALOG";
 
@@ -47,13 +53,17 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private DialogHolder.SubmitForm ui = null;
+    private LatLng submitLocation = null;
     private ArrayList<ImageUpload> imageUploads = null;
     private int imageUploadIndex = 0;
+    private LocationUpdateRunnable locUpdateRunnable = null;
 
     // ----------------------- Constructor ----------------------- //
     public SubmitFormDialog(Context context)
     {
         super(context);
+        locUpdateRunnable = new LocationUpdateRunnable(context);
+        locUpdateRunnable.SetInitListener(this);
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -122,7 +132,9 @@ public class SubmitFormDialog   extends     BaseDialog
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         ArrayList<FormField.Base> fields = new ArrayList<>();
         for (RlFormField rlField : ui.fields) {
+            // Add to fields array
             FormField.Base field = rlField.GetField();
+            fields.add(field);
 
             // Check for images
             if (field.type.equals(FormField.TYPE_PHOTO)) {
@@ -142,13 +154,33 @@ public class SubmitFormDialog   extends     BaseDialog
                                                         signField));
                 }
             }
-
-            // Add to fields array
-            fields.add(rlField.GetField());
         }
 
         // Update Form Object
         currentData.form = new Form(currentData.form.name, fields);
+
+        // Check for current location
+        if (new LocationUpdateHelper(context).IsUpdating()) {
+            onLocationInitSuccess(LocationCache.instance.GetLocation());
+        } else {
+            locUpdateRunnable.Post(0);
+        }
+    }
+
+    @Override
+    public void onLocationInitSuccess(LocationObj location) {
+        submitLocation = location.latlng;
+
+        if (imageUploads.size() > 0) {
+            UploadImages();
+        } else {
+            SubmitForm();
+        }
+    }
+
+    @Override
+    public void onLocationInitError() {
+        submitLocation = new LatLng(0, 0);
 
         if (imageUploads.size() > 0) {
             UploadImages();
@@ -160,7 +192,7 @@ public class SubmitFormDialog   extends     BaseDialog
     private void SubmitForm() {
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         boolean bCloseTask = ui.cbCloseTask.isChecked();
-        SubmitFormTask submitTask = new SubmitFormTask(context, currentData.form, currentData.taskId, bCloseTask);
+        SubmitFormTask submitTask = new SubmitFormTask(context, currentData.form, currentData.taskId, submitLocation, bCloseTask);
         submitTask.execute();
     }
 
