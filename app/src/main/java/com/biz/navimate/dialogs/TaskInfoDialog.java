@@ -56,6 +56,7 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.tvDescription = (TextView) ui.dialogView.findViewById(R.id.tv_description);
         ui.tvAddress = (TextView) ui.dialogView.findViewById(R.id.tv_address);
         ui.btnPhone = (Button) ui.dialogView.findViewById(R.id.btn_phone);
+        ui.btnMaps = (Button) ui.dialogView.findViewById(R.id.btn_maps);
         ui.tvEmail = (TextView) ui.dialogView.findViewById(R.id.tv_email);
         ui.btnSubmit = (Button) ui.dialogView.findViewById(R.id.btn_submit_form);
         ui.btnDismiss = (Button) ui.dialogView.findViewById(R.id.btn_dismiss);
@@ -70,13 +71,14 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.tvTitle.setText(currentData.task.lead.title);
         ui.tvDescription.setText(currentData.task.lead.description);
         ui.tvAddress.setText(currentData.task.lead.address);
-        ui.btnPhone.setText(currentData.task.lead.phone);
+        ui.btnPhone.setText("Call : " + currentData.task.lead.phone);
         ui.tvEmail.setText(currentData.task.lead.email);
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);
         ui.btnDismiss.setOnClickListener(this);
         ui.btnPhone.setOnClickListener(this);
+        ui.btnMaps.setOnClickListener(this);
     }
 
     @Override
@@ -108,6 +110,16 @@ public class TaskInfoDialog     extends     BaseDialog
                         Dbg.error(TAG, "Current Activity is null. Cannot ask permission");
                     }
                 }
+                break;
+            }
+            case R.id.btn_maps: {
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                                            Uri.parse(  "geo:" + currentData.task.lead.position.latitude + "," +
+                                                                 currentData.task.lead.position.longitude +
+                                                         "?q=" + currentData.task.lead.position.latitude + "," +
+                                                                 currentData.task.lead.position.longitude +
+                                                           "(" + currentData.task.lead.title + ")"));
+                context.startActivity(intent);
                 break;
             }
         }

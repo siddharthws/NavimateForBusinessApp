@@ -71,6 +71,7 @@ public class DialogHolder {
         public TextView tvDescription = null;
         public TextView tvAddress = null;
         public Button btnPhone = null;
+        public Button btnMaps = null;
         public TextView tvEmail = null;
         public Button btnSubmit = null;
         public Button btnDismiss = null;

@@ -49,31 +49,42 @@
             android:layout_marginTop="@dimen/m_small"
             android:textSize="@dimen/textsize_primary_small"/>
 
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_address"
+            android:layout_marginTop="@dimen/m_small"
+            android:textSize="@dimen/textsize_primary_small"/>
+
         <Button
             android:id="@+id/btn_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_address"
+            android:layout_below="@id/tv_email"
+            android:layout_marginTop="@dimen/m_small"
+            android:paddingRight="@dimen/m_small"
+            android:paddingLeft="@dimen/m_small"
+            android:textColor="@android:color/white"
+            android:background="@drawable/selector_btn_bg_colored_shadow"/>
+
+        <Button
+            android:id="@+id/btn_maps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_phone"
             android:layout_marginTop="@dimen/m_small"
             android:paddingRight="@dimen/m_small"
             android:paddingLeft="@dimen/m_small"
             android:textColor="@android:color/white"
             android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:textSize="@dimen/textsize_primary_small"/>
-
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_phone"
-            android:layout_marginTop="@dimen/m_small"
-            android:textSize="@dimen/textsize_primary_small"/>
+            android:text="Open With Maps"/>
 
         <Button
             android:id="@+id/btn_submit_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_email"
+            android:layout_below="@id/btn_maps"
             android:layout_marginTop="@dimen/m_small"
             android:textColor="@android:color/white"
             android:background="@drawable/selector_btn_bg_colored_shadow"
