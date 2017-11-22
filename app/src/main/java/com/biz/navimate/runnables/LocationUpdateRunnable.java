@@ -131,7 +131,11 @@ public class LocationUpdateRunnable extends     BaseRunnable
                         @Override
                         public void onGpsEnableFailure()
                         {
-                            Dbg.error(TAG, "Failed to enable GPS");
+                            // Call Init Erorr Listener
+                            if (initListener != null)
+                            {
+                                initListener.onLocationInitError();
+                            }
                         }
                     });
                     if (status.hasResolution())
@@ -156,6 +160,12 @@ public class LocationUpdateRunnable extends     BaseRunnable
                 else
                 {
                     Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
+
+                    // Call Init Error Listener
+                    if (initListener != null)
+                    {
+                        initListener.onLocationInitError();
+                    }
                 }
                 break;
             }
@@ -176,7 +186,11 @@ public class LocationUpdateRunnable extends     BaseRunnable
                         @Override
                         public void onLocationPermissionFailure()
                         {
-                            Dbg.error(TAG, "Failed to get location permission");
+                            // Call Init Error Listener
+                            if (initListener != null)
+                            {
+                                initListener.onLocationInitError();
+                            }
                         }
                     });
                     currentActivity.RequestPermission(new String[] {Manifest.permission.ACCESS_FINE_LOCATION});
@@ -184,6 +198,12 @@ public class LocationUpdateRunnable extends     BaseRunnable
                 else
                 {
                     Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
+
+                    // Call Init Error Listener
+                    if (initListener != null)
+                    {
+                        initListener.onLocationInitError();
+                    }
                 }
                 break;
             }
@@ -201,7 +221,13 @@ public class LocationUpdateRunnable extends     BaseRunnable
             }
             default:
             {
-                Dbg.error(TAG, "Unserviceable SetAlarm Error");
+                Dbg.error(TAG, "Unserviceable Init Error");
+
+                // Call Init Error Listener
+                if (initListener != null)
+                {
+                    initListener.onLocationInitError();
+                }
                 break;
             }
         }

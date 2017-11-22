@@ -2,7 +2,8 @@ package com.biz.navimate.misc;
 
 import android.Manifest;
 import android.content.Context;
-import android.location.Location;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -15,7 +16,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
@@ -316,7 +316,7 @@ public class LocationUpdateHelper {
         }
     }
 
-    private void LocationUpdateResult(Status status)
+    private void LocationUpdateResult(final Status status)
     {
         Dbg.info(TAG, "Location Update Result Received");
 
@@ -330,24 +330,42 @@ public class LocationUpdateHelper {
             // Check if Location is available through Last Location API
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED)
             {
-                if (IsUpdating())
-                {
-                    ReportSuccess(LocationCache.instance.GetLocation());
-                }
-                else
-                {
-                    Location lastKnowLocation = LocationServices.FusedLocationApi.getLastLocation(GoogleApiClientHolder.instance.apiClient);
-                    if (lastKnowLocation != null) {
-                        LocationCache.instance.onLocationChanged(lastKnowLocation);
-                        if (IsUpdating()) {
+                // Start Async Task to wait for location update
+                AsyncTask<Void, Void, Boolean> locWaitTask = new AsyncTask<Void, Void, Boolean>() {
+                    @Override
+                    protected Boolean doInBackground(Void... params) {
+                        Boolean bSuccess = false;
+                        long startTimeMs = System.currentTimeMillis();
+                        long currentTimeMs = 0L;
+
+                        // Wait for maxmum 10 seconds for location enablement
+                        do {
+                            // Check if location started updating
+                            if (IsUpdating()) {
+                                bSuccess = true;
+                            }
+
+                            // Sleep for 1 second before trying again
+                            if (!bSuccess) {
+                                SystemClock.sleep(1000);
+                            }
+
+                            currentTimeMs = System.currentTimeMillis();
+                        } while (!bSuccess && ((currentTimeMs - startTimeMs) < 10000));
+
+                        return bSuccess;
+                    }
+
+                    @Override
+                    public void onPostExecute(Boolean bSuccess) {
+                        if (bSuccess) {
                             ReportSuccess(LocationCache.instance.GetLocation());
                         } else {
                             ReportError(ERROR_CURRENT_LOC_UNAVAILABLE, status);
                         }
-                    } else {
-                        ReportError(ERROR_CURRENT_LOC_UNAVAILABLE, status);
                     }
-                }
+                };
+                locWaitTask.execute();
             }
         }
     }
