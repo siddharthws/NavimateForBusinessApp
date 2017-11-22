@@ -265,6 +265,12 @@ public class NvmMapFragment     extends     BaseFragment
                     // Perform Button Click Logic Again if location was initialized succesfully
                     ButtonClickCurrentLocation();
                 }
+
+                @Override
+                public void onLocationInitError()
+                {
+                    // Do Nothing
+                }
             });
 
             // Attempt to start location updates

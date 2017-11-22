@@ -31,6 +31,7 @@ public class LocationUpdateRunnable extends     BaseRunnable
     // ----------------------- Interfaces ----------------------- //
     public interface IfaceRunnableLocationInit {
         void onLocationInitSuccess(LocationObj location);
+        void onLocationInitError();
     }
 
     private IfaceRunnableLocationInit initListener = null;
@@ -105,6 +106,12 @@ public class LocationUpdateRunnable extends     BaseRunnable
             {
                 Dialog.Alert dialogData = new Dialog.Alert("Failed to get location : " + errorCode);
                 RlDialog.Show(dialogData);
+
+                // Call Init Erorr Listener
+                if (initListener != null)
+                {
+                    initListener.onLocationInitError();
+                }
                 break;
             }
             case LocationUpdateHelper.ERROR_RESOLUTION_REQUIRED:
@@ -184,6 +191,12 @@ public class LocationUpdateRunnable extends     BaseRunnable
             {
                 // Show error toast
                 Dbg.Toast(context, "Your location is being enabled...", Toast.LENGTH_SHORT);
+
+                // Call Init Error Listener
+                if (initListener != null)
+                {
+                    initListener.onLocationInitError();
+                }
                 break;
             }
             default:
