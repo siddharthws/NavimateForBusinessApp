@@ -33,11 +33,11 @@ public class IfaceResult {
 
     public interface Photo
     {
-        void onPhotoResult(Bitmap photo);
+        void onPhotoResult();
     }
 
     public interface Signature
     {
-        void onSignatureResult(Bitmap signature);
+        void onSignatureResult(String path);
     }
 }

@@ -1,7 +1,6 @@
 package com.biz.navimate.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
 
@@ -68,15 +67,12 @@ public class SignatureActivity extends BaseActivity
     }
 
     public void ButtonClickSave(View view) {
-        // Draw Bitmap using Signature View contents
-        Bitmap signatureBitmap = Statics.GetBitmapFromView(ui.vwSignature);
+        // Get image file from Signature View contents
+        String compressedFilePath = Statics.GetFileFromView(ui.vwSignature);
 
-        // Compress Bitmap
-        Bitmap compressedBitmap = Statics.ScaleBitmap(signatureBitmap);
-
-        // Send Bitmap as result
+        // Send file path as result
         Intent intent = new Intent();
-        intent.putExtra(Constants.Extras.SIGNATURE_BITMAP, compressedBitmap);
+        intent.putExtra(Constants.Extras.SIGNATURE_IMAGE_PATH, compressedFilePath);
         setResult(RESULT_OK, intent);
 
         // Finish this activity

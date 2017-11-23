@@ -1,6 +1,10 @@
 package com.biz.navimate.server;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -33,12 +37,26 @@ public class MultipartRequestBody extends RequestBody {
     // ----------------------- Abstracts ----------------------- //
     // ----------------------- Globals ----------------------- //
     private byte[] rawBytes = null;
-    private String contentType = "";
 
     // ----------------------- Constructor ----------------------- //
-    public MultipartRequestBody (byte[] rawBytes, String contentType) {
-        this.rawBytes = rawBytes;
-        this.contentType = contentType;
+    public MultipartRequestBody (String filePath) {
+        // Convert file to bytes
+        File file = new File(filePath);
+        if (file.exists()) {
+            int size = (int) file.length();
+            rawBytes = new byte[size];
+            try {
+                BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                buf.read(rawBytes, 0, rawBytes.length);
+                buf.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            rawBytes = new byte[0];
+        }
     }
     // ----------------------- Overrides ----------------------- //
     @Override
@@ -48,7 +66,7 @@ public class MultipartRequestBody extends RequestBody {
 
     @Override
     public MediaType contentType() {
-        return MediaType.parse(contentType);
+        return MediaType.parse("image/jpeg");
     }
 
     @Override

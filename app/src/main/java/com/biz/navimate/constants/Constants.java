@@ -25,8 +25,8 @@ public class Constants {
     // Map related constants
     public class Extras {
         // Activity Result Extras
-        public static final String LEAD_PICKER      = "leadPicker";
-        public static final String SIGNATURE_BITMAP = "signature_ba";
+        public static final String LEAD_PICKER          = "leadPicker";
+        public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
     }
 
     // User Preferences related constants

@@ -378,11 +378,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
-                        Bundle extras = resumeResultIntent.getExtras();
-                        if (extras != null) {
-                            Bitmap imageBitmap = (Bitmap) extras.get("data");
-                            photoListener.onPhotoResult(imageBitmap);
-                        }
+                        photoListener.onPhotoResult();
                     }
                 }
                 break;
@@ -395,8 +391,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                     {
                         Bundle extras = resumeResultIntent.getExtras();
                         if (extras != null) {
-                            Bitmap imageBitmap = (Bitmap) extras.get(Constants.Extras.SIGNATURE_BITMAP);
-                            signListener.onSignatureResult(imageBitmap);
+                            String imagePath = extras.getString(Constants.Extras.SIGNATURE_IMAGE_PATH);
+                            signListener.onSignatureResult(imagePath);
                         }
                     }
                 }

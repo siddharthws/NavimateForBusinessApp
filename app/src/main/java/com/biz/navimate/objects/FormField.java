@@ -266,14 +266,14 @@ public class FormField {
     public static class Photo extends Base
     {
         // List of strings to store
-        public String filename = null;
-        public Bitmap photo = null;
+        public String filename = "";
+        public String imagePath = "";
 
-        public Photo (String title, String filename, Bitmap photo)
+        public Photo (String title, String filename, String imagePath)
         {
             super(TYPE_PHOTO, title);
             this.filename = filename;
-            this.photo = photo;
+            this.imagePath = imagePath;
         }
 
         // Create object from JSON
@@ -300,14 +300,14 @@ public class FormField {
     public static class Signature extends Base
     {
         // List of strings to store
-        public String filename = null;
-        public Bitmap signature = null;
+        public String filename = "";
+        public String imagePath = "";
 
-        public Signature (String title, String filename, Bitmap signature)
+        public Signature (String title, String filename, String imagePath)
         {
             super(TYPE_SIGNATURE, title);
             this.filename = filename;
-            this.signature = signature;
+            this.imagePath = imagePath;
         }
 
         // Create object from JSON

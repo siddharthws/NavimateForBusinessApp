@@ -1,9 +1,13 @@
 package com.biz.navimate.views;
 
+import java.io.File;
+
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -200,25 +204,39 @@ public class RlFormField extends RelativeLayout {
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 BaseActivity activity = App.GetCurrentActivity();
                 if ((activity != null) && (takePictureIntent.resolveActivity(activity.getPackageManager()) != null)) {
-                    // Set Photo Result Listener
-                    activity.SetPhotoResultListener(new IfaceResult.Photo() {
-                        @Override
-                        public void onPhotoResult(Bitmap photo) {
-                            // Scale Photo
-                            Bitmap scaledPhoto = Statics.ScaleBitmap(photo);
+                    // Create the File where the photo should go
+                    final File photoFile = Statics.CreateTempImageFile(getContext());
 
-                            // Set field cache
-                            ((FormField.Photo) field).photo = scaledPhoto;
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(  getContext(),
+                                                                    "com.biz.navimate.fileprovider",
+                                                                    photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
-                            // Preview photo in dialog
-                            tvPhoto.setVisibility(GONE);
-                            ivPhoto.setVisibility(VISIBLE);
-                            ivPhoto.setImageBitmap(scaledPhoto);
-                        }
-                    });
+                        // Set Photo Result Listener
+                        activity.SetPhotoResultListener(new IfaceResult.Photo() {
+                            @Override
+                            public void onPhotoResult() {
+                                if (photoFile.exists()) {
+                                    // Scale Image File
+                                    String compressedFile = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
 
-                    // Start Image Capture Intent
-                    activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
+                                    // Set field cache
+                                    ((FormField.Photo) field).imagePath = compressedFile;
+
+                                    // Preview photo in dialog
+                                    tvPhoto.setVisibility(GONE);
+                                    ivPhoto.setVisibility(VISIBLE);
+                                    ivPhoto.setImageBitmap(BitmapFactory.decodeFile(((FormField.Photo) field).imagePath));
+                                }
+                            }
+                        });
+
+                        activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
+                    } else {
+                        Dbg.Toast(getContext(), "Error while accesing photo directory...", Toast.LENGTH_SHORT);
+                    }
                 } else {
                     Dbg.Toast(getContext(), "Camera App not available...", Toast.LENGTH_SHORT);
                 }
@@ -234,17 +252,14 @@ public class RlFormField extends RelativeLayout {
                 if (activity != null) {
                     activity.SetSignResultListener(new IfaceResult.Signature() {
                         @Override
-                        public void onSignatureResult(Bitmap signature) {
-                            // Scale Photo
-                            Bitmap scaledSign = Statics.ScaleBitmap(signature);
-
+                        public void onSignatureResult(String path) {
                             // Set field cache
-                            ((FormField.Signature) field).signature = scaledSign;
+                            ((FormField.Signature) field).imagePath = path;
 
                             // Preview photo in dialog
                             tvSignature.setVisibility(GONE);
                             ivSignature.setVisibility(VISIBLE);
-                            ivSignature.setImageBitmap(scaledSign);
+                            ivSignature.setImageBitmap(BitmapFactory.decodeFile(((FormField.Signature) field).imagePath));
                         }
                     });
 

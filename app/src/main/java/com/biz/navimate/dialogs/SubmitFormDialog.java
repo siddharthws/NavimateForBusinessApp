@@ -25,6 +25,7 @@ import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -39,12 +40,12 @@ public class SubmitFormDialog   extends     BaseDialog
 
     // ----------------------- Classes ---------------------------//
     private class ImageUpload {
-        public Bitmap image;
+        public String path;
         public String waitingText;
         public FormField.Base field;
 
-        public ImageUpload(Bitmap image, String waitingText, FormField.Base field) {
-            this.image = image;
+        public ImageUpload(String path, String waitingText, FormField.Base field) {
+            this.path = path;
             this.waitingText = waitingText;
             this.field = field;
         }
@@ -140,16 +141,16 @@ public class SubmitFormDialog   extends     BaseDialog
             if (field.type.equals(FormField.TYPE_PHOTO)) {
                 FormField.Photo photoField = (FormField.Photo) field;
 
-                if ((photoField.photo != null) && (photoField.photo.getByteCount() > 0)) {
-                    imageUploads.add(new ImageUpload(   photoField.photo,
+                if ((photoField.imagePath.length() > 0) && (new File(photoField.imagePath).exists())) {
+                    imageUploads.add(new ImageUpload(   photoField.imagePath,
                                                         "Uploading " + photoField.title + "...",
                                                         photoField));
                 }
             } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
                 FormField.Signature signField = (FormField.Signature) field;
 
-                if ((signField.signature != null) && (signField.signature.getByteCount() > 0)) {
-                    imageUploads.add(new ImageUpload(   signField.signature,
+                if ((signField.imagePath.length() > 0) && (new File(signField.imagePath).exists())) {
+                    imageUploads.add(new ImageUpload(   signField.imagePath,
                                                         "Uploading " + signField.title + "...",
                                                         signField));
                 }
@@ -198,7 +199,7 @@ public class SubmitFormDialog   extends     BaseDialog
 
     private void UploadImages() {
         ImageUpload data = imageUploads.get(imageUploadIndex);
-        UploadPhotoTask uploadPhotoTask = new UploadPhotoTask(context, data.image, data.waitingText);
+        UploadPhotoTask uploadPhotoTask = new UploadPhotoTask(context, data.path, data.waitingText);
         uploadPhotoTask.SetListener(this);
         uploadPhotoTask.execute();
     }

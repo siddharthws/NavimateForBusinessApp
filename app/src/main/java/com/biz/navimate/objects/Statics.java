@@ -5,19 +5,27 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Toast;
 
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.debug.Dbg;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Siddharth on 27-09-2017.
@@ -190,8 +198,30 @@ public class Statics {
         return null;
     }
 
-    // Bitmap related APIs
-    public static Bitmap GetBitmapFromView(View view) {
+    // File related APIs
+    public static File CreateTempImageFile(Context context) {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+        } catch (IOException e) {
+            Dbg.error(TAG, "Error while creating file");
+            Dbg.stack(e);
+        }
+        return image;
+    }
+
+    public static String GetFileFromView(View view) {
+        Context context = view.getContext();
+
+        // Create Bitmap
         Bitmap bitmap = Bitmap.createBitmap(    view.getWidth(),
                                                 view.getHeight(),
                                                 Bitmap.Config.ARGB_8888);
@@ -202,21 +232,92 @@ public class Statics {
                     view.getRight(),
                     view.getBottom());
         view.draw(canvas);
-        return bitmap;
+
+        // Save bitmap to file
+        File file = CreateTempImageFile(context);
+        if (file == null) {
+            Dbg.Toast(context, "Could not create Image... ", Toast.LENGTH_SHORT);
+            return null;
+        }
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+            fOut.flush();
+        } catch (IOException e) {
+            Dbg.error(TAG, "Error while saving to compressed file");
+            Dbg.stack(e);
+        }
+        finally {
+            try {
+                fOut.close();
+            } catch (IOException e) {
+                Dbg.error(TAG, "Error while closing file output stream");
+                Dbg.stack(e);
+            }
+
+            bitmap.recycle();
+        }
+
+        // Scale File
+         String compressedFile = ScaleImageFile(context, file.getAbsolutePath());
+
+        return compressedFile;
     }
 
-    public static Bitmap ScaleBitmap(Bitmap origBitmap) {
-        // Get scaling factor form size
-        double maxSizeB = 256 * 1024; // 256 KB Limit
-        double origSizeB = origBitmap.getByteCount();
-        double scalingFactor = Math.sqrt(origSizeB / maxSizeB);
+    public static String ScaleImageFile(Context context, String path) {
+        File dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File origFile = new File(path);
+        long maxSizeB = 512 * 1024;
 
-        // Get Scaled heights
-        int scaledHeight = (int) (origBitmap.getHeight() / scalingFactor);
-        int scaledWidth  = (int) (origBitmap.getWidth() / scalingFactor);
+        // Validate File
+        if (!origFile.exists()) {
+            return null;
+        }
 
-        // Scale bitmap
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(origBitmap, scaledWidth, scaledHeight, true);
-        return scaledBitmap;
+        // Get current File size
+        long origFileSize = origFile.length();
+
+        // Find out required scaling factor to bring size in range
+        int inSampleSize = 1;
+        long scaledFileSize = origFileSize;
+        for (int i = 1; scaledFileSize > maxSizeB; i++) {
+            inSampleSize = (int) Math.pow(2, i);
+            scaledFileSize = origFileSize / (inSampleSize * inSampleSize);
+            Dbg.info(TAG, "New Scaled = " + scaledFileSize);
+        }
+
+        // Decode bitmap from file usign inSampleSize
+        Dbg.info(TAG, "Final Sample Size = " + inSampleSize);
+        BitmapFactory.Options bmpOptions = new BitmapFactory.Options();
+        bmpOptions.inSampleSize = inSampleSize;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, bmpOptions);
+
+        // Save contents to new file
+        File compressedFile = new File(dir, "FLL_" + origFile.getName());
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(compressedFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
+            fOut.flush();
+            origFile.delete();
+
+            Dbg.info(TAG, "Compressed File Size = " + compressedFile.length());
+        } catch (IOException e) {
+            Dbg.error(TAG, "Error while saving to compressed file");
+            Dbg.stack(e);
+        }
+        finally {
+            try {
+                fOut.close();
+            } catch (IOException e) {
+                Dbg.error(TAG, "Error while closing file output stream");
+                Dbg.stack(e);
+            }
+
+            bitmap.recycle();
+        }
+
+        return compressedFile.getAbsolutePath();
     }
 }

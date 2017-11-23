@@ -1,7 +1,6 @@
 package com.biz.navimate.server;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
@@ -10,8 +9,6 @@ import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONException;
-
-import java.io.ByteArrayOutputStream;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -33,15 +30,15 @@ public class UploadPhotoTask extends BaseServerTask {
     }
 
     // ----------------------- Globals ----------------------- //
-    private Bitmap photo = null;
+    private String imagePath = null;
     private String progressText = "";
     private String uploadedFilename = "";
 
     // ----------------------- Constructor ----------------------- //
-    public UploadPhotoTask(Context parentContext, Bitmap photo, String progressText)
+    public UploadPhotoTask(Context parentContext, String imagePath, String progressText)
     {
         super(parentContext, Constants.Server.URL_UPLOAD_PHOTO);
-        this.photo = photo;
+        this.imagePath = imagePath;
         this.progressText = progressText;
     }
 
@@ -63,13 +60,8 @@ public class UploadPhotoTask extends BaseServerTask {
     @Override
     public Void doInBackground (Void... params)
     {
-        // Create image byte array
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        photo.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] ba = baos.toByteArray();
-
         // Create Multipart file body
-        MultipartRequestBody fileBody = new MultipartRequestBody(ba, "image/jpeg");
+        MultipartRequestBody fileBody = new MultipartRequestBody(imagePath);
         fileBody.SetProgressListener(new MultipartRequestBody.IfaceProgress() {
             @Override
             public void onMultipartProgressUpdate(int progress) {
