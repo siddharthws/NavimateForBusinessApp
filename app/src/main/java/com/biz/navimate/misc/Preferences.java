@@ -3,7 +3,9 @@ package com.biz.navimate.misc;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.AppVersionObject;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.User;
 
@@ -18,6 +20,9 @@ public class Preferences {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+    // App Information
+    private static AppVersionObject currentVersion;
+
     // User Information
     private static User user;
 
@@ -32,6 +37,10 @@ public class Preferences {
     {
         SharedPreferences sharedPref = context.getSharedPreferences(Constants.Preferences.PREF_FILE,
                                                                     Context.MODE_PRIVATE);
+
+        // Read App version information
+        currentVersion  =   new AppVersionObject(   App.GetVersionNumber(context),
+                                                    App.GetVersionName(context));
 
         // Read user information
         user = new User(sharedPref.getString(Constants.Preferences.KEY_NAME, ""),
@@ -90,6 +99,11 @@ public class Preferences {
     public static User GetUser ()
     {
         return user;
+    }
+
+    public static AppVersionObject GetVersion ()
+    {
+        return currentVersion;
     }
 
     public static LocationObj GetLocation()

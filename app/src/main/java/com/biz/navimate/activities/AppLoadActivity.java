@@ -8,6 +8,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.ColorHelper;
 import com.biz.navimate.misc.GoogleApiClientHolder;
 import com.biz.navimate.misc.IconGen;
@@ -15,6 +16,7 @@ import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
+import com.biz.navimate.server.CheckUpdatesTask;
 import com.biz.navimate.server.UpdateFcmTask;
 import com.biz.navimate.tasks.AppLoadTask;
 import com.biz.navimate.viewholders.ActivityHolder;
@@ -22,8 +24,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class AppLoadActivity    extends     BaseActivity
                                 implements  IfaceResult.Registration,
-                                            AppLoadTask.IfaceAppLoad
-{
+                                            AppLoadTask.IfaceAppLoad, IfaceServer.CheckUpdates {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "APP_LOAD_ACTIVITY";
 
@@ -64,32 +65,30 @@ public class AppLoadActivity    extends     BaseActivity
         // Initialize Preferences
         Preferences.Init(this);
 
-        // Initialize icon generator
-        IconGen.Init(this);
-        ColorHelper.Init(this);
-
         // Set Screen size
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         Statics.SCREEN_SIZE      = new Point(metrics.widthPixels, metrics.heightPixels);
         Statics.SCREEN_DENSITY   = metrics.density;
 
-        // Initialize Location Cache
-        LocationCache.InitInstance();
+        // Check for updates
+        CheckUpdatesTask checkUpdates = new CheckUpdatesTask(this);
+        checkUpdates.SetListener(this);
+        checkUpdates.execute();
+    }
 
-        // Initialize api client
-        GoogleApiClientHolder.InitInstance(this);
+    @Override
+    public void onUpdateRequired() {
+        // Start Playstore activity
+        Statics.OpenPlayStoreLink(this);
 
-        // Check if user is registered
-        if (Preferences.GetUser().appId == User.INVALID_ID) {
-            // Set Registration result listener
-            SetRegistrationResultListener(this);
+        // Close app
+        finish();
+    }
 
-            // Start Registration activity
-            RegistrationActivity.Start(this);
-        } else {
-            onRegisterSuccess();
-        }
+    @Override
+    public void onUpdateNotRequired() {
+        LoadApp();
     }
 
     // Registration Overrides
@@ -127,6 +126,29 @@ public class AppLoadActivity    extends     BaseActivity
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity) {
         BaseActivity.Start(activity, AppLoadActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
+    }
+
+    public void LoadApp() {
+        // Initialize icon generator
+        IconGen.Init(this);
+        ColorHelper.Init(this);
+
+        // Initialize Location Cache
+        LocationCache.InitInstance();
+
+        // Initialize api client
+        GoogleApiClientHolder.InitInstance(this);
+
+        // Check if user is registered
+        if (Preferences.GetUser().appId == User.INVALID_ID) {
+            // Set Registration result listener
+            SetRegistrationResultListener(this);
+
+            // Start Registration activity
+            RegistrationActivity.Start(this);
+        } else {
+            onRegisterSuccess();
+        }
     }
 
     // ----------------------- Private APIs ----------------------- //

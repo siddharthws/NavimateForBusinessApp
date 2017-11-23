@@ -1,6 +1,7 @@
 package com.biz.navimate.objects;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,9 +9,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Looper;
 import android.view.View;
 
+import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.debug.Dbg;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -122,6 +125,24 @@ public class Statics {
         int distanceM = (int) (dist * 1609.344);
 
         return distanceM;
+    }
+
+    // API to open playstore link
+    public static void OpenPlayStoreLink(BaseActivity parentActivity)
+    {
+        // Get App's package name
+        final String appPackageName = parentActivity.getPackageName();
+
+        try
+        {
+            // Try opening Play Store link
+            parentActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        }
+        catch (android.content.ActivityNotFoundException anfe)
+        {
+            // If play store is not available, open browser
+            parentActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     // Getter Setter APIs for current tasks

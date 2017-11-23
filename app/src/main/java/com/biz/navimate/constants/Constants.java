@@ -54,6 +54,7 @@ public class Constants {
         public static final String URL_REGISTER     = URL_BASE + "/api/reps/register";
         public static final String URL_TRACK        = URL_BASE + "/api/track/data";
         public static final String URL_UPLOAD_PHOTO = URL_BASE + "/api/photos/upload";
+        public static final String URL_CHECK_UPDATE = URL_BASE + "/api/app/update";
 
         // JSON Keys
         public static final String KEY_ID               = "id";
@@ -75,6 +76,8 @@ public class Constants {
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
         public static final String KEY_FILENAME         = "filename";
+        public static final String KEY_VERSION_CODE     = "versionCode";
+        public static final String KEY_UPDATE_REQUIRED  = "updateRequired";
     }
 
     // Map related constants

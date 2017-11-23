@@ -47,4 +47,10 @@ public class IfaceServer {
         void onPhotoUploaded(String fielname);
         void onPhotoUploadFailed();
     }
+
+    // Check Updates Task interface
+    public interface CheckUpdates {
+        void onUpdateRequired();
+        void onUpdateNotRequired();
+    }
 }

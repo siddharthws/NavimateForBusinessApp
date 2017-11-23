@@ -25,4 +25,9 @@
         android:layout_marginTop="@dimen/m_small"
         android:layout_centerHorizontal="true"/>
 
+    <com.biz.navimate.views.RlDialog
+        android:id="@+id/rl_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </RelativeLayout>
