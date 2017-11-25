@@ -67,7 +67,6 @@ public class CheckUpdatesTask extends BaseServerTask {
         // Call Super
         super.doInBackground(params);
 
-        Dbg.error(TAG, "Resposne = " + responseJson.toString());
         if (IsResponseValid()) {
             try {
                 bUpdateRequired = responseJson.getBoolean(Constants.Server.KEY_UPDATE_REQUIRED);
