@@ -105,7 +105,9 @@ public class HomescreenActivity     extends     BaseActivity
         // Check for location related issues and ask to resolve
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) ||
             (!Statics.IsGpsEnabled(this))){
-            locationUpdateRunnable.Post(0);
+            if (!RlDialog.IsShowing()) {
+                locationUpdateRunnable.Post(0);
+            }
         }
     }
 

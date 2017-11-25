@@ -111,6 +111,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     {
         // Call Super
         super.onStart();
+
+        // Set Dialog View to this activity's layotu
+        RlDialog.Set(holder.rlDialog);
     }
 
     @Override
