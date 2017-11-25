@@ -24,6 +24,7 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Route;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.tasks.DirectionsTask;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
@@ -45,6 +46,7 @@ public class RouteBuilderDialog     extends     BaseDialog
     private DialogHolder.RouteBuilder ui = null;
     private RemovableListAdapter adapter = null;
     private DirectionsTask directionsTask = null;
+    private LocationUpdateRunnable locationUpdateRunnable = null;
 
     // ----------------------- Constructor ----------------------- //
     public RouteBuilderDialog(Context context)
@@ -75,6 +77,9 @@ public class RouteBuilderDialog     extends     BaseDialog
     @Override
     protected void SetContentView()
     {
+        // Init Location Update runnable
+        locationUpdateRunnable = new LocationUpdateRunnable(context);
+
         // Get current data
         Dialog.RouteBuilder currentData = (Dialog.RouteBuilder) data;
 
@@ -173,7 +178,19 @@ public class RouteBuilderDialog     extends     BaseDialog
         if (Statics.IsPositionValid(currentLoc.latlng)) {
             checkpoints.add(0, currentLoc.latlng);
         } else {
-            Dbg.Toast(context, "Current location is not available", Toast.LENGTH_SHORT);
+            // Try enabling location
+            locationUpdateRunnable.SetInitListener(new LocationUpdateRunnable.IfaceRunnableLocationInit() {
+                @Override
+                public void onLocationInitSuccess(LocationObj location) {
+                    ButtonClickBuild();
+                }
+
+                @Override
+                public void onLocationInitError() {
+                    Dbg.Toast(context, "Current location is not available", Toast.LENGTH_SHORT);
+                }
+            });
+            locationUpdateRunnable.Post(0);
             return;
         }
 
