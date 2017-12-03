@@ -35,12 +35,14 @@ public class Constants {
         public static final String PREF_FILE        = "user_prefs";
 
         // Shared Preferences Keys
-        public static final String KEY_NAME         = "name";
-        public static final String KEY_PHONE        = "phone";
-        public static final String KEY_EMAIL        = "email";
-        public static final String KEY_APP_ID       = "app_id";
-        public static final String KEY_LATITUDE     = "latitude";
-        public static final String KEY_LONGITUDE    = "longitude";
+        public static final String KEY_NAME                     = "name";
+        public static final String KEY_PHONE                    = "phone";
+        public static final String KEY_EMAIL                    = "email";
+        public static final String KEY_APP_ID                   = "app_id";
+        public static final String KEY_LATITUDE                 = "latitude";
+        public static final String KEY_LONGITUDE                = "longitude";
+        public static final String KEY_MAP_TYPE                 = "pref_map_type";
+        public static final String KEY_MAP_TRAFFIC_OVERLAY      = "pref_map_traffic_overlay";
     }
 
     // Server related constants

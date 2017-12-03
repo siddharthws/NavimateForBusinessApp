@@ -17,4 +17,9 @@ public class IfaceDialog {
     public interface RouteBuilder {
         void onRouteBuilt(Route.Way route);
     }
+
+    // Confirm dialog interface
+    public interface MapSettings {
+        void onSettingsUpdated();
+    }
 }

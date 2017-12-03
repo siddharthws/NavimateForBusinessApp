@@ -18,6 +18,7 @@ import com.biz.navimate.maps.RouteHelper;
 import com.biz.navimate.maps.TouchableSupportMapFragment;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
@@ -63,7 +64,7 @@ public class NvmMapFragment     extends     BaseFragment
     private MarkerObj.CurrentLocation clMarker                     = null;
 
     // UI
-    private ImageButton ibCurrentLocation = null, ibRoute = null;
+    private ImageButton ibCurrentLocation = null, ibRoute = null, ibCustomize = null;
 
     // Helpers
     public MarkerHelper markerHelper                                = null;
@@ -106,6 +107,7 @@ public class NvmMapFragment     extends     BaseFragment
         supportMapFragment             = (TouchableSupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         ibCurrentLocation = (ImageButton) fragmentView.findViewById(R.id.ib_current_location);
         ibRoute = (ImageButton) fragmentView.findViewById(R.id.ib_route);
+        ibCustomize = (ImageButton) fragmentView.findViewById(R.id.ib_cusotmize);
 
         // Ready the map
         supportMapFragment.getMapAsync(this);
@@ -135,6 +137,13 @@ public class NvmMapFragment     extends     BaseFragment
             }
         });
 
+        ibCustomize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButtonClickCustomize();
+            }
+        });
+
         return fragmentView;
     }
 
@@ -148,6 +157,9 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Start map update callbacks
         mapUpdateHandler.postDelayed(this, MAP_UPDATE_CB_TIME_MS);
+
+        // Init Map settings
+        InitSettings();
     }
 
     @Override
@@ -179,6 +191,9 @@ public class NvmMapFragment     extends     BaseFragment
 
         // Set compass to bottom left (else it gets hidden by toolbar)
         InitMapCompassButton();
+
+        // Init Map settings
+        InitSettings();
     }
 
     // Called when map has been loaded on the screen
@@ -290,6 +305,17 @@ public class NvmMapFragment     extends     BaseFragment
         }));
     }
 
+    public void ButtonClickCustomize() {
+        // Launch route builder dialog
+        RlDialog.Show(new Dialog.MapSettings(new IfaceDialog.MapSettings() {
+            @Override
+            public void onSettingsUpdated() {
+                // Re-initalize settings
+                InitSettings();
+            }
+        }));
+    }
+
     // ----------------------- Private APIs ----------------------- //
     private void InitMapCompassButton()
     {
@@ -342,6 +368,14 @@ public class NvmMapFragment     extends     BaseFragment
         {
             Dbg.error(TAG, "Exception while initializing compass");
             Dbg.stack(ex);
+        }
+    }
+
+    private void InitSettings() {
+        if (googleMap != null)
+        {
+            this.googleMap.setMapType(Preferences.GetMapType());
+            this.googleMap.setTrafficEnabled(Preferences.GetMapTrafficOverlay());
         }
     }
 }

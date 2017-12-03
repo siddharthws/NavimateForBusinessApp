@@ -20,6 +20,7 @@ public class Dialog {
     public static final int TYPE_SUBMIT_FORM                = 5;
     public static final int TYPE_TASK_INFO                  = 6;
     public static final int TYPE_ROUTE_BUILDER              = 7;
+    public static final int TYPE_MAP_SETTINGS               = 8;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -108,7 +109,7 @@ public class Dialog {
 
         public SubmitForm(Form form, int taskId, boolean bCloseTask)
         {
-            super(TYPE_SUBMIT_FORM, false);
+            super(TYPE_SUBMIT_FORM, true);
 
             this.form = new Form(   form.name,
                                     form.fields);
@@ -123,7 +124,7 @@ public class Dialog {
 
         public TaskInfo(Task task)
         {
-            super(TYPE_TASK_INFO, false);
+            super(TYPE_TASK_INFO, true);
             this.task = task;
         }
     }
@@ -135,8 +136,19 @@ public class Dialog {
 
         public RouteBuilder(@NonNull ArrayList<Lead> leads, IfaceDialog.RouteBuilder listener)
         {
-            super(TYPE_ROUTE_BUILDER, false);
+            super(TYPE_ROUTE_BUILDER, true);
             this.leads = leads;
+            this.listener = listener;
+        }
+    }
+
+    public static class MapSettings extends Base
+    {
+        public IfaceDialog.MapSettings listener = null;
+
+        public MapSettings(IfaceDialog.MapSettings listener)
+        {
+            super(TYPE_MAP_SETTINGS, true);
             this.listener = listener;
         }
     }

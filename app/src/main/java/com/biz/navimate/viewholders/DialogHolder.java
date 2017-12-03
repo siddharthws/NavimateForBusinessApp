@@ -4,6 +4,7 @@ import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -85,5 +86,14 @@ public class DialogHolder {
 
         public Button btnBuild = null;
         public Button btnCancel = null;
+    }
+
+    public static class MapSettings extends Base
+    {
+        public ListView lvMapType = null;
+        public LinearLayout llTraffic = null;
+        public ImageView ivTrafficCheck = null;
+
+        public Button btnDone = null;
     }
 }
