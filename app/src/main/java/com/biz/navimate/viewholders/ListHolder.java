@@ -43,4 +43,12 @@ public class ListHolder {
         public View           vwItemSep;
         public View           vwGroupSep;
     }
+
+    // Generic list item
+    public static class Generic
+    {
+        public ImageView            ivStart;
+        public TvCalibri            tvText;
+        public ImageView            ivEnd;
+    }
 }

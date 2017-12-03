@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="20dp"
+    android:background="@android:color/transparent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/ivListIconStart"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:scaleType="fitXY"/>
+
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/textsize_primary_small"
+        android:maxLines="1"/>
+
+    <ImageView
+        android:id="@+id/ivListIconEnd"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginLeft="10dp"
+        android:scaleType="fitXY"/>
+
+</LinearLayout>

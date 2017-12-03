@@ -16,6 +16,8 @@ public class ListItem {
     public static final int TYPE_DRAWER_ITEM_SEPARATOR  = 4;
     public static final int TYPE_DRAWER_ITEM            = 5;
 
+    public static final int TYPE_GENERIC                = 6;
+
     // ----------------------- Classes ---------------------------//
     // Base Class for list Item Data
     public static abstract class Base
@@ -74,6 +76,29 @@ public class ListItem {
             this.title      = title;
             this.imageId    = imageId;
             this.action     = action;
+        }
+    }
+
+    // Generic list item with 2 images, 1 text and custom background color.
+    public static class Generic extends Base
+    {
+        // ----------------------- Globals ----------------------- //
+        public String title             = "";
+        public int id                   = 0;
+        public int startImageId         = 0;
+        public int endImageId           = 0;
+        public int background           = 0;
+
+        // ----------------------- Constructor ----------------------- //
+        public Generic(int id, String title, int startImageId, int endImageId, int background)
+        {
+            super(TYPE_GENERIC);
+
+            this.id                 = id;
+            this.title              = title;
+            this.startImageId       = startImageId;
+            this.endImageId         = endImageId;
+            this.background         = background;
         }
     }
 }
