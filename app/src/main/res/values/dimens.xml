@@ -17,4 +17,7 @@
     <dimen name="toolbar_button_height_width">40dp</dimen>
     <dimen name="toolbar_button_padding">6dp</dimen>
 
+    <!-- Drawer Layout -->
+    <dimen name="drawer_list_width">300dp</dimen>
+
 </resources>

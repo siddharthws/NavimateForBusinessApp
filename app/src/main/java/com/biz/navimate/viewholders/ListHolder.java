@@ -1,8 +1,10 @@
 package com.biz.navimate.viewholders;
 
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.biz.navimate.views.TvCalibri;
 
@@ -30,5 +32,15 @@ public class ListHolder {
     {
         public TvCalibri    tvTitle;
         public ImageButton  ibRemove;
+    }
+
+    // Drawer list item
+    public static class Drawer
+    {
+        public RelativeLayout rlDrawerItem;
+        public ImageView      ivIcon;
+        public TvCalibri      tvTitle;
+        public View           vwItemSep;
+        public View           vwGroupSep;
     }
 }

@@ -11,6 +11,11 @@ public class ListItem {
     public static final int TYPE_TASK                   = 1;
     public static final int TYPE_LEAD                   = 2;
 
+    // Drawer related List items
+    public static final int TYPE_DRAWER_GROUP_SEPARATOR = 3;
+    public static final int TYPE_DRAWER_ITEM_SEPARATOR  = 4;
+    public static final int TYPE_DRAWER_ITEM            = 5;
+
     // ----------------------- Classes ---------------------------//
     // Base Class for list Item Data
     public static abstract class Base
@@ -50,6 +55,25 @@ public class ListItem {
             super(TYPE_LEAD);
             this.lead               = lead;
             this.bSelected          = bSelected;
+        }
+    }
+
+    // Drawer list item
+    public static class Drawer extends Base
+    {
+        // ----------------------- Globals ----------------------- //
+        public String title             = "";
+        public int action               = 0;
+        public int imageId              = 0;
+
+        // ----------------------- Constructor ----------------------- //
+        public Drawer(int type, int action, String title, int imageId)
+        {
+            super(type);
+
+            this.title      = title;
+            this.imageId    = imageId;
+            this.action     = action;
         }
     }
 }

@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlDrawer;
 import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
@@ -40,6 +41,9 @@ public class ActivityHolder {
         // Map
         public NvmMapFragment mapFragment = null;
         public FrameLayout flMap = null;
+
+        // Drawer
+        public RlDrawer rlDrawer = null;
 
         // List
         public ListView lvTasks = null;
