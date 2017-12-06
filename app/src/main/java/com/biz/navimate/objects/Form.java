@@ -1,11 +1,5 @@
 package com.biz.navimate.objects;
 
-import com.biz.navimate.debug.Dbg;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 /**
@@ -21,29 +15,9 @@ public class Form extends DbObject {
     public ArrayList<FormField.Base> fields = null;
 
     // ----------------------- Constructor ----------------------- //
-    public Form (String name, JSONArray fields) {
-        super( DbObject.TYPE_FORM, DbObject.DB_ID_INVALID);
-        this.name = name;
-        InitFields(fields);
-    }
-
-    public Form (String name, ArrayList<FormField.Base> fields) {
-        super(DbObject.TYPE_FORM, DbObject.DB_ID_INVALID);
+    public Form (long id, long version, String name, ArrayList<FormField.Base> fields) {
+        super(DbObject.TYPE_FORM, version, id);
         this.name = name;
         this.fields = fields;
-    }
-
-    private void InitFields(JSONArray fieldsJson)
-    {
-        fields = new ArrayList<>();
-        try {
-            for (int j = 0; j < fieldsJson.length(); j++) {
-                JSONObject fieldJson = fieldsJson.getJSONObject(j);
-                fields.add(FormField.FromJson(fieldJson));
-            }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "JSON Exception while parsing tasks");
-            Dbg.stack(e);
-        }
     }
 }

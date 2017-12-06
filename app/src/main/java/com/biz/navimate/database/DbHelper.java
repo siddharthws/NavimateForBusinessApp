@@ -17,13 +17,15 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 1;
+    private static final int     DATABASE_VERSION                = 2;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
 
     // Table Class Objects for different table implementations
     public static FormTable             formTable               = null;
+    public static LeadTable             leadTable               = null;
+    public static TaskTable             taskTable               = null;
 
 
     // ----------------------- Constructor ----------------------- //
@@ -32,6 +34,8 @@ public class DbHelper extends SQLiteOpenHelper
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
         formTable              = new FormTable(this);
+        leadTable              = new LeadTable(this);
+        taskTable              = new TaskTable(this);
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -41,12 +45,22 @@ public class DbHelper extends SQLiteOpenHelper
         Dbg.info(TAG, "Creating database");
 
         db.execSQL(FormTable.CREATE_TABLE);
+        db.execSQL(LeadTable.CREATE_TABLE);
+        db.execSQL(TaskTable.CREATE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1)
     {
-       //placeholder
+        Dbg.info(TAG, "Upgrading database");
+
+       // Drop existing database
+        db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
+
+        // Run onCreate Again
+        onCreate(db);
     }
 
     // ----------------------- Public APIs ----------------------- //

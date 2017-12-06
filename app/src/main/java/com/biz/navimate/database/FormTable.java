@@ -31,12 +31,15 @@ public class FormTable extends BaseTable {
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     COLUMN_ID            + " INTEGER PRIMARY KEY," +
+                    COLUMN_VERSION       + " INTEGER," +
                     COLUMN_NAME          + " TEXT," +
                     COLUMN_DATA          + " TEXT)";
 
+    // ----------------------- Constructor ----------------------- //
     public FormTable(DbHelper dbHelper)
     {
         super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
+                                                    COLUMN_VERSION,
                                                     COLUMN_NAME,
                                                     COLUMN_DATA});
     }
@@ -45,26 +48,21 @@ public class FormTable extends BaseTable {
     @Override
     protected DbObject ParseToObject(Cursor cursor)
     {
-        Form form   =   null;
-        JSONArray fieldsToJson = null;
-
-        int dbId                       = cursor.getInt     (cursor.getColumnIndex(COLUMN_ID));
+        long   dbId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_ID));
+        long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         String name                    = cursor.getString  (cursor.getColumnIndex(COLUMN_NAME));
         String fields                  = cursor.getString  (cursor.getColumnIndex(COLUMN_DATA));
 
+        JSONArray fieldsToJson = new JSONArray();
         try
         {
             fieldsToJson  =   new JSONArray(fields);
         } catch (JSONException e) {
             Dbg.error(TAG, "Error while converting JSON Array to Form Filed");
+            Dbg.stack(e);
         }
 
-        if(fieldsToJson!=null)
-        {
-            form = new Form (name, fieldsToJson);
-            form.dbId   =   dbId;
-        }
-        return form;
+        return new Form (dbId, version, name, FormField.FromJsonArray(fieldsToJson));
     }
 
     @Override
@@ -74,6 +72,8 @@ public class FormTable extends BaseTable {
         ContentValues dbEntry = new ContentValues();
 
         // Enter values into Database
+        dbEntry.put(COLUMN_ID,             form.dbId);
+        dbEntry.put(COLUMN_VERSION,        form.version);
         dbEntry.put(COLUMN_NAME,           form.name);
 
         JSONArray fields = new JSONArray();
@@ -83,14 +83,12 @@ public class FormTable extends BaseTable {
                 fields.put(field.toJson());
             }
 
-        } catch (JSONException ex) {
+        } catch (JSONException e) {
             Dbg.error(TAG, "Error while converting fields to String");
+            Dbg.stack(e);
         }
-
         dbEntry.put(COLUMN_DATA,          fields.toString());
 
         return dbEntry;
     }
-
-
 }
