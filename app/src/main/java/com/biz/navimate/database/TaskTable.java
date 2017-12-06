@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Task;
 
 import java.util.ArrayList;

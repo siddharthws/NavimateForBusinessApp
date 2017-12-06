@@ -7,9 +7,12 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormField;
+import com.biz.navimate.objects.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.ArrayList;
 
 /**
  * Created by Sai_Kameswari on 08-11-2017.
@@ -42,6 +45,27 @@ public class FormTable extends BaseTable {
                                                     COLUMN_VERSION,
                                                     COLUMN_NAME,
                                                     COLUMN_DATA});
+    }
+
+    // ----------------------- Public APIs ----------------------- //
+    // API to get valid objects for syncing
+    public ArrayList<Form> GetFormTemplatesToSync() {
+        // Get list of open tasks
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+
+        // Create list of form templates in open tasks
+        ArrayList<Form> forms = new ArrayList<>();
+        for (Task task : openTasks) {
+            // Get Task form template
+            Form form = (Form) GetById(task.formTemplateId);
+
+            // Add to array
+            if (!forms.contains(form)) {
+                forms.add(form);
+            }
+        }
+
+        return forms;
     }
 
     // ----------------------- Private APIs ----------------------- //

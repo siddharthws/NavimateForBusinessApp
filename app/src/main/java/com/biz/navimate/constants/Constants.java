@@ -48,44 +48,70 @@ public class Constants {
     // Server related constants
     public static class Server {
         // URLs
-        //private static final String URL_BASE        = "http://192.168.1.10:8080";     // Debug
-        private static final String URL_BASE        = "http://34.214.114.8:8080";       // Release
-        public static final String URL_GET_PROFILE  = URL_BASE + "/api/reps/profile";
-        public static final String URL_GET_TASKS    = URL_BASE + "/api/reps/task";
-        public static final String URL_OTP_SMS      = URL_BASE + "/api/reps/otp";
-        public static final String URL_UPDATE_FCM   = URL_BASE + "/api/reps/fcm";
-        public static final String URL_REGISTER     = URL_BASE + "/api/reps/register";
-        public static final String URL_TRACK        = URL_BASE + "/api/track/data";
-        public static final String URL_UPLOAD_PHOTO = URL_BASE + "/api/photos/upload";
-        public static final String URL_CHECK_UPDATE = URL_BASE + "/api/app/update";
+        //private static final String URL_BASE            = "http://192.168.1.10:8080";     // Debug
+        private static final String URL_BASE            = "http://34.214.114.8:8080";       // Release
+        public static final String URL_GET_PROFILE      = URL_BASE + "/api/reps/profile";
+        public static final String URL_OTP_SMS          = URL_BASE + "/api/reps/otp";
+        public static final String URL_UPDATE_FCM       = URL_BASE + "/api/reps/fcm";
+        public static final String URL_REGISTER         = URL_BASE + "/api/reps/register";
+        public static final String URL_TRACK            = URL_BASE + "/api/track/data";
+        public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
+        public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
+        public static final String URL_SUBMIT_FORM      = URL_BASE + "/api/reps/submitForm";
+        public static final String URL_SYNC_TASKS       = URL_BASE + "/api/reps/sync/tasks";
+        public static final String URL_SYNC_LEADS       = URL_BASE + "/api/reps/sync/leads";
+        public static final String URL_SYNC_TEMPLATES   = URL_BASE + "/api/reps/sync/templates";
 
         // JSON Keys
-        public static final String KEY_ID               = "id";
-        public static final String KEY_NAME             = "name";
-        public static final String KEY_PHONE            = "phoneNumber";
-        public static final String KEY_EMAIL            = "email";
-        public static final String KEY_MESSAGE          = "message";
+
+        // ID Keys for different object types
+        public static final String KEY_LEAD_ID          = "leadId";
+        public static final String KEY_TASK_ID          = "taskId";
+        public static final String KEY_FORM_TEMPLATE_ID = "formTemplateId";
+
+        // Keys for data arrays sent by / to server
+        public static final String KEY_SYNC_DATA        = "syncData";
         public static final String KEY_TASKS            = "tasks";
-        public static final String KEY_LEAD             = "lead";
-        public static final String KEY_TEMPLATE         = "template";
+        public static final String KEY_LEADS            = "leads";
+        public static final String KEY_TEMPLATES        = "templates";
+
+        // Task related keys
+        public static final String KEY_STATUS           = "status";
+
+        // Lead related keys
         public static final String KEY_TITLE            = "title";
         public static final String KEY_DESCRIPTION      = "description";
         public static final String KEY_ADDRESS          = "address";
         public static final String KEY_LATITUDE         = "latitude";
         public static final String KEY_LONGITUDE        = "longitude";
+
+        // Form related keys
         public static final String KEY_DATA             = "data";
-        public static final String KEY_TASK_ID          = "taskId";
-        public static final String KEY_CLOSE_TASK       = "closeTask";
-        public static final String KEY_FCM              = "fcmId";
-        public static final String KEY_SPEED            = "speed";
         public static final String KEY_FILENAME         = "filename";
+        public static final String KEY_CLOSE_TASK       = "closeTask";
+
+        // Misc Keys
+        public static final String KEY_ID               = "id";
+        public static final String KEY_VERSION          = "ver";
+        public static final String KEY_NAME             = "name";
+        public static final String KEY_PHONE            = "phoneNumber";
+        public static final String KEY_EMAIL            = "email";
         public static final String KEY_VERSION_CODE     = "versionCode";
         public static final String KEY_UPDATE_REQUIRED  = "updateRequired";
+        public static final String KEY_FCM              = "fcmId";
+        public static final String KEY_SPEED            = "speed";
+        public static final String KEY_MESSAGE          = "message";
     }
 
     // Map related constants
     public class Map {
         // Zoom levels
         public static final int MIN_ZOOM = 14;
+    }
+
+    // Miscellaneous Constants
+    public class Misc {
+        // Invalid ID
+        public static final long ID_INVALID = -1;
     }
 }

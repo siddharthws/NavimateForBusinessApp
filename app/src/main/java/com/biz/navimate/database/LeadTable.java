@@ -3,9 +3,13 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.Task;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 05-12-2017.
@@ -53,6 +57,26 @@ public class LeadTable extends BaseTable {
                                                     COLUMN_ADDRESS,
                                                     COLUMN_LATITUDE,
                                                     COLUMN_LONGITUDE});
+    }
+
+    // ----------------------- Public APIs ----------------------- //
+    // API to get valid objects for syncing
+    public ArrayList<Lead> GetLeadsToSync() {
+        // Get list of open tasks
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+
+        // Create list of leads in open tasks
+        ArrayList<Lead> leads = new ArrayList<>();
+        for (Task task : openTasks) {
+            // Get Task lead
+            Lead lead = (Lead) GetById(task.leadId);
+
+            // Add unique leads to array
+            if (!leads.contains(lead)) {
+                leads.add(lead);
+            }
+        }
+        return leads;
     }
 
     // ----------------------- Private APIs ----------------------- //

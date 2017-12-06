@@ -13,10 +13,9 @@ public class IfaceServer {
         void onProfileFailed();
     }
 
-    // GetTasks Task interface
-    public interface GetTasks {
-        void onTasksSuccess();
-        void onTasksFailed();
+    // SyncTasks Task interface
+    public interface SyncTasks {
+        void onTaskCompleted();
     }
 
     // OtpSms Task interface
