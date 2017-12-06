@@ -38,7 +38,7 @@ public abstract class BaseServerTask extends AsyncTask<Void, Integer, Void>
     protected Context parentContext = null;
 
     // Connection related initData
-    private String url = null;
+    protected String url = null;
 
     // Request / Response Parameters
     protected Request.Builder reqBuilder = null;
