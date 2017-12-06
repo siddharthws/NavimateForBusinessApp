@@ -1,15 +1,17 @@
 package com.biz.navimate.dialogs;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
+import com.biz.navimate.constants.Constants;
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
@@ -54,6 +56,8 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private DialogHolder.SubmitForm ui = null;
+    private Form template = null;
+    private Form submitData = null;
     private LatLng submitLocation = null;
     private ArrayList<ImageUpload> imageUploads = null;
     private int imageUploadIndex = 0;
@@ -92,8 +96,11 @@ public class SubmitFormDialog   extends     BaseDialog
         // Get current data
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
 
+        // init form template
+        template = currentData.form;
+
         // Set Fields
-        for (FormField.Base field : currentData.form.fields) {
+        for (FormField.Base field : template.fields) {
             RlFormField fieldUi = new RlFormField(context, field);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
@@ -158,7 +165,7 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Update Form Object
-        currentData.form = new Form(currentData.form.name, fields);
+        submitData = new Form(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, template.name, fields);
 
         // Check for current location
         if (new LocationUpdateHelper(context).IsUpdating()) {
@@ -193,7 +200,7 @@ public class SubmitFormDialog   extends     BaseDialog
     private void SubmitForm() {
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         boolean bCloseTask = ui.cbCloseTask.isChecked();
-        SubmitFormTask submitTask = new SubmitFormTask(context, currentData.form, currentData.taskId, submitLocation, bCloseTask);
+        SubmitFormTask submitTask = new SubmitFormTask(context, submitData, currentData.taskId, submitLocation, bCloseTask);
         submitTask.execute();
     }
 
@@ -227,6 +234,16 @@ public class SubmitFormDialog   extends     BaseDialog
 
     @Override
     public void onPhotoUploadFailed() {
+        // Show error toast for the field
+        ImageUpload data = imageUploads.get(imageUploadIndex);
+        Dbg.Toast(context, data.field.title + " could not be uploaded...", Toast.LENGTH_SHORT);
 
+        // check whether image upload has completed or needs to continue
+        imageUploadIndex++;
+        if (imageUploads.size() > imageUploadIndex) {
+            UploadImages();
+        } else {
+            SubmitForm();
+        }
     }
 }
