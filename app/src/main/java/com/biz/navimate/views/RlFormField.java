@@ -1,6 +1,7 @@
 package com.biz.navimate.views;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
@@ -84,29 +85,44 @@ public class RlFormField extends RelativeLayout {
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
     public FormField.Base GetField() {
+        FormField.Base currentField = null;
+
+        // Create field from data
         if (field.type.equals(FormField.TYPE_TEXT)) {
-            ((FormField.Text) field).data = etText.getText().toString();
+            String text = etText.getText().toString();
+            currentField = new FormField.Text(field.title, text);
         } else if (field.type.equals(FormField.TYPE_NUMBER)) {
-            ((FormField.Number) field).data = Integer.parseInt(etNumber.getText().toString());
+            int number = Integer.parseInt(etNumber.getText().toString());
+            currentField = new FormField.Number(field.title, number);
+        } else if (field.type.equals(FormField.TYPE_PHOTO)) {
+            currentField = new FormField.Photo(field.title, "", ((FormField.Photo) field).imagePath);
+        } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
+            currentField = new FormField.Signature(field.title, "", ((FormField.Signature) field).imagePath);
         } else if (field.type.equals(FormField.TYPE_RADIO_LIST)) {
+            // get selection string
+            String selection = "";
             for (int i = 0; i < rgRadioList.getChildCount(); i++) {
                 RbCustom rb = (RbCustom) rgRadioList.getChildAt(i);
                 if (rb.isChecked()) {
-                    ((FormField.RadioList) field).selection = rb.getText().toString();
+                    selection = rb.getText().toString();
                     break;
                 }
             }
+
+            currentField = new FormField.RadioList(field.title, ((FormField.RadioList) field).options, selection);
         } else if (field.type.equals(FormField.TYPE_CHECK_LIST)) {
             // Clear selection list
-            ((FormField.CheckList) field).selection.clear();
 
             // Add all checked items to selection list
+            ArrayList<Boolean> selection = new ArrayList<>();
             for (int i = 0; i < llCheckList.getChildCount(); i++) {
                 CbCustom cb = (CbCustom) llCheckList.getChildAt(i);
-                ((FormField.CheckList) field).selection.add(cb.isChecked());
+                selection.add(cb.isChecked());
             }
+            currentField = new FormField.CheckList(field.title, ((FormField.CheckList) field).options, selection);
         }
-        return field;
+
+        return currentField;
     }
 
     // ----------------------- Private APIs ----------------------- //
