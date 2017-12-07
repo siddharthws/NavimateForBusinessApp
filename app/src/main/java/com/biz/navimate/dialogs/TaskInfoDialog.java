@@ -99,7 +99,7 @@ public class TaskInfoDialog     extends     BaseDialog
                 break;
             }
             case R.id.btn_submit_form: {
-                RlDialog.Show(new Dialog.SubmitForm(formTemplate, currentData.task.dbId, false));
+                RlDialog.Show(new Dialog.SubmitForm(formTemplate, currentData.task.serverId, false));
                 break;
             }
             case R.id.btn_phone: {

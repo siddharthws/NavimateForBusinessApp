@@ -39,16 +39,16 @@ public class SubmitFormTask extends BaseServerTask {
 
     // ----------------------- Globals ----------------------- //
     private Form form;
-    private long taskId;
+    private long taskServerId;
     private boolean bCloseTask = false;
     private LatLng location = null;
 
     // ----------------------- Constructor ----------------------- //
-    public SubmitFormTask(Context parentContext, Form form, long taskId, LatLng location, boolean bCloseTask)
+    public SubmitFormTask(Context parentContext, Form form, long taskServerId, LatLng location, boolean bCloseTask)
     {
         super(parentContext, Constants.Server.URL_SUBMIT_FORM);
         this.form = form;
-        this.taskId = taskId;
+        this.taskServerId = taskServerId;
         this.bCloseTask = bCloseTask;
         this.location = location;
     }
@@ -68,7 +68,7 @@ public class SubmitFormTask extends BaseServerTask {
 
         try
         {
-            requestJson.put(Constants.Server.KEY_TASK_ID, taskId);
+            requestJson.put(Constants.Server.KEY_TASK_ID, taskServerId);
             JSONArray fields = new JSONArray();
             for (FormField.Base field : form.fields) {
                 fields.put(field.toJson());
@@ -94,7 +94,7 @@ public class SubmitFormTask extends BaseServerTask {
         {
             // Save form to dataabse with id and version
             try {
-                form.dbId = responseJson.getInt(Constants.Server.KEY_ID);
+                form.serverId = responseJson.getInt(Constants.Server.KEY_ID);
                 form.version = responseJson.getInt(Constants.Server.KEY_VERSION);
                 DbHelper.formTable.Save(form);
 
@@ -105,7 +105,7 @@ public class SubmitFormTask extends BaseServerTask {
 
             // Save Task
             if (bCloseTask) {
-                Task task = (Task) DbHelper.taskTable.GetById(taskId);
+                Task task = DbHelper.taskTable.GetByServerId(taskServerId);
                 task.status = Task.TaskStatus.CLOSED;
                 DbHelper.taskTable.Save(task);
             }
@@ -143,7 +143,7 @@ public class SubmitFormTask extends BaseServerTask {
             Dbg.Toast(parentContext, "Unable to submit form !!!", Toast.LENGTH_SHORT);
 
             // Re-launch Submit form dialog with the filled form
-            RlDialog.Show(new Dialog.SubmitForm(form, taskId, bCloseTask));
+            RlDialog.Show(new Dialog.SubmitForm(form, taskServerId, bCloseTask));
 
             // Call listener
             if (listener != null)

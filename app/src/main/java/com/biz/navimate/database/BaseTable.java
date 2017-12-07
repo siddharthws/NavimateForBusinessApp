@@ -167,7 +167,13 @@ public abstract class BaseTable {
 
         // Add to cache
         if (rowId != Constants.Misc.ID_INVALID) {
+            // Update Data Object's DB ID
+            dbItem.dbId = rowId;
+
+            // Add object to cache
             cache.add(dbItem);
+
+            // Mark success
             bAdded = true;
         } else {
             Dbg.error(TAG, "Unable to insert item in " + tableName);

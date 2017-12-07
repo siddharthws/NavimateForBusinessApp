@@ -1,6 +1,7 @@
 package com.biz.navimate.objects;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.database.DbHelper;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
@@ -10,7 +11,7 @@ import org.json.JSONObject;
  * Created by Siddharth on 28-09-2017.
  */
 
-public class Lead extends DbObject {
+public class Lead extends ServerObject {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LEAD";
 
@@ -19,8 +20,8 @@ public class Lead extends DbObject {
     public LatLng position = new LatLng(0, 0);
 
     // ----------------------- Constructor ----------------------- //
-    public Lead (long id, long version, String title, String description, String phone, String email, String address, LatLng position) {
-        super(DbObject.TYPE_LEAD, version, id);
+    public Lead (long dbId, long serverId, long version, String title, String description, String phone, String email, String address, LatLng position) {
+        super(DbObject.TYPE_LEAD, dbId, serverId, version);
         this.title = title;
         this.description = description;
         this.phone = phone;
@@ -31,7 +32,7 @@ public class Lead extends DbObject {
 
     // ----------------------- Public APIs ----------------------- //
     public static Lead FromJson(JSONObject leadJson) throws JSONException {
-        long dbId           = leadJson.getLong(Constants.Server.KEY_ID);
+        long serverId       = leadJson.getLong(Constants.Server.KEY_ID);
         long version        = leadJson.getLong(Constants.Server.KEY_VERSION);
         String title        = leadJson.getString(Constants.Server.KEY_TITLE);
         String description  = leadJson.getString(Constants.Server.KEY_DESCRIPTION);
@@ -41,6 +42,13 @@ public class Lead extends DbObject {
         double latitude     = leadJson.getDouble(Constants.Server.KEY_LATITUDE);
         double longitude    = leadJson.getDouble(Constants.Server.KEY_LONGITUDE);
 
-        return new Lead(dbId, version, title, description, phone, email, address, new LatLng(latitude, longitude));
+        // Get DbId
+        long dbId = Constants.Misc.ID_INVALID;
+        Lead existingLead = DbHelper.leadTable.GetByServerId(serverId);
+        if (existingLead != null) {
+            dbId = existingLead.dbId;
+        }
+
+        return new Lead(dbId, serverId, version, title, description, phone, email, address, new LatLng(latitude, longitude));
     }
 }

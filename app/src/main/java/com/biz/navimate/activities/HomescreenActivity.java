@@ -150,7 +150,7 @@ public class HomescreenActivity     extends     BaseActivity
     @Override
     public void onSubmitFormClick(Task task) {
         Form formTemplate = (Form) DbHelper.formTable.GetById(task.formTemplateId);
-        RlDialog.Show(new Dialog.SubmitForm(formTemplate, task.dbId, false));
+        RlDialog.Show(new Dialog.SubmitForm(formTemplate, task.serverId, false));
     }
 
     @Override
