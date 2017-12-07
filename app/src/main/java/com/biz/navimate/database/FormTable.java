@@ -27,13 +27,16 @@ public class FormTable extends BaseTable {
     public static final String TABLE_NAME             = "form_table";
 
     // Columns
-    public static final String COLUMN_NAME            = "name";
-    public static final String COLUMN_DATA            = "data";
+    public static final String COLUMN_SRV_ID    = "server_id";
+    public static final String COLUMN_VERSION   = "version";
+    public static final String COLUMN_NAME      = "name";
+    public static final String COLUMN_DATA      = "data";
 
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                    COLUMN_ID            + " INTEGER PRIMARY KEY," +
+                    COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    COLUMN_SRV_ID        + " INTEGER," +
                     COLUMN_VERSION       + " INTEGER," +
                     COLUMN_NAME          + " TEXT," +
                     COLUMN_DATA          + " TEXT)";
@@ -42,6 +45,7 @@ public class FormTable extends BaseTable {
     public FormTable(DbHelper dbHelper)
     {
         super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
+                                                    COLUMN_SRV_ID,
                                                     COLUMN_VERSION,
                                                     COLUMN_NAME,
                                                     COLUMN_DATA});
@@ -68,25 +72,38 @@ public class FormTable extends BaseTable {
         return forms;
     }
 
+    // API to get object by serverId
+    public Form GetByServerId(long serverId) {
+        for (DbObject dbItem : cache) {
+            Form form = (Form) dbItem;
+            if (form.serverId == serverId) {
+                return form;
+            }
+        }
+
+        return null;
+    }
+
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected DbObject ParseToObject(Cursor cursor)
     {
         long   dbId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_ID));
+        long   serverId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_SRV_ID));
         long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         String name                    = cursor.getString  (cursor.getColumnIndex(COLUMN_NAME));
         String fields                  = cursor.getString  (cursor.getColumnIndex(COLUMN_DATA));
 
-        JSONArray fieldsToJson = new JSONArray();
+        JSONArray fieldsJson = new JSONArray();
         try
         {
-            fieldsToJson  =   new JSONArray(fields);
+            fieldsJson  =   new JSONArray(fields);
         } catch (JSONException e) {
             Dbg.error(TAG, "Error while converting JSON Array to Form Filed");
             Dbg.stack(e);
         }
 
-        return new Form (dbId, version, name, FormField.FromJsonArray(fieldsToJson));
+        return new Form (dbId, serverId, version, name, FormField.FromJsonArray(fieldsJson));
     }
 
     @Override
@@ -96,7 +113,7 @@ public class FormTable extends BaseTable {
         ContentValues dbEntry = new ContentValues();
 
         // Enter values into Database
-        dbEntry.put(COLUMN_ID,             form.dbId);
+        dbEntry.put(COLUMN_SRV_ID,         form.serverId);
         dbEntry.put(COLUMN_VERSION,        form.version);
         dbEntry.put(COLUMN_NAME,           form.name);
 

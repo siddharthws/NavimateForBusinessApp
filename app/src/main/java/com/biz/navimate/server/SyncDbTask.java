@@ -6,14 +6,12 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.FormField;
 import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.ServerObject;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.views.RlDialog;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -157,27 +155,11 @@ public class SyncDbTask extends BaseServerTask {
                 JSONObject taskJson = tasksJson.getJSONObject(i);
                 Task task = Task.FromJson(taskJson);
                 tasks.add(task);
-
-                // Add new lead if id not found
-                if (DbHelper.leadTable.GetById(task.leadId) == null) {
-                    leads.add(new Lead(task.leadId, Constants.Misc.ID_INVALID, "", "", "", "", "", new LatLng(0, 0)));
-                }
-
-                // Add new template if id not found
-                if (DbHelper.formTable.GetById(task.formTemplateId) == null) {
-                    forms.add(new Form(task.formTemplateId, Constants.Misc.ID_INVALID, "", new ArrayList<FormField.Base>()));
-                }
             }
 
             // Save all new tasks / leads / templates in database
             for (Task task : tasks) {
                 DbHelper.taskTable.Save(task);
-            }
-            for (Lead lead : leads) {
-                DbHelper.leadTable.Save(lead);
-            }
-            for (Form form : forms) {
-                DbHelper.formTable.Save(form);
             }
         } catch (JSONException e) {
             Dbg.error(TAG, "Error while putting sync data in object");
@@ -251,16 +233,16 @@ public class SyncDbTask extends BaseServerTask {
     }
 
     // API to get server recognizable sync data from db objects
-    private JSONArray GetSyncData(ArrayList<? extends DbObject> dbItems) {
+    private JSONArray GetSyncData(ArrayList<? extends ServerObject> items) {
         JSONArray syncData = new JSONArray();
 
         // Iterate through db items and add version and id
-        for (DbObject dbItem : dbItems) {
+        for (ServerObject item : items) {
             // Create sync object
             JSONObject syncObject = new JSONObject();
             try {
-                syncObject.put(Constants.Server.KEY_ID, dbItem.dbId);
-                syncObject.put(Constants.Server.KEY_VERSION, dbItem.version);
+                syncObject.put(Constants.Server.KEY_ID, item.serverId);
+                syncObject.put(Constants.Server.KEY_VERSION, item.version);
             } catch (JSONException e) {
                 Dbg.error(TAG, "Error while putting sync data in object");
                 Dbg.stack(e);

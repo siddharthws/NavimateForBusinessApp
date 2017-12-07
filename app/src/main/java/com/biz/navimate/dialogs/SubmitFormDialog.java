@@ -165,7 +165,7 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Update Form Object
-        submitData = new Form(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, template.name, fields);
+        submitData = new Form(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, template.name, fields);
 
         // Check for current location
         if (new LocationUpdateHelper(context).IsUpdating()) {
@@ -200,7 +200,7 @@ public class SubmitFormDialog   extends     BaseDialog
     private void SubmitForm() {
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         boolean bCloseTask = ui.cbCloseTask.isChecked();
-        SubmitFormTask submitTask = new SubmitFormTask(context, submitData, currentData.taskId, submitLocation, bCloseTask);
+        SubmitFormTask submitTask = new SubmitFormTask(context, submitData, currentData.taskServerId, submitLocation, bCloseTask);
         submitTask.execute();
     }
 
