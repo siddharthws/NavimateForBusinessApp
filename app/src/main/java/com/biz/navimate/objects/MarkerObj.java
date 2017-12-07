@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.biz.navimate.R;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.misc.IconGen;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
@@ -59,11 +60,13 @@ public class MarkerObj {
     public static class Task extends Base
     {
         public com.biz.navimate.objects.Task task = null;
+        public Lead lead = null;
 
         public Task(com.biz.navimate.objects.Task task)
         {
-            super(MARKER_TYPE_TASK, task.lead.position);
+            super(MARKER_TYPE_TASK, ((Lead) DbHelper.leadTable.GetById(task.leadId)).position);
             this.task = task;
+            lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
         }
 
         // API to get Marker Options to populate UI
@@ -73,7 +76,7 @@ public class MarkerObj {
             // Init marker options and assign parameters
             MarkerOptions markerOpt = new MarkerOptions()
                                             .position(position)
-                                            .icon(BitmapDescriptorFactory.fromBitmap(IconGen.GetMarkerIcon(task.lead.title)));
+                                            .icon(BitmapDescriptorFactory.fromBitmap(IconGen.GetMarkerIcon(lead.title)));
 
             return markerOpt;
         }

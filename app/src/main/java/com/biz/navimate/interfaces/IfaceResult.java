@@ -1,7 +1,5 @@
 package com.biz.navimate.interfaces;
 
-import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 
 /**
@@ -23,7 +21,7 @@ public class IfaceResult {
 
     public interface LeadPicker
     {
-        void onLeadPicked(ArrayList<Integer> leads);
+        void onLeadPicked(ArrayList<Long> leads);
     }
 
     public interface Zxing

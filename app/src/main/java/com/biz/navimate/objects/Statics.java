@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -41,9 +40,6 @@ public class Statics {
 
     // Screen Density
     public static float SCREEN_DENSITY = 0f;
-
-    // Current taks of rep
-    private static ArrayList<Task> currentTasks = new ArrayList<>();
 
     // ----------------------- Public APIs ----------------------- //
     // Check if this thread is UI thread
@@ -151,51 +147,6 @@ public class Statics {
             // If play store is not available, open browser
             parentActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
         }
-    }
-
-    // Getter Setter APIs for current tasks
-    public static void SetCurrentTasks(ArrayList<Task> tasks) {
-        currentTasks.clear();
-        currentTasks.addAll(tasks);
-    }
-
-    public static ArrayList<Task> GetCurrentTasks() {
-        return currentTasks;
-    }
-
-    public static ArrayList<Lead> GetCurrentLeads() {
-        ArrayList<Lead> leads = new ArrayList<>();
-        for (Task task : currentTasks) {
-            if (!leads.contains(task.lead)) {
-                leads.add(task.lead);
-            }
-        }
-        return leads;
-    }
-
-    public static void RemoveFromTasks(int taskId)
-    {
-        Task taskToRemove = null;
-        for (Task task : currentTasks) {
-            if (task.id == taskId) {
-                taskToRemove = task;
-                break;
-            }
-        }
-
-        if (taskToRemove != null) {
-            currentTasks.remove(taskToRemove);
-        }
-    }
-
-    public static Lead GetLeadById(Integer leadId) {
-        for (Task task : currentTasks) {
-            if (task.lead.id == leadId) {
-                return task.lead;
-            }
-        }
-
-        return null;
     }
 
     // File related APIs
