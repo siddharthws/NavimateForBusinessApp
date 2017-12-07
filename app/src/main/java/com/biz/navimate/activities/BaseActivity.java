@@ -3,7 +3,6 @@ package com.biz.navimate.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -355,7 +354,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
-                        leadPickerListener.onLeadPicked((ArrayList<Integer>) resumeResultIntent.getSerializableExtra(Constants.Extras.LEAD_PICKER));
+                        leadPickerListener.onLeadPicked((ArrayList<Long>) resumeResultIntent.getSerializableExtra(Constants.Extras.LEAD_PICKER));
                     }
                 }
                 break;

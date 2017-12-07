@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceList;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ListHolder;
 import com.biz.navimate.views.TvCalibri;
@@ -57,10 +59,11 @@ public class TaskListAdapter    extends     BaseListAdapter
         // Gte dtaa and holder
         final ListItem.Task taskItem = (ListItem.Task) data;
         ListHolder.Task holder = (ListHolder.Task) view.getTag();
+        Lead lead = (Lead) DbHelper.leadTable.GetById(taskItem.task.leadId);
 
         // Set title and description
-        holder.tvTitle.setText(taskItem.task.lead.title);
-        holder.tvDescription.setText(taskItem.task.lead.description);
+        holder.tvTitle.setText(lead.title);
+        holder.tvDescription.setText(lead.description);
 
         // Set btn lick listeners
         holder.btnForm.setOnClickListener(new View.OnClickListener() {

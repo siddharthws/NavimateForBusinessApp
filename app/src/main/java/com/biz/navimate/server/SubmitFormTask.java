@@ -3,9 +3,7 @@ package com.biz.navimate.server;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.activities.HomescreenActivity;
-import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
@@ -13,7 +11,7 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormField;
-import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -41,14 +39,14 @@ public class SubmitFormTask extends BaseServerTask {
 
     // ----------------------- Globals ----------------------- //
     private Form form;
-    private int taskId;
+    private long taskId;
     private boolean bCloseTask = false;
     private LatLng location = null;
 
     // ----------------------- Constructor ----------------------- //
-    public SubmitFormTask(Context parentContext, Form form, int taskId, LatLng location, boolean bCloseTask)
+    public SubmitFormTask(Context parentContext, Form form, long taskId, LatLng location, boolean bCloseTask)
     {
-        super(parentContext, Constants.Server.URL_GET_TASKS);
+        super(parentContext, Constants.Server.URL_SUBMIT_FORM);
         this.form = form;
         this.taskId = taskId;
         this.bCloseTask = bCloseTask;
@@ -94,8 +92,23 @@ public class SubmitFormTask extends BaseServerTask {
 
         if (IsResponseValid())
         {
-            //Store Data of Form in Database
-            DbHelper.formTable.Add(form);
+            // Save form to dataabse with id and version
+            try {
+                form.dbId = responseJson.getInt(Constants.Server.KEY_ID);
+                form.version = responseJson.getInt(Constants.Server.KEY_VERSION);
+                DbHelper.formTable.Save(form);
+
+            } catch (JSONException e) {
+                Dbg.error(TAG, "Unable to get form id, version from repsosne");
+                Dbg.stack(e);
+            }
+
+            // Save Task
+            if (bCloseTask) {
+                Task task = (Task) DbHelper.taskTable.GetById(taskId);
+                task.status = Task.TaskStatus.CLOSED;
+                DbHelper.taskTable.Save(task);
+            }
         }
 
         return null;
@@ -114,13 +127,8 @@ public class SubmitFormTask extends BaseServerTask {
 
             // Update List if task was to be closed
             if (bCloseTask) {
-                Statics.RemoveFromTasks(taskId);
-
-                // Update homescreen list if it's showing
-                BaseActivity currentActivity = App.GetCurrentActivity();
-                if ((currentActivity != null) && (currentActivity.getClass().equals(HomescreenActivity.class))) {
-                    ((HomescreenActivity) currentActivity).onTasksSuccess();
-                }
+                // Update homescreen list
+                HomescreenActivity.RefreshTasks();
             }
 
             // Call listener

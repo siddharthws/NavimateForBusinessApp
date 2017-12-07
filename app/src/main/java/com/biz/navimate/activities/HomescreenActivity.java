@@ -7,10 +7,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.biz.navimate.R;
+import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.interfaces.IfaceList;
@@ -18,15 +19,18 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.lists.TaskListAdapter;
 import com.biz.navimate.misc.AnimHelper;
+import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
-import com.biz.navimate.server.GetTasksTask;
+import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
@@ -35,8 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 public class HomescreenActivity     extends     BaseActivity
-                                    implements  IfaceServer.GetTasks,
-                                                IfaceList.Task, RlDrawer.DrawerItemClickListener {
+                                    implements  IfaceList.Task,
+                                                RlDrawer.DrawerItemClickListener {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "HOMESCREEN_ACTIVITY";
 
@@ -48,7 +52,6 @@ public class HomescreenActivity     extends     BaseActivity
     private TaskListAdapter adapter = null;
     private AnimHelper animHelper = null;
 
-    private LocationUpdateHelper locationUdpateHelper = null;
     private LocationUpdateRunnable locationUpdateRunnable = null;
 
     // ----------------------- Constructor ----------------------- //
@@ -87,23 +90,23 @@ public class HomescreenActivity     extends     BaseActivity
 
         // Initialize Location Runnable and Helper
         locationUpdateRunnable  = new LocationUpdateRunnable(this);
-        locationUdpateHelper    = new LocationUpdateHelper(this);
 
         // Initialize animations
         animHelper = new AnimHelper(this);
+
+        // Init List and Map as per current tasks
+        InitTasksUi();
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        // Get Tasks from server
-        GetTasksTask getTasks = new GetTasksTask(this);
-        getTasks.SetListener(this);
-        getTasks.execute();
-
-        if (Statics.GetCurrentTasks().size() == 0) {
-            RlDialog.Show(new Dialog.Waiting("Getting tasks from server..."));
+        // Send sync request (Show dialog if no tasks in adapter)
+        if (adapter.getCount() == 0) {
+            SyncDb(true);
+        } else {
+            SyncDb(false);
         }
 
         // Check for location related issues and ask to resolve
@@ -134,47 +137,11 @@ public class HomescreenActivity     extends     BaseActivity
     }
 
     @Override
-    public void onTasksSuccess() {
-        if (adapter.getCount() == 0) {
-            RlDialog.Hide();
-        }
-
-        // Add markers for all tasks in database
-        ui.mapFragment.markerHelper.RefreshTaskMarkers();
-
-        // Update Camera to bounds
-        ArrayList<LatLng> bounds = new ArrayList<>();
-        for (Task task : Statics.GetCurrentTasks())
-        {
-            // Include in bounds for camera update
-            bounds.add(task.lead.position);
-        }
-
-        if (bounds.size() > 1) {
-            ui.mapFragment.cameraHelper.Move(new Camera.Bounds(bounds, true));
-        } else if (bounds.size() == 1) {
-            ui.mapFragment.cameraHelper.Move(new Camera.Location(bounds.get(0), 0, true));
-        } else {
-            // TODO : Center on current location
-        }
-
-        // Add tasks to list
-        adapter.Clear();
-        for (Task task : Statics.GetCurrentTasks()) {
-            adapter.Add(new ListItem.Task(task));
-        }
-    }
-
-    @Override
-    public void onTasksFailed() {
-        RlDialog.Hide();
-        Dbg.Toast(this, "Unable to get tasks from server...", Toast.LENGTH_SHORT);
-    }
-
-    @Override
     public void onItemClick(Task task) {
+        Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
+
         // Center map on this task marker
-        ui.mapFragment.cameraHelper.Move(new Camera.Location(task.lead.position, 0, true));
+        ui.mapFragment.cameraHelper.Move(new Camera.Location(lead.position, 0, true));
 
         // Perform a Map button click
         ButtonClickMap(null);
@@ -182,7 +149,8 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onSubmitFormClick(Task task) {
-        RlDialog.Show(new Dialog.SubmitForm(task.template, task.id, false));
+        Form formTemplate = (Form) DbHelper.formTable.GetById(task.formTemplateId);
+        RlDialog.Show(new Dialog.SubmitForm(formTemplate, task.dbId, false));
     }
 
     @Override
@@ -198,6 +166,18 @@ public class HomescreenActivity     extends     BaseActivity
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity) {
         BaseActivity.Start(activity, HomescreenActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
+    }
+
+    public static void RefreshTasks() {
+        // Get current activity
+        BaseActivity currentActivity = App.GetCurrentActivity();
+
+        // Check if homescreen is active
+        if ((currentActivity != null) &&
+            (currentActivity.getClass().equals(HomescreenActivity.class))) {
+            // Re-initialize Tasks UI
+            ((HomescreenActivity) currentActivity).InitTasksUi();
+        }
     }
 
     // Button Click APIs
@@ -223,5 +203,57 @@ public class HomescreenActivity     extends     BaseActivity
         animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, ui.ibMap, new PowerInterpolator(false, 1), null));
     }
 
+    public void ButtonClickSync(View view) {
+        // Sync DB with waiting dialog
+        SyncDb(true);
+    }
+
     // ----------------------- Private APIs ----------------------- //
+    // API to Init List and Map UI as per the open tasks in current database
+    private void InitTasksUi () {
+        // Add markers for all tasks in database
+        ui.mapFragment.markerHelper.RefreshTaskMarkers();
+
+        // Clear adapter
+        adapter.Clear();
+
+        ArrayList<LatLng> bounds = new ArrayList<>();
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+        // Iterate through all tasks
+        for (Task task : openTasks)
+        {
+            Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
+
+            // Include in bounds for camera update
+            bounds.add(lead.position);
+
+            // Add list item to adapter
+            adapter.Add(new ListItem.Task(task));
+        }
+
+        // Add current location to bounds if available
+        LatLng currentLocation = LocationCache.instance.GetLocation().latlng;
+        if (Statics.IsPositionValid(currentLocation)) {
+            bounds.add(currentLocation);
+        }
+
+        // Update Map Camera
+        if (bounds.size() > 1) {
+            ui.mapFragment.cameraHelper.Move(new Camera.Bounds(bounds, true));
+        } else if (bounds.size() == 1) {
+            ui.mapFragment.cameraHelper.Move(new Camera.Location(bounds.get(0), 0, true));
+        }
+    }
+
+    // APi to send Sync Db Request
+    private void SyncDb(boolean bDialog) {
+        SyncDbTask syncDb = new SyncDbTask(this, bDialog);
+        syncDb.SetListener(new IfaceServer.SyncTasks() {
+            @Override
+            public void onTaskCompleted() {
+                InitTasksUi();
+            }
+        });
+        syncDb.execute();
+    }
 }

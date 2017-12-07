@@ -15,9 +15,12 @@ import android.widget.TextView;
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.application.App;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 
@@ -66,13 +69,14 @@ public class TaskInfoDialog     extends     BaseDialog
     protected void SetContentView() {
         // Get current data
         Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
+        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
 
         // Set Text
-        ui.tvTitle.setText(currentData.task.lead.title);
-        ui.tvDescription.setText(currentData.task.lead.description);
-        ui.tvAddress.setText(currentData.task.lead.address);
-        ui.btnPhone.setText("Call : " + currentData.task.lead.phone);
-        ui.tvEmail.setText(currentData.task.lead.email);
+        ui.tvTitle.setText(lead.title);
+        ui.tvDescription.setText(lead.description);
+        ui.tvAddress.setText(lead.address);
+        ui.btnPhone.setText("Call : " + lead.phone);
+        ui.tvEmail.setText(lead.email);
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);
@@ -85,6 +89,8 @@ public class TaskInfoDialog     extends     BaseDialog
     public void onClick(View v) {
         // Get current data
         Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
+        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
+        Form formTemplate = (Form) DbHelper.formTable.GetById(currentData.task.formTemplateId);
 
         switch (v.getId()) {
             case R.id.btn_dismiss: {
@@ -93,7 +99,7 @@ public class TaskInfoDialog     extends     BaseDialog
                 break;
             }
             case R.id.btn_submit_form: {
-                RlDialog.Show(new Dialog.SubmitForm(currentData.task.template, currentData.task.id, false));
+                RlDialog.Show(new Dialog.SubmitForm(formTemplate, currentData.task.dbId, false));
                 break;
             }
             case R.id.btn_phone: {
@@ -114,11 +120,11 @@ public class TaskInfoDialog     extends     BaseDialog
             }
             case R.id.btn_maps: {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(  "geo:" + currentData.task.lead.position.latitude + "," +
-                                                                 currentData.task.lead.position.longitude +
-                                                         "?q=" + currentData.task.lead.position.latitude + "," +
-                                                                 currentData.task.lead.position.longitude +
-                                                           "(" + currentData.task.lead.title + ")"));
+                                            Uri.parse(  "geo:" + lead.position.latitude + "," +
+                                                                 lead.position.longitude +
+                                                         "?q=" + lead.position.latitude + "," +
+                                                                 lead.position.longitude +
+                                                           "(" + lead.title + ")"));
                 context.startActivity(intent);
                 break;
             }
@@ -128,9 +134,10 @@ public class TaskInfoDialog     extends     BaseDialog
     @Override
     public void onCallPermissionSuccess() {
         Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
+        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PermissionChecker.PERMISSION_GRANTED) {
             Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + currentData.task.lead.phone));
+            intent.setData(Uri.parse("tel:" + lead.phone));
             context.startActivity(intent);
         }
     }

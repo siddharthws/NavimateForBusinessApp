@@ -1,7 +1,7 @@
 package com.biz.navimate.maps;
 
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.objects.MarkerObj;
-import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
@@ -158,9 +158,11 @@ public class MarkerHelper {
             Remove(marker);
         }
 
-        // Add markers from database
-        for (Task task : Statics.GetCurrentTasks())
+        // Add markers from open tasks
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+        for (Task task : openTasks)
         {
+            // Add marker
             MarkerObj.Task marker = new MarkerObj.Task(task);
             Add(marker);
         }

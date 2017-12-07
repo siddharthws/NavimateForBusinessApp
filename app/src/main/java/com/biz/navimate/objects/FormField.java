@@ -1,6 +1,6 @@
 package com.biz.navimate.objects;
 
-import android.graphics.Bitmap;
+import com.biz.navimate.debug.Dbg;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -346,5 +346,20 @@ public class FormField {
             return new Signature(json);
         }
         return null;
+    }
+
+    public static ArrayList<FormField.Base> FromJsonArray(JSONArray fieldsJson)
+    {
+        ArrayList<FormField.Base> fields = new ArrayList<>();
+        try {
+            for (int j = 0; j < fieldsJson.length(); j++) {
+                JSONObject fieldJson = fieldsJson.getJSONObject(j);
+                fields.add(FormField.FromJson(fieldJson));
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "JSON Exception while parsing tasks");
+            Dbg.stack(e);
+        }
+        return fields;
     }
 }

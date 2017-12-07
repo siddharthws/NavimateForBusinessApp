@@ -104,15 +104,14 @@ public class Dialog {
     public static class SubmitForm extends Base
     {
         public Form form = null;
-        public int taskId = -1;
+        public long taskId = -1;
         public boolean bCloseTask = false;
 
-        public SubmitForm(Form form, int taskId, boolean bCloseTask)
+        public SubmitForm(Form form, long taskId, boolean bCloseTask)
         {
             super(TYPE_SUBMIT_FORM, true);
 
-            this.form = new Form(   form.name,
-                                    form.fields);
+            this.form = form;
             this.taskId = taskId;
             this.bCloseTask = bCloseTask;
         }

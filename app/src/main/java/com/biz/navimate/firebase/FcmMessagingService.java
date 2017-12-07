@@ -6,7 +6,7 @@ import com.biz.navimate.application.App;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.NotificationHelper;
-import com.biz.navimate.server.GetTasksTask;
+import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.services.TrackerService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -17,7 +17,8 @@ import java.util.Map;
  * Created by Siddharth on 01-10-2017.
  */
 
-public class FcmMessagingService extends FirebaseMessagingService implements IfaceServer.GetTasks {
+public class FcmMessagingService extends    FirebaseMessagingService
+                                 implements IfaceServer.SyncTasks {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "FCM_MESSAGING_SEVICE";
 
@@ -55,17 +56,12 @@ public class FcmMessagingService extends FirebaseMessagingService implements Ifa
     }
 
     @Override
-    public void onTasksSuccess() {
-        // Update homescreen list if it's showing
-        BaseActivity currentActivity = App.GetCurrentActivity();
-        if ((currentActivity != null) && (currentActivity.getClass().equals(HomescreenActivity.class))) {
-            ((HomescreenActivity) currentActivity).onTasksSuccess();
-        }
-    }
+    public void onTaskCompleted() {
+        // Update homescreen list
+        HomescreenActivity.RefreshTasks();
 
-    @Override
-    public void onTasksFailed() {
-        Dbg.error(TAG, "Cannot get tasks from server");
+        // Send notification
+        NotificationHelper.Notify(this);
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -90,17 +86,14 @@ public class FcmMessagingService extends FirebaseMessagingService implements Ifa
 
     private void ServiceTaskUpdateNotification() {
         if (App.IsInitialized()) {
-            // Get messages form server
-            GetTasksTask getTasks = new GetTasksTask(this);
+            // sync DB from server
+            SyncDbTask syncDb = new SyncDbTask(this, true);
 
             // Set listener for receiving result
-            getTasks.SetListener(this);
+            syncDb.SetListener(this);
 
             // Execute task
-            getTasks.execute();
+            syncDb.execute();
         }
-
-        // Send notification
-        NotificationHelper.Notify(this);
     }
 }

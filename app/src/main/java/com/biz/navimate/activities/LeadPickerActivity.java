@@ -1,8 +1,6 @@
 package com.biz.navimate.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -11,18 +9,16 @@ import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.LeadListAdapter;
-import com.biz.navimate.misc.AnimHelper;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
-import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
-import com.biz.navimate.views.RlEnterPhone;
-import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LeadPickerActivity extends         BaseActivity
                                 implements      AdapterView.OnItemClickListener
@@ -34,7 +30,7 @@ public class LeadPickerActivity extends         BaseActivity
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.LeadPicker  ui              = null;
     private LeadListAdapter listAdpater                  = null;
-    private ArrayList<Integer> pickedLeads                  = null;
+    private ArrayList<Long> pickedLeads                  = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -66,7 +62,7 @@ public class LeadPickerActivity extends         BaseActivity
 
         // Initialize List
         listAdpater = new LeadListAdapter(this, ui.lvList);
-        for (Lead lead : Statics.GetCurrentLeads())
+        for (Lead lead : (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll())
         {
             listAdpater.Add(new ListItem.Lead(lead, false));
         }
@@ -82,10 +78,10 @@ public class LeadPickerActivity extends         BaseActivity
         ListItem.Lead clickedItem = (ListItem.Lead) listAdpater.getItem(i);
 
         // Check if item was already selected
-        if (pickedLeads.contains(clickedItem.lead.id))
+        if (pickedLeads.contains(clickedItem.lead.dbId))
         {
             // Remove from selected list
-            pickedLeads.remove((Object) clickedItem.lead.id);
+            pickedLeads.remove((Object) clickedItem.lead.dbId);
 
             // Remove tick mark from item view
             clickedItem.bSelected = false;
@@ -93,7 +89,7 @@ public class LeadPickerActivity extends         BaseActivity
         else
         {
             // Add to picked leads
-            pickedLeads.add(clickedItem.lead.id);
+            pickedLeads.add(clickedItem.lead.dbId);
 
             // Add a tick icon to view to indicate selection
             clickedItem.bSelected = true;
