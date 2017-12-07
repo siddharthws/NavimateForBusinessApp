@@ -1,11 +1,11 @@
 package com.biz.navimate.views;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -61,6 +61,7 @@ public class RlDrawer extends     RelativeLayout
     private AnimHelper animHelper = null;
 
     private DrawerListAdapter listAdapter   = null;
+    private boolean bAnimating = false;
 
     // ----------------------- Constructor ----------------------- //
     public RlDrawer(Context context)
@@ -117,17 +118,47 @@ public class RlDrawer extends     RelativeLayout
     // ----------------------- Public APIs ----------------------- //
     public void Open()
     {
+        // Ignore if animation going on
+        if (bAnimating) {
+            return;
+        }
+
         // Slide in List
         int startTrans = -1 * GetListWidth();
         int endTrans = -1 * Statics.GetPxFromDip(50); // Padding Height
         animHelper.Animate(new Anim.Slide(rlListContainer, new BackInterpolator(false), startTrans, endTrans, Anim.Slide.SLIDE_AXIS_X, null));
 
         // Fade in cover
-        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, vwCover, new PowerInterpolator(false, 1), null));
+        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, vwCover, new PowerInterpolator(false, 1), new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                bAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                bAnimating = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                bAnimating = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }));
     }
 
     public void Close()
     {
+        // Ignore if animation going on
+        if (bAnimating) {
+            return;
+        }
+
         // Don't perform hide if already hidden
         if (vwCover.getVisibility() != VISIBLE)
         {
@@ -140,7 +171,27 @@ public class RlDrawer extends     RelativeLayout
         // Slide out list
         int endTrans = -1 * GetListWidth(); //Drawer Width
         int startTrans = -1 * Statics.GetPxFromDip(50); // Padding Height
-        animHelper.Animate(new Anim.Slide(rlListContainer, new BackInterpolator(true), startTrans, endTrans, Anim.Slide.SLIDE_AXIS_X, null));
+        animHelper.Animate(new Anim.Slide(rlListContainer, new BackInterpolator(true), startTrans, endTrans, Anim.Slide.SLIDE_AXIS_X, new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                bAnimating = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                bAnimating = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                bAnimating = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }));
     }
 
     // ----------------------- Private APIs ----------------------- //
