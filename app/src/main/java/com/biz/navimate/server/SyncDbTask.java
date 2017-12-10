@@ -6,11 +6,15 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ServerObject;
 import com.biz.navimate.objects.Task;
+import com.biz.navimate.objects.Template;
+import com.biz.navimate.objects.Value;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
@@ -66,6 +70,15 @@ public class SyncDbTask extends BaseServerTask {
 
         // Sync Templates
         SyncTemplates();
+
+        // Sync Templates
+        SyncFields();
+
+        // Sync Templates
+        SyncDatas();
+
+        // Sync Templates
+        SyncValues();
 
         return null;
     }
@@ -124,7 +137,7 @@ public class SyncDbTask extends BaseServerTask {
 
     private void SyncTemplates () {
         // Get list of all open tasks
-        ArrayList<Form> unsyncedTemplates = DbHelper.formTable.GetFormTemplatesToSync();
+        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
 
         // Create version objects
         JSONArray syncData = GetSyncData(unsyncedTemplates);
@@ -137,6 +150,60 @@ public class SyncDbTask extends BaseServerTask {
             ParseTemplateResponse();
         } else {
             Dbg.error(TAG, "Error while getting templates form server");
+        }
+    }
+
+    private void SyncFields () {
+        // Get list of all open tasks
+        ArrayList<Field> unsyncedFields = DbHelper.fieldTable.GetFieldsToSync();
+
+        // Create version objects
+        JSONArray syncData = GetSyncData(unsyncedFields);
+
+        // Send to server
+        PostToServer(syncData, Constants.Server.URL_SYNC_FIELDS);
+
+        // Parse response
+        if (IsResponseValid()) {
+            ParseFieldResponse();
+        } else {
+            Dbg.error(TAG, "Error while getting fields form server");
+        }
+    }
+
+    private void SyncDatas () {
+        // Get list of all open tasks
+        ArrayList<Data> unsyncedData = DbHelper.dataTable.GetDataToSync();
+
+        // Create version objects
+        JSONArray syncData = GetSyncData(unsyncedData);
+
+        // Send to server
+        PostToServer(syncData, Constants.Server.URL_SYNC_DATA);
+
+        // Parse response
+        if (IsResponseValid()) {
+            ParseDataResponse();
+        } else {
+            Dbg.error(TAG, "Error while getting data from server");
+        }
+    }
+
+    private void SyncValues () {
+        // Get list of all open tasks
+        ArrayList<Value> unsyncedValues = DbHelper.valueTable.GetValuesToSync();
+
+        // Create version objects
+        JSONArray syncData = GetSyncData(unsyncedValues);
+
+        // Send to server
+        PostToServer(syncData, Constants.Server.URL_SYNC_VALUES);
+
+        // Parse response
+        if (IsResponseValid()) {
+            ParseValueResponse();
+        } else {
+            Dbg.error(TAG, "Error while getting values from server");
         }
     }
 
@@ -162,7 +229,7 @@ public class SyncDbTask extends BaseServerTask {
                 DbHelper.taskTable.Save(task);
             }
         } catch (JSONException e) {
-            Dbg.error(TAG, "Error while putting sync data in object");
+            Dbg.error(TAG, "Error while parsing task response");
             Dbg.stack(e);
         }
     }
@@ -184,7 +251,7 @@ public class SyncDbTask extends BaseServerTask {
                 DbHelper.leadTable.Save(lead);
             }
         } catch (JSONException e) {
-            Dbg.error(TAG, "Error while putting sync data in object");
+            Dbg.error(TAG, "Error while parsing lead response");
             Dbg.stack(e);
         }
     }
@@ -195,18 +262,84 @@ public class SyncDbTask extends BaseServerTask {
             JSONArray templatesJson = responseJson.getJSONArray(Constants.Server.KEY_TEMPLATES);
 
             // Parse each JSON Object to task object
-            ArrayList<Form> forms = new ArrayList<>();
+            ArrayList<Template> templates = new ArrayList<>();
             for (int i = 0; i < templatesJson.length(); i++) {
                 JSONObject templateJson = templatesJson.getJSONObject(i);
-                forms.add(Form.FromJson(templateJson));
+                templates.add(Template.FromJson(templateJson));
+            }
+
+            // Save all new templates in database
+            for (Template template : templates) {
+                DbHelper.templateTable.Save(template);
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Error while parsing template response");
+            Dbg.stack(e);
+        }
+    }
+
+    private void ParseFieldResponse() {
+        try {
+            // Get tasks Json array
+            JSONArray fieldsJson = responseJson.getJSONArray(Constants.Server.KEY_FIELDS);
+
+            // Parse each JSON Object to Field object
+            ArrayList<Field> fields = new ArrayList<>();
+            for (int i = 0; i < fieldsJson.length(); i++) {
+                JSONObject fieldJson = fieldsJson.getJSONObject(i);
+                fields.add(Field.FromJson(fieldJson));
             }
 
             // Save all new forms in database
-            for (Form form : forms) {
-                DbHelper.formTable.Save(form);
+            for (Field field : fields) {
+                DbHelper.fieldTable.Save(field);
             }
         } catch (JSONException e) {
-            Dbg.error(TAG, "Error while putting sync data in object");
+            Dbg.error(TAG, "Error while parsing field response");
+            Dbg.stack(e);
+        }
+    }
+
+    private void ParseDataResponse() {
+        try {
+            // Get tasks Json array
+            JSONArray datasJson = responseJson.getJSONArray(Constants.Server.KEY_DATA);
+
+            // Parse each JSON Object to Field object
+            ArrayList<Data> datas = new ArrayList<>();
+            for (int i = 0; i < datasJson.length(); i++) {
+                JSONObject dataJson = datasJson.getJSONObject(i);
+                datas.add(Data.FromJson(dataJson));
+            }
+
+            // Save all new forms in database
+            for (Data data : datas) {
+                DbHelper.dataTable.Save(data);
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Error while parsing data response");
+            Dbg.stack(e);
+        }
+    }
+
+    private void ParseValueResponse() {
+        try {
+            // Get tasks Json array
+            JSONArray valuesJson = responseJson.getJSONArray(Constants.Server.KEY_VALUES);
+
+            // Parse each JSON Object to Field object
+            ArrayList<Value> values = new ArrayList<>();
+            for (int i = 0; i < valuesJson.length(); i++) {
+                JSONObject valueJson = valuesJson.getJSONObject(i);
+                values.add(Value.FromJson(valueJson));
+            }
+
+            // Save all new forms in database
+            for (Value value : values) {
+                DbHelper.valueTable.Save(value);
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Error while parsing value response");
             Dbg.stack(e);
         }
     }

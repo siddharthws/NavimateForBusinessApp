@@ -18,9 +18,10 @@ import com.biz.navimate.application.App;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
+import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.Template;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 
@@ -90,7 +91,8 @@ public class TaskInfoDialog     extends     BaseDialog
         // Get current data
         Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
         Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
-        Form formTemplate = (Form) DbHelper.formTable.GetById(currentData.task.formTemplateId);
+        Template formTemplate = (Template) DbHelper.templateTable.GetById(currentData.task.formTemplateId);
+        Data templateData = (Data) DbHelper.dataTable.GetById(formTemplate.defaultDataId);
 
         switch (v.getId()) {
             case R.id.btn_dismiss: {
@@ -99,7 +101,7 @@ public class TaskInfoDialog     extends     BaseDialog
                 break;
             }
             case R.id.btn_submit_form: {
-                RlDialog.Show(new Dialog.SubmitForm(formTemplate, currentData.task.serverId, false));
+                RlDialog.Show(new Dialog.SubmitForm(templateData, currentData.task.dbId, false));
                 break;
             }
             case R.id.btn_phone: {

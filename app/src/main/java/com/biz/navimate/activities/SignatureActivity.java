@@ -68,11 +68,11 @@ public class SignatureActivity extends BaseActivity
 
     public void ButtonClickSave(View view) {
         // Get image file from Signature View contents
-        String compressedFilePath = Statics.GetFileFromView(ui.vwSignature);
+        String compressedFileName = Statics.GetFileFromView(ui.vwSignature);
 
         // Send file path as result
         Intent intent = new Intent();
-        intent.putExtra(Constants.Extras.SIGNATURE_IMAGE_PATH, compressedFilePath);
+        intent.putExtra(Constants.Extras.SIGNATURE_IMAGE_PATH, compressedFileName);
         setResult(RESULT_OK, intent);
 
         // Finish this activity

@@ -23,8 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Siddharth on 27-09-2017.
@@ -152,8 +151,7 @@ public class Statics {
     // File related APIs
     public static File CreateTempImageFile(Context context) {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = UUID.randomUUID().toString();
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = null;
         try {
@@ -167,6 +165,12 @@ public class Statics {
             Dbg.stack(e);
         }
         return image;
+    }
+
+    public static String GetAbsolutePath(Context context, String filename) {
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String absPath = storageDir.getAbsolutePath() + "/" + filename;
+        return absPath;
     }
 
     public static String GetFileFromView(View view) {
@@ -235,25 +239,22 @@ public class Statics {
         for (int i = 1; scaledFileSize > maxSizeB; i++) {
             inSampleSize = (int) Math.pow(2, i);
             scaledFileSize = origFileSize / (inSampleSize * inSampleSize);
-            Dbg.info(TAG, "New Scaled = " + scaledFileSize);
         }
 
         // Decode bitmap from file usign inSampleSize
-        Dbg.info(TAG, "Final Sample Size = " + inSampleSize);
         BitmapFactory.Options bmpOptions = new BitmapFactory.Options();
         bmpOptions.inSampleSize = inSampleSize;
         Bitmap bitmap = BitmapFactory.decodeFile(path, bmpOptions);
 
         // Save contents to new file
-        File compressedFile = new File(dir, "FLL_" + origFile.getName());
+        String compressedName = "FLL_" + origFile.getName();
+        File compressedFile = new File(dir, compressedName);
         FileOutputStream fOut = null;
         try {
             fOut = new FileOutputStream(compressedFile);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOut);
             fOut.flush();
             origFile.delete();
-
-            Dbg.info(TAG, "Compressed File Size = " + compressedFile.length());
         } catch (IOException e) {
             Dbg.error(TAG, "Error while saving to compressed file");
             Dbg.stack(e);
@@ -269,6 +270,6 @@ public class Statics {
             bitmap.recycle();
         }
 
-        return compressedFile.getAbsolutePath();
+        return compressedName;
     }
 }

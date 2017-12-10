@@ -18,6 +18,11 @@ public class IfaceServer {
         void onTaskCompleted();
     }
 
+    // SyncForms Task interface
+    public interface SyncForms {
+        void onFormsSynced();
+    }
+
     // OtpSms Task interface
     public interface OtpSms {
         void onSmsSuccess();

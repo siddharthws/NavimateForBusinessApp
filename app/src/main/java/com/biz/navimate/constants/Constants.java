@@ -45,6 +45,19 @@ public class Constants {
         public static final String KEY_MAP_TRAFFIC_OVERLAY      = "pref_map_traffic_overlay";
     }
 
+    // Template related constants
+    public static class Template {
+        // Field Types in templates
+        public static final int FIELD_TYPE_NONE           = 0;
+        public static final int FIELD_TYPE_TEXT           = 1;
+        public static final int FIELD_TYPE_NUMBER         = 2;
+        public static final int FIELD_TYPE_RADIOLIST      = 3;
+        public static final int FIELD_TYPE_CHECKLIST      = 4;
+        public static final int FIELD_TYPE_PHOTO          = 5;
+        public static final int FIELD_TYPE_SIGN           = 6;
+        public static final int FIELD_TYPE_LOCATION       = 7;
+    }
+
     // Server related constants
     public static class Server {
         // URLs
@@ -57,23 +70,35 @@ public class Constants {
         public static final String URL_TRACK            = URL_BASE + "/api/track/data";
         public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
         public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
-        public static final String URL_SUBMIT_FORM      = URL_BASE + "/api/reps/submitForm";
         public static final String URL_SYNC_TASKS       = URL_BASE + "/api/reps/sync/tasks";
         public static final String URL_SYNC_LEADS       = URL_BASE + "/api/reps/sync/leads";
         public static final String URL_SYNC_TEMPLATES   = URL_BASE + "/api/reps/sync/templates";
+        public static final String URL_SYNC_FIELDS      = URL_BASE + "/api/reps/sync/fields";
+        public static final String URL_SYNC_DATA        = URL_BASE + "/api/reps/sync/data";
+        public static final String URL_SYNC_VALUES      = URL_BASE + "/api/reps/sync/values";
+        public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
 
         // JSON Keys
 
         // ID Keys for different object types
         public static final String KEY_LEAD_ID          = "leadId";
         public static final String KEY_TASK_ID          = "taskId";
+        public static final String KEY_TEMPLATE_ID      = "templateId";
+        public static final String KEY_FIELD_ID         = "fieldId";
+        public static final String KEY_FIELD_IDS        = "fieldIds";
+        public static final String KEY_VALUE_IDS        = "valueIds";
         public static final String KEY_FORM_TEMPLATE_ID = "formTemplateId";
+        public static final String KEY_DEFAULT_DATA_ID  = "defaultDataId";
 
         // Keys for data arrays sent by / to server
         public static final String KEY_SYNC_DATA        = "syncData";
         public static final String KEY_TASKS            = "tasks";
         public static final String KEY_LEADS            = "leads";
         public static final String KEY_TEMPLATES        = "templates";
+        public static final String KEY_FORMS            = "forms";
+        public static final String KEY_FIELDS           = "fields";
+        public static final String KEY_DATA             = "data";
+        public static final String KEY_VALUES           = "values";
 
         // Task related keys
         public static final String KEY_STATUS           = "status";
@@ -86,9 +111,15 @@ public class Constants {
         public static final String KEY_LONGITUDE        = "longitude";
 
         // Form related keys
-        public static final String KEY_DATA             = "data";
-        public static final String KEY_FILENAME         = "filename";
         public static final String KEY_CLOSE_TASK       = "closeTask";
+        public static final String KEY_TIMESTAMP        = "timestamp";
+
+        // Field related keys
+        public static final String KEY_TYPE             = "type";
+        public static final String KEY_IS_MANDATORY     = "isMandatory";
+
+        // Value related keys
+        public static final String KEY_VALUE            = "value";
 
         // Misc Keys
         public static final String KEY_ID               = "id";
