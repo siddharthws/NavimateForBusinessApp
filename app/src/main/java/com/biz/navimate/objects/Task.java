@@ -49,10 +49,10 @@ public class Task extends ServerObject {
         }
 
         // Get Local Template Object
-        Form form = DbHelper.formTable.GetByServerId(formTemplateId);
-        if (form == null) {
-            form = new Form(Constants.Misc.ID_INVALID, formTemplateId, Constants.Misc.ID_INVALID, "", new ArrayList<FormField.Base>());
-            DbHelper.formTable.Save(form);
+        Template template = DbHelper.templateTable.GetByServerId(formTemplateId);
+        if (template == null) {
+            template = new Template(Constants.Misc.ID_INVALID, formTemplateId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, new ArrayList<Long>());
+            DbHelper.templateTable.Save(template);
         }
 
         // Get DbId
@@ -62,6 +62,6 @@ public class Task extends ServerObject {
             dbId = existingTask.dbId;
         }
 
-        return new Task(dbId, serverId, version, lead.dbId, form.dbId, status);
+        return new Task(dbId, serverId, version, lead.dbId, template.dbId, status);
     }
 }

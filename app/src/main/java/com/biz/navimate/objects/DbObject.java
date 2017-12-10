@@ -16,6 +16,10 @@ public class DbObject
     public static final int TYPE_LEAD                   = 1;
     public static final int TYPE_TASK                   = 2;
     public static final int TYPE_FORM                   = 3;
+    public static final int TYPE_TEMPLATE               = 4;
+    public static final int TYPE_DATA                   = 5;
+    public static final int TYPE_FIELD                  = 6;
+    public static final int TYPE_VALUE                  = 7;
 
     // ----------------------- Globals ----------------------- //
     public int      type        = TYPE_INVALID;

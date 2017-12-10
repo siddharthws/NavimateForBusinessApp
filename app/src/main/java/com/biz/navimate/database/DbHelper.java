@@ -26,6 +26,10 @@ public class DbHelper extends SQLiteOpenHelper
     public static FormTable             formTable               = null;
     public static LeadTable             leadTable               = null;
     public static TaskTable             taskTable               = null;
+    public static TemplateTable         templateTable           = null;
+    public static FieldTable            fieldTable              = null;
+    public static DataTable             dataTable               = null;
+    public static ValueTable            valueTable              = null;
 
 
     // ----------------------- Constructor ----------------------- //
@@ -36,6 +40,10 @@ public class DbHelper extends SQLiteOpenHelper
         formTable              = new FormTable(this);
         leadTable              = new LeadTable(this);
         taskTable              = new TaskTable(this);
+        templateTable          = new TemplateTable(this);
+        fieldTable             = new FieldTable(this);
+        dataTable              = new DataTable(this);
+        valueTable             = new ValueTable(this);
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -47,6 +55,10 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL(FormTable.CREATE_TABLE);
         db.execSQL(LeadTable.CREATE_TABLE);
         db.execSQL(TaskTable.CREATE_TABLE);
+        db.execSQL(TemplateTable.CREATE_TABLE);
+        db.execSQL(DataTable.CREATE_TABLE);
+        db.execSQL(FieldTable.CREATE_TABLE);
+        db.execSQL(ValueTable.CREATE_TABLE);
     }
 
     @Override
@@ -58,6 +70,10 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + DataTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ValueTable.TABLE_NAME);
 
         // Run onCreate Again
         onCreate(db);
