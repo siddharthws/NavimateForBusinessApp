@@ -36,6 +36,6 @@ public class IfaceResult {
 
     public interface Signature
     {
-        void onSignatureResult(String path);
+        void onSignatureResult(String fileName);
     }
 }

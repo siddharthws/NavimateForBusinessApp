@@ -2,6 +2,7 @@ package com.biz.navimate.objects;
 
 import android.support.annotation.NonNull;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceDialog;
 
 import java.util.ArrayList;
@@ -103,16 +104,16 @@ public class Dialog {
 
     public static class SubmitForm extends Base
     {
-        public Form form = null;
-        public long taskServerId = -1;
+        public Data data = null;
+        public long taskId = Constants.Misc.ID_INVALID;
         public boolean bCloseTask = false;
 
-        public SubmitForm(Form form, long taskServerId, boolean bCloseTask)
+        public SubmitForm(Data data, long taskId, boolean bCloseTask)
         {
             super(TYPE_SUBMIT_FORM, true);
 
-            this.form = form;
-            this.taskServerId = taskServerId;
+            this.data = data;
+            this.taskId = taskId;
             this.bCloseTask = bCloseTask;
         }
     }

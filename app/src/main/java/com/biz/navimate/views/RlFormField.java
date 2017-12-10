@@ -27,8 +27,9 @@ import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
-import com.biz.navimate.objects.FormField;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.Value;
 import com.biz.navimate.zxing.IntentIntegrator;
 
 /**
@@ -53,7 +54,7 @@ public class RlFormField extends RelativeLayout {
     private ImageView ivPhoto = null, ivSignature = null;
     private TvCalibri tvPhoto = null, tvSignature = null;
 
-    private FormField.Base field = null;
+    private FormEntry.Base entry = null;
 
     // ----------------------- Constructor ----------------------- //
 
@@ -63,10 +64,10 @@ public class RlFormField extends RelativeLayout {
         InitView(context);
     }
 
-    public RlFormField(Context context, FormField.Base field)
+    public RlFormField(Context context, Value value)
     {
         super(context);
-        this.field = field;
+        this.entry = FormEntry.FromValue(value);
         InitView(context);
     }
 
@@ -84,45 +85,55 @@ public class RlFormField extends RelativeLayout {
 
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
-    public FormField.Base GetField() {
-        FormField.Base currentField = null;
+    public Value GetValue() {
+        String value = "";
 
-        // Create field from data
-        if (field.type.equals(FormField.TYPE_TEXT)) {
-            String text = etText.getText().toString();
-            currentField = new FormField.Text(field.title, text);
-        } else if (field.type.equals(FormField.TYPE_NUMBER)) {
-            int number = Integer.parseInt(etNumber.getText().toString());
-            currentField = new FormField.Number(field.title, number);
-        } else if (field.type.equals(FormField.TYPE_PHOTO)) {
-            currentField = new FormField.Photo(field.title, "", ((FormField.Photo) field).imagePath);
-        } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
-            currentField = new FormField.Signature(field.title, "", ((FormField.Signature) field).imagePath);
-        } else if (field.type.equals(FormField.TYPE_RADIO_LIST)) {
-            // get selection string
-            String selection = "";
-            for (int i = 0; i < rgRadioList.getChildCount(); i++) {
-                RbCustom rb = (RbCustom) rgRadioList.getChildAt(i);
-                if (rb.isChecked()) {
-                    selection = rb.getText().toString();
-                    break;
+        switch (entry.field.type) {
+            case Constants.Template.FIELD_TYPE_TEXT : {
+                value = etText.getText().toString();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_NUMBER : {
+                value = etNumber.getText().toString();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_PHOTO :
+            case Constants.Template.FIELD_TYPE_SIGN : {
+                value = entry.toString();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_CHECKLIST : {
+                // Get selection array
+                ArrayList<Boolean> selection = new ArrayList<>();
+                for (int i = 0; i < llCheckList.getChildCount(); i++) {
+                    CbCustom cb = (CbCustom) llCheckList.getChildAt(i);
+                    selection.add(cb.isChecked());
                 }
-            }
 
-            currentField = new FormField.RadioList(field.title, ((FormField.RadioList) field).options, selection);
-        } else if (field.type.equals(FormField.TYPE_CHECK_LIST)) {
-            // Clear selection list
-
-            // Add all checked items to selection list
-            ArrayList<Boolean> selection = new ArrayList<>();
-            for (int i = 0; i < llCheckList.getChildCount(); i++) {
-                CbCustom cb = (CbCustom) llCheckList.getChildAt(i);
-                selection.add(cb.isChecked());
+                // Update entry and get string format
+                ((FormEntry.CheckList) entry).selection = selection;
+                value = entry.toString();
+                break;
             }
-            currentField = new FormField.CheckList(field.title, ((FormField.CheckList) field).options, selection);
+            case Constants.Template.FIELD_TYPE_RADIOLIST : {
+                // get selection index
+                int selection = 0;
+                for (int i = 0; i < rgRadioList.getChildCount(); i++) {
+                    RbCustom rb = (RbCustom) rgRadioList.getChildAt(i);
+                    if (rb.isChecked()) {
+                        selection = i;
+                        break;
+                    }
+                }
+
+                // Update entry and get string format
+                ((FormEntry.RadioList) entry).selection = selection;
+                value = entry.toString();
+                break;
+            }
         }
 
-        return currentField;
+        return new Value(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, value, entry.field.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -148,51 +159,44 @@ public class RlFormField extends RelativeLayout {
         tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
 
         // Populate title
-        tvTitle.setText(field.title);
+        tvTitle.setText(entry.field.title);
 
-        // Parse data from Field into UI
-        if (field.type.equals(FormField.TYPE_TEXT)) {
-            llText.setVisibility(VISIBLE);
-            etText.setText(((FormField.Text) field).data);
-        } else if (field.type.equals(FormField.TYPE_NUMBER)) {
-            etNumber.setVisibility(VISIBLE);
-            etNumber.setText(String.valueOf(((FormField.Number) field).data));
-        } else if (field.type.equals(FormField.TYPE_PHOTO)) {
-            rlPhoto.setVisibility(VISIBLE);
-        } else if (field.type.equals(FormField.TYPE_SIGNATURE)) {
-            rlSignature.setVisibility(VISIBLE);
-        } else if (field.type.equals(FormField.TYPE_RADIO_LIST)) {
-            rgRadioList.setVisibility(VISIBLE);
-
-            // Add radio options
-            for (String option : ((FormField.RadioList) field).options) {
-                RbCustom rb = new RbCustom(context);
-                rb.setText(option);
-
-                // Add to group
-                rgRadioList.addView(rb);
-
-                // Check selected
-                if (option.equals(((FormField.RadioList) field).selection)) {
-                    rb.setChecked(true);
-                }
+        // Populate Value as per field type
+        switch (entry.field.type) {
+            case Constants.Template.FIELD_TYPE_TEXT : {
+                InitTextField();
+                break;
             }
-        } else if (field.type.equals(FormField.TYPE_CHECK_LIST)) {
-            llCheckList.setVisibility(VISIBLE);
-
-            // Add radio options
-            FormField.CheckList clField = (FormField.CheckList) field;
-            for (int i = 0; i < clField.options.size(); i++) {
-                CbCustom cb = new CbCustom(context);
-                cb.setText(clField.options.get(i));
-
-                // Add to group
-                llCheckList.addView(cb);
-
-                // Check selected
-                cb.setChecked(clField.selection.get(i));
+            case Constants.Template.FIELD_TYPE_NUMBER : {
+                InitNumberField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_PHOTO : {
+                InitPhotoField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_SIGN : {
+                InitSignField();
+                rlSignature.setVisibility(VISIBLE);
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_RADIOLIST : {
+                InitRadioField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_CHECKLIST : {
+                InitChecklistField();
+                break;
             }
         }
+
+    }
+
+    // APIs to init different form fields as per value
+    private void InitTextField() {
+        // Set Text UI
+        llText.setVisibility(VISIBLE);
+        etText.setText(entry.toString());
 
         // Set QR code reader
         ibQr.setOnClickListener(new OnClickListener() {
@@ -211,6 +215,17 @@ public class RlFormField extends RelativeLayout {
                 }
             }
         });
+    }
+
+    private void InitNumberField() {
+        // Set number UI vsiible
+        etNumber.setVisibility(VISIBLE);
+        etNumber.setText(entry.toString());
+    }
+
+    private void InitPhotoField() {
+        // Set photo layout visible
+        rlPhoto.setVisibility(VISIBLE);
 
         // Set Photo Capture Listener
         rlPhoto.setOnClickListener(new OnClickListener() {
@@ -226,8 +241,8 @@ public class RlFormField extends RelativeLayout {
                     // Continue only if the File was successfully created
                     if (photoFile != null) {
                         Uri photoURI = FileProvider.getUriForFile(  getContext(),
-                                                                    "com.biz.navimate.fileprovider",
-                                                                    photoFile);
+                                "com.biz.navimate.fileprovider",
+                                photoFile);
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
                         // Set Photo Result Listener
@@ -239,12 +254,13 @@ public class RlFormField extends RelativeLayout {
                                     String compressedFile = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
 
                                     // Set field cache
-                                    ((FormField.Photo) field).imagePath = compressedFile;
+                                    FormEntry.Photo photoEntry = (FormEntry.Photo) entry;
+                                    photoEntry.filename = compressedFile;
 
                                     // Preview photo in dialog
                                     tvPhoto.setVisibility(GONE);
                                     ivPhoto.setVisibility(VISIBLE);
-                                    ivPhoto.setImageBitmap(BitmapFactory.decodeFile(((FormField.Photo) field).imagePath));
+                                    ivPhoto.setImageBitmap(BitmapFactory.decodeFile(Statics.GetAbsolutePath(getContext(), photoEntry.filename)));
                                 }
                             }
                         });
@@ -258,8 +274,13 @@ public class RlFormField extends RelativeLayout {
                 }
             }
         });
+    }
 
-        // Set Photo Capture Listener
+    private void InitSignField() {
+        // Set sign layout visible
+        rlSignature.setVisibility(VISIBLE);
+
+        // Set Signature Capture Listener
         rlSignature.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,14 +289,15 @@ public class RlFormField extends RelativeLayout {
                 if (activity != null) {
                     activity.SetSignResultListener(new IfaceResult.Signature() {
                         @Override
-                        public void onSignatureResult(String path) {
+                        public void onSignatureResult(String fileName) {
                             // Set field cache
-                            ((FormField.Signature) field).imagePath = path;
+                            FormEntry.Signature signEntry = (FormEntry.Signature) entry;
+                            signEntry.filename = fileName;
 
                             // Preview photo in dialog
                             tvSignature.setVisibility(GONE);
                             ivSignature.setVisibility(VISIBLE);
-                            ivSignature.setImageBitmap(BitmapFactory.decodeFile(((FormField.Signature) field).imagePath));
+                            ivSignature.setImageBitmap(BitmapFactory.decodeFile(Statics.GetAbsolutePath(getContext(), signEntry.filename)));
                         }
                     });
 
@@ -284,5 +306,46 @@ public class RlFormField extends RelativeLayout {
                 }
             }
         });
+    }
+
+    private void InitRadioField() {
+        // Set Radio List visible
+        rgRadioList.setVisibility(VISIBLE);
+
+        // Add radio options
+        FormEntry.RadioList radioEntry = (FormEntry.RadioList) entry;
+        for (int i = 0; i < radioEntry.options.size(); i++) {
+            String option = radioEntry.options.get(i);
+
+            // Add radio button
+            RbCustom rb = new RbCustom(getContext());
+            rb.setText(option);
+
+            // Add button to group
+            rgRadioList.addView(rb);
+
+            // Check if selected
+            if (radioEntry.selection == i) {
+                rb.setChecked(true);
+            }
+        }
+    }
+
+    private void InitChecklistField() {
+        // Set Checklist visisble
+        llCheckList.setVisibility(VISIBLE);
+
+        // Add radio options
+        FormEntry.CheckList clEntry = (FormEntry.CheckList) entry;
+        for (int i = 0; i < clEntry.options.size(); i++) {
+            CbCustom cb = new CbCustom(getContext());
+            cb.setText(clEntry.options.get(i));
+
+            // Add to group
+            llCheckList.addView(cb);
+
+            // Check selected
+            cb.setChecked(clEntry.selection.get(i));
+        }
     }
 }

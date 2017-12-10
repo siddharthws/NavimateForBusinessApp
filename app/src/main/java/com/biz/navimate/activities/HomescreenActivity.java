@@ -1,6 +1,7 @@
 package com.biz.navimate.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.view.View;
@@ -12,7 +13,6 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.interfaces.IfaceServer;
@@ -20,16 +20,17 @@ import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.lists.TaskListAdapter;
 import com.biz.navimate.misc.AnimHelper;
 import com.biz.navimate.misc.LocationCache;
-import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
+import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
+import com.biz.navimate.objects.Template;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
+import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
@@ -149,8 +150,9 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onSubmitFormClick(Task task) {
-        Form formTemplate = (Form) DbHelper.formTable.GetById(task.formTemplateId);
-        RlDialog.Show(new Dialog.SubmitForm(formTemplate, task.serverId, false));
+        Template formTemplate = (Template) DbHelper.templateTable.GetById(task.formTemplateId);
+        Data templateData = (Data) DbHelper.dataTable.GetById(formTemplate.defaultDataId);
+        RlDialog.Show(new Dialog.SubmitForm(templateData, task.dbId, false));
     }
 
     @Override
@@ -246,14 +248,25 @@ public class HomescreenActivity     extends     BaseActivity
     }
 
     // APi to send Sync Db Request
-    private void SyncDb(boolean bDialog) {
-        SyncDbTask syncDb = new SyncDbTask(this, bDialog);
-        syncDb.SetListener(new IfaceServer.SyncTasks() {
+    private void SyncDb(final boolean bDialog) {
+        final Context context = this;
+
+        // Sync Forms followed by DB
+        SyncFormsTask syncForms = new SyncFormsTask(context, bDialog);
+        syncForms.SetListener(new IfaceServer.SyncForms() {
             @Override
-            public void onTaskCompleted() {
-                InitTasksUi();
+            public void onFormsSynced() {
+                SyncDbTask syncDb = new SyncDbTask(context, bDialog);
+                syncDb.SetListener(new IfaceServer.SyncTasks() {
+                    @Override
+                    public void onTaskCompleted() {
+                        // Re-Initialize UI
+                        InitTasksUi();
+                    }
+                });
+                syncDb.execute();
             }
         });
-        syncDb.execute();
+        syncForms.execute();
     }
 }
