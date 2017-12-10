@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.application.App;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceServer;
@@ -287,9 +288,14 @@ public class RlVerifyPhone  extends     RelativeLayout
     private void SendVerificationSms() {
         String smsText = generatedOtp + VERIFICATION_SMS_TEXT;
 
-        // Send SMS through server
-        OtpSmsTask smsTask = new OtpSmsTask(getContext(), phoneNumber, smsText);
-        smsTask.SetListener(this);
-        smsTask.execute();
+        if (Constants.App.DEBUG) {
+            // Skip SMS sending SMS
+            onSmsReceived(smsText);
+        } else {
+            // Send SMS through server
+            OtpSmsTask smsTask = new OtpSmsTask(getContext(), phoneNumber, smsText);
+            smsTask.SetListener(this);
+            smsTask.execute();
+        }
     }
 }
