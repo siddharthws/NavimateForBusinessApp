@@ -1,5 +1,7 @@
 package com.biz.navimate.objects;
 
+import com.biz.navimate.constants.Constants;
+
 /**
  * Created by Siddharth on 29-09-2017.
  */
@@ -17,6 +19,7 @@ public class ListItem {
     public static final int TYPE_DRAWER_ITEM            = 5;
 
     public static final int TYPE_GENERIC                = 6;
+    public static final int TYPE_FORM                   = 7;
 
     // ----------------------- Classes ---------------------------//
     // Base Class for list Item Data
@@ -99,6 +102,21 @@ public class ListItem {
             this.startImageId       = startImageId;
             this.endImageId         = endImageId;
             this.background         = background;
+        }
+    }
+
+    // Form List Item
+    public static class Form extends Base
+    {
+        // ----------------------- Globals ----------------------- //
+        public long formId = Constants.Misc.ID_INVALID;
+
+        // ----------------------- Constructor ----------------------- //
+        public Form(long formId)
+        {
+            super(TYPE_FORM);
+
+            this.formId                 = formId;
         }
     }
 }
