@@ -158,6 +158,10 @@ public class HomescreenActivity     extends     BaseActivity
     @Override
     public void onDrawerItemClick(int actionId) {
         switch (actionId) {
+            case RlDrawer.DRAWER_ACTION_FORMS : {
+                FormsActivity.Start(this);
+                break;
+            }
             case RlDrawer.DRAWER_ACTION_EXIT : {
                 finish();
                 break;
