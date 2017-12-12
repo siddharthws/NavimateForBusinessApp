@@ -84,13 +84,13 @@ public class ListItem {
     {
         // ----------------------- Globals ----------------------- //
         public String title             = "";
-        public int id                   = 0;
+        public long id                  = 0L;
         public int startImageId         = 0;
         public int endImageId           = 0;
         public int background           = 0;
 
         // ----------------------- Constructor ----------------------- //
-        public Generic(int id, String title, int startImageId, int endImageId, int background)
+        public Generic(long id, String title, int startImageId, int endImageId, int background)
         {
             super(TYPE_GENERIC);
 

@@ -113,7 +113,7 @@ public class MapSettingsDialog  extends     BaseDialog
         ListItem.Generic clickedItem = (ListItem.Generic) listAdapter.getItem(position);
 
         // Set Preferences setting
-        Preferences.SetMapType(context, clickedItem.id);
+        Preferences.SetMapType(context, (int) clickedItem.id);
 
         // Re-Init UI
         InitTypeList();
