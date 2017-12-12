@@ -3,6 +3,7 @@ package com.biz.navimate.viewholders;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
@@ -66,5 +67,10 @@ public class ActivityHolder {
     {
         public Button btnSave, btnBack, btnClear        = null;
         public VwSignature vwSignature = null;
+    }
+
+    public static class ViewPhoto extends Base
+    {
+        public ImageView ivImage    = null;
     }
 }

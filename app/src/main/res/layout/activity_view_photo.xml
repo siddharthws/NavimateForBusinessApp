@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.biz.navimate.activities.ViewPhotoActivity"
+    android:background="@android:color/black">
+
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textsize_primary_small"
+        android:textColor="@android:color/white"
+        android:text="Unable to display image..."
+        android:layout_centerInParent="true"/>
+
+    <com.biz.navimate.views.TouchImageView
+        android:id="@+id/iv_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_toolbar_back"
+        android:layout_width="@dimen/toolbar_button_height_width"
+        android:layout_height="@dimen/toolbar_button_height_width"
+        android:background="@color/colorPrimary"
+        android:layout_margin="@dimen/m_small"
+        android:padding="@dimen/toolbar_button_padding"
+        android:src="@mipmap/icon_back_white"
+        android:scaleType="fitXY"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:onClick="ButtonClickBack"/>
+
+</RelativeLayout>
