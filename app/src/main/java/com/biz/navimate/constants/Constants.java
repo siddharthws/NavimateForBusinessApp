@@ -26,6 +26,7 @@ public class Constants {
     public class Extras {
         // Activity Result Extras
         public static final String LEAD_PICKER          = "leadPicker";
+        public static final String IMAGE_NAME           = "imageName";
         public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
     }
 

@@ -9,8 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -51,6 +50,10 @@
             android:name=".activities.SignatureActivity"
             android:launchMode="singleTop"
             android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activities.ViewPhotoActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <!-- Services -->
         <service android:name=".firebase.FcmMessagingService">
@@ -64,7 +67,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.biz.navimate.services.TrackerService"
+            android:name=".services.TrackerService"
             android:label="Tracker Service" />
 
         <provider
@@ -74,10 +77,8 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-
-
     </application>
 
 </manifest>
