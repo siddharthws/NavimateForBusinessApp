@@ -33,10 +33,13 @@ public class RlDrawer extends     RelativeLayout
     // Macros for action IDs for drawer items
     public static final int DRAWER_ACTION_NONE          = 0;
     public static final int DRAWER_ACTION_EXIT          = 1;
+    public static final int DRAWER_ACTION_FORMS         = 2;
 
     // Drawer List Items
     public static final ListItem.Drawer[] DRAWER_ITEMS =
             {
+                    new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM,       DRAWER_ACTION_FORMS,                "Form Submissions",         R.mipmap.icon_add_grey),
+                    new ListItem.Drawer(ListItem.TYPE_DRAWER_GROUP_SEPARATOR,       DRAWER_ACTION_NONE,                "",         0),
                     new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM,       DRAWER_ACTION_EXIT,                 "Exit",         R.mipmap.icon_exit_grey)
             };
 
