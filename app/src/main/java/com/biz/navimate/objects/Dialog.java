@@ -106,15 +106,16 @@ public class Dialog {
     {
         public Data data = null;
         public long taskId = Constants.Misc.ID_INVALID;
-        public boolean bCloseTask = false;
+        public boolean bCloseTask = false, bReadOnly = false;
 
-        public SubmitForm(Data data, long taskId, boolean bCloseTask)
+        public SubmitForm(Data data, long taskId, boolean bCloseTask, boolean bReadOnly)
         {
             super(TYPE_SUBMIT_FORM, true);
 
             this.data = data;
             this.taskId = taskId;
             this.bCloseTask = bCloseTask;
+            this.bReadOnly = bReadOnly;
         }
     }
 

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.activities.SignatureActivity;
+import com.biz.navimate.activities.ViewPhotoActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
@@ -55,6 +56,7 @@ public class RlFormField extends RelativeLayout {
     private TvCalibri tvPhoto = null, tvSignature = null;
 
     private FormEntry.Base entry = null;
+    private boolean bReadOnly = false;
 
     // ----------------------- Constructor ----------------------- //
 
@@ -64,10 +66,11 @@ public class RlFormField extends RelativeLayout {
         InitView(context);
     }
 
-    public RlFormField(Context context, Value value)
+    public RlFormField(Context context, Value value, boolean bReadOnly)
     {
         super(context);
         this.entry = FormEntry.FromValue(value);
+        this.bReadOnly = bReadOnly;
         InitView(context);
     }
 
@@ -198,6 +201,12 @@ public class RlFormField extends RelativeLayout {
         llText.setVisibility(VISIBLE);
         etText.setText(entry.toString());
 
+        if (bReadOnly) {
+            // Disable QR scanning and edit text
+            ibQr.setEnabled(false);
+            etText.setEnabled(false);
+        }
+
         // Set QR code reader
         ibQr.setOnClickListener(new OnClickListener() {
             @Override
@@ -221,91 +230,119 @@ public class RlFormField extends RelativeLayout {
         // Set number UI vsiible
         etNumber.setVisibility(VISIBLE);
         etNumber.setText(entry.toString());
+
+        if (bReadOnly) {
+            // Disable QR scanning and edit text
+            etNumber.setEnabled(false);
+        }
     }
 
     private void InitPhotoField() {
         // Set photo layout visible
         rlPhoto.setVisibility(VISIBLE);
 
-        // Set Photo Capture Listener
-        rlPhoto.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        // Set photo in imageview
+        SetPhoto(ivPhoto, tvPhoto);
 
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                BaseActivity activity = App.GetCurrentActivity();
-                if ((activity != null) && (takePictureIntent.resolveActivity(activity.getPackageManager()) != null)) {
-                    // Create the File where the photo should go
-                    final File photoFile = Statics.CreateTempImageFile(getContext());
-
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        Uri photoURI = FileProvider.getUriForFile(  getContext(),
-                                "com.biz.navimate.fileprovider",
-                                photoFile);
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-
-                        // Set Photo Result Listener
-                        activity.SetPhotoResultListener(new IfaceResult.Photo() {
-                            @Override
-                            public void onPhotoResult() {
-                                if (photoFile.exists()) {
-                                    // Scale Image File
-                                    String compressedFile = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
-
-                                    // Set field cache
-                                    FormEntry.Photo photoEntry = (FormEntry.Photo) entry;
-                                    photoEntry.filename = compressedFile;
-
-                                    // Preview photo in dialog
-                                    tvPhoto.setVisibility(GONE);
-                                    ivPhoto.setVisibility(VISIBLE);
-                                    ivPhoto.setImageBitmap(BitmapFactory.decodeFile(Statics.GetAbsolutePath(getContext(), photoEntry.filename)));
-                                }
-                            }
-                        });
-
-                        activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
-                    } else {
-                        Dbg.Toast(getContext(), "Error while accesing photo directory...", Toast.LENGTH_SHORT);
-                    }
-                } else {
-                    Dbg.Toast(getContext(), "Camera App not available...", Toast.LENGTH_SHORT);
+        if (bReadOnly) {
+            // Set listener to view photo in fullscreen
+            rlPhoto.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewPhotoActivity.Start(App.GetCurrentActivity(), entry.toString());
                 }
-            }
-        });
+            });
+        } else {
+            // Set listener to capture & preview photo from camera
+            rlPhoto.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    BaseActivity activity = App.GetCurrentActivity();
+                    if ((activity != null) && (takePictureIntent.resolveActivity(activity.getPackageManager()) != null)) {
+                        // Create the File where the photo should go
+                        final File photoFile = Statics.CreateTempImageFile(getContext());
+
+                        // Continue only if the File was successfully created
+                        if (photoFile != null) {
+                            Uri photoURI = FileProvider.getUriForFile(  getContext(),
+                                    "com.biz.navimate.fileprovider",
+                                    photoFile);
+                            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+
+                            // Set Photo Result Listener
+                            activity.SetPhotoResultListener(new IfaceResult.Photo() {
+                                @Override
+                                public void onPhotoResult() {
+                                    if (photoFile.exists()) {
+                                        // Scale Image File
+                                        String compressedFile = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
+
+                                        // Set field cache
+                                        FormEntry.Photo photoEntry = (FormEntry.Photo) entry;
+                                        photoEntry.filename = compressedFile;
+
+                                        // Preview photo in dialog
+                                        SetPhoto(ivPhoto, tvPhoto);
+                                    }
+                                }
+                            });
+
+                            activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
+                        } else {
+                            Dbg.Toast(getContext(), "Error while accesing photo directory...", Toast.LENGTH_SHORT);
+                        }
+                    } else {
+                        Dbg.Toast(getContext(), "Camera App not available...", Toast.LENGTH_SHORT);
+                    }
+                }
+            });
+        }
     }
 
     private void InitSignField() {
         // Set sign layout visible
         rlSignature.setVisibility(VISIBLE);
 
-        // Set Signature Capture Listener
-        rlSignature.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Set Result Listener
-                BaseActivity activity = App.GetCurrentActivity();
-                if (activity != null) {
-                    activity.SetSignResultListener(new IfaceResult.Signature() {
-                        @Override
-                        public void onSignatureResult(String fileName) {
-                            // Set field cache
-                            FormEntry.Signature signEntry = (FormEntry.Signature) entry;
-                            signEntry.filename = fileName;
+        // Set photo in imageview
+        SetPhoto(ivSignature, tvSignature);
 
-                            // Preview photo in dialog
-                            tvSignature.setVisibility(GONE);
-                            ivSignature.setVisibility(VISIBLE);
-                            ivSignature.setImageBitmap(BitmapFactory.decodeFile(Statics.GetAbsolutePath(getContext(), signEntry.filename)));
-                        }
-                    });
-
-                    // Start Signature Activity
-                    SignatureActivity.Start(activity);
+        // Disable button for read only
+        if (bReadOnly) {
+            // Set listener to view photo in fullscreen
+            rlSignature.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ViewPhotoActivity.Start(App.GetCurrentActivity(), entry.toString());
                 }
-            }
-        });
+            });
+        } else {
+            // Set listener to capture & preview signature
+            rlSignature.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Set Result Listener
+                    BaseActivity activity = App.GetCurrentActivity();
+                    if (activity != null) {
+                        activity.SetSignResultListener(new IfaceResult.Signature() {
+                            @Override
+                            public void onSignatureResult(String fileName) {
+                                // Set field cache
+                                FormEntry.Signature signEntry = (FormEntry.Signature) entry;
+                                signEntry.filename = fileName;
+
+                                // Preview photo in dialog
+                                SetPhoto(ivSignature, tvSignature);
+                            }
+                        });
+
+                        // Start Signature Activity
+                        SignatureActivity.Start(activity);
+                    }
+                }
+            });
+        }
     }
 
     private void InitRadioField() {
@@ -328,6 +365,11 @@ public class RlFormField extends RelativeLayout {
             if (radioEntry.selection == i) {
                 rb.setChecked(true);
             }
+
+            // Disable button for read only
+            if (bReadOnly) {
+                rb.setEnabled(false);
+            }
         }
     }
 
@@ -346,6 +388,35 @@ public class RlFormField extends RelativeLayout {
 
             // Check selected
             cb.setChecked(clEntry.selection.get(i));
+
+            // Disable button for read only
+            if (bReadOnly) {
+                cb.setEnabled(false);
+            }
         }
+    }
+
+    private void SetPhoto(ImageView ivImage, TvCalibri tvError) {
+        // Don't update if invalid photo name
+        String imagename = entry.toString();
+        if (imagename.length() == 0) {
+            Dbg.error(TAG, "No image found");
+            return;
+        }
+
+        // Check valid file name
+        String absolutePath = Statics.GetAbsolutePath(getContext(), imagename);
+        File imageFile = new File(absolutePath);
+        if (!imageFile.exists()) {
+            Dbg.error(TAG, "Image File not found");
+            return;
+        }
+
+        // Set photo field visible
+        ivImage.setVisibility(VISIBLE);
+        ivImage.setImageBitmap(BitmapFactory.decodeFile(absolutePath));
+
+        // Set error field invisible
+        tvError.setVisibility(GONE);
     }
 }

@@ -85,9 +85,15 @@ public class SubmitFormDialog   extends     BaseDialog
         // Set Form Fields
         for (Long valueId  : currentData.data.valueIds) {
             Value value = (Value) DbHelper.valueTable.GetById(valueId);
-            RlFormField fieldUi = new RlFormField(context, value);
+            RlFormField fieldUi = new RlFormField(context, value, currentData.bReadOnly);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
+        }
+
+        // Hide Submit button if read only dialog
+        if (currentData.bReadOnly) {
+            ui.btnSubmit.setVisibility(View.GONE);
+            ui.cbCloseTask.setEnabled(false);
         }
 
         // Set Close task Checkbox
