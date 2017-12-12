@@ -51,4 +51,13 @@ public class ListHolder {
         public TvCalibri            tvText;
         public ImageView            ivEnd;
     }
+
+    // Form list item
+    public static class Form
+    {
+        public TvCalibri            tvLead;
+        public TvCalibri            tvForm;
+        public TvCalibri            tvDate;
+        public TvCalibri            tvStatus;
+    }
 }

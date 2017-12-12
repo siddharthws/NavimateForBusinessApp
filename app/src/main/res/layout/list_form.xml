@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_white_shadow_slant">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/m_small"
+        android:orientation="vertical">
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_lead_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textSize="@dimen/textsize_primary_small"
+            app:bold="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/lightGrey"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_form_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_small"
+            android:maxLines="1"
+            android:textSize="@dimen/textsize_primary_small"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/m_small"
+        android:layout_marginRight="@dimen/m_small"
+        android:gravity="end">
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_sync_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/m_small"
+            android:maxLines="1"
+            app:italic="true"/>
+
+    </LinearLayout>
+
+</LinearLayout>

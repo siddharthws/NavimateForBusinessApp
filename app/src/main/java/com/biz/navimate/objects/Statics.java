@@ -23,6 +23,9 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -271,5 +274,38 @@ public class Statics {
         }
 
         return compressedName;
+    }
+
+    // Formatting helper APIs
+    public static String GetFormattedDate(long timeMs, String format)
+    {
+        Date date = new Date(timeMs);
+        SimpleDateFormat formatter = new SimpleDateFormat(format);
+        return formatter.format(date);
+    }
+
+    public static boolean IsOlderThanToday(long timestamp)
+    {
+        if (timestamp > System.currentTimeMillis())
+        {
+            return false;
+        }
+
+        Calendar cToday = Calendar.getInstance();
+        Calendar cOlder = Calendar.getInstance();
+        cOlder.setTimeInMillis(timestamp);
+
+        if (cOlder.get(Calendar.YEAR) < cToday.get(Calendar.YEAR))
+        {
+            return true;
+        }
+        else if (cOlder.get(Calendar.DAY_OF_YEAR) < cToday.get(Calendar.DAY_OF_YEAR))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
