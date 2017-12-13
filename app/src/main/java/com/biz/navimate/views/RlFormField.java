@@ -154,6 +154,8 @@ public class RlFormField extends RelativeLayout {
         tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
+        tvNumber = (TvCalibri) view.findViewById(R.id.tv_number);
+        tvText = (TvCalibri) view.findViewById(R.id.tv_text);
         rgRadioList = (RadioGroup) view.findViewById(R.id.rg_radioList);
         rlPhoto = (RelativeLayout) view.findViewById(R.id.rl_photo);
         rlSignature = (RelativeLayout)  view.findViewById(R.id.rl_signature);

@@ -31,10 +31,12 @@ public class RbCustom extends AppCompatRadioButton {
 
     private void Init() {
         ColorStateList colorStateList = new ColorStateList(
-                new int[][]{
-                        new int[]{android.R.attr.state_enabled} //enabled
+                new int[][]{new int[]{-android.R.attr.state_enabled}, //disabled
+                            new int[]{android.R.attr.state_enabled} //enabled
                 },
-                new int[] {ContextCompat.getColor(getContext(), R.color.colorPrimary)}
+                new int[] { ContextCompat.getColor(getContext(), R.color.darkGrey),
+                            ContextCompat.getColor(getContext(), R.color.colorPrimary)
+                }
         );
         setSupportButtonTintList(colorStateList);
     }
