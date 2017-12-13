@@ -51,6 +51,13 @@
 
         </LinearLayout>
 
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/m_small"
+            android:visibility="gone"/>
+
         <com.biz.navimate.views.EtCalibri
             android:id="@+id/et_number"
             android:layout_width="match_parent"
@@ -60,6 +67,13 @@
             android:padding="@dimen/m_small"
             android:background="@drawable/bg_textbox"
             android:textCursorDrawable="@null"
+            android:visibility="gone"/>
+
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/m_small"
             android:visibility="gone"/>
 
         <RadioGroup

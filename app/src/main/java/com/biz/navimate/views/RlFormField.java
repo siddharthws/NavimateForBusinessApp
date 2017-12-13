@@ -49,6 +49,7 @@ public class RlFormField extends RelativeLayout {
     private ImageButton ibQr = null;
     private TvCalibri tvTitle;
     private EditText etNumber, etText = null;
+    private TvCalibri tvNumber, tvText = null;
     private RadioGroup rgRadioList = null;
     private LinearLayout llCheckList = null;
     private RelativeLayout rlPhoto = null, rlSignature = null;
@@ -198,42 +199,42 @@ public class RlFormField extends RelativeLayout {
     // APIs to init different form fields as per value
     private void InitTextField() {
         // Set Text UI
-        llText.setVisibility(VISIBLE);
-        etText.setText(entry.toString());
-
         if (bReadOnly) {
             // Disable QR scanning and edit text
-            ibQr.setEnabled(false);
-            etText.setEnabled(false);
-        }
+            tvText.setVisibility(VISIBLE);
+            tvText.setText(entry.toString());
+        } else {
+            llText.setVisibility(VISIBLE);
+            etText.setText(entry.toString());
 
-        // Set QR code reader
-        ibQr.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BaseActivity activity = App.GetCurrentActivity();
-                if (activity != null) {
-                    activity.SetZxingResultListener(new IfaceResult.Zxing() {
-                        @Override
-                        public void onScanResult(String data) {
-                            etText.setText(data);
-                        }
-                    });
-                    IntentIntegrator scanIntegrator = new IntentIntegrator(activity);
-                    scanIntegrator.initiateScan();
+            // Set QR code reader
+            ibQr.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BaseActivity activity = App.GetCurrentActivity();
+                    if (activity != null) {
+                        activity.SetZxingResultListener(new IfaceResult.Zxing() {
+                            @Override
+                            public void onScanResult(String data) {
+                                etText.setText(data);
+                            }
+                        });
+                        IntentIntegrator scanIntegrator = new IntentIntegrator(activity);
+                        scanIntegrator.initiateScan();
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void InitNumberField() {
         // Set number UI vsiible
-        etNumber.setVisibility(VISIBLE);
-        etNumber.setText(entry.toString());
-
         if (bReadOnly) {
-            // Disable QR scanning and edit text
-            etNumber.setEnabled(false);
+            tvNumber.setVisibility(VISIBLE);
+            tvNumber.setText(entry.toString());
+        } else {
+            etNumber.setVisibility(VISIBLE);
+            etNumber.setText(entry.toString());
         }
     }
 
@@ -361,14 +362,14 @@ public class RlFormField extends RelativeLayout {
             // Add button to group
             rgRadioList.addView(rb);
 
-            // Check if selected
-            if (radioEntry.selection == i) {
-                rb.setChecked(true);
-            }
-
             // Disable button for read only
             if (bReadOnly) {
                 rb.setEnabled(false);
+            }
+
+            // Check if selected
+            if (radioEntry.selection == i) {
+                rb.setChecked(true);
             }
         }
     }
@@ -386,13 +387,13 @@ public class RlFormField extends RelativeLayout {
             // Add to group
             llCheckList.addView(cb);
 
-            // Check selected
-            cb.setChecked(clEntry.selection.get(i));
-
             // Disable button for read only
             if (bReadOnly) {
                 cb.setEnabled(false);
             }
+
+            // Check selected
+            cb.setChecked(clEntry.selection.get(i));
         }
     }
 
