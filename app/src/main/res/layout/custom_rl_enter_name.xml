@@ -16,6 +16,19 @@
         app:bold="true"
         android:text="Enter Your Name"/>
 
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_enter_name_descriptor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_fragment_header"
+        android:layout_marginTop="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_large"
+        android:layout_marginRight="@dimen/m_large"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/textsize_description"
+        android:textAlignment="center"
+        android:text="Your name will be shown on the web-based dashboard to identify you in the team."/>
+
     <com.biz.navimate.views.EtCalibri
         android:id="@+id/et_name"
         android:layout_width="200dp"
@@ -25,7 +38,7 @@
         android:paddingRight="@dimen/m_large"
         android:paddingTop="@dimen/m_small"
         android:paddingBottom="@dimen/m_small"
-        android:layout_below="@id/tv_fragment_header"
+        android:layout_below="@id/tv_enter_name_descriptor"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_textbox"
         android:textCursorDrawable="@null"
@@ -53,18 +66,5 @@
             android:stateListAnimator="@null"/>
 
     </RelativeLayout>
-
-    <com.biz.navimate.views.TvCalibri
-        android:id="@+id/tv_enter_name_descriptor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_button_container"
-        android:layout_marginTop="@dimen/m_large"
-        android:layout_marginLeft="@dimen/m_large"
-        android:layout_marginRight="@dimen/m_large"
-        android:layout_centerHorizontal="true"
-        android:textSize="@dimen/textsize_description"
-        android:textAlignment="center"
-        android:text="Your name will be shown on the web-based dashboard to identify you in the team."/>
 
 </RelativeLayout>
