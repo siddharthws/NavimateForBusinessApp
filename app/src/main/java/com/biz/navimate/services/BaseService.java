@@ -63,12 +63,14 @@ public abstract class BaseService   extends     Service
     }
 
     // ----------------------- Interfaces ----------------------- //
+    public abstract void Init();
     public abstract void StickyServiceJob();
 
     // ----------------------- Globals ----------------------- //
     private ExecutorService     executor = null;
     private Boolean             bTaskRunning = false;
     public  Boolean             bStopTask = true;
+    public  Boolean             bInterruptSleep = false;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -92,6 +94,9 @@ public abstract class BaseService   extends     Service
         // Let derived classes implement run
         bTaskRunning = true;
         bStopTask = false;
+
+        // Call Init API of service
+        Init();
 
         while (!bStopTask)
         {
@@ -154,5 +159,16 @@ public abstract class BaseService   extends     Service
         // Start async task to execute the service load
         StarterTask startedTask = new StarterTask(this);
         startedTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    }
+
+    // API to sleep the service for certain time
+    protected void Sleep (long durationMs) {
+        long nextRunTimeMs = System.currentTimeMillis() + durationMs;
+        while ((System.currentTimeMillis() < nextRunTimeMs) && (!bStopTask) && !bInterruptSleep) {
+            SystemClock.sleep(1000);
+        }
+
+        // Reset Sleep Interrupt flag
+        bInterruptSleep = false;
     }
 }

@@ -34,6 +34,11 @@ public class TrackerService     extends     BaseService
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     @Override
+    public void Init(){
+        // Placeholder
+    }
+
+    @Override
     public void StickyServiceJob()
     {
         service = this;
@@ -74,11 +79,7 @@ public class TrackerService     extends     BaseService
         }
 
         // Sleep this thread
-        long nextRunTimeMs = System.currentTimeMillis() + UPDATE_INTERVAL_MS;
-        while ((System.currentTimeMillis() < nextRunTimeMs) && (!bStopTask))
-        {
-            SystemClock.sleep(1000);
-        }
+        Sleep(UPDATE_INTERVAL_MS);
     }
 
     // ----------------------- Public APIs ----------------------- //
