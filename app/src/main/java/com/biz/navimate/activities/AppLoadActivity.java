@@ -12,12 +12,13 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.ColorHelper;
 import com.biz.navimate.misc.GoogleApiClientHolder;
 import com.biz.navimate.misc.IconGen;
-import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
 import com.biz.navimate.server.CheckUpdatesTask;
 import com.biz.navimate.server.UpdateFcmTask;
+import com.biz.navimate.services.LocationService;
+import com.biz.navimate.services.TrackerService;
 import com.biz.navimate.tasks.AppLoadTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -82,6 +83,11 @@ public class AppLoadActivity    extends     BaseActivity
     public void onDestroy() {
         // Un initialize app if exiting without completing load
         if (!bLoadComplete) {
+            // Stop Services
+            TrackerService.StopService();
+            LocationService.StopService();
+
+            // Uninit App
             App.Uninitialize();
         }
 
@@ -148,11 +154,11 @@ public class AppLoadActivity    extends     BaseActivity
         IconGen.Init(this);
         ColorHelper.Init(this);
 
-        // Initialize Location Cache
-        LocationCache.InitInstance();
-
         // Initialize api client
         GoogleApiClientHolder.InitInstance(this);
+
+        // Start Services
+        LocationService.StartService(this);
 
         // Check if user is registered
         if (Preferences.GetUser().appId == User.INVALID_ID) {

@@ -73,6 +73,9 @@
         <service
             android:name=".services.TrackerService"
             android:label="Tracker Service" />
+        <service
+            android:name=".services.LocationService"
+            android:label="Location Service" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

@@ -32,6 +32,8 @@ import com.biz.navimate.objects.Template;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.server.SyncDbTask;
+import com.biz.navimate.services.LocationService;
+import com.biz.navimate.services.TrackerService;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
@@ -121,7 +123,11 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     public void onDestroy() {
-        // Un initialize app
+        // Stop Services
+        TrackerService.StopService();
+        LocationService.StopService();
+
+        // Uninit App
         App.Uninitialize();
 
         super.onDestroy();
