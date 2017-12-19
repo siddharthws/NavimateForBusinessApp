@@ -120,6 +120,14 @@ public class HomescreenActivity     extends     BaseActivity
     }
 
     @Override
+    public void onDestroy() {
+        // Un initialize app
+        App.Uninitialize();
+
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed()
     {
         if (RlDialog.IsShowing()) {
