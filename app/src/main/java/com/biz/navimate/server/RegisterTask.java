@@ -7,7 +7,9 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.Preferences;
+import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.User;
+import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +44,12 @@ public class RegisterTask extends BaseServerTask {
     }
 
     // ----------------------- Overrides ----------------------- //
+    @Override
+    public void onPreExecute() {
+        // Show waiting dialog
+        RlDialog.Show(new Dialog.Waiting("Registering..."));
+    }
+
     @Override
     public Void doInBackground (Void... params)
     {
@@ -84,6 +92,8 @@ public class RegisterTask extends BaseServerTask {
     @Override
     public void onPostExecute (Void result)
     {
+        RlDialog.Hide();
+
         if (IsResponseValid())
         {
             Dbg.Toast(parentContext, "Registration complete...", Toast.LENGTH_SHORT);
