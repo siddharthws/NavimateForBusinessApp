@@ -22,9 +22,6 @@ public class LocationCache implements LocationListener {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
-    // Global Instance of cache
-    public static LocationCache instance = null;
-
     // Cache of Locations
     private ArrayList<LocationObj> cache = null;
 
@@ -36,16 +33,6 @@ public class LocationCache implements LocationListener {
 
         // Feed first lat lng into cache using preferences
         AddToCache(Preferences.GetLocation());
-    }
-
-    public static void InitInstance()
-    {
-        // Initialize Instance if null
-        if (instance == null)
-        {
-            // Init Instance
-            instance = new LocationCache();
-        }
     }
 
     // ----------------------- Overrides ----------------------- //

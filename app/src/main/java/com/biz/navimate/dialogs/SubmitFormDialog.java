@@ -14,8 +14,6 @@ import com.biz.navimate.activities.HomescreenActivity;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.misc.LocationCache;
-import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
@@ -24,6 +22,7 @@ import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Value;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
+import com.biz.navimate.services.LocationService;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
@@ -155,8 +154,8 @@ public class SubmitFormDialog   extends     BaseDialog
         submitDataId = submitData.dbId;
 
         // Check for current location
-        if (new LocationUpdateHelper(context).IsUpdating()) {
-            onLocationInitSuccess(LocationCache.instance.GetLocation());
+        if (LocationService.IsUpdating()) {
+            onLocationInitSuccess(LocationService.cache.GetLocation());
         } else {
             locUpdateRunnable.Post(0);
         }

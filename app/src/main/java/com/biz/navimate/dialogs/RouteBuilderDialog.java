@@ -18,7 +18,6 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.lists.RemovableListAdapter;
-import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
@@ -26,6 +25,7 @@ import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Route;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
+import com.biz.navimate.services.LocationService;
 import com.biz.navimate.tasks.DirectionsTask;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
@@ -176,7 +176,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         ArrayList<LatLng> checkpoints = GetCheckpoints();
 
         // Add current location as the first one
-        LocationObj currentLoc = LocationCache.instance.GetLocation();
+        LocationObj currentLoc = LocationService.cache.GetLocation();
         if (Statics.IsPositionValid(currentLoc.latlng)) {
             checkpoints.add(0, currentLoc.latlng);
         } else {

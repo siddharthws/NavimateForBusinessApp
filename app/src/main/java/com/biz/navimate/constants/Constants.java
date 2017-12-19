@@ -42,6 +42,7 @@ public class Constants {
         public static final String KEY_APP_ID                   = "app_id";
         public static final String KEY_LATITUDE                 = "latitude";
         public static final String KEY_LONGITUDE                = "longitude";
+        public static final String KEY_TIMESTAMP                = "timestamp";
         public static final String KEY_MAP_TYPE                 = "pref_map_type";
         public static final String KEY_MAP_TRAFFIC_OVERLAY      = "pref_map_traffic_overlay";
     }
@@ -133,6 +134,23 @@ public class Constants {
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
         public static final String KEY_MESSAGE          = "message";
+    }
+
+    // Location related constants
+    public class Location {
+        // Initilization Error Codes
+        public static final int ERROR_NO_CLIENTS                = 1;
+        public static final int ERROR_NO_PERMISSION             = 2;
+        public static final int ERROR_NO_GPS                    = 3;
+        public static final int ERROR_UNAVAILABLE               = 4;
+        public static final int ERROR_UNKNOWN                   = 5;
+        public static final int ERROR_UPDATES_ERROR             = 6;
+        public static final int ERROR_API_CLIENT                = 7;
+        public static final int ERROR_CURRENT_LOC_UNAVAILABLE   = 8;
+
+        // Client Tags
+        public static final int CLIENT_TAG_MAP          = 1;
+        public static final int CLIENT_TAG_TRACKER      = 2;
     }
 
     // Map related constants

@@ -1,10 +1,8 @@
 package com.biz.navimate.services;
 
 import android.content.Context;
-import android.os.SystemClock;
 
-import com.biz.navimate.misc.LocationCache;
-import com.biz.navimate.misc.LocationUpdateHelper;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.server.LocationUpdateTask;
@@ -52,12 +50,12 @@ public class TrackerService     extends     BaseService
         boolean bSuccess = true;
         if (locCache == null) {
             // Send location first time
-            locCache = LocationCache.instance.GetLocation();
+            locCache = LocationService.cache.GetLocation();
             bSuccess = locationUpdateTask.executeSync();
             lastUpdateTimeMs = System.currentTimeMillis();
         } else {
             // Send location only if it has updated
-            LocationObj currentLoc = LocationCache.instance.GetLocation();
+            LocationObj currentLoc = LocationService.cache.GetLocation();
             int elapsedTimeS = (int) ((System.currentTimeMillis() - lastUpdateTimeMs) / 1000);
             if ((currentLoc.latlng.latitude != locCache.latlng.latitude) ||
                 (currentLoc.latlng.longitude != locCache.latlng.longitude) ||
@@ -70,12 +68,8 @@ public class TrackerService     extends     BaseService
 
         // Stop service if error returned from server
         if (!bSuccess) {
-            // Remove Location Client
-            new LocationUpdateHelper(this).RemoveClient(LocationUpdateHelper.CLIENT_TAG_TRACKER);
-
             // Stop Service
             TrackerService.StopService();
-            return;
         }
 
         // Sleep this thread
@@ -84,23 +78,23 @@ public class TrackerService     extends     BaseService
 
     // ----------------------- Public APIs ----------------------- //
     // APIs to start / stop / check status of the service
-    public static void StartService(Context context)
-    {
-        if (!IsRunning())
-        {
+    public static void StartService(Context context) {
+        if (!IsRunning()) {
             // Add tracker client to receive fast updates
-            new LocationUpdateHelper(context).AddClient(LocationUpdateHelper.CLIENT_TAG_TRACKER, LocationUpdate.FAST);
+            LocationService.AddClient(context, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.FAST);
 
             // Start Service
             StartService(context, TrackerService.class);
         }
     }
 
-    public static void StopService()
-    {
+    public static void StopService() {
         // Stop service
-        if (service != null)
-        {
+        if (IsRunning()) {
+            // Remove Location Client
+            LocationService.RemoveClient(Constants.Location.CLIENT_TAG_TRACKER);
+
+            // Stop this service
             StopService(service);
         }
     }
