@@ -112,6 +112,12 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     }
 
     @Override
+    public void Destroy(){
+        // Stop location updates
+        locUpdateHelper.Stop();
+    }
+
+    @Override
     public void onLocationInitError(int errorCode, Status status) {
         // Report success
         ReportError(errorCode, status);

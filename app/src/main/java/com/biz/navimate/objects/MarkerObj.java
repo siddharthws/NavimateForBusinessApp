@@ -6,10 +6,9 @@ import android.support.v4.content.ContextCompat;
 import com.biz.navimate.R;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.misc.IconGen;
-import com.biz.navimate.misc.LocationCache;
-import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.runnables.GrowCircleRunnable;
 import com.biz.navimate.runnables.MarkerMoveRunnable;
+import com.biz.navimate.services.LocationService;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Circle;
@@ -88,7 +87,6 @@ public class MarkerObj {
         public Circle accuracyCircle = null;
 
         private Context context = null;
-        private LocationUpdateHelper locationUpdateHelper = null;
 
         // Runnables for updating the marker
         private MarkerMoveRunnable moveRunnable = null;
@@ -102,7 +100,6 @@ public class MarkerObj {
             super(MARKER_TYPE_CURRENT_LOCATION, new LatLng(0, 0));
 
             this.context = context;
-            locationUpdateHelper = new LocationUpdateHelper(context);
 
             // Init Icons
             enabledIcon = BitmapDescriptorFactory.fromBitmap(IconGen.GetScaledIcon(context, R.mipmap.icon_current_location_marker_enabled, 20, 20));
@@ -143,7 +140,7 @@ public class MarkerObj {
                 return;
             }
 
-            LocationObj currentLocation = LocationCache.instance.GetLocation();
+            LocationObj currentLocation = LocationService.cache.GetLocation();
 
             if (Statics.IsPositionValid(currentLocation.latlng))
             {
@@ -152,7 +149,7 @@ public class MarkerObj {
             }
 
             // Update accuracy circle only if location is updating
-            if (locationUpdateHelper.IsUpdating())
+            if (LocationService.IsUpdating())
             {
                 GrowCircle(currentLocation.accuracy);
             }
@@ -162,7 +159,7 @@ public class MarkerObj {
             }
 
             // Update marker icon based on Location Update status
-            if (locationUpdateHelper.IsUpdating())
+            if (LocationService.IsUpdating())
             {
                 // Update Marker to blue if required
                 if (!bEnabled)

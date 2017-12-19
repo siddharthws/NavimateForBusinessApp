@@ -11,10 +11,9 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
-import com.biz.navimate.misc.LocationCache;
-import com.biz.navimate.misc.LocationUpdateHelper;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.services.LocationService;
 import com.biz.navimate.views.RlDialog;
 import com.google.android.gms.common.api.Status;
 
@@ -23,7 +22,7 @@ import com.google.android.gms.common.api.Status;
  */
 
 public class LocationUpdateRunnable extends     BaseRunnable
-                                    implements  LocationUpdateHelper.LocationInitInterface {
+                                    implements  LocationService.IfaceLocationInit {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOCATION_UPDATE_RUNNABLE";
 
@@ -42,46 +41,41 @@ public class LocationUpdateRunnable extends     BaseRunnable
 
     // ----------------------- Globals ----------------------- //
     private Context context = null;
-    private LocationUpdateHelper locationUpdateHelper = null;
 
     // ----------------------- Constructor ----------------------- //
     public LocationUpdateRunnable(Context context) {
         super();
 
         this.context = context;
-
-        // Initialize Update Helper class
-        locationUpdateHelper = new LocationUpdateHelper(context);
-        locationUpdateHelper.SetInitListener(this);
     }
 
     // ----------------------- Overrides ----------------------- //
     // Perform Runnable task here
     @Override
     protected void PerformTask() {
-        if (locationUpdateHelper.IsUpdating())
-        {
+        if (LocationService.IsUpdating()) {
             if (initListener != null)
             {
-                initListener.onLocationInitSuccess(LocationCache.instance.GetLocation());
+                initListener.onLocationInitSuccess(LocationService.cache.GetLocation());
             }
         }
-        else
-        {
-            // Start Location Updates
-            locationUpdateHelper.Start();
+        else {
+            // Add Listener for Location Service
+            LocationService.AddInitListener(this);
 
             // Show waiting dialog
-            Dialog.Waiting dialogData = new Dialog.Waiting("Getting your location...");
-            RlDialog.Show(dialogData);
+            RlDialog.Show(new Dialog.Waiting("Getting your location..."));
         }
     }
 
     // Location Update Listeners
     @Override
-    public void onLocationInitSuccess(LocationObj location) {
+    public void onLocationSuccess(LocationObj location) {
         // Hide dialog box
         RlDialog.Hide();
+
+        // Remove Location service Listener
+        LocationService.RemoveInitListener(this);
 
         // Call SetAlarm Success Listener
         if (initListener != null)
@@ -91,31 +85,32 @@ public class LocationUpdateRunnable extends     BaseRunnable
     }
 
     @Override
-    public void onLocationInitError(int errorCode, Status status) {
+    public void onLocationError(int errorCode, Status status) {
         // Hide previously started dialog box
         RlDialog.Hide();
+
+        // Remove Location service Listener
+        LocationService.RemoveInitListener(this);
 
         // Service Error
         switch (errorCode)
         {
-            case LocationUpdateHelper.ERROR_API_CLIENT:
-            case LocationUpdateHelper.ERROR_UNAVAILABLE:
-            case LocationUpdateHelper.ERROR_UNKNOWN_SETTINGS_ERROR:
-            case LocationUpdateHelper.ERROR_UPDATES_ERROR:
-            case LocationUpdateHelper.ERROR_UPDATES_UNAVAILABLE:
-            {
+            case Constants.Location.ERROR_API_CLIENT:
+            case Constants.Location.ERROR_UNAVAILABLE:
+            case Constants.Location.ERROR_UNKNOWN:
+            case Constants.Location.ERROR_UPDATES_ERROR:
+            case Constants.Location.ERROR_NO_CLIENTS: {
                 Dialog.Alert dialogData = new Dialog.Alert("Failed to get location : " + errorCode);
                 RlDialog.Show(dialogData);
 
-                // Call Init Erorr Listener
+                // Call Init Error Listener
                 if (initListener != null)
                 {
                     initListener.onLocationInitError();
                 }
                 break;
             }
-            case LocationUpdateHelper.ERROR_RESOLUTION_REQUIRED:
-            {
+            case Constants.Location.ERROR_NO_GPS: {
                 BaseActivity currentActivity = App.GetCurrentActivity();
                 if (currentActivity != null)
                 {
@@ -169,8 +164,7 @@ public class LocationUpdateRunnable extends     BaseRunnable
                 }
                 break;
             }
-            case LocationUpdateHelper.ERROR_PERMISSION_REQUIRED:
-            {
+            case Constants.Location.ERROR_NO_PERMISSION: {
                 BaseActivity currentActivity = App.GetCurrentActivity();
                 if (currentActivity != null)
                 {
@@ -207,8 +201,7 @@ public class LocationUpdateRunnable extends     BaseRunnable
                 }
                 break;
             }
-            case LocationUpdateHelper.ERROR_CURRENT_LOC_UNAVAILABLE:
-            {
+            case Constants.Location.ERROR_CURRENT_LOC_UNAVAILABLE: {
                 // Show error toast
                 Dbg.Toast(context, "Your location is being enabled...", Toast.LENGTH_SHORT);
 

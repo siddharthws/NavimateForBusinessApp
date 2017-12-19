@@ -65,6 +65,7 @@ public abstract class BaseService   extends     Service
     // ----------------------- Interfaces ----------------------- //
     public abstract void Init();
     public abstract void StickyServiceJob();
+    public abstract void Destroy();
 
     // ----------------------- Globals ----------------------- //
     private ExecutorService     executor = null;
@@ -108,6 +109,9 @@ public abstract class BaseService   extends     Service
 
             StickyServiceJob();
         }
+
+        // Call Destroy API
+        Destroy();
 
         bTaskRunning = false;
     }

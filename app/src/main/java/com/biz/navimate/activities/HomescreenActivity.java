@@ -252,7 +252,7 @@ public class HomescreenActivity     extends     BaseActivity
         }
 
         // Add current location to bounds if available
-        LatLng currentLocation = LocationCache.instance.GetLocation().latlng;
+        LatLng currentLocation = LocationService.cache.GetLocation().latlng;
         if (Statics.IsPositionValid(currentLocation)) {
             bounds.add(currentLocation);
         }

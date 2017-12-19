@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.services.LocationService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,12 +39,12 @@ public class LocationUpdateTask extends BaseServerTask
         try
         {
             // Put location
-            LocationObj currentLocation  = LocationCache.instance.GetLocation();
+            LocationObj currentLocation  = LocationService.cache.GetLocation();
             requestJson.put(Constants.Server.KEY_LATITUDE, currentLocation.latlng.latitude);
             requestJson.put(Constants.Server.KEY_LONGITUDE, currentLocation.latlng.longitude);
 
             // Put speed
-            requestJson.put(Constants.Server.KEY_SPEED, LocationCache.instance.GetSpeed());
+            requestJson.put(Constants.Server.KEY_SPEED, LocationService.cache.GetSpeed());
         }
         catch (JSONException e)
         {

@@ -60,7 +60,7 @@ public class Preferences {
         // Init Location Object
         lastKnowLocation        = new LocationObj(  Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LATITUDE, "0")),
                                                     Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LONGITUDE, "0")),
-                                                    0L, 0.0f);
+                                                    sharedPref.getLong(Constants.Preferences.KEY_TIMESTAMP, 0L), 0.0f);
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -95,6 +95,7 @@ public class Preferences {
         // Set setting
         prefEdit.putString(Constants.Preferences.KEY_LATITUDE,   String.valueOf(location.latlng.latitude));
         prefEdit.putString(Constants.Preferences.KEY_LONGITUDE,  String.valueOf(location.latlng.longitude));
+        prefEdit.putLong(Constants.Preferences.KEY_TIMESTAMP,  location.timestamp);
         prefEdit.apply();
 
         // Set Cache

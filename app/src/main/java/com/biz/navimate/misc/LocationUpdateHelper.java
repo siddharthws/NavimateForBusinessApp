@@ -5,13 +5,14 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
+import com.biz.navimate.services.LocationService;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -21,8 +22,6 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -33,24 +32,39 @@ public class LocationUpdateHelper {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOCATION_UPDATE_HELPER";
 
-    // Erro codes for location initialization
-    public static final int ERROR_RESOLUTION_REQUIRED           = 1;
-    public static final int ERROR_UNAVAILABLE                   = 2;
-    public static final int ERROR_UNKNOWN_SETTINGS_ERROR        = 3;
-    public static final int ERROR_UPDATES_UNAVAILABLE           = 4;
-    public static final int ERROR_UPDATES_ERROR                 = 5;
-    public static final int ERROR_PERMISSION_REQUIRED           = 6;
-    public static final int ERROR_API_CLIENT                    = 7;
-    public static final int ERROR_CURRENT_LOC_UNAVAILABLE       = 8;
-
     // Timeout for Result Callbacks
     private static final int RESULT_CB_TIMEOUT_MS = 10000;
 
-    // Client Tags
-    public static final int CLIENT_TAG_MAP      = 1;
-    public static final int CLIENT_TAG_TRACKER  = 2;
-
     // ----------------------- Classes ---------------------------//
+    private class WaitForUpdate extends AsyncTask<Void, Void, Boolean> {
+        private static final long WAIT_TIME_MS = 10000;
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            Boolean bSuccess = false;
+            long startTimeMs = System.currentTimeMillis();
+
+            while (!bSuccess && ((System.currentTimeMillis() - startTimeMs) < WAIT_TIME_MS)) {
+                // Sleep for 1 second
+                SystemClock.sleep(1000);
+
+                // Check location status
+                bSuccess = LocationService.IsUpdating();
+            }
+
+            return bSuccess;
+        }
+
+        @Override
+        public void onPostExecute(Boolean bSuccess) {
+            if (bSuccess) {
+                ReportSuccess(LocationService.cache.GetLocation());
+            } else {
+                ReportError(Constants.Location.ERROR_CURRENT_LOC_UNAVAILABLE, null);
+            }
+        }
+    }
+
     // ----------------------- Interfaces ----------------------- //
     // interface used to convey results of location update
     public interface LocationInitInterface
@@ -65,13 +79,8 @@ public class LocationUpdateHelper {
     }
 
     // ----------------------- Globals ----------------------- //
-    // Global Location Clients alng with required update object for the client
-    private static HashMap<Integer, LocationUpdate> clients = null;
-
-    // Current Update objetc as per which location is being initialized
-    private static LocationUpdate currentUpdate               = null;
-
     private Context context = null;
+    private LocationUpdate requiredUpdate = null;
 
     // ----------------------- Constructor ----------------------- //
     public LocationUpdateHelper(Context context)
@@ -82,64 +91,11 @@ public class LocationUpdateHelper {
     // ----------------------- Overrides ----------------------- //
 
     // ----------------------- Public APIs ----------------------- //
-    // APIs to Add / Remove Location Clients
-    // Each client provides a LocationUpdateObject depending on what type of service it wants
-    // Start() API queries the arbiter for which type of location update should be started
-    public void AddClient(int tag, LocationUpdate serviceObject)
-    {
-        // Init clients if null
-        if (clients == null)
-        {
-            clients = new HashMap<>();
-        }
-
-        // Add to clients
-        clients.put(tag, serviceObject);
-
-        // Restart Update Logic
-        Start();
-    }
-
-    public void RemoveClient(int tag)
-    {
-        if (clients != null)
-        {
-            // Remove from clients
-            clients.remove(tag);
-
-            // Restart Update Logic
-            Start();
-        }
-    }
 
     // APIs to start / stop location updates
-    public void Start()
-    {
-        // Get Required Update Object from the arbiter
-        LocationUpdate requiredUpdate = LocationServiceArbiter();
-
-        // Check if no updates are required
-        if (requiredUpdate == null)
-        {
-            // Check if currently any updates are running
-            if (currentUpdate != null)
-            {
-                // Stop Updates
-                Stop();
-            }
-
-            return;
-        }
-
-        // If required and current updates are equal and location is already updating, report success
-        if (requiredUpdate.equals(currentUpdate) && IsUpdating())
-        {
-            ReportSuccess(LocationCache.instance.GetLocation());
-            return;
-        }
-
+    public void Start(LocationUpdate requiredUpdate) {
         // Update currentUpdateObject cache
-        currentUpdate = requiredUpdate;
+        this.requiredUpdate = requiredUpdate;
 
         // Send Location Settings request
         SendLocationSettingsRequest();
@@ -149,7 +105,7 @@ public class LocationUpdateHelper {
     {
         if (GoogleApiClientHolder.instance.apiClient.isConnected())
         {
-            PendingResult<Status> result = LocationServices.FusedLocationApi.removeLocationUpdates(GoogleApiClientHolder.instance.apiClient, LocationCache.instance);
+            PendingResult<Status> result = LocationServices.FusedLocationApi.removeLocationUpdates(GoogleApiClientHolder.instance.apiClient, LocationService.cache);
 
             // Set result callback
             result.setResultCallback(new ResultCallback<Status>()
@@ -167,54 +123,7 @@ public class LocationUpdateHelper {
         }
     }
 
-    // API to check if location is updating correctly
-    // Cecks this based on time stamp of last location and the currently enabled service
-    public boolean IsUpdating()
-    {
-        boolean bUpdating = false;
-
-        // Get Last Known Location
-        LocationObj lastKnownLocation = LocationCache.instance.GetLocation();
-
-        // Check time signature
-        if (lastKnownLocation != null)
-        {
-            if (currentUpdate != null)
-            {
-                long lastUpdateTime = lastKnownLocation.timestamp;
-                if ((System.currentTimeMillis() - lastUpdateTime) < currentUpdate.expiry)
-                {
-                    bUpdating = true;
-                }
-            }
-        }
-
-        return bUpdating;
-    }
-
     // ----------------------- Private APIs ----------------------- //
-    // API to get the location service object based on all the added clients
-    // Process is called Location Service Arbitration
-    private LocationUpdate LocationServiceArbiter()
-    {
-        LocationUpdate requiredUpdates = null;
-
-        if ((clients != null) && (clients.size() > 0))
-        {
-            Iterator<Integer> tagIter = clients.keySet().iterator();
-            while (tagIter.hasNext())
-            {
-                LocationUpdate clientUpdates = clients.get(tagIter.next());
-                if ((requiredUpdates == null) || (clientUpdates.interval < requiredUpdates.interval))
-                {
-                    requiredUpdates = clientUpdates;
-                }
-            }
-        }
-
-        return requiredUpdates;
-    }
-
     // APIs to initialize location updates
     private void SendLocationSettingsRequest()
     {
@@ -222,7 +131,7 @@ public class LocationUpdateHelper {
 
         // Create Location Settings Request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(currentUpdate.locationRequest);
+        builder.addLocationRequest(requiredUpdate.locationRequest);
         builder.setAlwaysShow(true);
 
         // Start Location Settings Request
@@ -260,21 +169,21 @@ public class LocationUpdateHelper {
                 case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                 {
                     Dbg.error(TAG, "location service resolution required ");
-                    errorCode = ERROR_RESOLUTION_REQUIRED;
+                    errorCode = Constants.Location.ERROR_NO_GPS;
                     break;
                 }
 
                 case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                 {
                     Dbg.error(TAG, "Location service unavailable");
-                    errorCode = ERROR_UNAVAILABLE;
+                    errorCode = Constants.Location.ERROR_UNAVAILABLE;
                     break;
                 }
 
                 default:
                 {
                     Dbg.error(TAG, "Location Settings Init failed with status code : " + status.getStatusMessage() + " : " + status.getStatusCode());
-                    errorCode = ERROR_UNKNOWN_SETTINGS_ERROR;
+                    errorCode = Constants.Location.ERROR_UNKNOWN;
                     break;
                 }
             }
@@ -293,16 +202,16 @@ public class LocationUpdateHelper {
 
         if (permissionCheck != PermissionChecker.PERMISSION_GRANTED)
         {
-            ReportError(ERROR_PERMISSION_REQUIRED, null);
+            ReportError(Constants.Location.ERROR_NO_PERMISSION, null);
         }
         else if (!apiClient.isConnected())
         {
-            ReportError(ERROR_API_CLIENT, null);
+            ReportError(Constants.Location.ERROR_API_CLIENT, null);
         }
         else
         {
             // Request Location Updates
-            PendingResult<Status> result = LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, currentUpdate.locationRequest, LocationCache.instance);
+            PendingResult<Status> result = LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, requiredUpdate.locationRequest, LocationService.cache);
 
             // Set result callback
             result.setResultCallback(new ResultCallback<Status>()
@@ -320,53 +229,13 @@ public class LocationUpdateHelper {
     {
         Dbg.info(TAG, "Location Update Result Received");
 
-        if (!status.isSuccess())
-        {
+        if (!status.isSuccess()) {
             Dbg.error(TAG, "Request Location Update failed " + status.getStatusMessage());
-            ReportError(ERROR_UPDATES_ERROR, status);
-        }
-        else
-        {
-            // Check if Location is available through Last Location API
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED)
-            {
-                // Start Async Task to wait for location update
-                AsyncTask<Void, Void, Boolean> locWaitTask = new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        Boolean bSuccess = false;
-                        long startTimeMs = System.currentTimeMillis();
-                        long currentTimeMs = 0L;
-
-                        // Wait for maxmum 10 seconds for location enablement
-                        do {
-                            // Check if location started updating
-                            if (IsUpdating()) {
-                                bSuccess = true;
-                            }
-
-                            // Sleep for 1 second before trying again
-                            if (!bSuccess) {
-                                SystemClock.sleep(1000);
-                            }
-
-                            currentTimeMs = System.currentTimeMillis();
-                        } while (!bSuccess && ((currentTimeMs - startTimeMs) < 10000));
-
-                        return bSuccess;
-                    }
-
-                    @Override
-                    public void onPostExecute(Boolean bSuccess) {
-                        if (bSuccess) {
-                            ReportSuccess(LocationCache.instance.GetLocation());
-                        } else {
-                            ReportError(ERROR_CURRENT_LOC_UNAVAILABLE, status);
-                        }
-                    }
-                };
-                locWaitTask.execute();
-            }
+            ReportError(Constants.Location.ERROR_UPDATES_ERROR, status);
+        } else {
+            // Wait for location to be available
+            WaitForUpdate waitTask = new WaitForUpdate();
+            waitTask.execute();
         }
     }
 
