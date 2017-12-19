@@ -84,6 +84,10 @@ public class App extends Application {
         bAppInitialized = true;
     }
 
+    public static void Uninitialize() {
+        bAppInitialized = false;
+    }
+
     public static boolean IsInitialized() {
         return bAppInitialized;
     }

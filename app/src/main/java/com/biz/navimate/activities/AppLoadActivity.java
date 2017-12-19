@@ -34,6 +34,7 @@ public class AppLoadActivity    extends     BaseActivity
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.AppLoad ui = null;
 
+    private boolean bLoadComplete = false;
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -78,6 +79,17 @@ public class AppLoadActivity    extends     BaseActivity
     }
 
     @Override
+    public void onDestroy() {
+        // Un initialize app if exiting without completing load
+        if (!bLoadComplete) {
+            App.Uninitialize();
+        }
+
+        // Call Super
+        super.onDestroy();
+    }
+
+    @Override
     public void onUpdateRequired() {
         // Start Playstore activity
         Statics.OpenPlayStoreLink(this);
@@ -115,6 +127,9 @@ public class AppLoadActivity    extends     BaseActivity
             UpdateFcmTask updateFcmTask = new UpdateFcmTask(this, fcmToken);
             updateFcmTask.execute();
         }
+
+        // Set Load Complete Flag
+        bLoadComplete = true;
 
         // Start Homescreen
         HomescreenActivity.Start(this);
