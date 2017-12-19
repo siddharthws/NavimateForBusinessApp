@@ -91,7 +91,7 @@ public abstract class BaseService   extends     Service
     @Override
     public void run()
     {
-        // Let derived classes implement run
+        // Reset Booleans
         bTaskRunning = true;
         bStopTask = false;
 
@@ -164,7 +164,7 @@ public abstract class BaseService   extends     Service
     // API to sleep the service for certain time
     protected void Sleep (long durationMs) {
         long nextRunTimeMs = System.currentTimeMillis() + durationMs;
-        while ((System.currentTimeMillis() < nextRunTimeMs) && (!bStopTask) && !bInterruptSleep) {
+        while ((System.currentTimeMillis() < nextRunTimeMs) && !bStopTask && !bInterruptSleep) {
             SystemClock.sleep(1000);
         }
 
