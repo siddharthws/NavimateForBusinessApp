@@ -84,12 +84,6 @@ public class Statics {
         return key;
     }
 
-    // API to get GPS status
-    public static boolean IsGpsEnabled(Context context) {
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
     // Position validity check
     public static boolean IsPositionValid(LatLng position)
     {

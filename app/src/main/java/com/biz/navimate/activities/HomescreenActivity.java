@@ -19,7 +19,6 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.interpolators.PowerInterpolator;
 import com.biz.navimate.lists.TaskListAdapter;
 import com.biz.navimate.misc.AnimHelper;
-import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Data;
@@ -33,7 +32,7 @@ import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.services.LocationService;
-import com.biz.navimate.services.TrackerService;
+import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
@@ -114,7 +113,7 @@ public class HomescreenActivity     extends     BaseActivity
 
         // Check for location related issues and ask to resolve
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) ||
-            (!Statics.IsGpsEnabled(this))){
+            (!LocationService.IsGpsEnabled(this))){
             if (!RlDialog.IsShowing()) {
                 locationUpdateRunnable.Post(0);
             }
@@ -124,7 +123,7 @@ public class HomescreenActivity     extends     BaseActivity
     @Override
     public void onDestroy() {
         // Stop Services
-        TrackerService.StopService();
+        WebSocketService.StopService();
         LocationService.StopService();
 
         // Uninit App

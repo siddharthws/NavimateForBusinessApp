@@ -1,6 +1,10 @@
 package com.biz.navimate.services;
 
+import android.Manifest;
 import android.content.Context;
+import android.location.LocationManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.misc.LocationCache;
@@ -10,6 +14,7 @@ import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Statics;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -253,5 +258,30 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         for (IfaceLocationInit listener : initListeners) {
             listener.onLocationError(errorCode, status);
         }
+    }
+
+    // Miscellaneous Helper APIs
+    // API to get GPS status
+    public static boolean IsGpsEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    // API to check Location permission
+    public static boolean IsLocationPermissionGranted(Context context) {
+        int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionCheck == PermissionChecker.PERMISSION_GRANTED;
+    }
+
+    // API to check if 2 locations are approximately same (5 decimal digit rounding and checking)
+    public static boolean IsApproxLocations(LatLng loc1, LatLng loc2) {
+        // Get rounded Lat/Lng
+        double rndLat1 = (double) Math.round(loc1.latitude * 100000d) / 100000d;
+        double rndLat2 = (double) Math.round(loc2.latitude * 100000d) / 100000d;
+        double rndLng1 = (double) Math.round(loc1.longitude * 100000d) / 100000d;
+        double rndLng2 = (double) Math.round(loc2.longitude * 100000d) / 100000d;
+
+        // Compare and return
+        return ((rndLat1 == rndLat2) && (rndLng1 == rndLng2));
     }
 }
