@@ -395,11 +395,11 @@ public class RlDialog   extends     RelativeLayout
 
             case Dialog.TYPE_LEAD : {
                 currentDialog = new LeadDialog(getContext());
+                break;
             }
 
             case Dialog.TYPE_ADD_TASK : {
                 currentDialog = new AddTaskDialog(getContext());
-
                 break;
             }
         }

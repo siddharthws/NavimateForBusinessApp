@@ -43,7 +43,7 @@
             android:layout_height="@dimen/toolbar_button_height_width"
             android:background="?attr/selectableItemBackground"
             android:padding="@dimen/toolbar_button_padding"
-            android:src="@mipmap/ic_add_task"
+            android:src="@mipmap/ic_add"
             android:scaleType="fitXY"
             android:focusable="false"
             android:focusableInTouchMode="false"
