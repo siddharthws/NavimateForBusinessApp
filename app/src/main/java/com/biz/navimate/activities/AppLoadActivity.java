@@ -112,6 +112,10 @@ public class AppLoadActivity    extends     BaseActivity
     // Registration Overrides
     @Override
     public void onRegisterSuccess() {
+        // Start Services
+        WebSocketService.StartService(this);
+        LocationService.StartService(this);
+
         // Execute App Load Task
         AppLoadTask appLoad = new AppLoadTask(this);
         appLoad.SetOnAppLoadingListener(this);
@@ -156,10 +160,6 @@ public class AppLoadActivity    extends     BaseActivity
 
         // Initialize api client
         GoogleApiClientHolder.InitInstance(this);
-
-        // Start Services
-        WebSocketService.StartService(this);
-        LocationService.StartService(this);
 
         // Check if user is registered
         if (Preferences.GetUser().appId == User.INVALID_ID) {

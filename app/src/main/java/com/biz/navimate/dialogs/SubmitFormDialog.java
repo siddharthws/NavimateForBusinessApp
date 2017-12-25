@@ -187,13 +187,13 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Show Success toast
-        Dbg.Toast(context, "Your form has been saved", Toast.LENGTH_SHORT);
+        Dbg.Toast(context, "Your form has been saved. Syncing now...", Toast.LENGTH_SHORT);
 
         // Close dialog
         RlDialog.Hide();
 
         // Start Form Sync task
-        SyncFormsTask syncForms = new SyncFormsTask(context, true);
+        SyncFormsTask syncForms = new SyncFormsTask(context, false);
         syncForms.execute();
     }
 }

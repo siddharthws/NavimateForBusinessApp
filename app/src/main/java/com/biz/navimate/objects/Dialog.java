@@ -110,7 +110,7 @@ public class Dialog {
 
         public SubmitForm(Data data, long taskId, boolean bCloseTask, boolean bReadOnly)
         {
-            super(TYPE_SUBMIT_FORM, true);
+            super(TYPE_SUBMIT_FORM, false);
 
             this.data = data;
             this.taskId = taskId;
