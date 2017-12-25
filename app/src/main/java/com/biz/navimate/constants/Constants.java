@@ -165,6 +165,7 @@ public class Constants {
         // Client Tags
         public static final int CLIENT_TAG_MAP          = 1;
         public static final int CLIENT_TAG_TRACKER      = 2;
+        public static final int CLIENT_TAG_INIT         = 3;
     }
 
     // Map related constants

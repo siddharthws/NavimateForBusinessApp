@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.interfaces.IfaceServer;
@@ -25,6 +27,8 @@ import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
+import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -42,7 +46,7 @@ import java.util.ArrayList;
 
 public class HomescreenActivity     extends     BaseActivity
                                     implements  IfaceList.Task,
-                                                RlDrawer.DrawerItemClickListener {
+                                                RlDrawer.DrawerItemClickListener, LocationUpdateRunnable.IfaceRunnableLocationInit {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "HOMESCREEN_ACTIVITY";
 
@@ -98,6 +102,19 @@ public class HomescreenActivity     extends     BaseActivity
 
         // Init List and Map as per current tasks
         InitTasksUi();
+
+        // Check for location permission / GPS
+        if (!LocationService.IsLocationPermissionGranted(this) ||
+            !LocationService.IsGpsEnabled(this)) {
+            // Add slow Init client to enable location
+            LocationService.AddClient(this, Constants.Location.CLIENT_TAG_INIT, LocationUpdate.SLOW);
+
+            // Set Listener to remove client
+            locationUpdateRunnable.SetInitListener(this);
+
+            // Post Update Runnable
+            locationUpdateRunnable.Post(0);
+        }
     }
 
     @Override
@@ -106,10 +123,11 @@ public class HomescreenActivity     extends     BaseActivity
 
         // Send sync request (Show dialog if no tasks in adapter)
         if (adapter.getCount() == 0) {
-            SyncDb(true);
-        } else {
-            SyncDb(false);
+            Dbg.Toast(this, "Syncing tasks...", Toast.LENGTH_SHORT);
         }
+
+        // Start Task Sync without dialog
+        SyncDb(false);
 
         // Check for location related issues and ask to resolve
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) ||
@@ -180,6 +198,19 @@ public class HomescreenActivity     extends     BaseActivity
                 break;
             }
         }
+    }
+
+    // Location Init Listeners
+    @Override
+    public void onLocationInitSuccess(LocationObj location) {
+        // Remove Init Client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_INIT);
+    }
+
+    @Override
+    public void onLocationInitError() {
+        // Remove Init Client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_INIT);
     }
 
     // ----------------------- Public APIs ----------------------- //
