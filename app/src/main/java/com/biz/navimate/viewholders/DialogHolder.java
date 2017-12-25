@@ -35,6 +35,13 @@ public class DialogHolder {
         public Button btn = null;
     }
 
+    public static class AddTask extends Base
+    {
+        // Button
+        public Button btnSave = null;
+        public Button btnCancel = null;
+    }
+
     public static class Confirm extends Base
     {
         // Message Text

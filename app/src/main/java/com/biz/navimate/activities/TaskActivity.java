@@ -86,6 +86,12 @@ public class TaskActivity   extends     BaseActivity
         syncDb.execute();
     }
 
+    public void ButtonClickAddTask(View view) {
+        //Pop up the Add Task Dialog
+        RlDialog.Show(new Dialog.AddTask());
+
+    }
+
     // ----------------------- Private APIs ----------------------- //
     private void InitList() {
         // Reset Adapter

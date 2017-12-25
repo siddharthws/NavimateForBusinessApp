@@ -38,6 +38,18 @@
             android:text="Tasks"/>
 
         <ImageButton
+            android:id="@+id/ib_toolbar_addTask"
+            android:layout_width="@dimen/toolbar_button_height_width"
+            android:layout_height="@dimen/toolbar_button_height_width"
+            android:background="?attr/selectableItemBackground"
+            android:padding="@dimen/toolbar_button_padding"
+            android:src="@mipmap/ic_add_task"
+            android:scaleType="fitXY"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:onClick="ButtonClickAddTask"/>
+
+        <ImageButton
             android:id="@+id/ib_toolbar_sync"
             android:layout_width="@dimen/toolbar_button_height_width"
             android:layout_height="@dimen/toolbar_button_height_width"
