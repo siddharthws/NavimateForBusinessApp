@@ -18,7 +18,7 @@ import com.biz.navimate.objects.User;
 import com.biz.navimate.server.CheckUpdatesTask;
 import com.biz.navimate.server.UpdateFcmTask;
 import com.biz.navimate.services.LocationService;
-import com.biz.navimate.services.TrackerService;
+import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.tasks.AppLoadTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -84,7 +84,7 @@ public class AppLoadActivity    extends     BaseActivity
         // Un initialize app if exiting without completing load
         if (!bLoadComplete) {
             // Stop Services
-            TrackerService.StopService();
+            WebSocketService.StopService();
             LocationService.StopService();
 
             // Uninit App
@@ -158,6 +158,7 @@ public class AppLoadActivity    extends     BaseActivity
         GoogleApiClientHolder.InitInstance(this);
 
         // Start Services
+        WebSocketService.StartService(this);
         LocationService.StartService(this);
 
         // Check if user is registered

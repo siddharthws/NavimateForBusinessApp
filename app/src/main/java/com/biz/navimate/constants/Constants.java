@@ -65,11 +65,12 @@ public class Constants {
         // URLs
         //private static final String URL_BASE            = "http://192.168.1.10:8080";     // Debug
         private static final String URL_BASE            = "http://34.214.114.8:8080";       // Release
+
+        // Http URLs
         public static final String URL_GET_PROFILE      = URL_BASE + "/api/reps/profile";
         public static final String URL_OTP_SMS          = URL_BASE + "/api/reps/otp";
         public static final String URL_UPDATE_FCM       = URL_BASE + "/api/reps/fcm";
         public static final String URL_REGISTER         = URL_BASE + "/api/reps/register";
-        public static final String URL_TRACK            = URL_BASE + "/api/track/data";
         public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
         public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
         public static final String URL_SYNC_TASKS       = URL_BASE + "/api/reps/sync/tasks";
@@ -79,6 +80,18 @@ public class Constants {
         public static final String URL_SYNC_DATA        = URL_BASE + "/api/reps/sync/data";
         public static final String URL_SYNC_VALUES      = URL_BASE + "/api/reps/sync/values";
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
+
+        // Stomp URLs
+        public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
+
+        // Sending channels
+        public static final String URL_HEARTBEAT        = "/rxc/heart-beat";
+        public static final String URL_TRACK_DATA       = "/rxc/tracking-update";
+        public static final String URL_TRACK_ERROR      = "/rxc/tracking-error";
+
+        // Subsciprtion channels
+        public static final String URL_START_TRACKING   = "/user/txc/start-tracking";
+        public static final String URL_STOP_TRACKING    = "/user/txc/stop-tracking";
 
         // JSON Keys
 
@@ -134,6 +147,7 @@ public class Constants {
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
         public static final String KEY_MESSAGE          = "message";
+        public static final String KEY_ERROR_CODE       = "errorCode";
     }
 
     // Location related constants
@@ -157,6 +171,18 @@ public class Constants {
     public class Map {
         // Zoom levels
         public static final int MIN_ZOOM = 14;
+    }
+
+    // Tracker Service related Constants
+    public class Tracker {
+        // Error codes
+        public static final int ERROR_NONE              = 0;
+        public static final int ERROR_IDLE              = 1;
+        public static final int ERROR_WAITING           = 2;
+        public static final int ERROR_NO_UPDATES        = 3;
+        public static final int ERROR_NO_GPS            = 4;
+        public static final int ERROR_NO_PERMISSION     = 5;
+        public static final int ERROR_OFFLINE           = 6;
     }
 
     // Miscellaneous Constants

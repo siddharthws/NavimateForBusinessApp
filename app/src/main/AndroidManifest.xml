@@ -71,8 +71,8 @@
             </intent-filter>
         </service>
         <service
-            android:name=".services.TrackerService"
-            android:label="Tracker Service" />
+            android:name=".services.WebSocketService"
+            android:label="Socket Service" />
         <service
             android:name=".services.LocationService"
             android:label="Location Service" />

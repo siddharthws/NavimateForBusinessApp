@@ -1,13 +1,11 @@
 package com.biz.navimate.firebase;
 
-import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.activities.HomescreenActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.NotificationHelper;
 import com.biz.navimate.server.SyncDbTask;
-import com.biz.navimate.services.TrackerService;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -27,7 +25,6 @@ public class FcmMessagingService extends    FirebaseMessagingService
 
     // FCM Notification Types
     public static final int TYPE_TASK_UPDATE    = 1;
-    public static final int TYPE_TRACK          = 2;
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -70,12 +67,6 @@ public class FcmMessagingService extends    FirebaseMessagingService
         switch (notificationType) {
             case TYPE_TASK_UPDATE: {
                 ServiceTaskUpdateNotification();
-                break;
-            }
-            case TYPE_TRACK: {
-                if (App.IsInitialized()) {
-                    TrackerService.StartService(this);
-                }
                 break;
             }
             default: {
