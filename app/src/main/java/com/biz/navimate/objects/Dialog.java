@@ -22,11 +22,8 @@ public class Dialog {
     public static final int TYPE_TASK_INFO                  = 6;
     public static final int TYPE_ROUTE_BUILDER              = 7;
     public static final int TYPE_MAP_SETTINGS               = 8;
-
     public static final int TYPE_LEAD                       = 9;
-
     public static final int TYPE_ADD_TASK                   = 10;
-
 
     // Base class for all dialog objects
     public static abstract class Base

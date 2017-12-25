@@ -89,7 +89,6 @@ public class TaskActivity   extends     BaseActivity
     public void ButtonClickAddTask(View view) {
         //Pop up the Add Task Dialog
         RlDialog.Show(new Dialog.AddTask());
-
     }
 
     // ----------------------- Private APIs ----------------------- //

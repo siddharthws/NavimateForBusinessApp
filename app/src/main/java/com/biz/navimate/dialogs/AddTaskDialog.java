@@ -17,7 +17,7 @@ import com.biz.navimate.views.RlDialog;
  */
 
 public class AddTaskDialog    extends     BaseDialog
-        implements  View.OnClickListener
+                              implements  View.OnClickListener
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "ADD_TASK_DIALOG";
