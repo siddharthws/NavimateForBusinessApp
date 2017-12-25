@@ -22,6 +22,7 @@ public class Dialog {
     public static final int TYPE_TASK_INFO                  = 6;
     public static final int TYPE_ROUTE_BUILDER              = 7;
     public static final int TYPE_MAP_SETTINGS               = 8;
+    public static final int TYPE_ADD_TASK                   = 9;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -51,6 +52,14 @@ public class Dialog {
         {
             super(TYPE_ALERT, true);
             this.message = message;
+        }
+    }
+
+    public static class AddTask extends Base
+    {
+        public AddTask()
+        {
+            super(TYPE_ADD_TASK, true);
         }
     }
 
