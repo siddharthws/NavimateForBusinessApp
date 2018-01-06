@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.dialogs.AddTaskDialog;
 import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.dialogs.ConfirmDialog;
@@ -388,6 +389,10 @@ public class RlDialog   extends     RelativeLayout
             }
             case Dialog.TYPE_MAP_SETTINGS : {
                 currentDialog = new MapSettingsDialog(getContext());
+                break;
+            }
+            case Dialog.TYPE_ADD_TASK : {
+                currentDialog = new AddTaskDialog(getContext());
                 break;
             }
         }

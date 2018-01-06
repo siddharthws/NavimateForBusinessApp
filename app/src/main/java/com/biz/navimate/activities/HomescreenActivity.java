@@ -258,6 +258,11 @@ public class HomescreenActivity     extends     BaseActivity
         SyncDb(true);
     }
 
+    public void ButtonClickAddTask(View view) {
+        //Pop up the Add Task Dialog
+        RlDialog.Show(new Dialog.AddTask());
+    }
+
     // ----------------------- Private APIs ----------------------- //
     // API to Init List and Map UI as per the open tasks in current database
     private void InitTasksUi () {
