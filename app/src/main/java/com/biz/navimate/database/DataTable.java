@@ -6,8 +6,8 @@ import android.database.Cursor;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,14 +51,21 @@ public class DataTable extends BaseTable {
     // ----------------------- Public APIs ----------------------- //
     // API to get valid objects for syncing
     public ArrayList<Data> GetDataToSync() {
-        // Get list of open tasks
-        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
+        ArrayList<Data> datas = new ArrayList<>();
 
         // Create list of default data in all open task templates
-        ArrayList<Data> datas = new ArrayList<>();
+        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
         for (Template template : unsyncedTemplates) {
             // Get Template's default data
             Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
+            datas.add(data);
+        }
+
+        // Add lead templated data objects
+        ArrayList<Lead> leads = DbHelper.leadTable.GetLeadsToSync();
+        for (Lead lead : leads) {
+            // Get Lead's templated data
+            Data data = (Data) DbHelper.dataTable.GetById(lead.dataId);
             datas.add(data);
         }
 

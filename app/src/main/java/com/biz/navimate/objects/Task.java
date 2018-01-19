@@ -44,7 +44,7 @@ public class Task extends ServerObject {
         // Get Local Lead Object
         Lead lead = DbHelper.leadTable.GetByServerId(leadId);
         if (lead == null) {
-            lead = new Lead(Constants.Misc.ID_INVALID, leadId, Constants.Misc.ID_INVALID, "", "", "", "", "", new LatLng(0, 0));
+            lead = new Lead(Constants.Misc.ID_INVALID, leadId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, "", new LatLng(0, 0));
             DbHelper.leadTable.Save(lead);
         }
 
