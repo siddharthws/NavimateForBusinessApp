@@ -51,12 +51,33 @@
 
         </LinearLayout>
 
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_text"
+        <LinearLayout
+            android:id="@+id/ll_text_read_only"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/m_small"
-            android:visibility="gone"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/m_small"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/ib_phone"
+                android:layout_width="@dimen/toolbar_button_height_width"
+                android:layout_height="@dimen/toolbar_button_height_width"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/toolbar_button_padding"
+                android:src="@mipmap/icon_phone_grey"
+                android:scaleType="fitXY"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
         <com.biz.navimate.views.EtCalibri
             android:id="@+id/et_number"

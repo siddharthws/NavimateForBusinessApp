@@ -22,6 +22,7 @@ public class Dialog {
     public static final int TYPE_TASK_INFO                  = 6;
     public static final int TYPE_ROUTE_BUILDER              = 7;
     public static final int TYPE_MAP_SETTINGS               = 8;
+    public static final int TYPE_LEAD                       = 9;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -130,12 +131,23 @@ public class Dialog {
         }
     }
 
+    public static class Lead extends Base
+    {
+        public com.biz.navimate.objects.Lead lead = null;
+
+        public Lead(com.biz.navimate.objects.Lead lead)
+        {
+            super(TYPE_LEAD, true);
+            this.lead = lead;
+        }
+    }
+
     public static class RouteBuilder extends Base
     {
-        public ArrayList<Lead> leads = null;
+        public ArrayList<com.biz.navimate.objects.Lead> leads = null;
         public IfaceDialog.RouteBuilder listener = null;
 
-        public RouteBuilder(@NonNull ArrayList<Lead> leads, IfaceDialog.RouteBuilder listener)
+        public RouteBuilder(@NonNull ArrayList<com.biz.navimate.objects.Lead> leads, IfaceDialog.RouteBuilder listener)
         {
             super(TYPE_ROUTE_BUILDER, true);
             this.leads = leads;

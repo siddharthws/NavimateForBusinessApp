@@ -1,23 +1,15 @@
 package com.biz.navimate.dialogs;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.biz.navimate.R;
-import com.biz.navimate.activities.BaseActivity;
-import com.biz.navimate.application.App;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
@@ -30,7 +22,7 @@ import com.biz.navimate.views.RlDialog;
  */
 
 public class TaskInfoDialog     extends     BaseDialog
-                                implements  View.OnClickListener, IfacePermission.Call {
+                                implements  View.OnClickListener{
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "TASK_INFO_DIALOG";
 
@@ -56,12 +48,8 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_task_info, container);
 
         // Find Views
-        ui.tvTitle = (TextView) ui.dialogView.findViewById(R.id.tv_title);
-        ui.tvDescription = (TextView) ui.dialogView.findViewById(R.id.tv_description);
-        ui.tvAddress = (TextView) ui.dialogView.findViewById(R.id.tv_address);
-        ui.btnPhone = (Button) ui.dialogView.findViewById(R.id.btn_phone);
+        ui.btnLead = (Button) ui.dialogView.findViewById(R.id.btn_lead);
         ui.btnMaps = (Button) ui.dialogView.findViewById(R.id.btn_maps);
-        ui.tvEmail = (TextView) ui.dialogView.findViewById(R.id.tv_email);
         ui.btnSubmit = (Button) ui.dialogView.findViewById(R.id.btn_submit_form);
         ui.btnDismiss = (Button) ui.dialogView.findViewById(R.id.btn_dismiss);
     }
@@ -73,16 +61,12 @@ public class TaskInfoDialog     extends     BaseDialog
         Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
 
         // Set Text
-        ui.tvTitle.setText(lead.title);
-        ui.tvDescription.setText(lead.description);
-        ui.tvAddress.setText(lead.address);
-        ui.btnPhone.setText("Call : " + lead.phone);
-        ui.tvEmail.setText(lead.email);
+        ui.btnLead.setText(lead.title);
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);
         ui.btnDismiss.setOnClickListener(this);
-        ui.btnPhone.setOnClickListener(this);
+        ui.btnLead.setOnClickListener(this);
         ui.btnMaps.setOnClickListener(this);
     }
 
@@ -104,20 +88,8 @@ public class TaskInfoDialog     extends     BaseDialog
                 RlDialog.Show(new Dialog.SubmitForm(templateData, currentData.task.dbId, false, false));
                 break;
             }
-            case R.id.btn_phone: {
-                // Check permission
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PermissionChecker.PERMISSION_GRANTED) {
-                    onCallPermissionSuccess();
-                } else {
-                    BaseActivity currentActivity = App.GetCurrentActivity();
-
-                    if (currentActivity != null) {
-                        currentActivity.SetCallPermissionListener(this);
-                        currentActivity.RequestPermission(new String[]{Manifest.permission.CALL_PHONE});
-                    } else {
-                        Dbg.error(TAG, "Current Activity is null. Cannot ask permission");
-                    }
-                }
+            case R.id.btn_lead: {
+                RlDialog.Show(new Dialog.Lead(lead));
                 break;
             }
             case R.id.btn_maps: {
@@ -131,22 +103,6 @@ public class TaskInfoDialog     extends     BaseDialog
                 break;
             }
         }
-    }
-
-    @Override
-    public void onCallPermissionSuccess() {
-        Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
-        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PermissionChecker.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Intent.ACTION_CALL);
-            intent.setData(Uri.parse("tel:" + lead.phone));
-            context.startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onCallPermissionFailure() {
-
     }
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //

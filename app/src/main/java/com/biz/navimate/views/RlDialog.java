@@ -12,6 +12,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.dialogs.AlertDialog;
 import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.dialogs.ConfirmDialog;
+import com.biz.navimate.dialogs.LeadDialog;
 import com.biz.navimate.dialogs.MapSettingsDialog;
 import com.biz.navimate.dialogs.ProgressDialog;
 import com.biz.navimate.dialogs.RouteBuilderDialog;
@@ -388,6 +389,10 @@ public class RlDialog   extends     RelativeLayout
             }
             case Dialog.TYPE_MAP_SETTINGS : {
                 currentDialog = new MapSettingsDialog(getContext());
+                break;
+            }
+            case Dialog.TYPE_LEAD : {
+                currentDialog = new LeadDialog(getContext());
                 break;
             }
         }

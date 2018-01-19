@@ -63,7 +63,7 @@ public class TaskListAdapter    extends     BaseListAdapter
 
         // Set title and description
         holder.tvTitle.setText(lead.title);
-        holder.tvDescription.setText(lead.description);
+        holder.tvDescription.setText(lead.address);
 
         // Set btn lick listeners
         holder.btnForm.setOnClickListener(new View.OnClickListener() {

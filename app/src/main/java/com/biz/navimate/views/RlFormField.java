@@ -3,12 +3,15 @@ package com.biz.navimate.views;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v4.content.PermissionChecker;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import com.biz.navimate.activities.ViewPhotoActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
@@ -37,7 +41,7 @@ import com.biz.navimate.zxing.IntentIntegrator;
  * Created by Siddharth on 23-10-2017.
  */
 
-public class RlFormField extends RelativeLayout {
+public class RlFormField extends RelativeLayout implements IfacePermission.Call {
     // ----------------------- Constants ----------------------- //
     public static final String TAG = "RL_FORM_FIELD";
 
@@ -46,7 +50,7 @@ public class RlFormField extends RelativeLayout {
     // ----------------------- Globals ----------------------- //
     // UI
     private LinearLayout llText = null;
-    private ImageButton ibQr = null;
+    private ImageButton ibQr, ibPhone = null;
     private TvCalibri tvTitle;
     private EditText etNumber, etText = null;
     private TvCalibri tvNumber, tvText = null;
@@ -88,6 +92,20 @@ public class RlFormField extends RelativeLayout {
     }
 
     // ----------------------- Overrides ----------------------- //
+    @Override
+    public void onCallPermissionSuccess() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PermissionChecker.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + entry.toString()));
+            getContext().startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onCallPermissionFailure() {
+
+    }
+
     // ----------------------- Public APIs ----------------------- //
     public Value GetValue() {
         String value = "";
@@ -151,6 +169,7 @@ public class RlFormField extends RelativeLayout {
         llText = (LinearLayout) view.findViewById(R.id.ll_text);
         llCheckList = (LinearLayout) view.findViewById(R.id.ll_checkList);
         ibQr = (ImageButton) view.findViewById(R.id.ib_qr);
+        ibPhone = (ImageButton) view.findViewById(R.id.ib_phone);
         tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
@@ -205,6 +224,31 @@ public class RlFormField extends RelativeLayout {
             // Disable QR scanning and edit text
             tvText.setVisibility(VISIBLE);
             tvText.setText(entry.toString());
+
+            // Check for phone numbers
+            if (entry.field.title.toLowerCase().contains("phone")) {
+                ibPhone.setVisibility(VISIBLE);
+                IfacePermission.Call callListener = this;
+                ibPhone.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Check permission
+                        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE) == PermissionChecker.PERMISSION_GRANTED) {
+                            onCallPermissionSuccess();
+                        } else {
+                            BaseActivity currentActivity = App.GetCurrentActivity();
+
+                            if (currentActivity != null) {
+                                currentActivity.SetCallPermissionListener(callListener);
+                                currentActivity.RequestPermission(new String[]{Manifest.permission.CALL_PHONE});
+                            } else {
+                                Dbg.error(TAG, "Current Activity is null. Cannot ask permission");
+                            }
+                        }
+
+                    }
+                });
+            }
         } else {
             llText.setVisibility(VISIBLE);
             etText.setText(entry.toString());
