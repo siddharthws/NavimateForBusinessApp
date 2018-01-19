@@ -24,61 +24,28 @@
             android:layout_height="wrap_content"
             app:text="Task Information"/>
 
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_dialog_title_task_info"
-            android:layout_marginTop="@dimen/m_small"
-            app:bold="true"
-            android:textSize="@dimen/textsize_primary_small"/>
-
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_title"
-            android:layout_marginTop="@dimen/m_small"
-            android:textSize="@dimen/textsize_primary_small"/>
-
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_description"
-            android:layout_marginTop="@dimen/m_small"
-            android:textSize="@dimen/textsize_primary_small"/>
-
-        <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_address"
-            android:layout_marginTop="@dimen/m_small"
-            android:textSize="@dimen/textsize_primary_small"/>
-
         <Button
-            android:id="@+id/btn_phone"
+            android:id="@+id/btn_lead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_email"
             android:layout_marginTop="@dimen/m_small"
-            android:paddingRight="@dimen/m_small"
-            android:paddingLeft="@dimen/m_small"
-            android:textColor="@android:color/white"
-            android:background="@drawable/selector_btn_bg_colored_shadow"/>
+            android:background="?attr/selectableItemBackground"
+            android:layout_below="@id/rl_dialog_title_task_info"
+            android:textSize="@dimen/textsize_primary_small"
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/btn_maps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_phone"
+            android:layout_below="@id/btn_lead"
             android:layout_marginTop="@dimen/m_small"
             android:paddingRight="@dimen/m_small"
             android:paddingLeft="@dimen/m_small"
-            android:textColor="@android:color/white"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:text="Open With Maps"/>
+            android:text="Open With Google Maps"
+            android:background="?attr/selectableItemBackground"
+            android:textSize="@dimen/textsize_primary_small"
+            android:textColor="@color/colorPrimary"/>
 
         <Button
             android:id="@+id/btn_submit_form"

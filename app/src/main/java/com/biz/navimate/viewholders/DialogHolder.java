@@ -68,14 +68,19 @@ public class DialogHolder {
 
     public static class TaskInfo extends Base
     {
-        public TextView tvTitle = null;
-        public TextView tvDescription = null;
-        public TextView tvAddress = null;
-        public Button btnPhone = null;
+        public Button btnLead = null;
         public Button btnMaps = null;
-        public TextView tvEmail = null;
         public Button btnSubmit = null;
         public Button btnDismiss = null;
+    }
+
+    public static class Lead extends Base
+    {
+        public TvCalibri tvTitle = null;
+        public TvCalibri tvAddress = null;
+        public ArrayList<RlFormField> fields = null;
+        public LinearLayout llFields = null;
+        public Button btnCancel = null;
     }
 
     public static class RouteBuilder extends Base
