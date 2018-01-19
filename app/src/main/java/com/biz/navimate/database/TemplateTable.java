@@ -5,6 +5,7 @@ import android.database.Cursor;
 
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -56,14 +57,25 @@ public class TemplateTable extends BaseTable {
     // ----------------------- Public APIs ----------------------- //
     // API to get valid objects for syncing
     public ArrayList<Template> GetTemplatesToSync() {
-        // Get list of open tasks
-        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+        ArrayList<Template> templates = new ArrayList<>();
 
         // Create list of form templates in open tasks
-        ArrayList<Template> templates = new ArrayList<>();
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
         for (Task task : openTasks) {
             // Get Task form template
             Template template = (Template) GetById(task.formTemplateId);
+
+            // Add to array
+            if (!templates.contains(template)) {
+                templates.add(template);
+            }
+        }
+
+        // Create list of lead templates in leads
+        ArrayList<Lead> leads = DbHelper.leadTable.GetLeadsToSync();
+        for (Lead lead : leads) {
+            // Get lead template
+            Template template = (Template) GetById(lead.templateId);
 
             // Add to array
             if (!templates.contains(template)) {

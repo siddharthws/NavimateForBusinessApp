@@ -5,8 +5,6 @@ import android.database.Cursor;
 
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
-import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.Value;
 
 import java.util.ArrayList;
@@ -52,16 +50,13 @@ public class ValueTable extends BaseTable {
     // API to get valid objects for syncing
     public ArrayList<Value> GetValuesToSync() {
         // Get list of open tasks
-        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
+        ArrayList<Data> unsyncedDatas = DbHelper.dataTable.GetDataToSync();
 
         // Create list of form templates in open tasks
         ArrayList<Value> values = new ArrayList<>();
-        for (Template template : unsyncedTemplates) {
-            // Get Template's default data
-            Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
-
+        for (Data unsyncedData : unsyncedDatas) {
             // Add all fields in this template
-            for (Long valueId : data.valueIds) {
+            for (Long valueId : unsyncedData.valueIds) {
                 values.add((Value) GetById(valueId));
             }
         }
