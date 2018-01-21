@@ -7,6 +7,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
 import org.json.JSONArray;
@@ -58,6 +59,14 @@ public class DataTable extends BaseTable {
         for (Template template : unsyncedTemplates) {
             // Get Template's default data
             Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
+            datas.add(data);
+        }
+
+        // Add task templated data objects
+        ArrayList<Task> tasks = DbHelper.taskTable.GetOpenTasks();
+        for (Task task : tasks) {
+            // Get Task's templated data
+            Data data = (Data) DbHelper.dataTable.GetById(task.dataId);
             datas.add(data);
         }
 

@@ -27,6 +27,8 @@ public class TaskTable extends BaseTable {
     public static final String COLUMN_LEAD_ID            = "lead_id";
     public static final String COLUMN_FORM_TEMPLATE_ID   = "form_template_id";
     public static final String COLUMN_STATUS             = "status";
+    public static final String COLUMN_TEMPLATE_ID        = "template_id";
+    public static final String COLUMN_DATA_ID            = "data_id";
 
     // Create query
     public static final String CREATE_TABLE =
@@ -36,6 +38,8 @@ public class TaskTable extends BaseTable {
                     COLUMN_VERSION          + " INTEGER," +
                     COLUMN_LEAD_ID          + " INTEGER," +
                     COLUMN_FORM_TEMPLATE_ID + " INTEGER," +
+                    COLUMN_TEMPLATE_ID      + " INTEGER," +
+                    COLUMN_DATA_ID          + " INTEGER," +
                     COLUMN_STATUS           + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
@@ -46,6 +50,8 @@ public class TaskTable extends BaseTable {
                                                     COLUMN_VERSION,
                                                     COLUMN_LEAD_ID,
                                                     COLUMN_FORM_TEMPLATE_ID,
+                                                    COLUMN_TEMPLATE_ID,
+                                                    COLUMN_DATA_ID,
                                                     COLUMN_STATUS});
     }
 
@@ -84,9 +90,11 @@ public class TaskTable extends BaseTable {
         long   version               = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         long   leadId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_LEAD_ID));
         long   formTemplateId        = cursor.getLong    (cursor.getColumnIndex(COLUMN_FORM_TEMPLATE_ID));
+        long   templateId            = cursor.getLong    (cursor.getColumnIndex(COLUMN_TEMPLATE_ID));
+        long   dataId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_DATA_ID));
         Task.TaskStatus status       = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(COLUMN_STATUS)));
 
-        return new Task(dbId, serverId, version, leadId, formTemplateId, status);
+        return new Task(dbId, serverId, version, leadId, formTemplateId, status, templateId, dataId);
     }
 
     @Override
@@ -100,6 +108,8 @@ public class TaskTable extends BaseTable {
         dbEntry.put(COLUMN_VERSION,           task.version);
         dbEntry.put(COLUMN_LEAD_ID,           task.leadId);
         dbEntry.put(COLUMN_FORM_TEMPLATE_ID,  task.formTemplateId);
+        dbEntry.put(COLUMN_TEMPLATE_ID,       task.templateId);
+        dbEntry.put(COLUMN_DATA_ID,           task.dataId);
         dbEntry.put(COLUMN_STATUS,            task.status.name());
 
         return dbEntry;
