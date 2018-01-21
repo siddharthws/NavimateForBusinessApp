@@ -71,6 +71,18 @@ public class TemplateTable extends BaseTable {
             }
         }
 
+        // Create list of task templates in tasks
+        ArrayList<Task> tasks = DbHelper.taskTable.GetOpenTasks();
+        for (Task task : tasks) {
+            // Get task template
+            Template template = (Template) GetById(task.templateId);
+
+            // Add to array
+            if (!templates.contains(template)) {
+                templates.add(template);
+            }
+        }
+
         // Create list of lead templates in leads
         ArrayList<Lead> leads = DbHelper.leadTable.GetLeadsToSync();
         for (Lead lead : leads) {
