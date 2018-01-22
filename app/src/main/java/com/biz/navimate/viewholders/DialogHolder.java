@@ -69,6 +69,8 @@ public class DialogHolder {
     public static class TaskInfo extends Base
     {
         public Button btnLead = null;
+        public ArrayList<RlFormField> fields = null;
+        public LinearLayout llFields = null;
         public Button btnMaps = null;
         public Button btnSubmit = null;
         public Button btnDismiss = null;

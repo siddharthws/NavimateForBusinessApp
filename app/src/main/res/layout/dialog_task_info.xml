@@ -34,11 +34,21 @@
             android:textSize="@dimen/textsize_primary_small"
             android:textColor="@color/colorPrimary"/>
 
+        <LinearLayout
+            android:id="@+id/ll_fields_task_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_lead"
+            android:layout_marginTop="@dimen/m_small"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/btn_maps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_lead"
+            android:layout_below="@id/ll_fields_task_info"
             android:layout_marginTop="@dimen/m_small"
             android:paddingRight="@dimen/m_small"
             android:paddingLeft="@dimen/m_small"
@@ -47,30 +57,29 @@
             android:textSize="@dimen/textsize_primary_small"
             android:textColor="@color/colorPrimary"/>
 
-        <Button
-            android:id="@+id/btn_submit_form"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_maps"
-            android:layout_marginTop="@dimen/m_small"
-            android:textColor="@android:color/white"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:text="Submit Form"/>
-
         <RelativeLayout
             android:id="@+id/rlDialogButtonContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/btn_submit_form"
+            android:layout_below="@id/btn_maps"
             android:layout_marginTop="@dimen/m_small">
+
+            <Button
+                android:id="@+id/btn_submit_form"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:text="Submit Form"
+                android:textSize="@dimen/textsize_primary_small"
+                android:textColor="@color/colorPrimary"/>
 
             <Button
                 android:id="@+id/btn_dismiss"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
-                android:text="DISMISS"
+                android:text="Close"
                 android:textSize="@dimen/textsize_primary_small"
                 android:textColor="@color/colorPrimary"/>
 
