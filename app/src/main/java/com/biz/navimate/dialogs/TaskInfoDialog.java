@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.biz.navimate.R;
 import com.biz.navimate.database.DbHelper;
@@ -14,8 +15,12 @@ import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
+import com.biz.navimate.objects.Value;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlFormField;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 01-10-2017.
@@ -48,10 +53,12 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_task_info, container);
 
         // Find Views
-        ui.btnLead = (Button) ui.dialogView.findViewById(R.id.btn_lead);
-        ui.btnMaps = (Button) ui.dialogView.findViewById(R.id.btn_maps);
-        ui.btnSubmit = (Button) ui.dialogView.findViewById(R.id.btn_submit_form);
-        ui.btnDismiss = (Button) ui.dialogView.findViewById(R.id.btn_dismiss);
+        ui.btnLead      = (Button) ui.dialogView.findViewById(R.id.btn_lead);
+        ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task_info);
+        ui.fields       = new ArrayList<>();
+        ui.btnMaps      = (Button) ui.dialogView.findViewById(R.id.btn_maps);
+        ui.btnSubmit    = (Button) ui.dialogView.findViewById(R.id.btn_submit_form);
+        ui.btnDismiss   = (Button) ui.dialogView.findViewById(R.id.btn_dismiss);
     }
 
     @Override
@@ -62,6 +69,15 @@ public class TaskInfoDialog     extends     BaseDialog
 
         // Set Text
         ui.btnLead.setText(lead.title);
+
+        // Set Form Fields
+        Data data = (Data) DbHelper.dataTable.GetById(currentData.task.dataId);
+        for (Long valueId  : data.valueIds) {
+            Value value = (Value) DbHelper.valueTable.GetById(valueId);
+            RlFormField fieldUi = new RlFormField(context, value, true);
+            ui.llFields.addView(fieldUi);
+            ui.fields.add(fieldUi);
+        }
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);

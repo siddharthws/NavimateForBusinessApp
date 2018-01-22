@@ -50,7 +50,7 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
         // Find Views
         ui.tvTitle      = (TvCalibri) ui.dialogView.findViewById(R.id.tv_lead_title);
         ui.tvAddress    = (TvCalibri) ui.dialogView.findViewById(R.id.tv_lead_address);
-        ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields);
+        ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_lead);
         ui.fields       = new ArrayList<>();
         ui.btnCancel    = (Button) ui.dialogView.findViewById(R.id.btn_cancel);
     }
