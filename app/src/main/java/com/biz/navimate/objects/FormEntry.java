@@ -77,6 +77,26 @@ public class FormEntry {
         }
     }
 
+    // Checkbox Form Field
+    public static class Checkbox extends Base
+    {
+        // Number to store
+        public boolean bChecked = false;
+
+        public Checkbox (Field field, boolean bChecked)
+        {
+            super(field);
+            this.bChecked = bChecked;
+        }
+
+        // Convert object to JSON
+        @Override
+        public String toString()
+        {
+            return String.valueOf(bChecked);
+        }
+    }
+
     // Radio List Form Field
     public static class RadioList extends Base
     {
@@ -199,6 +219,9 @@ public class FormEntry {
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
                 return new Number(field, Long.valueOf(value.value));
+            }
+            case Constants.Template.FIELD_TYPE_CHECKBOX : {
+                return new Checkbox(field, Boolean.valueOf(value.value));
             }
             case Constants.Template.FIELD_TYPE_PHOTO : {
                 return new Photo(field, value.value);

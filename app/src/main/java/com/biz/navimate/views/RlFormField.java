@@ -53,6 +53,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     private ImageButton ibQr, ibPhone = null;
     private TvCalibri tvTitle;
     private EditText etNumber, etText = null;
+    private CbCustom cbCheckbox = null;
     private TvCalibri tvNumber, tvText = null;
     private RadioGroup rgRadioList = null;
     private LinearLayout llCheckList = null;
@@ -119,6 +120,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                 value = etNumber.getText().toString();
                 break;
             }
+            case Constants.Template.FIELD_TYPE_CHECKBOX : {
+                value = String.valueOf(cbCheckbox.isChecked());
+                break;
+            }
             case Constants.Template.FIELD_TYPE_PHOTO :
             case Constants.Template.FIELD_TYPE_SIGN : {
                 value = entry.toString();
@@ -173,6 +178,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
+        cbCheckbox = (CbCustom) view.findViewById(R.id.cb_checkbox);
         tvNumber = (TvCalibri) view.findViewById(R.id.tv_number);
         tvText = (TvCalibri) view.findViewById(R.id.tv_text);
         rgRadioList = (RadioGroup) view.findViewById(R.id.rg_radioList);
@@ -194,6 +200,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
                 InitNumberField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_CHECKBOX : {
+                InitCheckboxField();
                 break;
             }
             case Constants.Template.FIELD_TYPE_PHOTO : {
@@ -282,6 +292,17 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             etNumber.setVisibility(VISIBLE);
             etNumber.setText(entry.toString());
         }
+    }
+
+    private void InitCheckboxField() {
+        // Set checbox UI vsiible
+        cbCheckbox.setVisibility(VISIBLE);
+
+        if (bReadOnly) {
+            cbCheckbox.setEnabled(false);
+        }
+
+        cbCheckbox.setChecked(((FormEntry.Checkbox) entry).bChecked);
     }
 
     private void InitPhotoField() {

@@ -97,6 +97,11 @@
             android:padding="@dimen/m_small"
             android:visibility="gone"/>
 
+        <com.biz.navimate.views.CbCustom
+            android:id="@+id/cb_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
         <RadioGroup
             android:id="@+id/rg_radioList"
             android:layout_width="match_parent"
