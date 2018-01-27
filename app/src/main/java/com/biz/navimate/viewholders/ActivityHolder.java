@@ -63,6 +63,15 @@ public class ActivityHolder {
         public ListView lvList                                  = null;
     }
 
+    public static class Task extends Base
+    {
+        // Toolbar
+        public ImageButton ibSync, ibBack                        = null;
+
+        // List
+        public ListView lvList                                  = null;
+    }
+
     public static class Forms extends Base
     {
         // Toolbar
