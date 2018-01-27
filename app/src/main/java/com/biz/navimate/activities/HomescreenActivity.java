@@ -6,32 +6,19 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.fragments.NvmMapFragment;
-import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.interpolators.PowerInterpolator;
-import com.biz.navimate.lists.TaskListAdapter;
-import com.biz.navimate.misc.AnimHelper;
-import com.biz.navimate.objects.Anim;
 import com.biz.navimate.objects.Camera;
-import com.biz.navimate.objects.Data;
-import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Lead;
-import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.Task;
-import com.biz.navimate.objects.Template;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.server.SyncDbTask;
@@ -45,8 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 public class HomescreenActivity     extends     BaseActivity
-                                    implements  IfaceList.Task,
-                                                RlDrawer.DrawerItemClickListener, LocationUpdateRunnable.IfaceRunnableLocationInit {
+                                    implements  RlDrawer.DrawerItemClickListener,
+                                                LocationUpdateRunnable.IfaceRunnableLocationInit {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "HOMESCREEN_ACTIVITY";
 
@@ -55,8 +42,6 @@ public class HomescreenActivity     extends     BaseActivity
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.Homescreen ui = null;
-    private TaskListAdapter adapter = null;
-    private AnimHelper animHelper = null;
 
     private LocationUpdateRunnable locationUpdateRunnable = null;
 
@@ -80,28 +65,18 @@ public class HomescreenActivity     extends     BaseActivity
         ui.flMap            = (FrameLayout) findViewById(R.id.fl_map_fragment);
         ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
         ui.rlDrawer         = (RlDrawer) findViewById(R.id.rl_drawer);
-        ui.lvTasks          = (ListView) findViewById(R.id.lv_tasks);
-        ui.ibList          = (ImageButton) findViewById(R.id.ib_toolbar_list);
-        ui.ibMap          = (ImageButton) findViewById(R.id.ib_toolbar_map);
     }
 
     @Override
     protected void SetViews() {
-        // Init adapter
-        adapter = new TaskListAdapter(this, ui.lvTasks);
-        adapter.SetListener(this);
-
         // Init Drawer listener
         ui.rlDrawer.SetItemClickListener(this);
 
         // Initialize Location Runnable and Helper
         locationUpdateRunnable  = new LocationUpdateRunnable(this);
 
-        // Initialize animations
-        animHelper = new AnimHelper(this);
-
         // Init List and Map as per current tasks
-        InitTasksUi();
+        InitMap();
 
         // Check for location permission / GPS
         if (!LocationService.IsLocationPermissionGranted(this) ||
@@ -115,19 +90,14 @@ public class HomescreenActivity     extends     BaseActivity
             // Post Update Runnable
             locationUpdateRunnable.Post(0);
         }
+
+        // Start Task Sync without dialog
+        SyncDb(false);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        // Send sync request (Show dialog if no tasks in adapter)
-        if (adapter.getCount() == 0) {
-            Dbg.Toast(this, "Syncing tasks...", Toast.LENGTH_SHORT);
-        }
-
-        // Start Task Sync without dialog
-        SyncDb(false);
 
         // Check for location related issues and ask to resolve
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) ||
@@ -159,31 +129,10 @@ public class HomescreenActivity     extends     BaseActivity
         } else if (ui.rlDrawer.IsShowing()) {
             // Hide Drawer
             ui.rlDrawer.Close();
-        } else if (ui.flMap.getVisibility() == View.VISIBLE) {
-            // Go to List if map is visible
-            ButtonClickList(null);
         } else {
             // Finish the activity
             finish();
         }
-    }
-
-    @Override
-    public void onItemClick(Task task) {
-        Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
-
-        // Center map on this task marker
-        ui.mapFragment.cameraHelper.Move(new Camera.Location(lead.position, 0, true));
-
-        // Perform a Map button click
-        ButtonClickMap(null);
-    }
-
-    @Override
-    public void onSubmitFormClick(Task task) {
-        Template formTemplate = (Template) DbHelper.templateTable.GetById(task.formTemplateId);
-        Data templateData = (Data) DbHelper.dataTable.GetById(formTemplate.defaultDataId);
-        RlDialog.Show(new Dialog.SubmitForm(templateData, task.dbId, false, false));
     }
 
     @Override
@@ -222,7 +171,7 @@ public class HomescreenActivity     extends     BaseActivity
         BaseActivity.Start(activity, HomescreenActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
     }
 
-    public static void RefreshTasks() {
+    public static void Refresh() {
         // Get current activity
         BaseActivity currentActivity = App.GetCurrentActivity();
 
@@ -230,31 +179,13 @@ public class HomescreenActivity     extends     BaseActivity
         if ((currentActivity != null) &&
             (currentActivity.getClass().equals(HomescreenActivity.class))) {
             // Re-initialize Tasks UI
-            ((HomescreenActivity) currentActivity).InitTasksUi();
+            ((HomescreenActivity) currentActivity).InitMap();
         }
     }
 
     // Button Click APIs
     public void ButtonClickDrawer(View view) {
         ui.rlDrawer.Open();
-    }
-
-    public void ButtonClickMap(View view) {
-        // Play slide animation on list and map
-        animHelper.Swap(ui.lvTasks, ui.flMap);
-
-        // Play fade anims on buttons
-        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_OUT, ui.ibMap, new PowerInterpolator(false, 1), null));
-        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, ui.ibList, new PowerInterpolator(false, 1), null));
-    }
-
-    public void ButtonClickList(View view) {
-        // Play slide animation on list and map
-        animHelper.SwapReverse(ui.flMap, ui.lvTasks);
-
-        // Play fade anims on buttons
-        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_OUT, ui.ibList, new PowerInterpolator(false, 1), null));
-        animHelper.Animate(new Anim.Base(Anim.TYPE_FADE_IN, ui.ibMap, new PowerInterpolator(false, 1), null));
     }
 
     public void ButtonClickSync(View view) {
@@ -264,25 +195,19 @@ public class HomescreenActivity     extends     BaseActivity
 
     // ----------------------- Private APIs ----------------------- //
     // API to Init List and Map UI as per the open tasks in current database
-    private void InitTasksUi () {
+    private void InitMap() {
         // Add markers for all tasks in database
         ui.mapFragment.markerHelper.RefreshTaskMarkers();
 
-        // Clear adapter
-        adapter.Clear();
-
-        ArrayList<LatLng> bounds = new ArrayList<>();
+        // Get LatLng Bounds for all open tasks
         ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
-        // Iterate through all tasks
+        ArrayList<LatLng> bounds = new ArrayList<>();
         for (Task task : openTasks)
         {
             Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
 
             // Include in bounds for camera update
             bounds.add(lead.position);
-
-            // Add list item to adapter
-            adapter.Add(new ListItem.Task(task));
         }
 
         // Add current location to bounds if available
@@ -299,7 +224,7 @@ public class HomescreenActivity     extends     BaseActivity
         }
     }
 
-    // APi to send Sync Db Request
+    // API to send Sync Db Request
     private void SyncDb(final boolean bDialog) {
         final Context context = this;
 
@@ -313,7 +238,7 @@ public class HomescreenActivity     extends     BaseActivity
                     @Override
                     public void onTaskCompleted() {
                         // Re-Initialize UI
-                        InitTasksUi();
+                        InitMap();
                     }
                 });
                 syncDb.execute();

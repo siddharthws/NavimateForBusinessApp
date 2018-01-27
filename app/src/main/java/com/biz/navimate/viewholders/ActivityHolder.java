@@ -45,12 +45,6 @@ public class ActivityHolder {
 
         // Drawer
         public RlDrawer rlDrawer = null;
-
-        // List
-        public ListView lvTasks = null;
-
-        // Buttons
-        public ImageButton ibMap = null, ibList = null;
     }
 
     public static class LeadPicker extends Base
