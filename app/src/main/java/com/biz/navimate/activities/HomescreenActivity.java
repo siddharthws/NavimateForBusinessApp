@@ -27,6 +27,7 @@ import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
+import com.biz.navimate.views.TvCalibri;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -65,6 +66,7 @@ public class HomescreenActivity     extends     BaseActivity
         ui.flMap            = (FrameLayout) findViewById(R.id.fl_map_fragment);
         ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
         ui.rlDrawer         = (RlDrawer) findViewById(R.id.rl_drawer);
+        ui.tvTaskCount      = (TvCalibri) findViewById(R.id.tv_toolbar_tasks_count);
     }
 
     @Override
@@ -193,6 +195,11 @@ public class HomescreenActivity     extends     BaseActivity
         SyncDb(true);
     }
 
+    public void ButtonClickTask(View view) {
+        // Start Task Activity
+        TaskActivity.Start(this);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     // API to Init List and Map UI as per the open tasks in current database
     private void InitMap() {
@@ -222,6 +229,9 @@ public class HomescreenActivity     extends     BaseActivity
         } else if (bounds.size() == 1) {
             ui.mapFragment.cameraHelper.Move(new Camera.Location(bounds.get(0), 0, true));
         }
+
+        // Set Task Count
+        ui.tvTaskCount.setText(String.valueOf(openTasks.size()));
     }
 
     // API to send Sync Db Request

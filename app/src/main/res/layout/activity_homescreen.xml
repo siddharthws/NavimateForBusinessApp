@@ -7,12 +7,18 @@
     android:layout_height="match_parent"
     tools:context="com.biz.navimate.activities.HomescreenActivity">
 
+    <FrameLayout
+        android:id="@+id/fl_map_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:id="@+id/ll_toolbar_homescreen"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:padding="@dimen/m_small"
-        android:background="@drawable/bg_primary_shadow_down"
+        android:layout_margin="@dimen/m_small"
+        android:background="@drawable/bg_primary_shadow_slant"
         android:gravity="center_vertical">
 
         <ImageButton
@@ -49,13 +55,37 @@
             android:focusableInTouchMode="false"
             android:onClick="ButtonClickSync"/>
 
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:id="@+id/fl_map_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ll_toolbar_homescreen"/>
+            <ImageButton
+                android:id="@+id/ib_toolbar_tasks"
+                android:layout_width="@dimen/toolbar_button_height_width"
+                android:layout_height="@dimen/toolbar_button_height_width"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/toolbar_button_padding"
+                android:src="@mipmap/icon_briefcase_white"
+                android:scaleType="fitXY"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:onClick="ButtonClickTask"/>
+
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_toolbar_tasks_count"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignRight="@id/ib_toolbar_tasks"
+                android:layout_alignTop="@id/ib_toolbar_tasks"
+                android:background="@mipmap/bg_red"
+                android:textSize="@dimen/textsize_description"
+                android:textColor="@android:color/white"
+                app:bold="true"
+                android:textAlignment="center"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <com.biz.navimate.views.RlDrawer
         android:id="@+id/rl_drawer"
