@@ -79,6 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackground"
+                android:layout_toRightOf="@id/btn_submit_form"
                 android:text="Close"
                 android:textSize="@dimen/textsize_primary_small"
                 android:textColor="@color/colorPrimary"/>
