@@ -43,6 +43,9 @@ public class ActivityHolder {
         public NvmMapFragment mapFragment = null;
         public FrameLayout flMap = null;
 
+        // Task Count
+        public TvCalibri tvTaskCount = null;
+
         // Drawer
         public RlDrawer rlDrawer = null;
     }
