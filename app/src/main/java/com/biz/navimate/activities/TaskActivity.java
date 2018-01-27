@@ -1,13 +1,13 @@
 package com.biz.navimate.activities;
 
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.lists.TaskListAdapter;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.ListItem;
@@ -19,7 +19,7 @@ import com.biz.navimate.views.RlDialog;
 import java.util.ArrayList;
 
 public class TaskActivity   extends     BaseActivity
-                            implements  AdapterView.OnItemClickListener
+                            implements  IfaceList.Task
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "TASK_ACTIVITY";
@@ -54,20 +54,14 @@ public class TaskActivity   extends     BaseActivity
     protected void SetViews() {
         // Initialize List
         listAdpater = new TaskListAdapter(this, ui.lvList);
+        listAdpater.SetListener(this);
         InitList();
-
-        // Set Listeners
-        ui.lvList.setOnItemClickListener(this);
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-    {
-        // Get Clicked Object
-        ListItem.Task clickedItem = (ListItem.Task) listAdpater.getItem(i);
-
+    public void onItemClick(Task task) {
         // Open Task Info Dialog
-        RlDialog.Show(new Dialog.TaskInfo(clickedItem.task));
+        RlDialog.Show(new Dialog.TaskInfo(task));
     }
 
     // ----------------------- Public APIs ----------------------- //

@@ -55,7 +55,7 @@ public class FcmMessagingService extends    FirebaseMessagingService
     @Override
     public void onTaskCompleted() {
         // Update homescreen list
-        HomescreenActivity.RefreshTasks();
+        HomescreenActivity.Refresh();
 
         // Send notification
         NotificationHelper.Notify(this);

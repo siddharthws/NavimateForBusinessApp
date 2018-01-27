@@ -8,7 +8,6 @@ public class IfaceList {
     // Task List Item interface
     public interface Task {
         void onItemClick(com.biz.navimate.objects.Task task);
-        void onSubmitFormClick(com.biz.navimate.objects.Task task);
     }
 
     // Task List Item interface

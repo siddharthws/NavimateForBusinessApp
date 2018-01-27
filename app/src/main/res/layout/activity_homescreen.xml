@@ -49,31 +49,6 @@
             android:focusableInTouchMode="false"
             android:onClick="ButtonClickSync"/>
 
-        <ImageButton
-            android:id="@+id/ib_toolbar_map"
-            android:layout_width="@dimen/toolbar_button_height_width"
-            android:layout_height="@dimen/toolbar_button_height_width"
-            android:background="?attr/selectableItemBackground"
-            android:padding="@dimen/toolbar_button_padding"
-            android:src="@mipmap/icon_route_white"
-            android:scaleType="fitXY"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:onClick="ButtonClickMap"/>
-
-        <ImageButton
-            android:id="@+id/ib_toolbar_list"
-            android:layout_width="@dimen/toolbar_button_height_width"
-            android:layout_height="@dimen/toolbar_button_height_width"
-            android:background="?attr/selectableItemBackground"
-            android:padding="@dimen/toolbar_button_padding"
-            android:src="@mipmap/icon_list_white"
-            android:scaleType="fitXY"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:onClick="ButtonClickList"
-            android:visibility="gone"/>
-
     </LinearLayout>
 
     <FrameLayout
@@ -81,14 +56,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/ll_toolbar_homescreen"/>
-
-    <ListView
-        android:id="@+id/lv_tasks"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/ll_toolbar_homescreen"
-        android:background="@android:color/white"
-        android:divider="@android:color/transparent"/>
 
     <com.biz.navimate.views.RlDrawer
         android:id="@+id/rl_drawer"
