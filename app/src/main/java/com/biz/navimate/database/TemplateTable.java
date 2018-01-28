@@ -59,27 +59,19 @@ public class TemplateTable extends BaseTable {
     public ArrayList<Template> GetTemplatesToSync() {
         ArrayList<Template> templates = new ArrayList<>();
 
-        // Create list of form templates in open tasks
+        // Create list of templates in open tasks
         ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
         for (Task task : openTasks) {
-            // Get Task form template
-            Template template = (Template) GetById(task.formTemplateId);
+            // Get Task templates
+            Template formTemplate = (Template) GetById(task.formTemplateId);
+            Template taskTemplate = (Template) GetById(task.templateId);
 
             // Add to array
-            if (!templates.contains(template)) {
-                templates.add(template);
+            if (!templates.contains(formTemplate)) {
+                templates.add(formTemplate);
             }
-        }
-
-        // Create list of task templates in tasks
-        ArrayList<Task> tasks = DbHelper.taskTable.GetOpenTasks();
-        for (Task task : tasks) {
-            // Get task template
-            Template template = (Template) GetById(task.templateId);
-
-            // Add to array
-            if (!templates.contains(template)) {
-                templates.add(template);
+            if (!templates.contains(taskTemplate)) {
+                templates.add(taskTemplate);
             }
         }
 
