@@ -18,6 +18,7 @@ import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.LocationObj;
+import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Value;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
@@ -136,6 +137,9 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     private void ButtonClickSubmit(){
+        // Add Submit Form Location client
+        LocationService.AddClient(context, Constants.Location.CLIENT_TAG_SUBMIT_FORM, LocationUpdate.SLOW);
+
         // Get Value object in each form field
         ArrayList<Value> values = new ArrayList<>();
         ArrayList<Long> valueIds = new ArrayList<>();
@@ -188,6 +192,9 @@ public class SubmitFormDialog   extends     BaseDialog
 
         // Show Success toast
         Dbg.Toast(context, "Your form has been saved. Syncing now...", Toast.LENGTH_SHORT);
+
+        // Remove Submit Form Location client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_SUBMIT_FORM);
 
         // Close dialog
         RlDialog.Hide();

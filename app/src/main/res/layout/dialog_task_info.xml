@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/rl_dialog_root_task_info"
+    <ScrollView
+        android:id="@+id/sv_dialog_root_task_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -18,74 +18,80 @@
         android:background="@drawable/bg_white_shadow_slant"
         android:clickable="true">
 
-        <com.biz.navimate.views.RlDialogTitle
-            android:id="@+id/rl_dialog_title_task_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:text="Task Information"/>
-
-        <Button
-            android:id="@+id/btn_lead"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/m_small"
-            android:background="?attr/selectableItemBackground"
-            android:layout_below="@id/rl_dialog_title_task_info"
-            android:textSize="@dimen/textsize_primary_small"
-            android:textColor="@color/colorPrimary"/>
-
-        <LinearLayout
-            android:id="@+id/ll_fields_task_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_lead"
-            android:layout_marginTop="@dimen/m_small"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_maps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ll_fields_task_info"
-            android:layout_marginTop="@dimen/m_small"
-            android:paddingRight="@dimen/m_small"
-            android:paddingLeft="@dimen/m_small"
-            android:text="Open With Google Maps"
-            android:background="?attr/selectableItemBackground"
-            android:textSize="@dimen/textsize_primary_small"
-            android:textColor="@color/colorPrimary"/>
-
         <RelativeLayout
-            android:id="@+id/rlDialogButtonContainer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/btn_maps"
-            android:layout_marginTop="@dimen/m_small">
+            android:layout_height="wrap_content">
+
+            <com.biz.navimate.views.RlDialogTitle
+                android:id="@+id/rl_dialog_title_task_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:text="Task Information"/>
 
             <Button
-                android:id="@+id/btn_submit_form"
+                android:id="@+id/btn_lead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/m_small"
                 android:background="?attr/selectableItemBackground"
-                android:text="Submit Form"
+                android:layout_below="@id/rl_dialog_title_task_info"
                 android:textSize="@dimen/textsize_primary_small"
                 android:textColor="@color/colorPrimary"/>
 
-            <Button
-                android:id="@+id/btn_dismiss"
+            <LinearLayout
+                android:id="@+id/ll_fields_task_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/btn_lead"
+                android:layout_marginTop="@dimen/m_small"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_maps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_fields_task_info"
+                android:layout_marginTop="@dimen/m_small"
+                android:paddingRight="@dimen/m_small"
+                android:paddingLeft="@dimen/m_small"
+                android:text="Open With Google Maps"
                 android:background="?attr/selectableItemBackground"
-                android:layout_toRightOf="@id/btn_submit_form"
-                android:text="Close"
                 android:textSize="@dimen/textsize_primary_small"
                 android:textColor="@color/colorPrimary"/>
+
+            <RelativeLayout
+                android:id="@+id/rlDialogButtonContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/btn_maps"
+                android:layout_marginTop="@dimen/m_small">
+
+                <Button
+                    android:id="@+id/btn_submit_form"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:text="Submit Form"
+                    android:textSize="@dimen/textsize_primary_small"
+                    android:textColor="@color/colorPrimary"/>
+
+                <Button
+                    android:id="@+id/btn_dismiss"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:layout_toRightOf="@id/btn_submit_form"
+                    android:text="Close"
+                    android:textSize="@dimen/textsize_primary_small"
+                    android:textColor="@color/colorPrimary"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>
