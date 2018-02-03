@@ -20,6 +20,7 @@ public class DbObject
     public static final int TYPE_DATA                   = 5;
     public static final int TYPE_FIELD                  = 6;
     public static final int TYPE_VALUE                  = 7;
+    public static final int TYPE_LOCATION_REPORT        = 8;
 
     // ----------------------- Globals ----------------------- //
     public int      type        = TYPE_INVALID;
