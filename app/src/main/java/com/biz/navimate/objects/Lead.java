@@ -54,7 +54,7 @@ public class Lead extends ServerObject {
         // Get Local Template Object
         Template template = DbHelper.templateTable.GetByServerId(templateId);
         if (template == null) {
-            template = new Template(Constants.Misc.ID_INVALID, templateId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, new ArrayList<Long>());
+            template = new Template(Constants.Misc.ID_INVALID, templateId, Constants.Misc.ID_INVALID, "", 0, Constants.Misc.ID_INVALID, new ArrayList<Long>());
             DbHelper.templateTable.Save(template);
         }
 

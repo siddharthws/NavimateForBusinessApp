@@ -22,11 +22,13 @@ public class Template extends ServerObject {
     public String name = "";
     public Long defaultDataId = Constants.Misc.ID_INVALID;
     public ArrayList<Long> fieldIds = null;
+    public int type = 0;
 
     // ----------------------- Constructor ----------------------- //
-    public Template (long dbId, long serverId, long version, String name, long defaultDataId, ArrayList<Long> fieldIds) {
+    public Template (long dbId, long serverId, long version, String name, int type, long defaultDataId, ArrayList<Long> fieldIds) {
         super(DbObject.TYPE_TEMPLATE, dbId, serverId, version);
         this.name = name;
+        this.type = type;
         this.defaultDataId = defaultDataId;
         this.fieldIds = fieldIds;
     }
@@ -36,6 +38,7 @@ public class Template extends ServerObject {
         long serverId               = templateJson.getLong(Constants.Server.KEY_ID);
         long version                = templateJson.getLong(Constants.Server.KEY_VERSION);
         String name                 = templateJson.getString(Constants.Server.KEY_NAME);
+        int type                    = templateJson.getInt(Constants.Server.KEY_TYPE);
         long defaultDataServerId    = templateJson.getLong(Constants.Server.KEY_DEFAULT_DATA_ID);
         JSONArray fieldIdsJson      = templateJson.getJSONArray(Constants.Server.KEY_FIELD_IDS);
 
@@ -69,6 +72,6 @@ public class Template extends ServerObject {
             dbId = existingTemplate.dbId;
         }
 
-        return new Template(dbId, serverId, version, name, data.dbId, fieldIds);
+        return new Template(dbId, serverId, version, name, type, data.dbId, fieldIds);
     }
 }

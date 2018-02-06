@@ -30,6 +30,7 @@ public class TemplateTable extends BaseTable {
     public static final String COLUMN_SRV_ID    = "server_id";
     public static final String COLUMN_VERSION   = "version";
     public static final String COLUMN_NAME      = "name";
+    public static final String COLUMN_TYPE      = "type";
     public static final String COLUMN_DATA_ID   = "dataId";
     public static final String COLUMN_FIELD_IDS = "fieldIds";
 
@@ -40,6 +41,7 @@ public class TemplateTable extends BaseTable {
                     COLUMN_SRV_ID        + " INTEGER," +
                     COLUMN_VERSION       + " INTEGER," +
                     COLUMN_NAME          + " TEXT," +
+                    COLUMN_TYPE          + " INTEGER," +
                     COLUMN_FIELD_IDS     + " TEXT," +
                     COLUMN_DATA_ID       + " INTEGER)";
 
@@ -50,6 +52,7 @@ public class TemplateTable extends BaseTable {
                                                     COLUMN_SRV_ID,
                                                     COLUMN_VERSION,
                                                     COLUMN_NAME,
+                                                    COLUMN_TYPE,
                                                     COLUMN_DATA_ID,
                                                     COLUMN_FIELD_IDS});
     }
@@ -110,6 +113,7 @@ public class TemplateTable extends BaseTable {
         long   serverId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_SRV_ID));
         long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         String name                    = cursor.getString  (cursor.getColumnIndex(COLUMN_NAME));
+        int type                       = cursor.getInt     (cursor.getColumnIndex(COLUMN_TYPE));
         long defaultDataId             = cursor.getLong    (cursor.getColumnIndex(COLUMN_DATA_ID));
         String fieldsString            = cursor.getString  (cursor.getColumnIndex(COLUMN_FIELD_IDS));
 
@@ -126,7 +130,7 @@ public class TemplateTable extends BaseTable {
             Dbg.stack(e);
         }
 
-        return new Template (dbId, serverId, version, name, defaultDataId, fieldIds);
+        return new Template (dbId, serverId, version, name, type, defaultDataId, fieldIds);
     }
 
     @Override
@@ -139,6 +143,7 @@ public class TemplateTable extends BaseTable {
         dbEntry.put(COLUMN_SRV_ID,         template.serverId);
         dbEntry.put(COLUMN_VERSION,        template.version);
         dbEntry.put(COLUMN_NAME,           template.name);
+        dbEntry.put(COLUMN_TYPE,           template.type);
         dbEntry.put(COLUMN_DATA_ID,        template.defaultDataId);
         JSONArray fields = new JSONArray(template.fieldIds);
         dbEntry.put(COLUMN_FIELD_IDS, fields.toString());

@@ -57,14 +57,14 @@ public class Task extends ServerObject {
         // Get Local Form Template Object
         Template formTemplate = DbHelper.templateTable.GetByServerId(formTemplateId);
         if (formTemplate == null) {
-            formTemplate = new Template(Constants.Misc.ID_INVALID, formTemplateId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, new ArrayList<Long>());
+            formTemplate = new Template(Constants.Misc.ID_INVALID, formTemplateId, Constants.Misc.ID_INVALID, "", 0, Constants.Misc.ID_INVALID, new ArrayList<Long>());
             DbHelper.templateTable.Save(formTemplate);
         }
 
         // Get Local Template Object
         Template template = DbHelper.templateTable.GetByServerId(templateId);
         if (template == null) {
-            template = new Template(Constants.Misc.ID_INVALID, templateId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, new ArrayList<Long>());
+            template = new Template(Constants.Misc.ID_INVALID, templateId, Constants.Misc.ID_INVALID, "", 0, Constants.Misc.ID_INVALID, new ArrayList<Long>());
             DbHelper.templateTable.Save(template);
         }
 
