@@ -20,6 +20,7 @@ import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.Value;
+import com.biz.navimate.server.AddTaskTask;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
@@ -36,8 +37,12 @@ public class AddTaskDialog    extends     BaseDialog
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "ADD_TASK_DIALOG";
-    CopyOnWriteArrayList<Lead> leadList = null;
-    CopyOnWriteArrayList<Template> formTaskList = null;
+    private CopyOnWriteArrayList<Lead> leadList = null;
+    private CopyOnWriteArrayList<Template> formTaskList = null;
+    private long leadServerID;
+    private Template template;
+    private long formSserverID;
+    private String selectedForm="", selectedLead="", selectedTask="";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
@@ -67,7 +72,7 @@ public class AddTaskDialog    extends     BaseDialog
         ui.formSelectSpinner  = (Spinner)   ui.dialogView.findViewById(R.id.form_select_spinner);
         ui.llFields      = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task);
         ui.fields       = new ArrayList<>();
-        ui.btnSave   = (Button)     ui.dialogView.findViewById(R.id.btn_save);
+        ui.btnCreate   = (Button)     ui.dialogView.findViewById(R.id.btn_create);
         ui.btnCancel = (Button)     ui.dialogView.findViewById(R.id.btn_cancel);
     }
 
@@ -215,11 +220,8 @@ public class AddTaskDialog    extends     BaseDialog
         ui.formSelectSpinner.setOnItemSelectedListener(this);
         ui.taskSelectSpinner.setOnItemSelectedListener(this);
 
-
-
-
         // Set Listeners
-        ui.btnSave.setOnClickListener(this);
+        ui.btnCreate.setOnClickListener(this);
         ui.btnCancel.setOnClickListener(this);
     }
 
@@ -231,23 +233,42 @@ public class AddTaskDialog    extends     BaseDialog
             case R.id.lead_select_spinner:
             {
                 if(i>0) {
-                    String selectedLead = adapterView.getItemAtPosition(i).toString();
-                    Toast.makeText(context,"Lead: "+selectedLead, Toast.LENGTH_SHORT).show();
+                    selectedLead = adapterView.getItemAtPosition(i).toString();
+                    for(Lead leadObject : leadList)
+                    {
+                        if (leadObject.title.equals(selectedLead))
+                        {
+                            leadServerID=leadObject.serverId;
+                        }
+                    }
                 }
                 break;
             }
             case R.id.form_select_spinner:
             {
                 if(i>0) {
-                    String selectedForm = adapterView.getItemAtPosition(i).toString();
-                    Toast.makeText(context,"Form: "+selectedForm, Toast.LENGTH_SHORT).show();
+                    selectedForm = adapterView.getItemAtPosition(i).toString();
+                    for(Template templateObject : formTaskList)
+                    {
+                        switch (templateObject.type)
+                        {
+                            case Constants.Template.TYPE_FORM:
+                            {
+                                if (templateObject.name.equals(selectedForm))
+                                {
+                                    formSserverID=templateObject.serverId;
+                                }
+                                break;
+                            }
+                        }
+                    }
                 }
                 break;
             }
             case R.id.task_select_spinner:
             {
                 if(i>0) {
-                    String selectedTask = adapterView.getItemAtPosition(i).toString();
+                    selectedTask = adapterView.getItemAtPosition(i).toString();
                     populateFields(selectedTask);
                 }
                 break;
@@ -259,7 +280,7 @@ public class AddTaskDialog    extends     BaseDialog
 
     }
 
-    void populateFields(String selectedTask)
+    void populateFields(String selecteditem)
     {
         for(Template templateObject : formTaskList)
         {
@@ -267,9 +288,9 @@ public class AddTaskDialog    extends     BaseDialog
             {
                 case Constants.Template.TYPE_TASK:
                 {
-                    if (templateObject.name.equals(selectedTask))
+                    if (templateObject.name.equals(selecteditem))
                     {
-
+                        template=templateObject;
                         Data data= (Data) DbHelper.dataTable.GetById(templateObject.defaultDataId);
                         //clear existing fields
                         ui.llFields.removeAllViews();
@@ -285,6 +306,14 @@ public class AddTaskDialog    extends     BaseDialog
                     }
                     break;
                 }
+                case Constants.Template.TYPE_FORM:
+                {
+                    if (templateObject.name.equals(selecteditem))
+                    {
+                        formSserverID=templateObject.serverId;
+                    }
+                    break;
+                }
             }
         }
 
@@ -295,10 +324,15 @@ public class AddTaskDialog    extends     BaseDialog
     {
         switch (v.getId())
         {
-            case R.id.btn_save:
+            case R.id.btn_create:
             {
-                // Hide this dialog box
-                RlDialog.Hide();
+               //Save Data to server
+                if(selectedForm=="" || selectedTask=="" || selectedLead=="")
+                {
+                    Toast.makeText(context, "Please select some data..", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ButtonClickAddTask();
                 break;
             }
             case R.id.btn_cancel:
@@ -308,6 +342,20 @@ public class AddTaskDialog    extends     BaseDialog
                 break;
             }
         }
+    }
+
+    public void ButtonClickAddTask()
+    {
+        // Get Value object in each form field
+        ArrayList<Value> values = new ArrayList<>();
+        for (RlFormField rlField : ui.fields) {
+            // Get Value from UI and save in table
+            Value value = rlField.GetValue();
+            values.add(value);
+        }
+        AddTaskTask addTaskTask = new AddTaskTask(context, leadServerID, formSserverID, template.serverId, values);
+        addTaskTask.execute();
+        RlDialog.Hide();
     }
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //

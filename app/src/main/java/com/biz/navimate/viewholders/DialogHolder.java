@@ -44,7 +44,7 @@ public class DialogHolder {
         public Spinner formSelectSpinner = null;
         public Spinner taskSelectSpinner = null;
         // Button
-        public Button btnSave = null;
+        public Button btnCreate = null;
         public Button btnCancel = null;
     }
 
