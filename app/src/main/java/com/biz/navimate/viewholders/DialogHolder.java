@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.biz.navimate.views.RlFormField;
@@ -37,6 +38,11 @@ public class DialogHolder {
 
     public static class AddTask extends Base
     {
+        public ArrayList<RlFormField> fields = null;
+        public LinearLayout llFields = null;
+        public Spinner leadSelectSpinner = null;
+        public Spinner formSelectSpinner = null;
+        public Spinner taskSelectSpinner = null;
         // Button
         public Button btnSave = null;
         public Button btnCancel = null;
