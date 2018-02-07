@@ -86,6 +86,7 @@ public class Constants {
         public static final String URL_SYNC_DATA        = URL_BASE + "/api/reps/sync/data";
         public static final String URL_SYNC_VALUES      = URL_BASE + "/api/reps/sync/values";
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
+        public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
@@ -119,6 +120,7 @@ public class Constants {
         public static final String KEY_FORMS            = "forms";
         public static final String KEY_FIELDS           = "fields";
         public static final String KEY_DATA             = "data";
+        public static final String KEY_TEMPLATE_DATA    = "templateData";
         public static final String KEY_VALUES           = "values";
 
         // Task related keys

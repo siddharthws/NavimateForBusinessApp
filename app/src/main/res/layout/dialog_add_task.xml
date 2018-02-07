@@ -16,88 +16,85 @@
         android:layout_margin="@dimen/m_large"
         android:background="@drawable/bg_white_shadow_slant">
 
-<RelativeLayout
-        android:id="@+id/rl_dialog_root_addtask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <com.biz.navimate.views.RlDialogTitle
-            android:id="@+id/rl_dialog_title_addtask"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:image="@mipmap/icon_add_grey"
-            app:text="Add Task"/>
-
-    <Spinner
-        android:id="@+id/lead_select_spinner"
-        android:layout_below="@+id/rl_dialog_title_addtask"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"/>
-
-    <Spinner
-        android:id="@+id/form_select_spinner"
-        android:layout_below="@+id/lead_select_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"/>
-
-    <Spinner
-        android:id="@+id/task_select_spinner"
-        android:layout_below="@+id/form_select_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"/>
-
-    <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_message_addtask"
+        <RelativeLayout
+            android:id="@+id/rl_dialog_root_addtask"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/task_select_spinner"
-            android:layout_marginTop="@dimen/m_small"
-            android:layout_centerHorizontal="true"
-            android:textSize="@dimen/textsize_primary_small"/>
+            android:layout_height="wrap_content">
+
+            <com.biz.navimate.views.RlDialogTitle
+                android:id="@+id/rl_dialog_title_addtask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:image="@mipmap/icon_add_grey"
+                app:text="Add Task"/>
+
+            <Spinner
+                android:id="@+id/lead_select_spinner"
+                android:layout_below="@+id/rl_dialog_title_addtask"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"/>
+
+            <Spinner
+                android:id="@+id/form_select_spinner"
+                android:layout_below="@+id/lead_select_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"/>
+
+            <Spinner
+                android:id="@+id/task_select_spinner"
+                android:layout_below="@+id/form_select_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_centerHorizontal="true"/>
+
+            <com.biz.navimate.views.TvCalibri
+                    android:id="@+id/tv_message_addtask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/task_select_spinner"
+                    android:layout_marginTop="@dimen/m_small"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/textsize_primary_small"/>
 
 
-    <LinearLayout
-        android:id="@+id/ll_fields_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_message_addtask"
-        android:layout_marginTop="@dimen/m_small"
-        android:orientation="vertical">
-    </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/ll_fields_task"
-            android:layout_marginTop="@dimen/m_small"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_create"
+            <LinearLayout
+                android:id="@+id/ll_fields_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:text="Create"
-                android:textSize="@dimen/textsize_primary_small"
-                android:textColor="@color/colorPrimary"/>
+                android:layout_below="@id/tv_message_addtask"
+                android:layout_marginTop="@dimen/m_small"
+                android:orientation="vertical">
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:text="Cancel"
-                android:textSize="@dimen/textsize_primary_small"
-                android:textColor="@color/colorPrimary"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/ll_fields_task"
+                    android:layout_marginTop="@dimen/m_small"
+                    android:orientation="horizontal">
 
-        </LinearLayout>
+                    <Button
+                        android:id="@+id/btn_create"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:text="Create"
+                        android:textSize="@dimen/textsize_primary_small"
+                        android:textColor="@color/colorPrimary"/>
 
-    </RelativeLayout>
+                    <Button
+                        android:id="@+id/btn_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:text="Cancel"
+                        android:textSize="@dimen/textsize_primary_small"
+                        android:textColor="@color/colorPrimary"/>
 
+                </LinearLayout>
+            </RelativeLayout>
     </ScrollView>
-
 </RelativeLayout>
