@@ -43,7 +43,6 @@ public class DialogHolder {
         public Spinner leadSelectSpinner = null;
         public Spinner formSelectSpinner = null;
         public Spinner taskSelectSpinner = null;
-        // Button
         public Button btnCreate = null;
         public Button btnCancel = null;
     }

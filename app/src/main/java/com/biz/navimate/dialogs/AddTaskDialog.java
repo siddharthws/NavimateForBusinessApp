@@ -1,21 +1,19 @@
 package com.biz.navimate.dialogs;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.lists.SpinnerAdapter;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
@@ -33,21 +31,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 
 public class AddTaskDialog    extends     BaseDialog
-                              implements  View.OnClickListener, AdapterView.OnItemSelectedListener
+                              implements  View.OnClickListener
 {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "ADD_TASK_DIALOG";
-    private CopyOnWriteArrayList<Lead> leadList = null;
-    private CopyOnWriteArrayList<Template> formTaskList = null;
-    private long leadServerID;
-    private Template template;
-    private long formSserverID;
-    private String selectedForm="", selectedLead="", selectedTask="";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private DialogHolder.AddTask ui = null;
+    private Lead selectedLead;
+    private Template selectedFormTemplate, selectedTaskTemplate;
+    private SpinnerAdapter leadAdapter, formTemplateAdapter, taskTemplateAdapter;
 
     // ----------------------- Constructor ----------------------- //
     public AddTaskDialog(Context context)
@@ -64,259 +59,77 @@ public class AddTaskDialog    extends     BaseDialog
         holder = ui;
 
         // Inflate View
-        ui.dialogView = inflater.inflate(R.layout.dialog_add_task, container);
+        ui.dialogView          = inflater.inflate(R.layout.dialog_add_task, container);
 
         // Find Views
         ui.leadSelectSpinner  = (Spinner)   ui.dialogView.findViewById(R.id.lead_select_spinner);
         ui.taskSelectSpinner  = (Spinner)   ui.dialogView.findViewById(R.id.task_select_spinner);
         ui.formSelectSpinner  = (Spinner)   ui.dialogView.findViewById(R.id.form_select_spinner);
-        ui.llFields      = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task);
-        ui.fields       = new ArrayList<>();
-        ui.btnCreate   = (Button)     ui.dialogView.findViewById(R.id.btn_create);
-        ui.btnCancel = (Button)     ui.dialogView.findViewById(R.id.btn_cancel);
+        ui.llFields           = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task);
+        ui.fields             = new ArrayList<>();
+        ui.btnCreate          = (Button)     ui.dialogView.findViewById(R.id.btn_create);
+        ui.btnCancel          = (Button)     ui.dialogView.findViewById(R.id.btn_cancel);
     }
 
     @Override
     protected void SetContentView()
     {
-        //Get Data
-        leadList = (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll();
-        formTaskList = (CopyOnWriteArrayList<Template>) DbHelper.templateTable.GetAll();
+        //Init Adapters
+        leadAdapter = new SpinnerAdapter(context, ui.leadSelectSpinner);
+        formTemplateAdapter = new SpinnerAdapter(context, ui.formSelectSpinner);
+        taskTemplateAdapter = new SpinnerAdapter(context, ui.taskSelectSpinner);
 
+        //Add Descriptive Items To adapters
+        leadAdapter.AddItem("Select Lead", Constants.Misc.ID_INVALID);
+        formTemplateAdapter.AddItem("Select Form Template", Constants.Misc.ID_INVALID);
+        taskTemplateAdapter.AddItem("Select Task Template", Constants.Misc.ID_INVALID);
 
-        ArrayList<String> leads = new ArrayList<>();
-        ArrayList<String> forms = new ArrayList<>();
-        ArrayList<String> tasks = new ArrayList<>();
-        leads.add("Select Lead");
-        forms.add("Select Form Template");
-        tasks.add("Select Task Template");
-
-
-        for(Lead leadObject : leadList)
+        //Add Items to Adapters
+        for(Lead leadObject : (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll())
         {
-            leads.add(leadObject.title);
+            leadAdapter.AddItem(leadObject.title, leadObject.dbId);
         }
-        for(Template templateObject : formTaskList)
-        {
-           switch (templateObject.type)
-           {
-               case Constants.Template.TYPE_FORM:
-               {
-                   forms.add(templateObject.name);
-
-                   break;
-               }
-               case Constants.Template.TYPE_TASK:
-               {
-                   tasks.add(templateObject.name);
-                   break;
-               }
-           }
-        }
-
-        ArrayAdapter<String> leadAdapter,formAdapter,taskAdapter;
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-         leadAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, leads){
-                 @Override
-                 public boolean isEnabled(int position){
-                     if(position == 0)
-                     {
-                         // Disable the first item from Spinner
-                         // First item will be use for hint
-                         return false;
-                     }
-                     else
-                     {
-                         return true;
-                     }
-                 }
-                 @Override
-                 public View getDropDownView(int position, View convertView,
-                                             ViewGroup parent) {
-                     View view = super.getDropDownView(position, convertView, parent);
-                     TextView tv = (TextView) view;
-                     if(position == 0){
-                         // Set the hint text color gray
-                         tv.setTextColor(Color.GRAY);
-                     }
-                     else {
-                         tv.setTextColor(Color.BLACK);
-                     }
-                     return view;
-                 }
-             };
-
-         formAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, forms){
-                 @Override
-                 public boolean isEnabled(int position){
-                     if(position == 0)
-                     {
-                         // Disable the first item from Spinner
-                         // First item will be use for hint
-                         return false;
-                     }
-                     else
-                     {
-                         return true;
-                     }
-                 }
-                 @Override
-                 public View getDropDownView(int position, View convertView,
-                                             ViewGroup parent) {
-                     View view = super.getDropDownView(position, convertView, parent);
-                     TextView tv = (TextView) view;
-                     if(position == 0){
-                         // Set the hint text color gray
-                         tv.setTextColor(Color.GRAY);
-                     }
-                     else {
-                         tv.setTextColor(Color.BLACK);
-                     }
-                     return view;
-                 }
-             };
-
-         taskAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, tasks){
-                @Override
-                public boolean isEnabled(int position){
-                    if(position == 0)
-                    {
-                        // Disable the first item from Spinner
-                        // First item will be use for hint
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                @Override
-                public View getDropDownView(int position, View convertView,
-                        ViewGroup parent) {
-                    View view = super.getDropDownView(position, convertView, parent);
-                    TextView tv = (TextView) view;
-                    if(position == 0){
-                        // Set the hint text color gray
-                        tv.setTextColor(Color.GRAY);
-                    }
-                    else {
-                        tv.setTextColor(Color.BLACK);
-                    }
-                    return view;
-                }
-            };
-
-        // Specify the layout to use when the list of choices appears
-        leadAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        formAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        taskAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        ui.leadSelectSpinner.setAdapter(leadAdapter);
-        ui.formSelectSpinner.setAdapter(formAdapter);
-        ui.taskSelectSpinner.setAdapter(taskAdapter);
-
-        ui.leadSelectSpinner.setOnItemSelectedListener(this);
-        ui.formSelectSpinner.setOnItemSelectedListener(this);
-        ui.taskSelectSpinner.setOnItemSelectedListener(this);
-
-        // Set Listeners
-        ui.btnCreate.setOnClickListener(this);
-        ui.btnCancel.setOnClickListener(this);
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-        switch (adapterView.getId())
-        {
-            case R.id.lead_select_spinner:
-            {
-                if(i>0) {
-                    selectedLead = adapterView.getItemAtPosition(i).toString();
-                    for(Lead leadObject : leadList)
-                    {
-                        if (leadObject.title.equals(selectedLead))
-                        {
-                            leadServerID=leadObject.serverId;
-                        }
-                    }
-                }
-                break;
-            }
-            case R.id.form_select_spinner:
-            {
-                if(i>0) {
-                    selectedForm = adapterView.getItemAtPosition(i).toString();
-                    for(Template templateObject : formTaskList)
-                    {
-                        switch (templateObject.type)
-                        {
-                            case Constants.Template.TYPE_FORM:
-                            {
-                                if (templateObject.name.equals(selectedForm))
-                                {
-                                    formSserverID=templateObject.serverId;
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                break;
-            }
-            case R.id.task_select_spinner:
-            {
-                if(i>0) {
-                    selectedTask = adapterView.getItemAtPosition(i).toString();
-                    populateFields(selectedTask);
-                }
-                break;
-            }
-        }
-    }
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
-    }
-
-    void populateFields(String selecteditem)
-    {
-        for(Template templateObject : formTaskList)
+        for(Template templateObject : (CopyOnWriteArrayList<Template>) DbHelper.templateTable.GetAll())
         {
             switch (templateObject.type)
             {
-                case Constants.Template.TYPE_TASK:
-                {
-                    if (templateObject.name.equals(selecteditem))
-                    {
-                        template=templateObject;
-                        Data data= (Data) DbHelper.dataTable.GetById(templateObject.defaultDataId);
-                        //clear existing fields
-                        ui.llFields.removeAllViews();
-                        ui.fields.clear();
-
-                        // Set Form Fields
-                        for (Long valueId  : data.valueIds) {
-                            Value value = (Value) DbHelper.valueTable.GetById(valueId);
-                            RlFormField fieldUi = new RlFormField(context, value, false);
-                            ui.llFields.addView(fieldUi);
-                            ui.fields.add(fieldUi);
-                        }
-                    }
-                    break;
-                }
                 case Constants.Template.TYPE_FORM:
                 {
-                    if (templateObject.name.equals(selecteditem))
-                    {
-                        formSserverID=templateObject.serverId;
-                    }
+                    formTemplateAdapter.AddItem(templateObject.name, templateObject.dbId);
+                    break;
+                }
+                case Constants.Template.TYPE_TASK:
+                {
+                    taskTemplateAdapter.AddItem(templateObject.name, templateObject.dbId);
                     break;
                 }
             }
         }
 
+        //Set listeners for all Adapters
+        leadAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
+            @Override
+            public void onItemSelected(long id) {
+                selectedLead = (Lead) DbHelper.leadTable.GetById(id);
+            }
+        });
+        formTemplateAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
+            @Override
+            public void onItemSelected(long id) {
+                selectedFormTemplate = (Template) DbHelper.templateTable.GetById(id);
+            }
+        });
+        taskTemplateAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
+            @Override
+            public void onItemSelected(long id) {
+                selectedTaskTemplate = (Template) DbHelper.templateTable.GetById(id);
+                InitTaskFields();
+            }
+        });
+
+        // Set Listeners for Buttons
+        ui.btnCreate.setOnClickListener(this);
+        ui.btnCancel.setOnClickListener(this);
     }
 
     @Override
@@ -326,12 +139,6 @@ public class AddTaskDialog    extends     BaseDialog
         {
             case R.id.btn_create:
             {
-               //Save Data to server
-                if(selectedForm=="" || selectedTask=="" || selectedLead=="")
-                {
-                    Toast.makeText(context, "Please select some data..", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 ButtonClickAddTask();
                 break;
             }
@@ -343,9 +150,34 @@ public class AddTaskDialog    extends     BaseDialog
             }
         }
     }
-
-    public void ButtonClickAddTask()
+    // ----------------------- Public APIs ----------------------- //
+    // ----------------------- Private APIs ----------------------- //
+    private void InitTaskFields()
     {
+        Data data= (Data) DbHelper.dataTable.GetById(selectedTaskTemplate.defaultDataId);
+
+        //clear existing fields
+        ui.llFields.removeAllViews();
+        ui.fields.clear();
+
+        // Set Form Fields
+        for (Long valueId  : data.valueIds) {
+            Value value = (Value) DbHelper.valueTable.GetById(valueId);
+            RlFormField fieldUi = new RlFormField(context, value, false);
+            ui.llFields.addView(fieldUi);
+            ui.fields.add(fieldUi);
+        }
+    }
+
+    private void ButtonClickAddTask()
+    {
+        // Validate entered data
+        if(selectedLead == null || selectedFormTemplate == null || selectedTaskTemplate == null)
+        {
+            Dbg.Toast(context, "Please select some data..", Toast.LENGTH_SHORT);
+            return;
+        }
+
         // Get Value object in each form field
         ArrayList<Value> values = new ArrayList<>();
         for (RlFormField rlField : ui.fields) {
@@ -353,11 +185,9 @@ public class AddTaskDialog    extends     BaseDialog
             Value value = rlField.GetValue();
             values.add(value);
         }
-        AddTaskTask addTaskTask = new AddTaskTask(context, leadServerID, formSserverID, template.serverId, values);
+
+        AddTaskTask addTaskTask = new AddTaskTask(context, selectedLead.serverId, selectedFormTemplate.serverId, selectedTaskTemplate.serverId, values);
         addTaskTask.execute();
-        RlDialog.Hide();
     }
-    // ----------------------- Public APIs ----------------------- //
-    // ----------------------- Private APIs ----------------------- //
 }
 
