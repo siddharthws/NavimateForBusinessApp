@@ -26,6 +26,7 @@ public class FormTable extends BaseTable {
     // Columns
     public static final String COLUMN_SRV_ID        = "server_id";
     public static final String COLUMN_VERSION       = "version";
+    public static final String COLUMN_TEMPLATE_ID   = "template_id";
     public static final String COLUMN_TASK_ID       = "task_id";
     public static final String COLUMN_DATA_ID       = "data_id";
     public static final String COLUMN_CLOSE_TASK    = "close_task";
@@ -39,6 +40,7 @@ public class FormTable extends BaseTable {
                     COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     COLUMN_SRV_ID        + " INTEGER," +
                     COLUMN_VERSION       + " INTEGER," +
+                    COLUMN_TEMPLATE_ID   + " INTEGER," +
                     COLUMN_TASK_ID       + " INTEGER," +
                     COLUMN_DATA_ID       + " INTEGER," +
                     COLUMN_CLOSE_TASK    + " TEXT," +
@@ -52,6 +54,7 @@ public class FormTable extends BaseTable {
         super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
                                                     COLUMN_SRV_ID,
                                                     COLUMN_VERSION,
+                                                    COLUMN_TEMPLATE_ID,
                                                     COLUMN_TASK_ID,
                                                     COLUMN_DATA_ID,
                                                     COLUMN_CLOSE_TASK,
@@ -94,6 +97,7 @@ public class FormTable extends BaseTable {
         long   dbId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_ID));
         long   serverId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_SRV_ID));
         long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
+        Long templateId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_TEMPLATE_ID));
         Long taskId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_TASK_ID));
         Long dataId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_DATA_ID));
         Boolean bCloseTask             = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_CLOSE_TASK)));
@@ -101,7 +105,7 @@ public class FormTable extends BaseTable {
         double longitude               = cursor.getDouble  (cursor.getColumnIndex(COLUMN_LONGITUDE));
         Long timestamp                 = cursor.getLong    (cursor.getColumnIndex(COLUMN_TIMESTAMP));
 
-        return new Form (dbId, serverId, version, taskId, dataId, bCloseTask, new LatLng(latitude, longitude), timestamp);
+        return new Form (dbId, serverId, version, templateId, taskId, dataId, bCloseTask, new LatLng(latitude, longitude), timestamp);
     }
 
     @Override
@@ -113,6 +117,7 @@ public class FormTable extends BaseTable {
         // Enter values into Database
         dbEntry.put(COLUMN_SRV_ID,         form.serverId);
         dbEntry.put(COLUMN_VERSION,        form.version);
+        dbEntry.put(COLUMN_TEMPLATE_ID,    form.templateId);
         dbEntry.put(COLUMN_TASK_ID,        form.taskId);
         dbEntry.put(COLUMN_DATA_ID,        form.dataId);
         dbEntry.put(COLUMN_CLOSE_TASK,     form.bCloseTask);

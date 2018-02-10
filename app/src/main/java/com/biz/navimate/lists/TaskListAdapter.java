@@ -9,8 +9,8 @@ import android.widget.ListView;
 import com.biz.navimate.R;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceList;
-import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Template;
@@ -77,11 +77,11 @@ public class TaskListAdapter    extends     BaseListAdapter
                     // Get Form Template for this task
                     Template formTemplate = (Template) DbHelper.templateTable.GetById(taskItem.task.formTemplateId);
 
-                    // Get default data of the template
-                    Data templateData = (Data) DbHelper.dataTable.GetById(formTemplate.defaultDataId);
+                    // Create new form object
+                    Form form = new Form(taskItem.task.formTemplateId, taskItem.task.dbId, formTemplate.defaultDataId, false);
 
-                    // Show submit form dialog
-                    RlDialog.Show(new Dialog.SubmitForm(templateData, taskItem.task.dbId, false, false));
+                    // Open Submit form dialog with this form
+                    RlDialog.Show(new Dialog.SubmitForm(form, false));
                 }
             }
         });

@@ -114,17 +114,14 @@ public class Dialog {
 
     public static class SubmitForm extends Base
     {
-        public Data data = null;
-        public long taskId = Constants.Misc.ID_INVALID;
-        public boolean bCloseTask = false, bReadOnly = false;
+        public Form form = null;
+        public boolean bReadOnly = false;
 
-        public SubmitForm(Data data, long taskId, boolean bCloseTask, boolean bReadOnly)
+        public SubmitForm(Form form, boolean bReadOnly)
         {
             super(TYPE_SUBMIT_FORM, false);
 
-            this.data = data;
-            this.taskId = taskId;
-            this.bCloseTask = bCloseTask;
+            this.form = form;
             this.bReadOnly = bReadOnly;
         }
     }

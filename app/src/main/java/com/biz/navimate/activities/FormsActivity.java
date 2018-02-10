@@ -79,10 +79,9 @@ public class FormsActivity  extends     BaseActivity
         // Get Clicked Object
         ListItem.Form clickedItem = (ListItem.Form) listAdpater.getItem(i);
         Form form = (Form) DbHelper.formTable.GetById(clickedItem.formId);
-        Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
 
         // Open Form Dialog
-        RlDialog.Show(new Dialog.SubmitForm(data, form.taskId, form.bCloseTask, true));
+        RlDialog.Show(new Dialog.SubmitForm(form, true));
     }
 
     // ----------------------- Public APIs ----------------------- //

@@ -71,6 +71,7 @@ public class DialogHolder {
 
     public static class SubmitForm extends Base
     {
+        public Spinner spTemplate = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;
         public CheckBox cbCloseTask = null;

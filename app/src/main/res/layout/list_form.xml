@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_lead_title"
+            android:id="@+id/tv_form_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
@@ -31,7 +31,7 @@
             android:background="@color/lightGrey"/>
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_form_name"
+            android:id="@+id/tv_lead_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/m_small"

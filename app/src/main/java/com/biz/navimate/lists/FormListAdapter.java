@@ -56,13 +56,19 @@ public class FormListAdapter extends BaseListAdapter {
 
         // Get objects
         Form form = (Form) DbHelper.formTable.GetById(item.formId);
-        Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
-        Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
-        Template template = (Template) DbHelper.templateTable.GetById(task.formTemplateId);
 
-        // Set Lead / Template Name
-        holder.tvLead.setText(lead.title);
+        // Set Template Name
+        Template template = (Template) DbHelper.templateTable.GetById(form.templateId);
         holder.tvForm.setText(template.name);
+
+        // Set Lead Title
+        String leadTitle = "";
+        if (form.taskId != Constants.Misc.ID_INVALID) {
+            Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
+            Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
+            leadTitle = lead.title;
+        }
+        holder.tvLead.setText(leadTitle);
 
         // Set Sync Status
         if (form.serverId == Constants.Misc.ID_INVALID) {

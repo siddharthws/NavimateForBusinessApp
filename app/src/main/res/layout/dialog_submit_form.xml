@@ -28,11 +28,17 @@
                 android:layout_height="wrap_content"
                 app:text="Submit Form"/>
 
+            <Spinner
+                android:id="@+id/spFormTemplate"
+                android:layout_below="@+id/rl_dialog_title_submit_form"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+
             <LinearLayout
                 android:id="@+id/ll_fields"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_dialog_title_submit_form"
+                android:layout_below="@id/spFormTemplate"
                 android:layout_marginTop="@dimen/m_small"
                 android:orientation="vertical">
 
@@ -45,14 +51,15 @@
                 android:layout_below="@id/ll_fields"
                 android:layout_marginTop="@dimen/m_small"
                 android:text="Close Task"
-                app:buttonTint="@color/colorPrimary"/>
+                app:buttonTint="@color/colorPrimary"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:id="@+id/rlDialogButtonContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/cbCloseTask"
+                android:layout_below="@id/ll_fields"
                 android:layout_marginTop="@dimen/m_small">
 
                 <Button

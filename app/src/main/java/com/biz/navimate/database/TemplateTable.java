@@ -5,14 +5,13 @@ import android.database.Cursor;
 
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.DbObject;
-import com.biz.navimate.objects.Lead;
-import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Siddharth on 07-12-2017.
@@ -62,33 +61,8 @@ public class TemplateTable extends BaseTable {
     public ArrayList<Template> GetTemplatesToSync() {
         ArrayList<Template> templates = new ArrayList<>();
 
-        // Create list of templates in open tasks
-        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
-        for (Task task : openTasks) {
-            // Get Task templates
-            Template formTemplate = (Template) GetById(task.formTemplateId);
-            Template taskTemplate = (Template) GetById(task.templateId);
-
-            // Add to array
-            if (!templates.contains(formTemplate)) {
-                templates.add(formTemplate);
-            }
-            if (!templates.contains(taskTemplate)) {
-                templates.add(taskTemplate);
-            }
-        }
-
-        // Create list of lead templates in leads
-        ArrayList<Lead> leads = DbHelper.leadTable.GetLeadsToSync();
-        for (Lead lead : leads) {
-            // Get lead template
-            Template template = (Template) GetById(lead.templateId);
-
-            // Add to array
-            if (!templates.contains(template)) {
-                templates.add(template);
-            }
-        }
+        // Sync all templates
+        templates.addAll((CopyOnWriteArrayList<Template>) GetAll());
 
         return templates;
     }

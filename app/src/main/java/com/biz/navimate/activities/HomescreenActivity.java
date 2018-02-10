@@ -14,6 +14,8 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Camera;
+import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
@@ -146,6 +148,10 @@ public class HomescreenActivity     extends     BaseActivity
             }
             case RlDrawer.DRAWER_ACTION_FORMS : {
                 FormsActivity.Start(this);
+                break;
+            }
+            case RlDrawer.DRAWER_ACTION_SUBMIT_FORM : {
+                RlDialog.Show(new Dialog.SubmitForm(new Form(), false));
                 break;
             }
             case RlDrawer.DRAWER_ACTION_EXIT : {

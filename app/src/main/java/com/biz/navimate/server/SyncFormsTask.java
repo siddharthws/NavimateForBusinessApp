@@ -199,8 +199,12 @@ public class SyncFormsTask extends BaseServerTask {
         // Iterate through db items and add version and id
         for (Form form : forms) {
             // Get template, task & data for this form
-            Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
-            Template template = (Template) DbHelper.templateTable.GetById(task.formTemplateId);
+            long taskServerId = Constants.Misc.ID_INVALID;
+            if (form.taskId != Constants.Misc.ID_INVALID) {
+                Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
+                taskServerId = task.serverId;
+            }
+            Template template = (Template) DbHelper.templateTable.GetById(form.templateId);
             Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
 
             // Create form Json
@@ -235,7 +239,7 @@ public class SyncFormsTask extends BaseServerTask {
                 dataJson.put(Constants.Server.KEY_VALUES, valuesJson);
 
                 // Create Form Json
-                formJson.put(Constants.Server.KEY_TASK_ID, task.serverId);
+                formJson.put(Constants.Server.KEY_TASK_ID, taskServerId);
                 formJson.put(Constants.Server.KEY_LATITUDE, form.latlng.latitude);
                 formJson.put(Constants.Server.KEY_LONGITUDE, form.latlng.longitude);
                 formJson.put(Constants.Server.KEY_TIMESTAMP, form.timestamp);
