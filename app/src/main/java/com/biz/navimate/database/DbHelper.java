@@ -30,6 +30,7 @@ public class DbHelper extends SQLiteOpenHelper
     public static FieldTable            fieldTable              = null;
     public static DataTable             dataTable               = null;
     public static ValueTable            valueTable              = null;
+    public static LocationReportTable   locationReportTable     = null;
 
 
     // ----------------------- Constructor ----------------------- //
@@ -44,6 +45,7 @@ public class DbHelper extends SQLiteOpenHelper
         fieldTable             = new FieldTable(this);
         dataTable              = new DataTable(this);
         valueTable             = new ValueTable(this);
+        locationReportTable    = new LocationReportTable(this);
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -59,6 +61,7 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL(DataTable.CREATE_TABLE);
         db.execSQL(FieldTable.CREATE_TABLE);
         db.execSQL(ValueTable.CREATE_TABLE);
+        db.execSQL(LocationReportTable.CREATE_TABLE);
     }
 
     @Override
@@ -74,6 +77,7 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + DataTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + ValueTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
 
         // Run onCreate Again
         onCreate(db);
