@@ -105,6 +105,9 @@ public class LocationService extends BaseService implements LocationUpdateHelper
             // Report success
             ReportSuccess(LocationService.cache.GetLocation());
         } else if (clients.size() == 0) {
+            // Stop Location Updates
+            locUpdateHelper.Stop();
+
             // No clients added for location service. Report error
             ReportError(Constants.Location.ERROR_NO_CLIENTS, null);
         } else if (!bOngoingUpdate) {

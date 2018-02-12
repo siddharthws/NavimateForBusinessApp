@@ -281,7 +281,7 @@ public class WebSocketService extends BaseService {
         }
 
         // Add tracker client to receive fast updates
-        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.FAST);
+        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.MODERATE);
 
         // Set Tracking Flag
         service.bTrack = true;

@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 4;
+    private static final int     DATABASE_VERSION                = 5;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;

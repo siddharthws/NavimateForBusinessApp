@@ -101,7 +101,7 @@ public class SubmitFormDialog   extends     BaseDialog
 
                 // Set selected template if task's form template matches this
                 if (template.dbId == currentData.form.templateId) {
-                    ui.spTemplate.setSelection(spinnerAdapter.getCount());
+                    ui.spTemplate.setSelection(spinnerAdapter.getCount() - 1, false);
                 }
             }
         }
@@ -138,6 +138,11 @@ public class SubmitFormDialog   extends     BaseDialog
         spinnerAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
             @Override
             public void onItemSelected(long id) {
+                // Ignore if current template is equal to selected one
+                if (form.templateId == id) {
+                    return;
+                }
+
                 // Set form's template ID
                 form.templateId = id;
 
@@ -191,6 +196,13 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     private void ButtonClickSubmit(){
+        // Check if a form template has been selected
+        if (((Dialog.SubmitForm) data).form.templateId == Constants.Misc.ID_INVALID) {
+            // Show error toast
+            Dbg.Toast(context, "Please select a form to submit...", Toast.LENGTH_LONG);
+            return;
+        }
+
         // Add Submit Form Location client
         LocationService.AddClient(context, Constants.Location.CLIENT_TAG_SUBMIT_FORM, LocationUpdate.SLOW);
 
