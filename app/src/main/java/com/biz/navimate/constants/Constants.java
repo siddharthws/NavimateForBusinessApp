@@ -70,7 +70,7 @@ public class Constants {
     public static class Server {
         // URLs
         //private static final String URL_BASE            = "http://192.168.1.10:8080";     // Debug
-        private static final String URL_BASE            = "http://34.214.114.8:8080";       // Release
+        private static final String URL_BASE            = "https://34.214.114.8:8080";       // Release
 
         // Http URLs
         public static final String URL_GET_PROFILE      = URL_BASE + "/api/reps/profile";
