@@ -4,8 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Template;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -88,6 +90,29 @@ public class FormTable extends BaseTable {
         }
 
         return null;
+    }
+
+    public ArrayList<Form> GetByTemplate(Template template) {
+        ArrayList<Form> forms = new ArrayList<>();
+
+        // Create list of forms that have not been sent to server
+        for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
+            if (form.templateId == template.dbId) {
+                forms.add(form);
+            }
+        }
+
+        return forms;
+    }
+
+    // API to remove a template
+    public void Remove(Form form) {
+        // Remove Data Object
+        Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
+        DbHelper.dataTable.Remove(data);
+
+        // Remove Form
+        Remove(form.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //

@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Template;
 
 import org.json.JSONArray;
@@ -77,6 +79,27 @@ public class TemplateTable extends BaseTable {
         }
 
         return null;
+    }
+
+    // API to remove a template
+    public void Remove(Template template) {
+        // Remove all forms with this template
+        ArrayList<Form> forms = DbHelper.formTable.GetByTemplate(template);
+        for (Form form : forms) {
+            DbHelper.formTable.Remove(form);
+        }
+
+        // Remove Default Data Objects
+        Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
+        DbHelper.dataTable.Remove(data);
+
+        // Remove all fields
+        for (Long fieldId : template.fieldIds) {
+            DbHelper.fieldTable.Remove(fieldId);
+        }
+
+        // Remove template
+        Remove(template.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //
