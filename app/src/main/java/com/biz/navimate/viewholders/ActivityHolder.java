@@ -45,6 +45,7 @@ public class ActivityHolder {
 
         // Task Count
         public TvCalibri tvTaskCount = null;
+        public TvCalibri tvFormCount = null;
 
         // Drawer
         public RlDrawer rlDrawer = null;

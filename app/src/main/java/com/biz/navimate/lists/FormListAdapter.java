@@ -74,7 +74,7 @@ public class FormListAdapter extends BaseListAdapter {
         if (form.serverId == Constants.Misc.ID_INVALID) {
             holder.tvStatus.setText("Saved...");
         } else {
-            holder.tvStatus.setText("Submitted...");
+            holder.tvStatus.setText("Synced...");
         }
 
         // Set Date

@@ -69,6 +69,7 @@ public class HomescreenActivity     extends     BaseActivity
         ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
         ui.rlDrawer         = (RlDrawer) findViewById(R.id.rl_drawer);
         ui.tvTaskCount      = (TvCalibri) findViewById(R.id.tv_toolbar_tasks_count);
+        ui.tvFormCount      = (TvCalibri) findViewById(R.id.tv_toolbar_forms_count);
     }
 
     @Override
@@ -206,6 +207,11 @@ public class HomescreenActivity     extends     BaseActivity
         TaskActivity.Start(this);
     }
 
+    public void ButtonClickForms(View view) {
+        // Start Task Activity
+        FormsActivity.Start(this);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     // API to Init List and Map UI as per the open tasks in current database
     private void InitMap() {
@@ -237,7 +243,21 @@ public class HomescreenActivity     extends     BaseActivity
         }
 
         // Set Task Count
-        ui.tvTaskCount.setText(String.valueOf(openTasks.size()));
+        if (openTasks.size() == 0) {
+            ui.tvTaskCount.setVisibility(View.INVISIBLE);
+        } else {
+            ui.tvTaskCount.setVisibility(View.VISIBLE);
+            ui.tvTaskCount.setText(String.valueOf(openTasks.size()));
+        }
+
+        // Set Forms Count
+        int formsCount = DbHelper.formTable.GetUnsyncedForms().size();
+        if (formsCount == 0) {
+            ui.tvFormCount.setVisibility(View.INVISIBLE);
+        } else {
+            ui.tvFormCount.setVisibility(View.VISIBLE);
+            ui.tvFormCount.setText(String.valueOf(formsCount));
+        }
     }
 
     // API to send Sync Db Request
