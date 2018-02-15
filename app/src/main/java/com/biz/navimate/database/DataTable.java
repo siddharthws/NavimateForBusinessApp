@@ -93,6 +93,17 @@ public class DataTable extends BaseTable {
         return null;
     }
 
+    // API to remove a data object
+    public void Remove(Data data) {
+        // Remove all values in this data object
+        for (Long valueId : data.valueIds) {
+            DbHelper.valueTable.Remove(valueId);
+        }
+
+        // Remove Data Object
+        Remove(data.dbId);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected DbObject ParseToObject(Cursor cursor)

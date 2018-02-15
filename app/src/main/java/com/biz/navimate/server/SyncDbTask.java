@@ -272,6 +272,18 @@ public class SyncDbTask extends BaseServerTask {
             for (Template template : templates) {
                 DbHelper.templateTable.Save(template);
             }
+
+            // Get template IDs that need to be removed
+            JSONArray removedIds = responseJson.getJSONArray(Constants.Server.KEY_REMOVED_IDS);
+
+            // Delete each template with this server id
+            for (int i = 0; i < removedIds.length(); i++) {
+                // Get template
+                Template template = DbHelper.templateTable.GetByServerId(removedIds.getInt(i));
+
+                // Delete template from db
+                DbHelper.templateTable.Remove(template);
+            }
         } catch (JSONException e) {
             Dbg.error(TAG, "Error while parsing template response");
             Dbg.stack(e);

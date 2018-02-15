@@ -157,6 +157,7 @@ public class Constants {
         public static final String KEY_MESSAGE          = "message";
         public static final String KEY_ERROR_CODE       = "errorCode";
         public static final String KEY_DATA_ID          = "dataId";
+        public static final String KEY_REMOVED_IDS      = "removedIds";
     }
 
     // Location related constants
