@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/m_small">
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
 
     <com.biz.navimate.views.TvCalibri
         android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/m_small"
+        android:layout_weight="1"
         android:textAlignment="center"
         android:textSize="@dimen/textsize_primary_small"/>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/tv_title"
-        android:layout_alignParentRight="true">
+        android:layout_weight="2"
+        android:layout_marginLeft="@dimen/m_small">
 
         <LinearLayout
             android:id="@+id/ll_text"
@@ -178,4 +177,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

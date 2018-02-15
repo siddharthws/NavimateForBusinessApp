@@ -437,6 +437,8 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             // Check if selected
             if (radioEntry.selection == i) {
                 rb.setChecked(true);
+            } else {
+                rb.setChecked(false);
             }
         }
     }
