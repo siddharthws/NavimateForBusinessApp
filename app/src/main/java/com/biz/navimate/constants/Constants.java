@@ -87,6 +87,7 @@ public class Constants {
         public static final String URL_SYNC_VALUES      = URL_BASE + "/api/reps/sync/values";
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
         public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
+        public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
