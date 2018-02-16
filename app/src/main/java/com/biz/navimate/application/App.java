@@ -5,11 +5,28 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.constants.Constants;
+
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
 
 /**
  * Created by Siddharth on 22-09-2017.
  */
+
+// ACRA crash reporting setup
+@ReportsCrashes
+(
+    formUri = Constants.Server.URL_ACRA,
+    httpMethod = org.acra.sender.HttpSender.Method.POST,
+    reportType = HttpSender.Type.JSON,
+    mode = ReportingInteractionMode.TOAST,
+    resToastText = R.string.crash_report_string
+)
 
 public class App extends Application {
     // ----------------------- Constants ----------------------- //
@@ -26,9 +43,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        // Mark App as initialized
-        bAppInitialized = true;
     }
 
     @Override
@@ -39,6 +53,12 @@ public class App extends Application {
     @Override
     protected void attachBaseContext (Context base) {
         super.attachBaseContext(base);
+
+        // Initialize ACRA in Release mode only
+        if (!Constants.App.DEBUG)
+        {
+            ACRA.init(this);
+        }
     }
 
     // ----------------------- Public APIs ----------------------- //
