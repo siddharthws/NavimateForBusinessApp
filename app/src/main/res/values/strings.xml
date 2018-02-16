@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Navimate</string>
+    <string name="crash_report_string">Sending crash report to developers...</string>
 </resources>
