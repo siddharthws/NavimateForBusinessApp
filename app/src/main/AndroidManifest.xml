@@ -82,6 +82,9 @@
         <service
             android:name=".services.LocationService"
             android:label="Location Service" />
+        <service
+            android:name=".services.LocReportService"
+            android:label="Location Report Service" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

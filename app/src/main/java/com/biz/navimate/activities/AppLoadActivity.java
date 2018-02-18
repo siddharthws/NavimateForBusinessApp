@@ -17,6 +17,7 @@ import com.biz.navimate.objects.Statics;
 import com.biz.navimate.objects.User;
 import com.biz.navimate.server.CheckUpdatesTask;
 import com.biz.navimate.server.UpdateFcmTask;
+import com.biz.navimate.services.LocReportService;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.tasks.AppLoadTask;
@@ -86,6 +87,7 @@ public class AppLoadActivity    extends     BaseActivity
             // Stop Services
             WebSocketService.StopService();
             LocationService.StopService();
+            LocReportService.StopService();
 
             // Uninit App
             App.Uninitialize();
@@ -115,6 +117,7 @@ public class AppLoadActivity    extends     BaseActivity
         // Start Services
         WebSocketService.StartService(this);
         LocationService.StartService(this);
+        LocReportService.StartService(this);
 
         // Execute App Load Task
         AppLoadTask appLoad = new AppLoadTask(this);

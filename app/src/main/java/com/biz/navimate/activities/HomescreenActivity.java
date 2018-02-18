@@ -24,6 +24,7 @@ import com.biz.navimate.objects.Task;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.server.SyncDbTask;
+import com.biz.navimate.services.LocReportService;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.viewholders.ActivityHolder;
@@ -118,6 +119,7 @@ public class HomescreenActivity     extends     BaseActivity
         // Stop Services
         WebSocketService.StopService();
         LocationService.StopService();
+        LocReportService.StopService();
 
         // Uninit App
         App.Uninitialize();
