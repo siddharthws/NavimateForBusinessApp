@@ -178,6 +178,7 @@ public class Constants {
         public static final int CLIENT_TAG_TRACKER      = 2;
         public static final int CLIENT_TAG_INIT         = 3;
         public static final int CLIENT_TAG_SUBMIT_FORM  = 4;
+        public static final int CLIENT_TAG_LOC_REPORT   = 5;
     }
 
     // Map related constants

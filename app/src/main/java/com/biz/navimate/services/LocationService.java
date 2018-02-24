@@ -172,8 +172,11 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Add to clients
         clients.put(tag, serviceObject);
 
-        // Interrupt sleep to re run init logic
-        service.bInterruptSleep = true;
+        if(service != null)
+        {
+            // Interrupt sleep to re run init logic
+            service.bInterruptSleep = true;
+        }
     }
 
     public static void RemoveClient(int tag) {

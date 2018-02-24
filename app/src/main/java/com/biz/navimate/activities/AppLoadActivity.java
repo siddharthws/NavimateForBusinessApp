@@ -114,10 +114,6 @@ public class AppLoadActivity    extends     BaseActivity
     // Registration Overrides
     @Override
     public void onRegisterSuccess() {
-        // Start Services
-        WebSocketService.StartService(this);
-        LocationService.StartService(this);
-        LocReportService.StartService(this);
 
         // Execute App Load Task
         AppLoadTask appLoad = new AppLoadTask(this);
