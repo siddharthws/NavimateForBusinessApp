@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.AccountSettings;
 import com.biz.navimate.objects.AppVersionObject;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.User;
@@ -26,6 +27,7 @@ public class Preferences {
 
     // User Information
     private static User user;
+    private static AccountSettings accountSettings;
 
     // Map Settings
     private static int mapType                      = -1;
@@ -46,6 +48,10 @@ public class Preferences {
         // Read App version information
         currentVersion  =   new AppVersionObject(   App.GetVersionNumber(context),
                                                     App.GetVersionName(context));
+
+        //Read Account Settings Information
+        accountSettings  =  new AccountSettings( sharedPref.getInt(Constants.Preferences.KEY_START_TIME,  -1), 
+                                                 sharedPref.getInt(Constants.Preferences.KEY_END_TIME,  -1));
 
         // Read user information
         user = new User(sharedPref.getString(Constants.Preferences.KEY_NAME, ""),
@@ -131,6 +137,22 @@ public class Preferences {
         Preferences.bMapTrafficOverlay = bOverlay;
     }
 
+    //Set AccountSettings
+    public static void SetAcountSettings(Context context, AccountSettings accountSettings)
+    {
+        SharedPreferences sharedPref = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                                                                     Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Write App registration data
+        prefEdit.putInt(Constants.Preferences.KEY_START_TIME, accountSettings.startTime);
+        prefEdit.putInt(Constants.Preferences.KEY_END_TIME, accountSettings.endTime);
+        prefEdit.apply();
+
+        // Set cache
+        Preferences.accountSettings = accountSettings;
+    }
+
     /*
      * GET APIs
      */
@@ -159,5 +181,11 @@ public class Preferences {
     public static boolean GetMapTrafficOverlay ()
     {
         return bMapTrafficOverlay;
+    }
+
+    //Get Account Settings
+    public static AccountSettings GetAccountSettings ()
+    {
+        return accountSettings;
     }
 }

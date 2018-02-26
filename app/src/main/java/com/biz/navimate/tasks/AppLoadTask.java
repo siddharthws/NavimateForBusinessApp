@@ -4,12 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.server.GetWorkingHoursTask;
 import com.biz.navimate.services.LocReportService;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.services.WebSocketService;
 import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 25-09-2017.
@@ -42,6 +41,15 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
 
     // ----------------------- Overrides ----------------------- //
     // Overrides for AsyncTask
+
+    @Override
+    protected void onPreExecute()
+    {
+        //Get Account Settings
+        GetWorkingHoursTask getWorkingHoursTask = new GetWorkingHoursTask(parentContext);
+        getWorkingHoursTask.execute();
+    }
+
     @Override
     protected Void doInBackground(Void... params)
     {
