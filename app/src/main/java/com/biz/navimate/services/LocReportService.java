@@ -4,10 +4,11 @@ import android.content.Context;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationReportObject;
 import com.biz.navimate.objects.LocationUpdate;
+import java.util.Calendar;
 
 
 /**
@@ -33,8 +34,12 @@ public class LocReportService extends BaseService {
     @Override
     public void StickyServiceJob()
     {
-        //Location Report Logic
-        checkLocationStatus();
+        //check if current time is between working hours
+        if(isWorkingHours())
+        {
+            //Location Report Logic
+            checkLocationStatus();
+        }
 
         // Getinterval for next sleep
         long interval = GetSleepInterval();
@@ -120,5 +125,21 @@ public class LocReportService extends BaseService {
 
         //Save the LocReportObject in DB
         DbHelper.locationReportTable.Save(locationReportObject);
+    }
+
+    //API to check if the current time is in between working hours
+    private boolean isWorkingHours()
+    {
+        //Get working hours from Preferences
+        int startHr = Preferences.GetAccountSettings().startTime;
+        int endHr = Preferences.GetAccountSettings().endTime;
+
+        //Get current time in Hour format(0-23)
+        Calendar rightNow = Calendar.getInstance();
+        int currentHr = rightNow.get(Calendar.HOUR_OF_DAY);
+
+        //check if currrent time is between working hours
+        if(currentHr >= startHr && currentHr < endHr) {return true;}
+        return false;
     }
 }

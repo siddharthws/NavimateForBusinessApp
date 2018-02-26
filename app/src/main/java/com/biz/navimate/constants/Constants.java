@@ -45,6 +45,8 @@ public class Constants {
         public static final String KEY_TIMESTAMP                = "timestamp";
         public static final String KEY_MAP_TYPE                 = "pref_map_type";
         public static final String KEY_MAP_TRAFFIC_OVERLAY      = "pref_map_traffic_overlay";
+        public static final String KEY_START_TIME               = "startHr";
+        public static final String KEY_END_TIME                 = "endHr";
     }
 
     // Template related constants
@@ -88,6 +90,7 @@ public class Constants {
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
         public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
         public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
+        public static final String URL_APP_START        = URL_BASE + "/api/reps/appStart";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
