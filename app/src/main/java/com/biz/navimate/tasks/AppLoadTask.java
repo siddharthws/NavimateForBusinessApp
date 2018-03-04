@@ -59,7 +59,7 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
         // Start Services
         WebSocketService.StartService(parentContext);
         LocationService.StartService(parentContext);
-        LocReportService.StartService(parentContext);
+        //LocReportService.StartService(parentContext);
 
         // Wait for FCM ID Token
         while (FirebaseInstanceId.getInstance().getToken() == null);
