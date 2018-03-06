@@ -91,6 +91,7 @@ public class Constants {
         public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
         public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
         public static final String URL_APP_START        = URL_BASE + "/api/reps/appStart";
+        public static final String URL_LOCATION_REPORT  = URL_BASE + "/api/reps/locationReport";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
@@ -162,6 +163,7 @@ public class Constants {
         public static final String KEY_ERROR_CODE       = "errorCode";
         public static final String KEY_DATA_ID          = "dataId";
         public static final String KEY_REMOVED_IDS      = "removedIds";
+        public static final String KEY_REPORT           = "report";
     }
 
     // Location related constants

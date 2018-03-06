@@ -4,51 +4,77 @@ import android.content.Context;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationReportObject;
 import com.biz.navimate.objects.LocationUpdate;
+import com.biz.navimate.server.SyncLocReportTask;
 import java.util.Calendar;
 
 /**
  * Created by Sai_Kameswari on 17-02-2018.
  */
 
-public class LocReportService extends BaseService {
+public class LocReportService   extends     BaseService
+                                implements  IfaceServer.SyncLocReport {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOC_REPORT_SERVICE";
 
     // Macros for time intervals
     private static final int   TIME_MS_60_S            = 60 * 1000; // 60 second interval
+    private static final int   TIME_MS_15_M            = 15 * 60 * 1000; // 15 Minute interval
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private static LocReportService service   = null;
+    private long lastSyncTime = 0L;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     @Override
-    public void Init(){service = this;}
+    public void Init(){ service = this; }
 
     @Override
-    public void StickyServiceJob()
-    {
+    public void StickyServiceJob() {
         //check if current time is between working hours
-        if(isWorkingHours())
-        {
+        if (isWorkingHours()) {
             //Location Report Logic
             checkLocationStatus();
         }
 
-        // Getinterval for next sleep
-        long interval = GetSleepInterval();
+        //check if last sync time is expired
+        if (isSyncTimeExpired()) {
+            if (DbHelper.locationReportTable.GetAll().size() > 0) {
+                // Trigger Sync task
+                SyncLocReportTask syncLocReportTask = new SyncLocReportTask(this);
+                syncLocReportTask.SetListener(this);
+                syncLocReportTask.execute();
+            } else {
+                // Nothing to sync. Just Update Last Sync time
+                lastSyncTime = System.currentTimeMillis();
+            }
+        }
 
         // Sleep
-        Sleep(interval);
+        Sleep(TIME_MS_60_S);
     }
 
     @Override
     public void Destroy(){}
+
+    // Listeners for Location report success / failure
+    @Override
+    public void onLocReportSynced() {
+        // Update Sync time
+        lastSyncTime = System.currentTimeMillis();
+    }
+
+    @Override
+    public void onLocReportSyncFailed() {
+        // Do Nothing. Report will try syncing again on next iteration
+    }
 
     // ----------------------- Public APIs ----------------------- //
     // APIs to start / stop the service
@@ -79,11 +105,6 @@ public class LocReportService extends BaseService {
     }
 
     // ----------------------- Private APIs ----------------------- //
-    // API to get sleep interval as per current params
-    private long GetSleepInterval() {
-        return TIME_MS_60_S;
-    }
-
     // API to perform tracking logic
     private void checkLocationStatus() {
         if (LocationService.IsUpdating()) {
@@ -108,8 +129,7 @@ public class LocReportService extends BaseService {
         double longitude = 0;
 
         //check if status is invalid or valid
-        if(statusCode == Constants.Tracker.ERROR_NONE)
-        {
+        if(statusCode == Constants.Tracker.ERROR_NONE) {
             latitude = currentLoc.latlng.latitude;
             longitude = currentLoc.latlng.longitude;
         }
@@ -127,8 +147,7 @@ public class LocReportService extends BaseService {
     }
 
     //API to check if the current time is in between working hours
-    private boolean isWorkingHours()
-    {
+    private boolean isWorkingHours() {
         //Get working hours from Preferences
         int startHr = Preferences.GetAccountSettings().startTime;
         int endHr = Preferences.GetAccountSettings().endTime;
@@ -140,5 +159,15 @@ public class LocReportService extends BaseService {
         //check if currrent time is between working hours
         if(currentHr >= startHr && currentHr < endHr) {return true;}
         return false;
+    }
+
+    //API to check if the sync time with server is expired
+    private boolean isSyncTimeExpired() {
+        // Get elapsed time
+        long currentTime = System.currentTimeMillis();
+        long elapsedTimeMs = currentTime - lastSyncTime;
+
+        // Check if elapsed time is more than required sync time (15 minutes)
+        return (elapsedTimeMs > TIME_MS_15_M);
     }
 }
