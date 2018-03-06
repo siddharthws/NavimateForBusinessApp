@@ -57,4 +57,10 @@ public class IfaceServer {
         void onUpdateRequired();
         void onUpdateNotRequired();
     }
+
+    // Check LocReport Sync Task interface
+    public interface SyncLocReport {
+        void onLocReportSynced();
+        void onLocReportSyncFailed();
+    }
 }
