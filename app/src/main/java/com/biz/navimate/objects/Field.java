@@ -18,13 +18,15 @@ public class Field extends ServerObject {
     public String title = "";
     public int type = Constants.Template.FIELD_TYPE_NONE;
     public boolean bMandatory = false;
+    public String value = "";
 
     // ----------------------- Constructor ----------------------- //
-    public Field (long dbId, long serverId, long version, String title, int type, boolean bMandatory) {
+    public Field (long dbId, long serverId, long version, String title, int type, String value, boolean bMandatory) {
         super(DbObject.TYPE_FIELD, dbId, serverId, version);
         this.title = title;
         this.type = type;
         this.bMandatory = bMandatory;
+        this.value = value;
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -33,6 +35,7 @@ public class Field extends ServerObject {
         long version                = json.getLong(Constants.Server.KEY_VERSION);
         String title                = json.getString(Constants.Server.KEY_TITLE);
         int type                    = json.getInt(Constants.Server.KEY_TYPE);
+        String value                = json.getString(Constants.Server.KEY_VALUE);
         boolean bMandatory          = json.getBoolean(Constants.Server.KEY_IS_MANDATORY);
 
         // Get Data DbId
@@ -42,6 +45,6 @@ public class Field extends ServerObject {
             dbId = existingField.dbId;
         }
 
-        return new Field(dbId, serverId, version, title, type, bMandatory);
+        return new Field(dbId, serverId, version, title, type, value, bMandatory);
     }
 }

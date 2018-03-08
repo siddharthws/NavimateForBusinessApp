@@ -72,10 +72,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         InitView(context);
     }
 
-    public RlFormField(Context context, Value value, boolean bReadOnly)
+    public RlFormField(Context context, FormEntry.Base entry, boolean bReadOnly)
     {
         super(context);
-        this.entry = FormEntry.FromValue(value);
+        this.entry = entry;
         this.bReadOnly = bReadOnly;
         InitView(context);
     }

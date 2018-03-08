@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.biz.navimate.R;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.Value;
@@ -75,7 +78,9 @@ public class TaskInfoDialog     extends     BaseDialog
         Data data = (Data) DbHelper.dataTable.GetById(currentData.task.dataId);
         for (Long valueId  : data.valueIds) {
             Value value = (Value) DbHelper.valueTable.GetById(valueId);
-            RlFormField fieldUi = new RlFormField(context, value, true);
+            Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
+            FormEntry.Base entry = FormEntry.Parse(field, value.value);
+            RlFormField fieldUi = new RlFormField(context, entry, true);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
         }
@@ -102,7 +107,7 @@ public class TaskInfoDialog     extends     BaseDialog
             }
             case R.id.btn_submit_form: {
                 // Create new form object
-                Form form = new Form(currentData.task.formTemplateId, currentData.task.dbId, formTemplate.defaultDataId, false);
+                Form form = new Form(currentData.task.formTemplateId, currentData.task.dbId, Constants.Misc.ID_INVALID, false);
 
                 // Open Submit form dialog with this form
                 RlDialog.Show(new Dialog.SubmitForm(form, false));

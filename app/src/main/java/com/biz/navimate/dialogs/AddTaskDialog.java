@@ -14,7 +14,8 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.SpinnerAdapter;
-import com.biz.navimate.objects.Data;
+import com.biz.navimate.objects.Field;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.Value;
@@ -154,16 +155,15 @@ public class AddTaskDialog    extends     BaseDialog
     // ----------------------- Private APIs ----------------------- //
     private void InitTaskFields()
     {
-        Data data= (Data) DbHelper.dataTable.GetById(selectedTaskTemplate.defaultDataId);
-
         //clear existing fields
         ui.llFields.removeAllViews();
         ui.fields.clear();
 
         // Set Form Fields
-        for (Long valueId  : data.valueIds) {
-            Value value = (Value) DbHelper.valueTable.GetById(valueId);
-            RlFormField fieldUi = new RlFormField(context, value, false);
+        for (Long fieldId  : selectedTaskTemplate.fieldIds) {
+            Field field = (Field) DbHelper.fieldTable.GetById(fieldId);
+            FormEntry.Base entry = FormEntry.Parse(field, field.value);
+            RlFormField fieldUi = new RlFormField(context, entry, false);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
         }

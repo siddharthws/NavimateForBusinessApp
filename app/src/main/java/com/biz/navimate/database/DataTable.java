@@ -54,14 +54,6 @@ public class DataTable extends BaseTable {
     public ArrayList<Data> GetDataToSync() {
         ArrayList<Data> datas = new ArrayList<>();
 
-        // Create list of default data in all open task templates
-        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
-        for (Template template : unsyncedTemplates) {
-            // Get Template's default data
-            Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
-            datas.add(data);
-        }
-
         // Add task templated data objects
         ArrayList<Task> tasks = DbHelper.taskTable.GetOpenTasks();
         for (Task task : tasks) {

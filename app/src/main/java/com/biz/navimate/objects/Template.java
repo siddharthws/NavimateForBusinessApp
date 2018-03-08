@@ -20,16 +20,14 @@ public class Template extends ServerObject {
 
     // ----------------------- Globals ----------------------- //
     public String name = "";
-    public Long defaultDataId = Constants.Misc.ID_INVALID;
     public ArrayList<Long> fieldIds = null;
     public int type = 0;
 
     // ----------------------- Constructor ----------------------- //
-    public Template (long dbId, long serverId, long version, String name, int type, long defaultDataId, ArrayList<Long> fieldIds) {
+    public Template (long dbId, long serverId, long version, String name, int type, ArrayList<Long> fieldIds) {
         super(DbObject.TYPE_TEMPLATE, dbId, serverId, version);
         this.name = name;
         this.type = type;
-        this.defaultDataId = defaultDataId;
         this.fieldIds = fieldIds;
     }
 
@@ -39,7 +37,6 @@ public class Template extends ServerObject {
         long version                = templateJson.getLong(Constants.Server.KEY_VERSION);
         String name                 = templateJson.getString(Constants.Server.KEY_NAME);
         int type                    = templateJson.getInt(Constants.Server.KEY_TYPE);
-        long defaultDataServerId    = templateJson.getLong(Constants.Server.KEY_DEFAULT_DATA_ID);
         JSONArray fieldIdsJson      = templateJson.getJSONArray(Constants.Server.KEY_FIELD_IDS);
 
         // Get field DB Ids array
@@ -50,19 +47,12 @@ public class Template extends ServerObject {
             // Check if field exists
             Field field = DbHelper.fieldTable.GetByServerId(fieldServerId);
             if (field == null) {
-                field = new Field(Constants.Misc.ID_INVALID, fieldServerId, Constants.Misc.ID_INVALID, "", Constants.Template.FIELD_TYPE_NONE, false);
+                field = new Field(Constants.Misc.ID_INVALID, fieldServerId, Constants.Misc.ID_INVALID, "", Constants.Template.FIELD_TYPE_NONE, "",  false);
                 DbHelper.fieldTable.Save(field);
             }
 
             // Add Field's DBId to field Ids array
             fieldIds.add(field.dbId);
-        }
-
-        // Get Default Data DbId
-        Data data = DbHelper.dataTable.GetByServerId(defaultDataServerId);
-        if (data == null) {
-            data = new Data(Constants.Misc.ID_INVALID, defaultDataServerId, Constants.Misc.ID_INVALID, new ArrayList<Long>());
-            DbHelper.dataTable.Save(data);
         }
 
         // Get Template DbId
@@ -72,6 +62,6 @@ public class Template extends ServerObject {
             dbId = existingTemplate.dbId;
         }
 
-        return new Template(dbId, serverId, version, name, type, data.dbId, fieldIds);
+        return new Template(dbId, serverId, version, name, type, fieldIds);
     }
 }
