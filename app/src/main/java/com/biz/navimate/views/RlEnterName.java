@@ -75,6 +75,12 @@ public class RlEnterName extends RelativeLayout implements View.OnClickListener
             return;
         }
 
+        // Validate if some valid name was entered
+        if (name.equals("NA")) {
+            Dbg.Toast(getContext(), "Invalid name...", Toast.LENGTH_SHORT);
+            return;
+        }
+
         // Hide keyboard
         KeyboardRunnable.Hide(getContext());
 
@@ -86,6 +92,10 @@ public class RlEnterName extends RelativeLayout implements View.OnClickListener
     }
 
     // ----------------------- Public APIs ----------------------- //
+    public void SetName(String name) {
+        etName.setText(name);
+    }
+
     public void ShowKeyboard() {
         // Display Keyboard
         keyboardRunnable.Post(0);
