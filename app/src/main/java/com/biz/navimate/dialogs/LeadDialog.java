@@ -11,6 +11,8 @@ import com.biz.navimate.R;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Field;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Value;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
@@ -68,7 +70,9 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
         Data data = (Data) DbHelper.dataTable.GetById(currentData.lead.dataId);
         for (Long valueId  : data.valueIds) {
             Value value = (Value) DbHelper.valueTable.GetById(valueId);
-            RlFormField fieldUi = new RlFormField(context, value, true);
+            Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
+            FormEntry.Base entry = FormEntry.Parse(field, value.value);
+            RlFormField fieldUi = new RlFormField(context, entry, true);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
         }

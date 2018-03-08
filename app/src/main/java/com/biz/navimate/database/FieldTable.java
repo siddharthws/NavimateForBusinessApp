@@ -27,6 +27,7 @@ public class FieldTable extends BaseTable {
     public static final String COLUMN_VERSION       = "version";
     public static final String COLUMN_TITLE         = "title";
     public static final String COLUMN_TYPE          = "type";
+    public static final String COLUMN_VALUE         = "value";
     public static final String COLUMN_IS_MANDATORY  = "isMandatory";
 
     // Create query
@@ -37,6 +38,7 @@ public class FieldTable extends BaseTable {
                     COLUMN_VERSION          + " INTEGER," +
                     COLUMN_TITLE            + " TEXT," +
                     COLUMN_TYPE             + " INTEGER," +
+                    COLUMN_VALUE            + " TEXT," +
                     COLUMN_IS_MANDATORY     + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
@@ -47,6 +49,7 @@ public class FieldTable extends BaseTable {
                                                     COLUMN_VERSION,
                                                     COLUMN_TITLE,
                                                     COLUMN_TYPE,
+                                                    COLUMN_VALUE,
                                                     COLUMN_IS_MANDATORY});
     }
 
@@ -88,10 +91,11 @@ public class FieldTable extends BaseTable {
         long   serverId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_SRV_ID));
         long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         String title                   = cursor.getString  (cursor.getColumnIndex(COLUMN_TITLE));
-        int type                       = cursor.getInt    (cursor.getColumnIndex(COLUMN_TYPE));
+        int type                       = cursor.getInt     (cursor.getColumnIndex(COLUMN_TYPE));
+        String value                   = cursor.getString  (cursor.getColumnIndex(COLUMN_VALUE));
         boolean bMandatory             = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_IS_MANDATORY)));
 
-        return new Field (dbId, serverId, version, title, type, bMandatory);
+        return new Field (dbId, serverId, version, title, type, value, bMandatory);
     }
 
     @Override
@@ -105,6 +109,7 @@ public class FieldTable extends BaseTable {
         dbEntry.put(COLUMN_VERSION,        field.version);
         dbEntry.put(COLUMN_TITLE,          field.title);
         dbEntry.put(COLUMN_TYPE,           field.type);
+        dbEntry.put(COLUMN_VALUE,          field.value);
         dbEntry.put(COLUMN_IS_MANDATORY,   field.bMandatory);
 
         return dbEntry;

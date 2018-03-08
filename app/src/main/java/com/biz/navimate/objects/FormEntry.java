@@ -210,29 +210,27 @@ public class FormEntry {
         }
     }
 
-    public static Base FromValue(Value value) {
-        Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
-        Dbg.info(TAG, "Field ID = " + value.fieldId);
+    public static Base Parse(Field field, String value) {
         switch (field.type) {
             case Constants.Template.FIELD_TYPE_TEXT : {
-                return new Text(field, value.value);
+                return new Text(field, value);
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
-                return new Number(field, Long.valueOf(value.value));
+                return new Number(field, Long.valueOf(value));
             }
             case Constants.Template.FIELD_TYPE_CHECKBOX : {
-                return new Checkbox(field, Boolean.valueOf(value.value));
+                return new Checkbox(field, Boolean.valueOf(value));
             }
             case Constants.Template.FIELD_TYPE_PHOTO : {
-                return new Photo(field, value.value);
+                return new Photo(field, value);
             }
             case Constants.Template.FIELD_TYPE_SIGN : {
-                return new Signature(field, value.value);
+                return new Signature(field, value);
             }
             case Constants.Template.FIELD_TYPE_RADIOLIST : {
                 // Parse value in options and selection
                 try {
-                    JSONObject radioJson = new JSONObject(value.value);
+                    JSONObject radioJson = new JSONObject(value);
                     JSONArray optionsJson = radioJson.getJSONArray(JSON_KEY_OPTIONS);
                     ArrayList<String> options = new ArrayList<>();
                     for (int i = 0; i < optionsJson.length(); i++) {
@@ -248,7 +246,7 @@ public class FormEntry {
             case Constants.Template.FIELD_TYPE_CHECKLIST : {
                 // Parse value in options and selection
                 try {
-                    JSONArray optionsJson = new JSONArray(value.value);
+                    JSONArray optionsJson = new JSONArray(value);
                     ArrayList<String> options = new ArrayList<>();
                     ArrayList<Boolean> selection = new ArrayList<>();
                     for (int i = 0; i < optionsJson.length(); i++) {

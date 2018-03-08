@@ -32,7 +32,6 @@ public class TemplateTable extends BaseTable {
     public static final String COLUMN_VERSION   = "version";
     public static final String COLUMN_NAME      = "name";
     public static final String COLUMN_TYPE      = "type";
-    public static final String COLUMN_DATA_ID   = "dataId";
     public static final String COLUMN_FIELD_IDS = "fieldIds";
 
     // Create query
@@ -43,8 +42,7 @@ public class TemplateTable extends BaseTable {
                     COLUMN_VERSION       + " INTEGER," +
                     COLUMN_NAME          + " TEXT," +
                     COLUMN_TYPE          + " INTEGER," +
-                    COLUMN_FIELD_IDS     + " TEXT," +
-                    COLUMN_DATA_ID       + " INTEGER)";
+                    COLUMN_FIELD_IDS     + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
     public TemplateTable(DbHelper dbHelper)
@@ -54,7 +52,6 @@ public class TemplateTable extends BaseTable {
                                                     COLUMN_VERSION,
                                                     COLUMN_NAME,
                                                     COLUMN_TYPE,
-                                                    COLUMN_DATA_ID,
                                                     COLUMN_FIELD_IDS});
     }
 
@@ -89,10 +86,6 @@ public class TemplateTable extends BaseTable {
             DbHelper.formTable.Remove(form);
         }
 
-        // Remove Default Data Objects
-        Data data = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
-        DbHelper.dataTable.Remove(data);
-
         // Remove all fields
         for (Long fieldId : template.fieldIds) {
             DbHelper.fieldTable.Remove(fieldId);
@@ -111,7 +104,6 @@ public class TemplateTable extends BaseTable {
         long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
         String name                    = cursor.getString  (cursor.getColumnIndex(COLUMN_NAME));
         int type                       = cursor.getInt     (cursor.getColumnIndex(COLUMN_TYPE));
-        long defaultDataId             = cursor.getLong    (cursor.getColumnIndex(COLUMN_DATA_ID));
         String fieldsString            = cursor.getString  (cursor.getColumnIndex(COLUMN_FIELD_IDS));
 
         // Create Field IDs array
@@ -127,7 +119,7 @@ public class TemplateTable extends BaseTable {
             Dbg.stack(e);
         }
 
-        return new Template (dbId, serverId, version, name, type, defaultDataId, fieldIds);
+        return new Template (dbId, serverId, version, name, type, fieldIds);
     }
 
     @Override
@@ -141,7 +133,6 @@ public class TemplateTable extends BaseTable {
         dbEntry.put(COLUMN_VERSION,        template.version);
         dbEntry.put(COLUMN_NAME,           template.name);
         dbEntry.put(COLUMN_TYPE,           template.type);
-        dbEntry.put(COLUMN_DATA_ID,        template.defaultDataId);
         JSONArray fields = new JSONArray(template.fieldIds);
         dbEntry.put(COLUMN_FIELD_IDS, fields.toString());
 

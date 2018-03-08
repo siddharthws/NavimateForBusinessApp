@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.objects.Dialog;
@@ -78,7 +79,7 @@ public class TaskListAdapter    extends     BaseListAdapter
                     Template formTemplate = (Template) DbHelper.templateTable.GetById(taskItem.task.formTemplateId);
 
                     // Create new form object
-                    Form form = new Form(taskItem.task.formTemplateId, taskItem.task.dbId, formTemplate.defaultDataId, false);
+                    Form form = new Form(taskItem.task.formTemplateId, taskItem.task.dbId, Constants.Misc.ID_INVALID, false);
 
                     // Open Submit form dialog with this form
                     RlDialog.Show(new Dialog.SubmitForm(form, false));

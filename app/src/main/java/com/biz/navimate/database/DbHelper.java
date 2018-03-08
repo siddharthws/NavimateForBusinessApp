@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 5;
+    private static final int     DATABASE_VERSION                = 6;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
@@ -67,20 +67,12 @@ public class DbHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1)
     {
-        Dbg.info(TAG, "Upgrading database");
-
-       // Drop existing database
-        db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
+       // Drop & recreate template and field table
         db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DataTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + ValueTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
+        db.execSQL(TemplateTable.CREATE_TABLE);
 
-        // Run onCreate Again
-        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
+        db.execSQL(FieldTable.CREATE_TABLE);
     }
 
     // ----------------------- Public APIs ----------------------- //

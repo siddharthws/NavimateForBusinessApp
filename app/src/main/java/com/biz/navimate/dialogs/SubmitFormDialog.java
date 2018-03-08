@@ -18,7 +18,9 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.SpinnerAdapter;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Task;
@@ -41,7 +43,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SubmitFormDialog   extends     BaseDialog
                                 implements  View.OnClickListener,
-                                            LocationUpdateRunnable.IfaceRunnableLocationInit {
+                                            LocationUpdateRunnable.IfaceRunnableLocationInit, SpinnerAdapter.IfaceSpinner {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "SUBMIT_FORM_DIALOG";
 
@@ -123,43 +125,55 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Set fields using value IDs
-        ArrayList<Long> valueIds = new ArrayList<>();
         if (form.dataId != Constants.Misc.ID_INVALID) {
-            // Init Field with values saved in form
-            valueIds = ((Data) DbHelper.dataTable.GetById(form.dataId)).valueIds;
+            Data data = (Data)  DbHelper.dataTable.GetById(form.dataId);
+
+            // Prepare array for fields and values
+            ArrayList<FormEntry.Base> entries = new ArrayList<>();
+            for (Long valueId : data.valueIds) {
+                Value value = (Value) DbHelper.valueTable.GetById(valueId);
+                Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
+                entries.add(FormEntry.Parse(field, field.value));
+            }
+            SetFields(entries);
         } else if (form.templateId != Constants.Misc.ID_INVALID) {
-            // Init fields with template default values
-            Template template = (Template) DbHelper.templateTable.GetById(form.templateId);
-            valueIds = ((Data) DbHelper.dataTable.GetById(template.defaultDataId)).valueIds;
+            onItemSelected(form.templateId);
         }
-        SetFields(valueIds);
 
         // Set Spinner item click listener
-        spinnerAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
-            @Override
-            public void onItemSelected(long id) {
-                // Ignore if current template is equal to selected one
-                if (form.templateId == id) {
-                    return;
-                }
-
-                // Set form's template ID
-                form.templateId = id;
-
-                // Get template
-                Template template = (Template) DbHelper.templateTable.GetById(id);
-
-                // Get default data of template
-                Data defaultData = (Data) DbHelper.dataTable.GetById(template.defaultDataId);
-
-                // Set fields to default data of this template
-                SetFields(defaultData.valueIds);
-            }
-        });
+        spinnerAdapter.SetListener(this);
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);
         ui.btnCancel.setOnClickListener(this);
+    }
+
+    @Override
+    public void onItemSelected(long id) {
+        // Get current data
+        Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
+        Form form = currentData.form;
+
+        // Ignore if current template is equal to selected one
+        if (form.templateId == id) {
+            return;
+        }
+
+        // Set form's template ID
+        form.templateId = id;
+
+        // Get template
+        Template template = (Template) DbHelper.templateTable.GetById(id);
+
+        // Prepare array for fields and values
+        ArrayList<FormEntry.Base> entries = new ArrayList<>();
+        for (Long fieldId : template.fieldIds) {
+            Field field = (Field) DbHelper.fieldTable.GetById(fieldId);
+            entries.add(FormEntry.Parse(field, field.value));
+        }
+
+        // Set fields to default data of this template
+        SetFields(entries);
     }
 
     @Override
@@ -233,18 +247,15 @@ public class SubmitFormDialog   extends     BaseDialog
     }
 
     // Method to set fields as per given value IDs
-    private void SetFields(ArrayList<Long> valueIds) {
+    private void SetFields(ArrayList<FormEntry.Base> entries) {
         // Clear existing fields
         ui.llFields.removeAllViews();
         ui.fields.clear();
 
         // Set Form Fields UI using data values
-        for (Long valueId  : valueIds) {
-            // Get Value Object
-            Value value = (Value) DbHelper.valueTable.GetById(valueId);
-
+        for (FormEntry.Base entry : entries) {
             // Prepare Form Field UI
-            RlFormField fieldUi = new RlFormField(context, value, ((Dialog.SubmitForm) data).bReadOnly);
+            RlFormField fieldUi = new RlFormField(context, entry, ((Dialog.SubmitForm) data).bReadOnly);
 
             // Add view to Linear Layout and save in cache
             ui.llFields.addView(fieldUi);
