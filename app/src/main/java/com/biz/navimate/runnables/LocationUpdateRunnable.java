@@ -3,6 +3,7 @@ package com.biz.navimate.runnables;
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentSender;
+import android.os.Looper;
 import android.widget.Toast;
 
 import com.biz.navimate.activities.BaseActivity;
@@ -71,6 +72,11 @@ public class LocationUpdateRunnable extends     BaseRunnable
     // Location Update Listeners
     @Override
     public void onLocationSuccess(LocationObj location) {
+        // Prepare Looper
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
         // Hide dialog box
         RlDialog.Hide();
 
@@ -86,6 +92,11 @@ public class LocationUpdateRunnable extends     BaseRunnable
 
     @Override
     public void onLocationError(int errorCode, Status status) {
+        // Prepare Looper
+        if (Looper.myLooper() == null) {
+            Looper.prepare();
+        }
+
         // Hide previously started dialog box
         RlDialog.Hide();
 
