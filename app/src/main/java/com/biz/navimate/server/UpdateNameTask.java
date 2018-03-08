@@ -1,7 +1,6 @@
 package com.biz.navimate.server;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
@@ -17,36 +16,37 @@ import org.json.JSONObject;
 import okhttp3.RequestBody;
 
 /**
- * Created by Siddharth on 05-11-2017.
+ * Created by Siddharth on 08-03-2018.
  */
 
-public class RegisterTask extends BaseServerTask {
+public class UpdateNameTask extends BaseServerTask {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "REGISTER_TASK";
+    private static final String TAG = "UPDATE_NAME_TASK";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
-    private IfaceServer.Register listener = null;
-    public void SetListener(IfaceServer.Register listener)
+    private IfaceServer.UpdateName listener = null;
+    public void SetListener(IfaceServer.UpdateName listener)
     {
         this.listener = listener;
     }
 
     // ----------------------- Globals ----------------------- //
-    private String phoneNumber = "";
+    private String name = "";
 
     // ----------------------- Constructor ----------------------- //
-    public RegisterTask(Context parentContext, String phoneNumber)
+    public UpdateNameTask(Context parentContext, String name)
     {
-        super(parentContext, Constants.Server.URL_REGISTER);
-        this.phoneNumber = phoneNumber;
+        super(parentContext, Constants.Server.URL_UPDATE_NAME);
+        this.name = name;
     }
 
     // ----------------------- Overrides ----------------------- //
     @Override
-    public void onPreExecute() {
+    public void onPreExecute ()
+    {
         // Show waiting dialog
-        RlDialog.Show(new Dialog.Waiting("Registering..."));
+        RlDialog.Show(new Dialog.Waiting("Updating name..."));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class RegisterTask extends BaseServerTask {
 
         try
         {
-            requestJson.put(Constants.Server.KEY_PHONE, phoneNumber);
+            requestJson.put(Constants.Server.KEY_NAME, name);
         }
         catch (JSONException e)
         {
@@ -71,18 +71,11 @@ public class RegisterTask extends BaseServerTask {
         // Call Super
         super.doInBackground(params);
 
-        // Register user in preferences if server returned OK
+        // Update name in preferences
         if (IsResponseValid()) {
-            try {
-                int appId = responseJson.getInt(Constants.Server.KEY_ID);
-                String name = responseJson.getString(Constants.Server.KEY_NAME);
-
-                // Register the user in preferences
-                Preferences.SetUser(parentContext, new User(name, phoneNumber, "", appId));
-
-            } catch (JSONException e) {
-                Dbg.error(TAG, "Unable to extract App ID from registration response");
-            }
+            User user = Preferences.GetUser();
+            user.name = name;
+            Preferences.SetUser(parentContext, user);
         }
 
         return null;
@@ -91,21 +84,24 @@ public class RegisterTask extends BaseServerTask {
     @Override
     public void onPostExecute (Void result)
     {
+        // Hide dialog
         RlDialog.Hide();
 
         if (IsResponseValid())
         {
-            Dbg.Toast(parentContext, "Registration complete...", Toast.LENGTH_SHORT);
-
             // Call listener
             if (listener != null)
             {
-                listener.onRegisterSuccess();
+                listener.onNameUpdated();
             }
         }
         else
         {
-            Dbg.Toast(parentContext, "Unable to register...", Toast.LENGTH_SHORT);
+            // Call listener
+            if (listener != null)
+            {
+                listener.onNameFailed();
+            }
         }
     }
 

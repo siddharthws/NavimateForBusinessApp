@@ -41,6 +41,12 @@ public class IfaceServer {
         void onFcmFailed();
     }
 
+    // Update Name Task interface
+    public interface UpdateName {
+        void onNameUpdated();
+        void onNameFailed();
+    }
+
     // Register Task Interface
     public interface Register {
         void onRegisterSuccess();

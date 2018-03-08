@@ -8,7 +8,9 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.AnimHelper;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.server.RegisterTask;
+import com.biz.navimate.server.UpdateNameTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlEnterName;
@@ -19,8 +21,7 @@ public class RegistrationActivity   extends     BaseActivity
                                     implements  RlEnterPhone.IfaceEnterPhone,
                                                 RlVerifyPhone.VerifyPhoneInterface,
                                                 RlEnterName.IfaceEnterName,
-                                                IfaceServer.Register
-{
+                                                IfaceServer.Register, IfaceServer.UpdateName {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "REGISTRATION_ACTIVITY";
 
@@ -29,9 +30,6 @@ public class RegistrationActivity   extends     BaseActivity
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.Registration ui = null;
-
-    // Variable to hold information received from different registration views
-    private String phoneNumber, name = null;
 
     // Animation Helper
     private AnimHelper animHelper = null;
@@ -94,18 +92,17 @@ public class RegistrationActivity   extends     BaseActivity
     @Override
     public void onValidPhoneNumberEntered(String formattedNumber)
     {
-        this.phoneNumber = formattedNumber;
-        ui.rlVerifyPhone.Init(phoneNumber);
+        ui.rlVerifyPhone.Init(formattedNumber);
         animHelper.Swap(ui.rlEnterPhone, ui.rlVerifyPhone);
     }
 
     @Override
     public void onPhoneNumberVerified(String phoneNo)
     {
-        animHelper.Swap(ui.rlVerifyPhone, ui.rlEnterName);
-
-        // Show keyboard on Name EditText
-        ui.rlEnterName.ShowKeyboard();
+        // Attempt user registration
+        RegisterTask registerTask = new RegisterTask(this, phoneNo);
+        registerTask.SetListener(this);
+        registerTask.execute();
     }
 
     @Override
@@ -116,20 +113,40 @@ public class RegistrationActivity   extends     BaseActivity
     }
 
     @Override
-    public void onNameEntered(String name) {
-        this.name = name;
+    public void onRegisterSuccess() {
+        // Swap to Name screen
+        animHelper.Swap(ui.rlVerifyPhone, ui.rlEnterName);
 
-        // Attempt user registration
-        RegisterTask registerTask = new RegisterTask(this, phoneNumber, name);
-        registerTask.SetListener(this);
-        registerTask.execute();
+        // Set name
+        ui.rlEnterName.SetName(Preferences.GetUser().name);
+
+        // Show keyboard on Name EditText
+        ui.rlEnterName.ShowKeyboard();
     }
 
     @Override
-    public void onRegisterSuccess() {
+    public void onNameEntered(String name) {
+        // Check fi name has changed
+        if (name.equals(Preferences.GetUser().name)) {
+            onNameUpdated();
+        } else {
+            // Attempt name update
+            UpdateNameTask updateNameTask = new UpdateNameTask(this, name);
+            updateNameTask.SetListener(this);
+            updateNameTask.execute();
+        }
+    }
+
+    @Override
+    public void onNameUpdated() {
         // Finish task
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void onNameFailed() {
+        Dbg.Toast(this, "Failed to update name", Toast.LENGTH_LONG);
     }
 
     // ----------------------- Public APIs ----------------------- //
