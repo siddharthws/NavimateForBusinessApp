@@ -183,8 +183,10 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Remove from clients
         clients.remove(tag);
 
-        // Interrupt sleep to re run init logic
-        service.bInterruptSleep = true;
+        if (service != null) {
+            // Interrupt sleep to re run init logic
+            service.bInterruptSleep = true;
+        }
     }
 
     // API to check if location is updating correctly
