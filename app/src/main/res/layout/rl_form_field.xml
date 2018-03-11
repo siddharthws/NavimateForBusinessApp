@@ -1,180 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+    android:layout_height="wrap_content">
 
-    <com.biz.navimate.views.TvCalibri
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAlignment="center"
-        android:textSize="@dimen/textsize_primary_small"/>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:layout_marginLeft="@dimen/m_small">
-
-        <LinearLayout
-            android:id="@+id/ll_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:gravity="center_vertical">
-
-            <com.biz.navimate.views.EtCalibri
-                android:id="@+id/et_text"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:minLines="3"
-                android:padding="@dimen/m_small"
-                android:background="@drawable/bg_textbox"
-                android:textCursorDrawable="@null"/>
-
-            <ImageButton
-                android:id="@+id/ib_qr"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="@dimen/m_small"
-                android:padding="3dp"
-                android:src="@mipmap/ic_qr"
-                android:background="@android:color/transparent"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_text_read_only"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-            <com.biz.navimate.views.TvCalibri
-                android:id="@+id/tv_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/m_small"
-                android:visibility="gone"/>
-
-            <ImageButton
-                android:id="@+id/ib_phone"
-                android:layout_width="@dimen/toolbar_button_height_width"
-                android:layout_height="@dimen/toolbar_button_height_width"
-                android:background="?attr/selectableItemBackground"
-                android:padding="@dimen/toolbar_button_padding"
-                android:src="@mipmap/icon_phone_grey"
-                android:scaleType="fitXY"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:visibility="gone"/>
-
-        </LinearLayout>
-
-        <com.biz.navimate.views.EtCalibri
-            android:id="@+id/et_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLines="1"
-            android:padding="@dimen/m_small"
-            android:background="@drawable/bg_textbox"
-            android:textCursorDrawable="@null"
-            android:visibility="gone"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <com.biz.navimate.views.TvCalibri
-            android:id="@+id/tv_number"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:padding="@dimen/m_small"
-            android:visibility="gone"/>
-
-        <com.biz.navimate.views.CbCustom
-            android:id="@+id/cb_checkbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <RadioGroup
-            android:id="@+id/rg_radioList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-        </RadioGroup>
-
-        <LinearLayout
-            android:id="@+id/ll_checkList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-        </LinearLayout>
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textSize="@dimen/textsize_primary_small"/>
 
         <RelativeLayout
-            android:id="@+id/rl_photo"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/m_small"
-            android:visibility="gone">
+            android:layout_weight="2"
+            android:layout_marginLeft="@dimen/m_small">
 
-            <ImageView
-                android:id="@+id/iv_photo"
+            <LinearLayout
+                android:id="@+id/ll_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:background="@android:color/transparent"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:gravity="center_vertical">
+
+                <com.biz.navimate.views.EtCalibri
+                    android:id="@+id/et_text"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:minLines="3"
+                    android:padding="@dimen/m_small"
+                    android:background="@drawable/bg_textbox"
+                    android:textCursorDrawable="@null"/>
+
+                <ImageButton
+                    android:id="@+id/ib_qr"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="@dimen/m_small"
+                    android:padding="3dp"
+                    android:src="@mipmap/ic_qr"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_text_read_only"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <com.biz.navimate.views.TvCalibri
+                    android:id="@+id/tv_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/m_small"
+                    android:visibility="gone"/>
+
+                <ImageButton
+                    android:id="@+id/ib_phone"
+                    android:layout_width="@dimen/toolbar_button_height_width"
+                    android:layout_height="@dimen/toolbar_button_height_width"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/toolbar_button_padding"
+                    android:src="@mipmap/icon_phone_grey"
+                    android:scaleType="fitXY"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <com.biz.navimate.views.EtCalibri
+                android:id="@+id/et_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/m_small"
+                android:background="@drawable/bg_textbox"
+                android:textCursorDrawable="@null"
                 android:visibility="gone"/>
 
             <com.biz.navimate.views.TvCalibri
-                android:id="@+id/tv_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/m_large"
-                android:layout_centerInParent="true"
-                android:textSize="@dimen/textsize_primary_small"
-                android:text="Click here to upload image"
-                android:background="@color/lightGrey"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/rl_signature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/m_small"
-            android:visibility="gone">
-
-            <ImageView
-                android:id="@+id/iv_signature"
+                android:id="@+id/tv_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:background="@android:color/holo_purple"
+                android:padding="@dimen/m_small"
                 android:visibility="gone"/>
 
-            <com.biz.navimate.views.TvCalibri
-                android:id="@+id/tv_signature"
+            <com.biz.navimate.views.CbCustom
+                android:id="@+id/cb_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/m_large"
-                android:layout_centerInParent="true"
-                android:textSize="@dimen/textsize_primary_small"
-                android:text="Click here to upload signature"
-                android:background="@color/lightGrey"/>
+                android:visibility="gone"/>
+
+            <RadioGroup
+                android:id="@+id/rg_radioList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/ll_checkList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/m_small"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"
+                    android:visibility="gone"/>
+
+                <com.biz.navimate.views.TvCalibri
+                    android:id="@+id/tv_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/m_large"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/textsize_primary_small"
+                    android:text="Click here to upload image"
+                    android:background="@color/lightGrey"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_signature"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/m_small"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/holo_purple"
+                    android:visibility="gone"/>
+
+                <com.biz.navimate.views.TvCalibri
+                    android:id="@+id/tv_signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/m_large"
+                    android:layout_centerInParent="true"
+                    android:textSize="@dimen/textsize_primary_small"
+                    android:text="Click here to upload signature"
+                    android:background="@color/lightGrey"/>
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightGrey"
+        android:layout_marginTop="@dimen/m_small"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
