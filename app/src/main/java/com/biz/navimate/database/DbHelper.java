@@ -73,6 +73,9 @@ public class DbHelper extends SQLiteOpenHelper
 
         db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
         db.execSQL(FieldTable.CREATE_TABLE);
+
+        db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
+        db.execSQL(LocationReportTable.CREATE_TABLE);
     }
 
     // ----------------------- Public APIs ----------------------- //
