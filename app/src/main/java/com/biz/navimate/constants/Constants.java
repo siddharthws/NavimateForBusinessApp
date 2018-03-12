@@ -20,6 +20,7 @@ public class Constants {
         public static final int ZXING           = 4;
         public static final int PHOTO           = 5;
         public static final int SIGNATURE       = 6;
+        public static final int PHOTO_EDITOR    = 7;
     }
 
     // Map related constants

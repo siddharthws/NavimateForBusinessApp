@@ -55,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private IfaceResult.LeadPicker    leadPickerListener        = null;
     private IfaceResult.Zxing         zxingListener             = null;
     private IfaceResult.Photo         photoListener             = null;
+    private IfaceResult.PhotoEditor   photoEditorListener       = null;
     private IfaceResult.Signature     signListener              = null;
 
     // ----------------------- Constructor ----------------------- //
@@ -286,6 +287,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.photoListener = listener;
     }
 
+    public void SetPhotoEditorListener(IfaceResult.PhotoEditor listener)
+    {
+        this.photoEditorListener = listener;
+    }
+
     public void SetSignResultListener(IfaceResult.Signature listener)
     {
         this.signListener = listener;
@@ -381,6 +387,21 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
                         photoListener.onPhotoResult();
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.PHOTO_EDITOR:
+            {
+                if (photoEditorListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        Bundle extras = resumeResultIntent.getExtras();
+                        if (extras != null) {
+                            String imagePath = extras.getString(Constants.Extras.IMAGE_NAME);
+                            photoEditorListener.onPhotoEditorResult(imagePath);
+                        }
                     }
                 }
                 break;
