@@ -89,4 +89,10 @@ public class ActivityHolder {
     {
         public ImageView ivImage    = null;
     }
+
+    public static class PhotoEditor extends Base
+    {
+        public ImageView ivImage         = null;
+        public Button btnSave, btnBack   = null;
+    }
 }
