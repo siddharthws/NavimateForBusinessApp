@@ -154,11 +154,6 @@ public class SubmitFormDialog   extends     BaseDialog
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         Form form = currentData.form;
 
-        // Ignore if current template is equal to selected one
-        if (form.templateId == id) {
-            return;
-        }
-
         // Set form's template ID
         form.templateId = id;
 
