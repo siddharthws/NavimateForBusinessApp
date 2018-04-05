@@ -1,9 +1,12 @@
 package com.biz.navimate.views;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -15,6 +18,7 @@ import android.support.v4.content.PermissionChecker;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -60,6 +64,8 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     private RelativeLayout rlPhoto = null, rlSignature = null;
     private ImageView ivPhoto = null, ivSignature = null;
     private TvCalibri tvPhoto = null, tvSignature = null;
+    private TvCalibri tvDate = null;
+    private DatePickerDialog dateDialog = null;
 
     private FormEntry.Base entry = null;
     private boolean bReadOnly = false;
@@ -125,7 +131,8 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                 break;
             }
             case Constants.Template.FIELD_TYPE_PHOTO :
-            case Constants.Template.FIELD_TYPE_SIGN : {
+            case Constants.Template.FIELD_TYPE_SIGN :
+            case Constants.Template.FIELD_TYPE_DATE : {
                 value = entry.toString();
                 break;
             }
@@ -188,6 +195,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         ivSignature = (ImageView)       view.findViewById(R.id.iv_signature);
         tvPhoto = (TvCalibri) view.findViewById(R.id.tv_photo);
         tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
+        tvDate = (TvCalibri) view.findViewById(R.id.tv_date);
 
         // Populate title
         tvTitle.setText(entry.field.title);
@@ -200,6 +208,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
                 InitNumberField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_DATE : {
+                InitDateField();
                 break;
             }
             case Constants.Template.FIELD_TYPE_CHECKBOX : {
@@ -291,6 +303,51 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         } else {
             etNumber.setVisibility(VISIBLE);
             etNumber.setText(entry.toString());
+        }
+    }
+
+    private void InitDateField() {
+        // Set Date field visible
+        tvDate.setVisibility(VISIBLE);
+
+        // Set formatted date
+        FormEntry.Date dateEntry = (FormEntry.Date) entry;
+        if (dateEntry.cal != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String date = sdf.format(dateEntry.cal.getTime());
+            tvDate.setText(date);
+        } else {
+            tvDate.setText("Click here to set date");
+        }
+
+        // Set listener for picking date
+        if (!bReadOnly) {
+            tvDate.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get current date / currently selected date
+                    Calendar cal = Calendar.getInstance();
+                    if (dateEntry.cal != null) {
+                        cal = dateEntry.cal;
+                    }
+
+                    // Init Date dialog with current date
+                    dateDialog = new DatePickerDialog(getContext(), R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            if (dateEntry.cal == null) dateEntry.cal = Calendar.getInstance();
+
+                            dateEntry.cal.set(year, month, dayOfMonth);
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            String date = sdf.format(dateEntry.cal.getTime());
+                            tvDate.setText(date);
+                        }
+                    }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+
+                    // Show Dialog
+                    dateDialog.show();
+                }
+            });
         }
     }
 

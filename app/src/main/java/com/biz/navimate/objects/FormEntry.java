@@ -8,7 +8,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by Siddharth on 08-12-2017.
@@ -74,6 +76,31 @@ public class FormEntry {
         public String toString()
         {
             return String.valueOf(number);
+        }
+    }
+
+    // Date Form Field
+    public static class Date extends Base
+    {
+        // Date to store
+        public Calendar cal = null;
+
+        public Date (Field field, Calendar cal)
+        {
+            super(field);
+            this.cal = cal;
+        }
+
+        // Convert object to JSON
+        @Override
+        public String toString()
+        {
+            if (cal != null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                return sdf.format(cal.getTime());
+            } else {
+                return "";
+            }
         }
     }
 
@@ -217,6 +244,20 @@ public class FormEntry {
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
                 return new Number(field, Long.valueOf(value));
+            }
+            case Constants.Template.FIELD_TYPE_DATE : {
+                Calendar cal = null;
+                if (value.length() > 0) {
+                    try {
+                        cal = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        java.util.Date date = df.parse(value);
+                        cal.setTime(date);
+                    } catch (Exception e) {
+                        return null;
+                    }
+                }
+                return new Date(field, cal);
             }
             case Constants.Template.FIELD_TYPE_CHECKBOX : {
                 return new Checkbox(field, Boolean.valueOf(value));

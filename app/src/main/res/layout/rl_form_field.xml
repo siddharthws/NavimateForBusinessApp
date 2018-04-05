@@ -179,6 +179,14 @@
 
             </RelativeLayout>
 
+            <com.biz.navimate.views.TvCalibri
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/m_small"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"/>
+
         </RelativeLayout>
 
     </LinearLayout>
