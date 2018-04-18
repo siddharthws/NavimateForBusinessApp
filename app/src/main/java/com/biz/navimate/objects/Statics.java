@@ -178,6 +178,11 @@ public class Statics {
         return absPath;
     }
 
+    public static File GetFileFromPath(String path) {
+        File origFile = new File(path);
+        return origFile;
+    }
+
     public static String GetFileFromView(View view) {
         Context context = view.getContext();
 
