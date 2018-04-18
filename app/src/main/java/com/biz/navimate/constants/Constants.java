@@ -21,6 +21,7 @@ public class Constants {
         public static final int PHOTO           = 5;
         public static final int SIGNATURE       = 6;
         public static final int PHOTO_EDITOR    = 7;
+        public static final int PHOTO_CROP      = 8;
     }
 
     // Map related constants
