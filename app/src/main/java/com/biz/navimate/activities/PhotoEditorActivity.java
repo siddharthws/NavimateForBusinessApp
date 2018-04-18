@@ -1,18 +1,26 @@
 package com.biz.navimate.activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+
 import com.biz.navimate.R;
+import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * Created by Sai_Kameswari on 12-03-2018.
@@ -97,6 +105,43 @@ public class PhotoEditorActivity extends BaseActivity {
         // Finish this activity
         finish();
     }
+
+    public void ButtonClickCrop(View view)
+    {
+        BaseActivity activity = App.GetCurrentActivity();
+        Intent cropPictureIntent = new Intent("com.android.camera.action.CROP");
+        //get Image URI
+        File photoFile = new File(absPath);
+        if (photoFile != null) {
+            Uri photoURI = FileProvider.getUriForFile(  this,"com.biz.navimate.fileprovider", photoFile);
+            cropPictureIntent.setDataAndType(photoURI, "image/*");
+            cropPictureIntent.putExtra("crop", "true");
+            cropPictureIntent.putExtra("aspectX", 1);
+            cropPictureIntent.putExtra("aspectY", 1.5);
+            cropPictureIntent.putExtra("scaleUpIfNeeded", true);
+            cropPictureIntent.putExtra("scale", true);
+            cropPictureIntent.putExtra("return-data", false);
+            cropPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            cropPictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            cropPictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(cropPictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                grantUriPermission(packageName, photoURI, Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            }
+            activity.SetPhotoCropListener(new IfaceResult.Crop() {
+                @Override
+                public void onPhotoCrop()
+                {
+                    ui.ivImage.setImageBitmap(BitmapFactory.decodeFile(absPath));
+                }
+            });
+            activity.startActivityForResult(cropPictureIntent, Constants.RequestCodes.PHOTO_CROP);
+        }
+    }
+
+    public void ButtonClickDraw(View view)
+    {}
 
     // ----------------------- Private APIs ----------------------- //
 }

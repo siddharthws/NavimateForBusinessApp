@@ -34,6 +34,11 @@ public class IfaceResult {
         void onPhotoResult();
     }
 
+    public interface Crop
+    {
+        void onPhotoCrop();
+    }
+
     public interface PhotoEditor
     {
         void onPhotoEditorResult(String fileName);

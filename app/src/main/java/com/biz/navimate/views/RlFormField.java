@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
+import com.biz.navimate.activities.PhotoEditorActivity;
 import com.biz.navimate.activities.SignatureActivity;
 import com.biz.navimate.activities.ViewPhotoActivity;
 import com.biz.navimate.application.App;
@@ -401,19 +402,22 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                                 @Override
                                 public void onPhotoResult() {
                                     if (photoFile.exists()) {
-                                        // Scale Image File
-                                        String compressedFile = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
+                                        //set photo editor activity listener
+                                        activity.SetPhotoEditorListener(new IfaceResult.PhotoEditor() {
+                                            @Override
+                                            public void onPhotoEditorResult(String compressedFile) {
+                                                // Set field cache
+                                                FormEntry.Photo photoEntry = (FormEntry.Photo) entry;
+                                                photoEntry.filename = compressedFile;
 
-                                        // Set field cache
-                                        FormEntry.Photo photoEntry = (FormEntry.Photo) entry;
-                                        photoEntry.filename = compressedFile;
-
-                                        // Preview photo in dialog
-                                        SetPhoto(ivPhoto, tvPhoto);
+                                                // Preview photo in dialog
+                                                SetPhoto(ivPhoto, tvPhoto);
+                                            }
+                                        });
+                                        PhotoEditorActivity.Start(App.GetCurrentActivity(), photoFile.getName());
                                     }
                                 }
                             });
-
                             activity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
                         } else {
                             Dbg.Toast(getContext(), "Error while accesing photo directory...", Toast.LENGTH_SHORT);

@@ -44,6 +44,25 @@
             android:text="Save"
             android:onClick="ButtonClickSave"/>
 
+        <Button
+            android:id="@+id/btn_crop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:textColor="@android:color/white"
+            android:text="Crop"
+            android:layout_marginLeft="35dp"
+            android:onClick="ButtonClickCrop"/>
+
+        <Button
+            android:id="@+id/btn_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:textColor="@android:color/white"
+            android:text="Draw"
+            android:onClick="ButtonClickDraw"/>
+
     </LinearLayout>
 
 </RelativeLayout>

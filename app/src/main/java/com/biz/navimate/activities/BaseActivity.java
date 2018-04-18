@@ -55,6 +55,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private IfaceResult.LeadPicker    leadPickerListener        = null;
     private IfaceResult.Zxing         zxingListener             = null;
     private IfaceResult.Photo         photoListener             = null;
+    private IfaceResult.Crop          photoCropListener         = null;
     private IfaceResult.PhotoEditor   photoEditorListener       = null;
     private IfaceResult.Signature     signListener              = null;
 
@@ -287,6 +288,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.photoListener = listener;
     }
 
+    public void SetPhotoCropListener(IfaceResult.Crop listener)
+    {
+        this.photoCropListener = listener;
+    }
+
     public void SetPhotoEditorListener(IfaceResult.PhotoEditor listener)
     {
         this.photoEditorListener = listener;
@@ -387,6 +393,17 @@ public abstract class BaseActivity extends AppCompatActivity {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
                         photoListener.onPhotoResult();
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.PHOTO_CROP:
+            {
+                if (photoCropListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        photoCropListener.onPhotoCrop();
                     }
                 }
                 break;
