@@ -141,6 +141,8 @@ public class Constants {
         public static final String KEY_ADDRESS          = "address";
         public static final String KEY_LATITUDE         = "latitude";
         public static final String KEY_LONGITUDE        = "longitude";
+        public static final String KEY_LAT              = "lat";
+        public static final String KEY_LNG              = "lng";
 
         // Form related keys
         public static final String KEY_CLOSE_TASK       = "closeTask";
@@ -212,5 +214,11 @@ public class Constants {
     public class Misc {
         // Invalid ID
         public static final long ID_INVALID = -1;
+    }
+
+    public class Date {
+        // Date Formats
+        public static final String FORMAT_BACKEND   = "yyyy-MM-dd HH:mm:ss";
+        public static final String FORMAT_FRONTEND  = "dd-MM-yyyy";
     }
 }

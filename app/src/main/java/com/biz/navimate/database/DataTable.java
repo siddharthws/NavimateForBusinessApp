@@ -62,14 +62,6 @@ public class DataTable extends BaseTable {
             datas.add(data);
         }
 
-        // Add lead templated data objects
-        ArrayList<Lead> leads = DbHelper.leadTable.GetLeadsToSync();
-        for (Lead lead : leads) {
-            // Get Lead's templated data
-            Data data = (Data) DbHelper.dataTable.GetById(lead.dataId);
-            datas.add(data);
-        }
-
         return datas;
     }
 

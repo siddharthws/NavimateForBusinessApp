@@ -41,18 +41,14 @@ public class Task extends ServerObject {
     public static Task FromJson(JSONObject taskJson) throws JSONException {
         long serverId           = taskJson.getLong(Constants.Server.KEY_ID);
         long version            = taskJson.getLong(Constants.Server.KEY_VERSION);
-        long leadId             = taskJson.getLong(Constants.Server.KEY_LEAD_ID);
         long formTemplateId     = taskJson.getLong(Constants.Server.KEY_FORM_TEMPLATE_ID);
         long templateId         = taskJson.getLong(Constants.Server.KEY_TEMPLATE_ID);
         long dataId             = taskJson.getLong(Constants.Server.KEY_DATA_ID);
         Task.TaskStatus status  = Task.TaskStatus.valueOf(taskJson.getString(Constants.Server.KEY_STATUS));
 
         // Get Local Lead Object
-        Lead lead = DbHelper.leadTable.GetByServerId(leadId);
-        if (lead == null) {
-            lead = new Lead(Constants.Misc.ID_INVALID, leadId, Constants.Misc.ID_INVALID, "", Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, "", new LatLng(0, 0));
-            DbHelper.leadTable.Save(lead);
-        }
+        String leadId           = taskJson.getString(Constants.Server.KEY_LEAD_ID);
+        Lead lead               = DbHelper.leadTable.GetByServerId(leadId);
 
         // Get Local Form Template Object
         Template formTemplate = DbHelper.templateTable.GetByServerId(formTemplateId);
