@@ -20,10 +20,14 @@ public class Template extends ServerObject {
 
     // ----------------------- Globals ----------------------- //
     public String name = "";
-    public ArrayList<Long> fieldIds = null;
+    public ArrayList<Long> fieldIds = new ArrayList<>();
     public int type = 0;
 
     // ----------------------- Constructor ----------------------- //
+    public Template () {
+        super(DbObject.TYPE_TEMPLATE, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+    }
+
     public Template (long dbId, long serverId, long version, String name, int type, ArrayList<Long> fieldIds) {
         super(DbObject.TYPE_TEMPLATE, dbId, serverId, version);
         this.name = name;

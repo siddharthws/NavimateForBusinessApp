@@ -132,9 +132,14 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                 break;
             }
             case Constants.Template.FIELD_TYPE_PHOTO :
-            case Constants.Template.FIELD_TYPE_SIGN :
-            case Constants.Template.FIELD_TYPE_DATE : {
+            case Constants.Template.FIELD_TYPE_SIGN : {
                 value = entry.toString();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_DATE : {
+                FormEntry.Date date = (FormEntry.Date) entry;
+                SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
+                value = sdf.format(date.cal.getTime());
                 break;
             }
             case Constants.Template.FIELD_TYPE_CHECKLIST : {
@@ -314,7 +319,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         // Set formatted date
         FormEntry.Date dateEntry = (FormEntry.Date) entry;
         if (dateEntry.cal != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_FRONTEND);
             String date = sdf.format(dateEntry.cal.getTime());
             tvDate.setText(date);
         } else {
@@ -339,7 +344,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                             if (dateEntry.cal == null) dateEntry.cal = Calendar.getInstance();
 
                             dateEntry.cal.set(year, month, dayOfMonth);
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_FRONTEND);
                             String date = sdf.format(dateEntry.cal.getTime());
                             tvDate.setText(date);
                         }

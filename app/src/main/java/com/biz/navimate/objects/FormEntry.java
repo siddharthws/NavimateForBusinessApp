@@ -247,13 +247,14 @@ public class FormEntry {
             }
             case Constants.Template.FIELD_TYPE_DATE : {
                 Calendar cal = null;
-                if (value.length() > 0) {
+                if (value != null && value.length() > 0 && !value.equals("null")) {
                     try {
                         cal = Calendar.getInstance();
-                        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat df = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
                         java.util.Date date = df.parse(value);
                         cal.setTime(date);
                     } catch (Exception e) {
+                        Dbg.stack(e);
                         return null;
                     }
                 }

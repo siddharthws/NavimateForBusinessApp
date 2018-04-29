@@ -62,17 +62,14 @@ public class SyncDbTask extends BaseServerTask {
     @Override
     public Void doInBackground (Void... params)
     {
-        // Sync Tasks
-        SyncTasks();
-
-        // Sync Leads
-        SyncLeads();
-
         // Sync Templates
         SyncTemplates();
 
         // Sync Templates
         SyncFields();
+
+        // Sync Tasks
+        SyncTasks();
 
         // Sync Templates
         SyncDatas();
@@ -114,24 +111,6 @@ public class SyncDbTask extends BaseServerTask {
             ParseTaskResponse();
         } else {
             Dbg.error(TAG, "Error while getting tasks form server");
-        }
-    }
-
-    private void SyncLeads () {
-        // Get list of all open tasks
-        ArrayList<Lead> unsyncedLeads = DbHelper.leadTable.GetLeadsToSync();
-
-        // Create version objects
-        JSONArray syncData = GetSyncData(unsyncedLeads);
-
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_LEADS);
-
-        // Parse response
-        if (IsResponseValid()) {
-            ParseLeadResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting leads form server");
         }
     }
 
@@ -209,6 +188,9 @@ public class SyncDbTask extends BaseServerTask {
 
     // Response parsing functions
     private void ParseTaskResponse() {
+        // Save leads first
+        ParseLeadResponse();
+
         try {
             // Get tasks Json array
             JSONArray tasksJson = responseJson.getJSONArray(Constants.Server.KEY_TASKS);
