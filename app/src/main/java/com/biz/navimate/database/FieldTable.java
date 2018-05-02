@@ -83,6 +83,12 @@ public class FieldTable extends BaseTable {
         return null;
     }
 
+    // API to remove a field
+    public void Remove(long dbId) {
+        // Remove Field
+        RemoveById(dbId);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected DbObject ParseToObject(Cursor cursor)

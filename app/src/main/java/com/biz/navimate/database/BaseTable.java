@@ -61,7 +61,7 @@ public abstract class BaseTable {
         }
     }
 
-    public boolean Remove(long dbId) {
+    protected boolean RemoveById(long dbId) {
         Boolean bRemoved = false;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         DbObject itemToBeRemoved = null;
