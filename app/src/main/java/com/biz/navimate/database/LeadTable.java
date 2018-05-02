@@ -100,6 +100,31 @@ public class LeadTable extends BaseTable {
         return null;
     }
 
+    // API to get object by template
+    public ArrayList<Lead> GetByTemplate(Template template) {
+        ArrayList<Lead> leads = new ArrayList<>();
+        for (DbObject dbItem : cache) {
+            Lead lead = (Lead) dbItem;
+            if (lead.template.equals(template)) {
+                leads.add(lead);
+            }
+        }
+
+        return leads;
+    }
+
+    // API to remove a lead
+    public void Remove(Lead lead) {
+        // Remove all associated tasks
+        ArrayList<Task> tasks = DbHelper.taskTable.GetByLead(lead);
+        for (Task task : tasks) {
+            DbHelper.taskTable.Remove(task);
+        }
+
+        // Remove this lead
+        RemoveById(lead.dbId);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected DbObject ParseToObject(Cursor cursor)

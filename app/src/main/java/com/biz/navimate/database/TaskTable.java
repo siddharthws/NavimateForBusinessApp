@@ -4,7 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
+import com.biz.navimate.objects.Template;
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -79,6 +82,57 @@ public class TaskTable extends BaseTable {
         }
 
         return null;
+    }
+
+    // API to get object by lead
+    public ArrayList<Task> GetByLead(Lead lead) {
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (DbObject dbItem : cache) {
+            Task task = (Task) dbItem;
+            if (task.lead.equals(lead)) {
+                tasks.add(task);
+            }
+        }
+
+        return tasks;
+    }
+
+    // API to get object by template
+    public ArrayList<Task> GetByTemplate(Template template) {
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (DbObject dbItem : cache) {
+            Task task = (Task) dbItem;
+            if (task.template.equals(template)) {
+                tasks.add(task);
+            }
+        }
+
+        return tasks;
+    }
+
+    // API to get object by form template
+    public ArrayList<Task> GetByFormTemplate(Template template) {
+        ArrayList<Task> tasks = new ArrayList<>();
+        for (DbObject dbItem : cache) {
+            Task task = (Task) dbItem;
+            if (task.formTemplate.equals(template)) {
+                tasks.add(task);
+            }
+        }
+
+        return tasks;
+    }
+
+    // API to remove task and associated objects
+    public void Remove(Task task) {
+        // Remove all associated forms
+        ArrayList<Form> forms = DbHelper.formTable.GetByTask(task);
+        for (Form form : forms) {
+            DbHelper.formTable.Remove(form);
+        }
+
+        // Remove task object
+        RemoveById(task.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //

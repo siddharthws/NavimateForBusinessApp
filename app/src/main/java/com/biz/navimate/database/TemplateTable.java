@@ -4,9 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.objects.Data;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
 import org.json.JSONArray;
@@ -80,19 +83,47 @@ public class TemplateTable extends BaseTable {
 
     // API to remove a template
     public void Remove(Template template) {
-        // Remove all forms with this template
-        ArrayList<Form> forms = DbHelper.formTable.GetByTemplate(template);
-        for (Form form : forms) {
-            DbHelper.formTable.Remove(form);
+        // Remove objects associated with this template
+        switch (template.type) {
+            case Constants.Template.TYPE_FORM: {
+                // Remove all forms with this template
+                ArrayList<Form> forms = DbHelper.formTable.GetByTemplate(template);
+                for (Form form : forms) {
+                    DbHelper.formTable.Remove(form);
+                }
+
+                // Remove all tasks with this form template
+                ArrayList<Task> tasks = DbHelper.taskTable.GetByFormTemplate(template);
+                for (Task task : tasks) {
+                    DbHelper.taskTable.Remove(task);
+                }
+                break;
+            }
+            case Constants.Template.TYPE_LEAD: {
+                // Remove all leads with this template
+                ArrayList<Lead> leads = DbHelper.leadTable.GetByTemplate(template);
+                for (Lead lead : leads) {
+                    DbHelper.leadTable.Remove(lead);
+                }
+                break;
+            }
+            case Constants.Template.TYPE_TASK: {
+                // Remove all tasks with this template
+                ArrayList<Task> tasks = DbHelper.taskTable.GetByTemplate(template);
+                for (Task task : tasks) {
+                    DbHelper.taskTable.Remove(task);
+                }
+                break;
+            }
         }
 
         // Remove all fields
-        for (Long fieldId : template.fieldIds) {
-            DbHelper.fieldTable.Remove(fieldId);
+        for (Field field : template.fields) {
+            DbHelper.fieldTable.Remove(field.dbId);
         }
 
         // Remove template
-        Remove(template.dbId);
+        RemoveById(template.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //

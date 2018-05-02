@@ -7,6 +7,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -105,14 +106,23 @@ public class FormTable extends BaseTable {
         return forms;
     }
 
+    public ArrayList<Form> GetByTask(Task task) {
+        ArrayList<Form> forms = new ArrayList<>();
+
+        // Create list of forms that have not been sent to server
+        for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
+            if (form.task.dbId == task.dbId) {
+                forms.add(form);
+            }
+        }
+
+        return forms;
+    }
+
     // API to remove a template
     public void Remove(Form form) {
-        // Remove Data Object
-        Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
-        DbHelper.dataTable.Remove(data);
-
         // Remove Form
-        Remove(form.dbId);
+        RemoveById(form.dbId);
     }
 
     // ----------------------- Private APIs ----------------------- //
