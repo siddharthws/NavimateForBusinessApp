@@ -10,3 +10,4 @@
 .externalNativeBuild
 build_signed.cmd
 /.idea/shelf/*
+/.idea
