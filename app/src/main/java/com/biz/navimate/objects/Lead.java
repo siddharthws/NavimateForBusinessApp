@@ -1,7 +1,11 @@
 package com.biz.navimate.objects;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.database.LeadTable;
 import com.biz.navimate.debug.Dbg;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -22,59 +26,122 @@ public class Lead extends ServerObject {
     // ----------------------- Globals ----------------------- //
     public String textServerId = "";
     public String title = "", address = "";
-    public Template template = new Template();
+    public Template template = null;
     public LatLng position = new LatLng(0, 0);
     public ArrayList<FormEntry.Base> values = new ArrayList<>();
 
     // ----------------------- Constructor ----------------------- //
-    public Lead () {
-        super(DbObject.TYPE_TEMPLATE, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+    public Lead (JSONObject json) {
+        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        fromJson(json);
     }
 
-    public Lead (long dbId, String serverId, String title, String address, LatLng position, Template template, ArrayList<FormEntry.Base> values) {
-        super(DbObject.TYPE_LEAD, dbId, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
-        this.textServerId = serverId;
-        this.title = title;
-        this.address = address;
-        this.position = position;
-        this.template = template;
-        this.values = values;
+    public Lead (Cursor cursor) {
+        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        fromCursor(cursor);
     }
 
     // ----------------------- Public APIs ----------------------- //
-    public static Lead FromJson(JSONObject leadJson) throws JSONException {
-        String serverId      = leadJson.getString(Constants.Server.KEY_ID);
-        String name         = leadJson.getString(Constants.Server.KEY_NAME);
-        String address      = leadJson.getString(Constants.Server.KEY_ADDRESS);
-        double latitude     = leadJson.getDouble(Constants.Server.KEY_LAT);
-        double longitude    = leadJson.getDouble(Constants.Server.KEY_LNG);
+    //
+    // Converter methods for JSON
+    //
+    public void fromJson(JSONObject json) {
+        try {
+            textServerId        = json.getString(Constants.Server.KEY_ID);
+            title               = json.getString(Constants.Server.KEY_NAME);
+            address             = json.getString(Constants.Server.KEY_ADDRESS);
 
-        // Get Local Template Object
-        long templateId         = leadJson.getLong(Constants.Server.KEY_TEMPLATE_ID);
-        Template template = DbHelper.templateTable.GetByServerId(templateId);
+            double latitude     = json.getDouble(Constants.Server.KEY_LAT);
+            double longitude    = json.getDouble(Constants.Server.KEY_LNG);
+            position = new LatLng(latitude, longitude);
+
+            // Get Local Template Object
+            long templateId         = json.getLong(Constants.Server.KEY_TEMPLATE_ID);
+            template = DbHelper.templateTable.GetByServerId(templateId);
+
+            // Parse values into Form Entry objects
+            JSONArray valuesJson    = json.getJSONArray(Constants.Server.KEY_VALUES);
+            values = new ArrayList<>();
+            for (int i = 0; i < valuesJson.length(); i++) {
+                JSONObject valueJson = valuesJson.getJSONObject(i);
+
+                // Get field and string value
+                Long fieldId = valueJson.getLong(Constants.Server.KEY_FIELD_ID);
+                Field field = (Field) DbHelper.fieldTable.GetByServerId(fieldId);
+                String value = valueJson.getString(Constants.Server.KEY_VALUE);
+
+                // Add form entry object
+                values.add(FormEntry.Parse(field, value));
+            }
+        } catch (Exception e) {
+            Dbg.error(TAG, "Exception while converting from JSON");
+            Dbg.stack(e);
+        }
+    }
+
+    //
+    // Converter methods for database
+    //
+    public void fromCursor(Cursor cursor)
+    {
+        dbId             = cursor.getLong    (cursor.getColumnIndex(LeadTable.COLUMN_ID));
+        textServerId     = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_SRV_ID));
+        title            = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_TITLE));
+        address          = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_ADDRESS));
+        double latitude         = cursor.getDouble  (cursor.getColumnIndex(LeadTable.COLUMN_LATITUDE));
+        double longitude        = cursor.getDouble  (cursor.getColumnIndex(LeadTable.COLUMN_LONGITUDE));
+        position = new LatLng(latitude, longitude);
+
+        long   templateId       = cursor.getLong    (cursor.getColumnIndex(LeadTable.COLUMN_TEMPLATE_ID));
+        template       = (Template) DbHelper.templateTable.GetById(templateId);
 
         // Parse values into Form Entry objects
-        JSONArray valuesJson    = leadJson.getJSONArray(Constants.Server.KEY_VALUES);
-        ArrayList<FormEntry.Base> values = new ArrayList<>();
-        for (int i = 0; i < valuesJson.length(); i++) {
-            JSONObject valueJson = valuesJson.getJSONObject(i);
+        values = new ArrayList<>();
+        try {
+            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(LeadTable.COLUMN_VALUES)));
+            for (int i = 0; i < valuesJson.length(); i++) {
+                JSONObject valueJson = valuesJson.getJSONObject(i);
 
-            // Get field and string value
-            Long fieldId = valueJson.getLong(Constants.Server.KEY_FIELD_ID);
-            Field field = (Field) DbHelper.fieldTable.GetByServerId(fieldId);
-            String value = valueJson.getString(Constants.Server.KEY_VALUE);
+                // Get field and string value
+                Long fieldId = valueJson.getLong(Constants.Server.KEY_FIELD_ID);
+                Field field = (Field) DbHelper.fieldTable.GetById(fieldId);
+                String value = valueJson.getString(Constants.Server.KEY_VALUE);
 
-            // Add form entry object
-            values.add(FormEntry.Parse(field, value));
+                // Add form entry object
+                values.add(FormEntry.Parse(field, value));
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Error while parsing task values");
+            Dbg.stack(e);
         }
+    }
 
-        // Get DbId
-        long dbId = Constants.Misc.ID_INVALID;
-        Lead existingLead = DbHelper.leadTable.GetByServerId(serverId);
-        if (existingLead != null) {
-            dbId = existingLead.dbId;
+    public ContentValues toContentValues () {
+        ContentValues cv = new ContentValues();
+
+        // Enter values into Database
+        cv.put(LeadTable.COLUMN_SRV_ID,          textServerId);
+        cv.put(LeadTable.COLUMN_TITLE,           title);
+        cv.put(LeadTable.COLUMN_ADDRESS,         address);
+        cv.put(LeadTable.COLUMN_LATITUDE,        position.latitude);
+        cv.put(LeadTable.COLUMN_LONGITUDE,       position.longitude);
+        cv.put(LeadTable.COLUMN_TEMPLATE_ID,     template.dbId);
+
+        // Prepare JSON Array for values
+        JSONArray valuesJson = new JSONArray();
+        try {
+            for(FormEntry.Base value : values) {
+                JSONObject valueJson = new JSONObject();
+                valueJson.put(Constants.Server.KEY_FIELD_ID, value.field.dbId);
+                valueJson.put(Constants.Server.KEY_VALUE, value.toString());
+                valuesJson.put(valueJson);
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "JSON Exception while converting to DB string");
+            Dbg.stack(e);
         }
+        cv.put(LeadTable.COLUMN_VALUES,          valuesJson.toString());
 
-        return new Lead(dbId, serverId, name, address, new LatLng(latitude, longitude), template, values);
+        return cv;
     }
 }

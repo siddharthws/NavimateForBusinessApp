@@ -1,7 +1,12 @@
 package com.biz.navimate.objects;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.database.FieldTable;
+import com.biz.navimate.debug.Dbg;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,30 +26,56 @@ public class Field extends ServerObject {
     public String value = "";
 
     // ----------------------- Constructor ----------------------- //
-    public Field (long dbId, long serverId, long version, String title, int type, String value, boolean bMandatory) {
-        super(DbObject.TYPE_FIELD, dbId, serverId, version);
-        this.title = title;
-        this.type = type;
-        this.bMandatory = bMandatory;
-        this.value = value;
+    public Field (JSONObject json) {
+        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        fromJson(json);
+    }
+
+    public Field (Cursor cursor) {
+        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        fromCursor(cursor);
     }
 
     // ----------------------- Public APIs ----------------------- //
-    public static Field FromJson(JSONObject json) throws JSONException {
-        long serverId               = json.getLong(Constants.Server.KEY_ID);
-        long version                = json.getLong(Constants.Server.KEY_VERSION);
-        String title                = json.getString(Constants.Server.KEY_TITLE);
-        int type                    = json.getInt(Constants.Server.KEY_TYPE);
-        String value                = json.getString(Constants.Server.KEY_VALUE);
-        boolean bMandatory          = json.getBoolean(Constants.Server.KEY_IS_MANDATORY);
-
-        // Get Data DbId
-        long dbId = Constants.Misc.ID_INVALID;
-        Field existingField = DbHelper.fieldTable.GetByServerId(serverId);
-        if (existingField != null) {
-            dbId = existingField.dbId;
+    //
+    // Converter methods for JSON
+    //
+    public void fromJson(JSONObject json) {
+        try {
+            serverId             = json.getLong(Constants.Server.KEY_ID);
+            title                = json.getString(Constants.Server.KEY_TITLE);
+            type                 = json.getInt(Constants.Server.KEY_TYPE);
+            value                = json.getString(Constants.Server.KEY_VALUE);
+            bMandatory           = json.getBoolean(Constants.Server.KEY_IS_MANDATORY);
+        } catch (Exception e) {
+            Dbg.error(TAG, "Exception while converting from JSON");
+            Dbg.stack(e);
         }
+    }
 
-        return new Field(dbId, serverId, version, title, type, value, bMandatory);
+    //
+    // Converter methods for database
+    //
+    public void fromCursor(Cursor cursor)
+    {
+        dbId                    = cursor.getLong    (cursor.getColumnIndex(FieldTable.COLUMN_ID));
+        serverId                = cursor.getLong    (cursor.getColumnIndex(FieldTable.COLUMN_SRV_ID));
+        title                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_TITLE));
+        type                    = cursor.getInt     (cursor.getColumnIndex(FieldTable.COLUMN_TYPE));
+        value                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_VALUE));
+        bMandatory              = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(FieldTable.COLUMN_IS_MANDATORY)));
+    }
+
+    public ContentValues toContentValues () {
+        ContentValues cv = new ContentValues();
+
+        // Enter values into Database
+        cv.put(FieldTable.COLUMN_SRV_ID,         serverId);
+        cv.put(FieldTable.COLUMN_TITLE,          title);
+        cv.put(FieldTable.COLUMN_TYPE,           type);
+        cv.put(FieldTable.COLUMN_VALUE,          value);
+        cv.put(FieldTable.COLUMN_IS_MANDATORY,   bMandatory);
+
+        return cv;
     }
 }

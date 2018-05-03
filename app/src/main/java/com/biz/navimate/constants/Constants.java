@@ -125,6 +125,7 @@ public class Constants {
         public static final String KEY_SYNC_DATA        = "syncData";
         public static final String KEY_TASKS            = "tasks";
         public static final String KEY_LEADS            = "leads";
+        public static final String KEY_LEAD             = "lead";
         public static final String KEY_TEMPLATES        = "templates";
         public static final String KEY_FORMS            = "forms";
         public static final String KEY_FIELDS           = "fields";

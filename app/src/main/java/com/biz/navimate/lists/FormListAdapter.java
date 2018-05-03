@@ -8,11 +8,8 @@ import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
-import com.biz.navimate.objects.Task;
-import com.biz.navimate.objects.Template;
 import com.biz.navimate.viewholders.ListHolder;
 import com.biz.navimate.views.TvCalibri;
 
@@ -58,17 +55,10 @@ public class FormListAdapter extends BaseListAdapter {
         Form form = (Form) DbHelper.formTable.GetById(item.formId);
 
         // Set Template Name
-        Template template = (Template) DbHelper.templateTable.GetById(form.templateId);
-        holder.tvForm.setText(template.name);
+        holder.tvForm.setText(form.template.name);
 
         // Set Lead Title
-        String leadTitle = "";
-        if (form.taskId != Constants.Misc.ID_INVALID) {
-            Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
-            Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
-            leadTitle = lead.title;
-        }
-        holder.tvLead.setText(leadTitle);
+        holder.tvLead.setText((form.task.lead != null) ? form.task.lead.title : "");
 
         // Set Sync Status
         if (form.serverId == Constants.Misc.ID_INVALID) {
