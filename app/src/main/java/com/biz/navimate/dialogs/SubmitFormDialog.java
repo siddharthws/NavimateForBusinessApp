@@ -16,7 +16,6 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.SpinnerAdapter;
-import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
@@ -25,7 +24,6 @@ import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.services.LocationService;
@@ -102,14 +100,14 @@ public class SubmitFormDialog   extends     BaseDialog
                 spinnerAdapter.AddItem(template.name, template.dbId);
 
                 // Set selected template if task's form template matches this
-                if (template.dbId == currentData.form.templateId) {
+                if (form.template != null && template.dbId == form.template.dbId) {
                     ui.spTemplate.setSelection(spinnerAdapter.getCount() - 1, false);
                 }
             }
         }
 
         // Check if task is attached to the form
-        if (form.taskId != Constants.Misc.ID_INVALID) {
+        if (form.task != null) {
             // Make checkbox viisble
             ui.cbCloseTask.setVisibility(View.VISIBLE);
 
@@ -125,19 +123,10 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Set fields using value IDs
-        if (form.dataId != Constants.Misc.ID_INVALID) {
-            Data data = (Data)  DbHelper.dataTable.GetById(form.dataId);
-
-            // Prepare array for fields and values
-            ArrayList<FormEntry.Base> entries = new ArrayList<>();
-            for (Long valueId : data.valueIds) {
-                Value value = (Value) DbHelper.valueTable.GetById(valueId);
-                Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
-                entries.add(FormEntry.Parse(field, field.value));
-            }
-            SetFields(entries);
-        } else if (form.templateId != Constants.Misc.ID_INVALID) {
-            onItemSelected(form.templateId);
+        if (form.values.size() > 0) {
+            SetFields(form.values);
+        } else if (form.template != null) {
+            onItemSelected(form.template.dbId);
         }
 
         // Set Spinner item click listener
@@ -151,19 +140,14 @@ public class SubmitFormDialog   extends     BaseDialog
     @Override
     public void onItemSelected(long id) {
         // Get current data
-        Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
-        Form form = currentData.form;
-
-        // Set form's template ID
-        form.templateId = id;
+        Form form = ((Dialog.SubmitForm) data).form;
 
         // Get template
-        Template template = (Template) DbHelper.templateTable.GetById(id);
+        form.template = (Template) DbHelper.templateTable.GetById(id);
 
         // Prepare array for fields and values
         ArrayList<FormEntry.Base> entries = new ArrayList<>();
-        for (Long fieldId : template.fieldIds) {
-            Field field = (Field) DbHelper.fieldTable.GetById(fieldId);
+        for (Field field : form.template.fields) {
             entries.add(FormEntry.Parse(field, field.value));
         }
 
@@ -205,8 +189,10 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     private void ButtonClickSubmit(){
+        Form form = ((Dialog.SubmitForm) data).form;
+
         // Check if a form template has been selected
-        if (((Dialog.SubmitForm) data).form.templateId == Constants.Misc.ID_INVALID) {
+        if (form.template == null) {
             // Show error toast
             Dbg.Toast(context, "Please select a form to submit...", Toast.LENGTH_LONG);
             return;
@@ -215,23 +201,11 @@ public class SubmitFormDialog   extends     BaseDialog
         // Add Submit Form Location client
         LocationService.AddClient(context, Constants.Location.CLIENT_TAG_SUBMIT_FORM, LocationUpdate.SLOW);
 
-        // Get Value object in each form field
-        ArrayList<Long> valueIds = new ArrayList<>();
+        // Parse Submitted fields and save in form
+        form.values = new ArrayList<>();
         for (RlFormField rlField : ui.fields) {
-            // Get Value from UI and save in table
-            Value value = rlField.GetValue();
-            DbHelper.valueTable.Save(value);
-
-            // Add to values IDs
-            valueIds.add(value.dbId);
+            form.values.add(rlField.GetEntry());
         }
-
-        // Create Data to be submitted and save in DB
-        Data submitData = new Data(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, valueIds);
-        DbHelper.dataTable.Save(submitData);
-
-        // Update form
-        ((Dialog.SubmitForm) data).form.dataId = submitData.dbId;
 
         // Check for current location
         if (LocationService.IsUpdating()) {
@@ -270,11 +244,9 @@ public class SubmitFormDialog   extends     BaseDialog
         DbHelper.formTable.Save(form);
 
         // Update Task status if applicable
-        if ((form.taskId != Constants.Misc.ID_INVALID) && form.bCloseTask) {
-            // Update task object
-            Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
-            task.status = Task.TaskStatus.CLOSED;
-            DbHelper.taskTable.Save(task);
+        if ((form.task != null) && form.bCloseTask) {
+            form.task.status = Task.TaskStatus.CLOSED;
+            DbHelper.taskTable.Save(form.task);
 
             // Refresh Homescreen Tasks
             HomescreenActivity.Refresh();

@@ -20,7 +20,6 @@ public abstract class BaseTable {
 
     // Column Names
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_VERSION = "_version";
 
     // ----------------------- Globals ----------------------- //
     // Table parameters

@@ -10,16 +10,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.biz.navimate.R;
-import com.biz.navimate.constants.Constants;
-import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormEntry;
-import com.biz.navimate.objects.Lead;
-import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
@@ -68,19 +62,14 @@ public class TaskInfoDialog     extends     BaseDialog
     @Override
     protected void SetContentView() {
         // Get current data
-        Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
-        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
+        Task task = ((Dialog.TaskInfo) data).task;
 
         // Set Text
-        ui.btnLead.setText(lead.title);
+        ui.btnLead.setText(task.lead.title);
 
         // Set Form Fields
-        Data data = (Data) DbHelper.dataTable.GetById(currentData.task.dataId);
-        for (Long valueId  : data.valueIds) {
-            Value value = (Value) DbHelper.valueTable.GetById(valueId);
-            Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
-            FormEntry.Base entry = FormEntry.Parse(field, value.value);
-            RlFormField fieldUi = new RlFormField(context, entry, true);
+        for (FormEntry.Base value  : task.values) {
+            RlFormField fieldUi = new RlFormField(context, value, true);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
         }
@@ -95,9 +84,7 @@ public class TaskInfoDialog     extends     BaseDialog
     @Override
     public void onClick(View v) {
         // Get current data
-        Dialog.TaskInfo currentData = (Dialog.TaskInfo) data;
-        Lead lead = (Lead) DbHelper.leadTable.GetById(currentData.task.leadId);
-        Template formTemplate = (Template) DbHelper.templateTable.GetById(currentData.task.formTemplateId);
+        Task task = ((Dialog.TaskInfo) data).task;
 
         switch (v.getId()) {
             case R.id.btn_dismiss: {
@@ -107,23 +94,23 @@ public class TaskInfoDialog     extends     BaseDialog
             }
             case R.id.btn_submit_form: {
                 // Create new form object
-                Form form = new Form(currentData.task.formTemplateId, currentData.task.dbId, Constants.Misc.ID_INVALID, false);
+                Form form = new Form(task);
 
                 // Open Submit form dialog with this form
                 RlDialog.Show(new Dialog.SubmitForm(form, false));
                 break;
             }
             case R.id.btn_lead: {
-                RlDialog.Show(new Dialog.Lead(lead));
+                RlDialog.Show(new Dialog.Lead(task.lead));
                 break;
             }
             case R.id.btn_maps: {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(  "geo:" + lead.position.latitude + "," +
-                                                                 lead.position.longitude +
-                                                         "?q=" + lead.position.latitude + "," +
-                                                                 lead.position.longitude +
-                                                           "(" + lead.title + ")"));
+                                            Uri.parse(  "geo:" + task.lead.position.latitude + "," +
+                                                                 task.lead.position.longitude +
+                                                         "?q=" + task.lead.position.latitude + "," +
+                                                                 task.lead.position.longitude +
+                                                           "(" + task.lead.title + ")"));
                 context.startActivity(intent);
                 break;
             }

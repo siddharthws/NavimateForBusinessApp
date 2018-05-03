@@ -225,10 +225,8 @@ public class HomescreenActivity     extends     BaseActivity
         ArrayList<LatLng> bounds = new ArrayList<>();
         for (Task task : openTasks)
         {
-            Lead lead = (Lead) DbHelper.leadTable.GetById(task.leadId);
-
             // Include in bounds for camera update
-            bounds.add(lead.position);
+            bounds.add(task.lead.position);
         }
 
         // Add current location to bounds if available

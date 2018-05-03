@@ -7,14 +7,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
-import com.biz.navimate.constants.Constants;
-import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
-import com.biz.navimate.objects.Template;
+import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.ListHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.TvCalibri;
@@ -64,22 +61,19 @@ public class TaskListAdapter    extends     BaseListAdapter
         // Gte dtaa and holder
         final ListItem.Task taskItem = (ListItem.Task) data;
         ListHolder.Task holder = (ListHolder.Task) view.getTag();
-        Lead lead = (Lead) DbHelper.leadTable.GetById(taskItem.task.leadId);
+        Task task = taskItem.task;
 
         // Set title and description
-        holder.tvTitle.setText(lead.title);
-        holder.tvDescription.setText(lead.address);
+        holder.tvTitle.setText(task.lead.title);
+        holder.tvDescription.setText(task.lead.address);
 
         // Set btn lick listeners
         holder.btnForm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (listener != null) {
-                    // Get Form Template for this task
-                    Template formTemplate = (Template) DbHelper.templateTable.GetById(taskItem.task.formTemplateId);
-
                     // Create new form object
-                    Form form = new Form(taskItem.task.formTemplateId, taskItem.task.dbId, Constants.Misc.ID_INVALID, false);
+                    Form form = new Form(task);
 
                     // Open Submit form dialog with this form
                     RlDialog.Show(new Dialog.SubmitForm(form, false));

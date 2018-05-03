@@ -5,7 +5,6 @@ import android.database.Cursor;
 
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
 import java.util.ArrayList;
@@ -24,7 +23,6 @@ public class FieldTable extends BaseTable {
 
     // Columns
     public static final String COLUMN_SRV_ID        = "server_id";
-    public static final String COLUMN_VERSION       = "version";
     public static final String COLUMN_TITLE         = "title";
     public static final String COLUMN_TYPE          = "type";
     public static final String COLUMN_VALUE         = "value";
@@ -35,7 +33,6 @@ public class FieldTable extends BaseTable {
             "CREATE TABLE IF NOT EXISTS "   + TABLE_NAME + " (" +
                     COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                     COLUMN_SRV_ID           + " INTEGER," +
-                    COLUMN_VERSION          + " INTEGER," +
                     COLUMN_TITLE            + " TEXT," +
                     COLUMN_TYPE             + " INTEGER," +
                     COLUMN_VALUE            + " TEXT," +
@@ -46,7 +43,6 @@ public class FieldTable extends BaseTable {
     {
         super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
                                                     COLUMN_SRV_ID,
-                                                    COLUMN_VERSION,
                                                     COLUMN_TITLE,
                                                     COLUMN_TYPE,
                                                     COLUMN_VALUE,
@@ -63,9 +59,7 @@ public class FieldTable extends BaseTable {
         ArrayList<Field> fields = new ArrayList<>();
         for (Template template : unsyncedTemplates) {
             // Add all fields in this template
-            for (Long fieldId : template.fieldIds) {
-                fields.add((Field) GetById(fieldId));
-            }
+            fields.addAll(template.fields);
         }
 
         return fields;
@@ -91,33 +85,12 @@ public class FieldTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor)
-    {
-        long   dbId                    = cursor.getLong    (cursor.getColumnIndex(COLUMN_ID));
-        long   serverId                = cursor.getLong    (cursor.getColumnIndex(COLUMN_SRV_ID));
-        long version                   = cursor.getLong    (cursor.getColumnIndex(COLUMN_VERSION));
-        String title                   = cursor.getString  (cursor.getColumnIndex(COLUMN_TITLE));
-        int type                       = cursor.getInt     (cursor.getColumnIndex(COLUMN_TYPE));
-        String value                   = cursor.getString  (cursor.getColumnIndex(COLUMN_VALUE));
-        boolean bMandatory             = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(COLUMN_IS_MANDATORY)));
-
-        return new Field (dbId, serverId, version, title, type, value, bMandatory);
+    protected DbObject ParseToObject(Cursor cursor) {
+        return new Field(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem)
-    {
-        Field field = (Field) dbItem;
-        ContentValues dbEntry = new ContentValues();
-
-        // Enter values into Database
-        dbEntry.put(COLUMN_SRV_ID,         field.serverId);
-        dbEntry.put(COLUMN_VERSION,        field.version);
-        dbEntry.put(COLUMN_TITLE,          field.title);
-        dbEntry.put(COLUMN_TYPE,           field.type);
-        dbEntry.put(COLUMN_VALUE,          field.value);
-        dbEntry.put(COLUMN_IS_MANDATORY,   field.bMandatory);
-
-        return dbEntry;
+    protected ContentValues ParseToContent(DbObject dbItem) {
+        return  ((Field) dbItem).toContentValues();
     }
 }
