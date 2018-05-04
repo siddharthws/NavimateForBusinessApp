@@ -1,32 +1,16 @@
 package com.biz.navimate.activities;
 
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.lists.GenericListAdapter;
-import com.biz.navimate.objects.Data;
-import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
-import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
-import com.biz.navimate.objects.Task;
-import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.viewholders.ActivityHolder;
-import com.biz.navimate.views.RlDialog;
-
 import java.io.File;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ViewPhotoActivity extends BaseActivity {
     // ----------------------- Constants ----------------------- //
