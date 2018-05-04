@@ -16,7 +16,6 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Statics;
@@ -265,21 +264,18 @@ public class HomescreenActivity     extends     BaseActivity
         final Context context = this;
 
         // Sync Forms followed by DB
-        SyncFormsTask syncForms = new SyncFormsTask(context, bDialog);
-        syncForms.SetListener(new IfaceServer.SyncForms() {
+        SyncDbTask syncTask = new SyncDbTask(context, bDialog, true, true, true);
+        syncTask.SetListener(new IfaceServer.SyncTasks() {
             @Override
-            public void onFormsSynced() {
-                SyncDbTask syncDb = new SyncDbTask(context, bDialog);
-                syncDb.SetListener(new IfaceServer.SyncTasks() {
-                    @Override
-                    public void onTaskCompleted() {
-                        // Re-Initialize UI
-                        InitMap();
-                    }
-                });
-                syncDb.execute();
+            public void onTaskCompleted() {
+                // Re-Initialize UI
+                InitMap();
+
+                // Sync Forms
+                SyncFormsTask syncForms = new SyncFormsTask(context, bDialog);
+                syncForms.execute();
             }
         });
-        syncForms.execute();
+        syncTask.execute();
     }
 }

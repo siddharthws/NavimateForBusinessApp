@@ -49,6 +49,9 @@ public class Constants {
         public static final String KEY_MAP_TRAFFIC_OVERLAY      = "pref_map_traffic_overlay";
         public static final String KEY_START_TIME               = "startHr";
         public static final String KEY_END_TIME                 = "endHr";
+        public static final String KEY_TASK_SYNC_TIME           = "taskSyncTime";
+        public static final String KEY_LEAD_SYNC_TIME           = "leadSyncTime";
+        public static final String KEY_TEMPLATE_SYNC_TIME       = "templateSyncTime";
     }
 
     // Template related constants
@@ -85,12 +88,7 @@ public class Constants {
         public static final String URL_REGISTER         = URL_BASE + "/api/reps/register";
         public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
         public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
-        public static final String URL_SYNC_TASKS       = URL_BASE + "/api/reps/sync/tasks";
-        public static final String URL_SYNC_LEADS       = URL_BASE + "/api/reps/sync/leads";
-        public static final String URL_SYNC_TEMPLATES   = URL_BASE + "/api/reps/sync/templates";
-        public static final String URL_SYNC_FIELDS      = URL_BASE + "/api/reps/sync/fields";
-        public static final String URL_SYNC_DATA        = URL_BASE + "/api/reps/sync/data";
-        public static final String URL_SYNC_VALUES      = URL_BASE + "/api/reps/sync/values";
+        public static final String URL_SYNC             = URL_BASE + "/api/reps/sync";
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
         public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
         public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
@@ -171,6 +169,7 @@ public class Constants {
         public static final String KEY_DATA_ID          = "dataId";
         public static final String KEY_REMOVED_IDS      = "removedIds";
         public static final String KEY_REPORT           = "report";
+        public static final String KEY_REMOVE           = "remove";
     }
 
     // Location related constants
