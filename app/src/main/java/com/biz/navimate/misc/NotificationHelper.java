@@ -19,7 +19,19 @@ public class NotificationHelper {
     private static final String TAG = "NOTIFICATION_HELPER";
 
     // Notification IDs for different notification Types
-    public static final int NOTIFICATION_ID_TASKS            = 1;
+    public static final int TYPE_TASK_UPDATE         = 1;
+    public static final int TYPE_TEMPLATE_UPDATE     = 2;
+    public static final int TYPE_LEAD_UPDATE         = 3;
+    public static final int TYPE_ACCOUNT_ADDED       = 4;
+
+    // Strign messages for each notification message
+    private static final String[] NOTIFICATION_MESSAGES = {
+            "",
+            "Your tasks have been updated...",
+            "Your templates have been updated...",
+            "Your leads have been updated...",
+            "You have been added to a new account...",
+    };
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
@@ -28,7 +40,7 @@ public class NotificationHelper {
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
 
-    public static void Notify(Context context)
+    public static void Notify(Context context, int type)
     {
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
 
@@ -38,21 +50,21 @@ public class NotificationHelper {
         nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
 
         // Set specific properties for notification
-        nBuilder.setContentText("You tasks have been updated.");
+        nBuilder.setContentText(NOTIFICATION_MESSAGES[type]);
         //nBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon));
 
         // Set pending intent
         Intent appLoadIntent = new Intent(context, AppLoadActivity.class);
         appLoadIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent appLoadPendingIntent = PendingIntent.getActivity(     context,
-                NOTIFICATION_ID_TASKS,
+                type,
                 appLoadIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         nBuilder.setContentIntent(appLoadPendingIntent);
 
         // Launch notification
         NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(NOTIFICATION_ID_TASKS, nBuilder.build());
+        nManager.notify(type, nBuilder.build());
 
         // Play notification sound
         RingtoneHelper.PlayNotificationSound(context);
