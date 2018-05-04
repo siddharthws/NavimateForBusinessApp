@@ -81,6 +81,7 @@ public class DialogHolder {
 
     public static class TaskInfo extends Base
     {
+        public TvCalibri tvId = null;
         public Button btnLead = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;

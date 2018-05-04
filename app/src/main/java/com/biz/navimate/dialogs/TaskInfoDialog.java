@@ -17,6 +17,7 @@ import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
+import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 
@@ -51,6 +52,7 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_task_info, container);
 
         // Find Views
+        ui.tvId         = (TvCalibri) ui.dialogView.findViewById(R.id.tv_task_id);
         ui.btnLead      = (Button) ui.dialogView.findViewById(R.id.btn_lead);
         ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task_info);
         ui.fields       = new ArrayList<>();
@@ -65,6 +67,7 @@ public class TaskInfoDialog     extends     BaseDialog
         Task task = ((Dialog.TaskInfo) data).task;
 
         // Set Text
+        ui.tvId.setText("ID : " + String.valueOf(task.serverId));
         ui.btnLead.setText(task.lead.title);
 
         // Set Form Fields
