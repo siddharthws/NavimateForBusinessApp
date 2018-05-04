@@ -1,9 +1,8 @@
 package com.biz.navimate.firebase;
 
-import com.biz.navimate.activities.HomescreenActivity;
 import com.biz.navimate.application.App;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.NotificationHelper;
 import com.biz.navimate.server.SyncDbTask;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -15,8 +14,7 @@ import java.util.Map;
  * Created by Siddharth on 01-10-2017.
  */
 
-public class FcmMessagingService extends    FirebaseMessagingService
-                                 implements IfaceServer.SyncTasks {
+public class FcmMessagingService extends    FirebaseMessagingService {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "FCM_MESSAGING_SEVICE";
 
@@ -24,7 +22,11 @@ public class FcmMessagingService extends    FirebaseMessagingService
     public static final String KEY_NOTIFICATION_TYPE = "type";
 
     // FCM Notification Types
-    public static final int TYPE_TASK_UPDATE    = 1;
+    public static final int TYPE_TASK_UPDATE            = 1;
+    public static final int TYPE_TEMPLATE_UPDATE        = 2;
+    public static final int TYPE_LEAD_UPDATE            = 3;
+    public static final int TYPE_ACCOUNT_ADDED          = 4;
+    public static final int TYPE_ACCOUNT_REMOVED        = 5;
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -46,45 +48,100 @@ public class FcmMessagingService extends    FirebaseMessagingService
         // ParseToObject initData
         int notificationType = Integer.parseInt(dataMap.get(KEY_NOTIFICATION_TYPE));
 
-        // Temp Hack to service new types of notification
-        ServiceFcm(notificationType);
+        // Service notifications
+        switch (notificationType) {
+            case TYPE_TASK_UPDATE: {
+                ServiceTaskUpdate();
+                break;
+            }
+            case TYPE_TEMPLATE_UPDATE: {
+                ServiceTemplateUpdate();
+                break;
+            }
+            case TYPE_LEAD_UPDATE: {
+                ServiceLeadUpdate();
+                break;
+            }
+            case TYPE_ACCOUNT_ADDED: {
+                ServiceAccountAdded();
+                break;
+            }
+            case TYPE_ACCOUNT_REMOVED: {
+                ServiceAccountRemoved();
+                break;
+            }
+        }
 
         return;
     }
 
-    @Override
-    public void onTaskCompleted() {
-        // Update homescreen list
-        HomescreenActivity.Refresh();
-
-        // Send notification
-        NotificationHelper.Notify(this);
-    }
-
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
-    private void ServiceFcm(int notificationType) {
-        switch (notificationType) {
-            case TYPE_TASK_UPDATE: {
-                ServiceTaskUpdateNotification();
-                break;
-            }
-            default: {
-                Dbg.error(TAG, "Unknown FCM Message type");
-            }
-        }
-    }
-
-    private void ServiceTaskUpdateNotification() {
+    // Methods to service different types of notifications
+    private void ServiceTaskUpdate() {
+        // Sync Data if app is initialized
         if (App.IsInitialized()) {
             // sync DB from server
-            SyncDbTask syncDb = new SyncDbTask(this, true);
-
-            // Set listener for receiving result
-            syncDb.SetListener(this);
+            SyncDbTask syncTask = new SyncDbTask(this, false, false, true, false);
 
             // Execute task
-            syncDb.execute();
+            syncTask.execute();
         }
+
+        // Send notification to user
+        NotificationHelper.Notify(this, NotificationHelper.TYPE_TASK_UPDATE);
+    }
+
+    private void ServiceTemplateUpdate() {
+        // Sync Data if app is initialized
+        if (App.IsInitialized()) {
+            // sync DB from server
+            SyncDbTask syncTask = new SyncDbTask(this, false, true, false, false);
+
+            // Execute task
+            syncTask.execute();
+        }
+
+        // Send notification to user
+        NotificationHelper.Notify(this, NotificationHelper.TYPE_TEMPLATE_UPDATE);
+    }
+
+    private void ServiceLeadUpdate() {
+        // Sync Data if app is initialized
+        if (App.IsInitialized()) {
+            // sync DB from server
+            SyncDbTask syncTask = new SyncDbTask(this, false, false, false, true);
+
+            // Execute task
+            syncTask.execute();
+        }
+
+        // Send notification to user
+        NotificationHelper.Notify(this, NotificationHelper.TYPE_LEAD_UPDATE);
+    }
+
+    private void ServiceAccountAdded() {
+        if (App.IsInitialized()) {
+            // Sync Data from server
+            SyncDbTask syncTask = new SyncDbTask(this, false, true, true, true);
+            syncTask.execute();
+        }
+
+        // Send notification to user
+        NotificationHelper.Notify(this, NotificationHelper.TYPE_ACCOUNT_ADDED);
+    }
+
+    private void ServiceAccountRemoved() {
+        // Init Database if it is not initialized
+        if (!App.IsInitialized()) {
+            DbHelper.Init(this);
+        }
+
+        // Clear all tables
+        DbHelper.formTable.Clear();
+        DbHelper.taskTable.Clear();
+        DbHelper.leadTable.Clear();
+        DbHelper.templateTable.Clear();
+        DbHelper.fieldTable.Clear();
     }
 }
