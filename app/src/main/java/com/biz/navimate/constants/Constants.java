@@ -162,6 +162,7 @@ public class Constants {
         public static final String KEY_EMAIL            = "email";
         public static final String KEY_VERSION_CODE     = "versionCode";
         public static final String KEY_UPDATE_REQUIRED  = "updateRequired";
+        public static final String KEY_MANDATORY_UPDATE = "mandatoryUpdate";
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
         public static final String KEY_MESSAGE          = "message";

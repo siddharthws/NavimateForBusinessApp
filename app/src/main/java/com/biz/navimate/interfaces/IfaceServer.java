@@ -60,6 +60,7 @@ public class IfaceServer {
 
     // Check Updates Task interface
     public interface CheckUpdates {
+        void exitApp();
         void onUpdateRequired();
         void onUpdateNotRequired();
     }

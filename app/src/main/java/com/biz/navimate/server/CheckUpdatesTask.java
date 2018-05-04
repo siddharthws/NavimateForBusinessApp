@@ -33,7 +33,8 @@ public class CheckUpdatesTask extends BaseServerTask {
     }
 
     // ----------------------- Globals ----------------------- //
-    private boolean bUpdateRequired = false;
+    private boolean bOptionalUpdate = false;
+    private boolean bMandatoryUpdate = false;
 
     // ----------------------- Constructor ----------------------- //
     public CheckUpdatesTask(Context parentContext)
@@ -69,7 +70,13 @@ public class CheckUpdatesTask extends BaseServerTask {
 
         if (IsResponseValid()) {
             try {
-                bUpdateRequired = responseJson.getBoolean(Constants.Server.KEY_UPDATE_REQUIRED);
+                boolean bUpdateRequired = responseJson.getBoolean(Constants.Server.KEY_UPDATE_REQUIRED);
+                if (bUpdateRequired) {
+                    bMandatoryUpdate = responseJson.getBoolean(Constants.Server.KEY_MANDATORY_UPDATE);
+                    if (!bMandatoryUpdate) {
+                        bOptionalUpdate = true;
+                    }
+                }
             } catch (JSONException e) {
                 Dbg.stack(e);
             }
@@ -85,7 +92,7 @@ public class CheckUpdatesTask extends BaseServerTask {
     {
         if (IsResponseValid())
         {
-            if (bUpdateRequired) {
+            if (bOptionalUpdate) {
                 // Confirm from user if he wants to update
                 RlDialog.Show(new Dialog.Confirm("Your App is Out-of-Date. Would you like to update now ?", new IfaceDialog.Confirm() {
                     @Override
@@ -103,6 +110,27 @@ public class CheckUpdatesTask extends BaseServerTask {
                         if (listener != null)
                         {
                             listener.onUpdateNotRequired();
+                        }
+                    }
+                }));
+            } else if (bMandatoryUpdate) {
+                // Confirm from user if he wants to update
+                RlDialog.Show(new Dialog.Confirm("Navimate requires a mandatory update to work. Please update now...", new IfaceDialog.Confirm() {
+                    @Override
+                    public void onConfirmYesClick() {
+                        // Call listener
+                        if (listener != null)
+                        {
+                            listener.onUpdateRequired();
+                        }
+                    }
+
+                    @Override
+                    public void onConfirmNoClick() {
+                        // Call listener
+                        if (listener != null)
+                        {
+                            listener.exitApp();
                         }
                     }
                 }));

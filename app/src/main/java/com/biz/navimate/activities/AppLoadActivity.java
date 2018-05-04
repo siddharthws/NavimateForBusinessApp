@@ -111,6 +111,11 @@ public class AppLoadActivity    extends     BaseActivity
         LoadApp();
     }
 
+    @Override
+    public void exitApp() {
+        finish();
+    }
+
     // Registration Overrides
     @Override
     public void onRegisterSuccess() {
