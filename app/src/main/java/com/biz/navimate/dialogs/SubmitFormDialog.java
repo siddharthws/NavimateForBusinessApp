@@ -106,8 +106,8 @@ public class SubmitFormDialog   extends     BaseDialog
             }
         }
 
-        // Check if task is attached to the form
-        if (form.task != null) {
+        // Set checkbox only for forms attached to open tasks
+        if (form.task != null && form.task.status == Task.TaskStatus.OPEN) {
             // Make checkbox viisble
             ui.cbCloseTask.setVisibility(View.VISIBLE);
 

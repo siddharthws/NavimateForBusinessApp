@@ -1,9 +1,11 @@
 package com.biz.navimate.lists;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
@@ -51,6 +53,7 @@ public class TaskListAdapter    extends     BaseListAdapter
         holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
         holder.tvDescription = (TvCalibri) view.findViewById(R.id.tv_description);
         holder.btnForm = (Button) view.findViewById(R.id.btn_submit_form);
+        holder.llRoot = (LinearLayout) view.findViewById(R.id.ll_task_list_root);
 
         // Assign holder to view
         view.setTag(holder);
@@ -66,6 +69,13 @@ public class TaskListAdapter    extends     BaseListAdapter
         // Set title and description
         holder.tvTitle.setText(task.lead.title);
         holder.tvDescription.setText(task.lead.address);
+
+        // Set different background for Open and Closed tasks
+        if (taskItem.task.status == Task.TaskStatus.CLOSED) {
+            holder.llRoot.setBackground(ContextCompat.getDrawable(parentContext, R.drawable.bg_off_white_shadow));
+        } else {
+            holder.llRoot.setBackground(ContextCompat.getDrawable(parentContext, R.drawable.bg_white_shadow_slant));
+        }
 
         // Set btn lick listeners
         holder.btnForm.setOnClickListener(new View.OnClickListener() {

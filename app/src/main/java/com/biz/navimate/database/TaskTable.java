@@ -69,6 +69,19 @@ public class TaskTable extends BaseTable {
         return openTasks;
     }
 
+    public ArrayList<Task> GetClosedTasks() {
+        ArrayList<Task> closedTasks = new ArrayList<>();
+        for (Task task : (CopyOnWriteArrayList<Task>) DbHelper.taskTable.GetAll())
+        {
+            // Ignore closed task
+            if (task.status == Task.TaskStatus.CLOSED) {
+                closedTasks.add(task);
+            }
+        }
+
+        return closedTasks;
+    }
+
     // API to get object by serverId
     public Task GetByServerId(long serverId) {
         for (DbObject dbItem : cache) {

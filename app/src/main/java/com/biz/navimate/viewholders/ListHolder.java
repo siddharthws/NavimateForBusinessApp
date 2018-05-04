@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.biz.navimate.views.TvCalibri;
@@ -16,6 +17,7 @@ public class ListHolder {
     // Task List Item
     public static class Task
     {
+        public LinearLayout llRoot;
         public TvCalibri    tvTitle, tvDescription;
         public Button       btnForm;
     }

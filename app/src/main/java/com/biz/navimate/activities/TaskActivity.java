@@ -96,10 +96,16 @@ public class TaskActivity   extends     BaseActivity
         // Reset Adapter
         listAdpater.Clear();
 
-        // Add form items in reverse order
-        ArrayList<Task> tasks = DbHelper.taskTable.GetOpenTasks();
-        for (int i = tasks.size() - 1; i >= 0; i--) {
-            listAdpater.Add(new ListItem.Task(tasks.get(i)));
+        // Add Open tasks on top in reverse order of ID
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+        for (int i = openTasks.size() - 1; i >= 0; i--) {
+            listAdpater.Add(new ListItem.Task(openTasks.get(i)));
+        }
+
+        // Add Closed tasks on bottom in reverse order of ID
+        ArrayList<Task> closedTasks = DbHelper.taskTable.GetClosedTasks();
+        for (int i = closedTasks.size() - 1; i >= 0; i--) {
+            listAdpater.Add(new ListItem.Task(closedTasks.get(i)));
         }
     }
 }
