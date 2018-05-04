@@ -41,7 +41,7 @@ public class Form extends ServerObject {
         super(DbObject.TYPE_FORM, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         this.task = task;
         this.template = task.formTemplate;
-        this.bCloseTask = false;
+        this.bCloseTask = task.status == Task.TaskStatus.OPEN ? false : true;
     }
 
     public Form (JSONObject json) {
