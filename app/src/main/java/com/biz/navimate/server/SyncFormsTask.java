@@ -8,14 +8,10 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.objects.Data;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
-import com.biz.navimate.objects.Task;
-import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
@@ -132,7 +128,7 @@ public class SyncFormsTask extends BaseServerTask {
             }
 
             // Add form Json to sync data
-            formsJson.put(GetFormJson(form));
+            formsJson.put(form.toJson());
         }
 
         // Sync all form data with server
@@ -151,22 +147,12 @@ public class SyncFormsTask extends BaseServerTask {
     private ArrayList<String> GetFormImages(Form form) {
         ArrayList<String> images = new ArrayList<>();
 
-        // Get Form data
-        Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
-
         // Iterate through values
-        for (Long valueId : data.valueIds) {
-            // Get Value
-            Value value = (Value) DbHelper.valueTable.GetById(valueId);
-
-            // Get field
-            Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
-
-            // Check if field type is image
-            if (((field.type == Constants.Template.FIELD_TYPE_PHOTO) ||
-                (field.type == Constants.Template.FIELD_TYPE_SIGN)) &&
-                (value.value.length() > 0)) {
-                images.add(value.value);
+        for (FormEntry.Base value : form.values) {
+            if (((value.field.type == Constants.Template.FIELD_TYPE_PHOTO) ||
+                (value.field.type == Constants.Template.FIELD_TYPE_SIGN)) &&
+                (value.toString().length() > 0)) {
+                images.add(value.toString());
             }
         }
 
@@ -210,35 +196,13 @@ public class SyncFormsTask extends BaseServerTask {
             // Get forms Json array
             JSONArray formsJson = responseJson.getJSONArray(Constants.Server.KEY_FORMS);
             for (int i = 0; i < formsJson.length(); i++) {
-                // Get objects
-                JSONObject formJson = formsJson.getJSONObject(i);
-                JSONObject dataJson = formJson.getJSONObject(Constants.Server.KEY_DATA);
-                JSONArray valuesJson = dataJson.getJSONArray(Constants.Server.KEY_VALUES);
+                // Update server Id of form object
                 Form form = unsyncedForms.get(i);
-                Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
-
-                // Update server Id and version of form object
-                form.serverId = formJson.getLong(Constants.Server.KEY_ID);
-                form.version = formJson.getLong(Constants.Server.KEY_VERSION);
+                form.serverId = formsJson.getLong(i);
                 DbHelper.formTable.Save(form);
-
-                // Update server Id and version of data object
-                data.serverId = dataJson.getLong(Constants.Server.KEY_ID);
-                data.version = dataJson.getLong(Constants.Server.KEY_VERSION);
-                DbHelper.dataTable.Save(data);
-
-                // Update server Id and Version of each value in the data
-                for (int j = 0; j < valuesJson.length(); j++) {
-                    JSONObject valueJson = valuesJson.getJSONObject(j);
-                    Value value = (Value) DbHelper.valueTable.GetById(data.valueIds.get(j));
-
-                    value.serverId = valueJson.getLong(Constants.Server.KEY_ID);
-                    value.version = valueJson.getLong(Constants.Server.KEY_VERSION);
-                    DbHelper.valueTable.Save(value);
-                }
             }
         } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing task response");
+            Dbg.error(TAG, "Error while parsing response");
             Dbg.stack(e);
         }
     }
@@ -265,55 +229,5 @@ public class SyncFormsTask extends BaseServerTask {
 
         // Call super to send request
         super.doInBackground();
-    }
-
-    // API to get server recognizable sync data from db objects
-    private JSONObject GetFormJson(Form form) {
-        // Get template, task & data for this form
-        long taskServerId = Constants.Misc.ID_INVALID;
-        if (form.taskId != Constants.Misc.ID_INVALID) {
-            Task task = (Task) DbHelper.taskTable.GetById(form.taskId);
-            taskServerId = task.serverId;
-        }
-        Template template = (Template) DbHelper.templateTable.GetById(form.templateId);
-        Data data = (Data) DbHelper.dataTable.GetById(form.dataId);
-
-        // Create form Json
-        JSONObject formJson = new JSONObject();
-        try {
-            // Create Values Array
-            JSONArray valuesJson = new JSONArray();
-            for (Long valueId : data.valueIds) {
-                // Get Value and Field
-                Value value = (Value) DbHelper.valueTable.GetById(valueId);
-                Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
-
-                // Create Value JSON
-                JSONObject valueJson = new JSONObject();
-                valueJson.put(Constants.Server.KEY_FIELD_ID, field.serverId);
-                valueJson.put(Constants.Server.KEY_VALUE, value.value);
-
-                // Add to Values JSON Array
-                valuesJson.put(valueJson);
-            }
-
-            // Create Data JSON
-            JSONObject dataJson = new JSONObject();
-            dataJson.put(Constants.Server.KEY_TEMPLATE_ID, template.serverId);
-            dataJson.put(Constants.Server.KEY_VALUES, valuesJson);
-
-            // Create Form Json
-            formJson.put(Constants.Server.KEY_TASK_ID, taskServerId);
-            formJson.put(Constants.Server.KEY_LATITUDE, form.latlng.latitude);
-            formJson.put(Constants.Server.KEY_LONGITUDE, form.latlng.longitude);
-            formJson.put(Constants.Server.KEY_TIMESTAMP, form.timestamp);
-            formJson.put(Constants.Server.KEY_CLOSE_TASK, form.bCloseTask);
-            formJson.put(Constants.Server.KEY_DATA, dataJson);
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while putting sync data in object");
-            Dbg.stack(e);
-        }
-
-        return formJson;
     }
 }

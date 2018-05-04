@@ -78,12 +78,12 @@ public class TaskActivity   extends     BaseActivity
 
     public void ButtonClickSync(View view)
     {
-        SyncDbTask syncDb = new SyncDbTask(this, true);
-        syncDb.SetListener(() -> {
+        SyncDbTask syncTask = new SyncDbTask(this, true, false, true, true);
+        syncTask.SetListener(() -> {
             // Re-Initialize UI
             InitList();
         });
-        syncDb.execute();
+        syncTask.execute();
     }
 
     public void ButtonClickAddTask(View view) {

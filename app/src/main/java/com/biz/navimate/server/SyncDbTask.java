@@ -2,36 +2,31 @@ package com.biz.navimate.server;
 
 import android.content.Context;
 
+import com.biz.navimate.activities.HomescreenActivity;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
-import com.biz.navimate.objects.Data;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
-import com.biz.navimate.objects.ServerObject;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 import okhttp3.RequestBody;
 
 /**
- * Created by Siddharth on 05-12-2017.
+ * Created by Siddharth on 11-04-2018.
  */
 
 public class SyncDbTask extends BaseServerTask {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "SYNC_DB_TASK";
+    private static final String TAG = "SYNC_TASK";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
@@ -43,11 +38,17 @@ public class SyncDbTask extends BaseServerTask {
 
     // ----------------------- Globals ----------------------- //
     private boolean bDialog = false;
+    private boolean bTemplates = false;
+    private boolean bTasks = false;
+    private boolean bLeads = false;
 
     // ----------------------- Constructor ----------------------- //
-    public SyncDbTask(Context parentContext, boolean bDialog) {
-        super(parentContext, "");
+    public SyncDbTask(Context parentContext, boolean bDialog, boolean bTemplates, boolean bTasks, boolean bLeads) {
+        super(parentContext, Constants.Server.URL_SYNC);
         this.bDialog = bDialog;
+        this.bTemplates = bTemplates;
+        this.bTasks = bTasks;
+        this.bLeads = bLeads;
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -55,27 +56,30 @@ public class SyncDbTask extends BaseServerTask {
     public void onPreExecute () {
         // Show waiting dialog if required
         if (bDialog) {
-            RlDialog.Show(new Dialog.Waiting("Syncing Tasks..."));
+            RlDialog.Show(new Dialog.Waiting("Syncing..."));
         }
     }
 
     @Override
-    public Void doInBackground (Void... params)
-    {
-        // Sync Templates
-        SyncTemplates();
+    public Void doInBackground (Void... params) {
+        try {
+            // Prepare JSON for request
+            JSONObject json = GetRequestJson();
 
-        // Sync Templates
-        SyncFields();
+            // Prepare Request Builder
+            reqBuilder.method("POST", RequestBody.create(JSON, json.toString()));
 
-        // Sync Tasks
-        SyncTasks();
+            // Send request to server
+            super.doInBackground();
 
-        // Sync Templates
-        SyncDatas();
-
-        // Sync Templates
-        SyncValues();
+            // Parse response
+            if (IsResponseValid()) {
+                ParseResponse();
+            }
+        }catch(JSONException e) {
+            Dbg.error(TAG, "Exception while parsing data for task");
+            Dbg.stack(e);
+        }
 
         return null;
     }
@@ -91,294 +95,144 @@ public class SyncDbTask extends BaseServerTask {
         if (listener != null) {
             listener.onTaskCompleted();
         }
+
+        // Refresh Homescreen Activity
+        HomescreenActivity.Refresh();
     }
 
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
-    // Sync entry point functions
-    private void SyncTasks () {
-        // Get list of all open tasks
-        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+    private JSONObject GetRequestJson() throws JSONException {
+        JSONObject json = new JSONObject();
 
-        // Create version objects
-        JSONArray syncData = GetSyncData(openTasks);
+        // Add templates
+        if (bTemplates) {
+            json.put(Constants.Server.KEY_TEMPLATES, Preferences.GetTemplateSyncTime());
+        }
 
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_TASKS);
+        // Add leads
+        if (bLeads) {
+            json.put(Constants.Server.KEY_LEADS, Preferences.GetLeadSyncTime());
+        }
 
-        // Parse response
-        if (IsResponseValid()) {
-            ParseTaskResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting tasks form server");
+        // Add tasks
+        if (bTasks) {
+            json.put(Constants.Server.KEY_TASKS, Preferences.GetTaskSyncTime());
+        }
+
+        return json;
+    }
+
+    private void ParseResponse() throws JSONException {
+        if (bTemplates) {
+            // Parse Templates
+            ParseTemplates(responseJson.getJSONObject(Constants.Server.KEY_TEMPLATES));
+
+            // Update Sync Time
+            Preferences.SetTemplateSyncTime(parentContext, System.currentTimeMillis());
+        }
+
+        if (bLeads) {
+            // Parse leads
+            ParseLeads(responseJson.getJSONObject(Constants.Server.KEY_LEADS));
+
+            // Update Sync Time
+            Preferences.SetLeadSyncTime(parentContext, System.currentTimeMillis());
+        }
+
+        if (bTasks) {
+            // Parse Tasks
+            ParseTasks(responseJson.getJSONObject(Constants.Server.KEY_TASKS));
+
+            // Update Sync Time
+            Preferences.SetTaskSyncTime(parentContext, System.currentTimeMillis());
         }
     }
 
-    private void SyncTemplates () {
-        // Get list of all open tasks
-        ArrayList<Template> unsyncedTemplates = DbHelper.templateTable.GetTemplatesToSync();
+    private void ParseTemplates(JSONObject json) throws JSONException {
+        // Save objects from response
+        JSONArray templatesJson = json.getJSONArray(Constants.Server.KEY_TEMPLATES);
+        for (int i = 0; i < templatesJson.length(); i++) {
+            // Parse JSON into template object
+            JSONObject templateJson = templatesJson.getJSONObject(i);
 
-        // Create version objects
-        JSONArray syncData = GetSyncData(unsyncedTemplates);
-
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_TEMPLATES);
-
-        // Parse response
-        if (IsResponseValid()) {
-            ParseTemplateResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting templates form server");
-        }
-    }
-
-    private void SyncFields () {
-        // Get list of all open tasks
-        ArrayList<Field> unsyncedFields = DbHelper.fieldTable.GetFieldsToSync();
-
-        // Create version objects
-        JSONArray syncData = GetSyncData(unsyncedFields);
-
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_FIELDS);
-
-        // Parse response
-        if (IsResponseValid()) {
-            ParseFieldResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting fields form server");
-        }
-    }
-
-    private void SyncDatas () {
-        // Get list of all open tasks
-        ArrayList<Data> unsyncedData = DbHelper.dataTable.GetDataToSync();
-
-        // Create version objects
-        JSONArray syncData = GetSyncData(unsyncedData);
-
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_DATA);
-
-        // Parse response
-        if (IsResponseValid()) {
-            ParseDataResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting data from server");
-        }
-    }
-
-    private void SyncValues () {
-        // Get list of all open tasks
-        ArrayList<Value> unsyncedValues = DbHelper.valueTable.GetValuesToSync();
-
-        // Create version objects
-        JSONArray syncData = GetSyncData(unsyncedValues);
-
-        // Send to server
-        PostToServer(syncData, Constants.Server.URL_SYNC_VALUES);
-
-        // Parse response
-        if (IsResponseValid()) {
-            ParseValueResponse();
-        } else {
-            Dbg.error(TAG, "Error while getting values from server");
-        }
-    }
-
-    // Response parsing functions
-    private void ParseTaskResponse() {
-        // Save leads first
-        ParseLeadResponse();
-
-        try {
-            // Get tasks Json array
-            JSONArray tasksJson = responseJson.getJSONArray(Constants.Server.KEY_TASKS);
-
-            // Parse each JSON Object to task object
-            ArrayList<Task> tasks = new ArrayList<>();
-            ArrayList<Lead> leads = new ArrayList<>();
-            ArrayList<Form> forms = new ArrayList<>();
-            for (int i = 0; i < tasksJson.length(); i++) {
-                // Parse task JSOn to Taks object
-                JSONObject taskJson = tasksJson.getJSONObject(i);
-                Task task = Task.FromJson(taskJson);
-                tasks.add(task);
+            // Get object by server ID or create new
+            Template template = DbHelper.templateTable.GetByServerId(templateJson.getLong(Constants.Server.KEY_ID));
+            if (template != null) {
+                template.fromJson(templateJson);
+            } else {
+                template = new Template(templateJson);
             }
 
-            // Save all new tasks / leads / templates in database
-            for (Task task : tasks) {
-                DbHelper.taskTable.Save(task);
-            }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing task response");
-            Dbg.stack(e);
+            // Save template object in DB
+            DbHelper.templateTable.Save(template);
         }
-    }
 
-    private void ParseLeadResponse() {
-        try {
-            // Get tasks Json array
-            JSONArray leadsJson = responseJson.getJSONArray(Constants.Server.KEY_LEADS);
-
-            // Parse each JSON Object to task object
-            ArrayList<Lead> leads = new ArrayList<>();
-            for (int i = 0; i < leadsJson.length(); i++) {
-                JSONObject leadJson = leadsJson.getJSONObject(i);
-                leads.add(Lead.FromJson(leadJson));
-            }
-
-            // Save all new tasks in database
-            for (Lead lead : leads) {
-                DbHelper.leadTable.Save(lead);
-            }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing lead response");
-            Dbg.stack(e);
-        }
-    }
-
-    private void ParseTemplateResponse() {
-        try {
-            // Get tasks Json array
-            JSONArray templatesJson = responseJson.getJSONArray(Constants.Server.KEY_TEMPLATES);
-
-            // Parse each JSON Object to task object
-            ArrayList<Template> templates = new ArrayList<>();
-            for (int i = 0; i < templatesJson.length(); i++) {
-                JSONObject templateJson = templatesJson.getJSONObject(i);
-                templates.add(Template.FromJson(templateJson));
-            }
-
-            // Save all new templates in database
-            for (Template template : templates) {
-                DbHelper.templateTable.Save(template);
-            }
-
-            // Get template IDs that need to be removed
-            JSONArray removedIds = responseJson.getJSONArray(Constants.Server.KEY_REMOVED_IDS);
-
-            // Delete each template with this server id
-            for (int i = 0; i < removedIds.length(); i++) {
-                // Get template
-                Template template = DbHelper.templateTable.GetByServerId(removedIds.getInt(i));
-
-                // Delete template from db
+        // Remove objects as per response
+        JSONArray removeIds = json.getJSONArray(Constants.Server.KEY_REMOVE);
+        for (int i = 0; i < removeIds.length(); i++) {
+            Template template = DbHelper.templateTable.GetByServerId(removeIds.getLong(i));
+            if (template != null) {
                 DbHelper.templateTable.Remove(template);
             }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing template response");
-            Dbg.stack(e);
         }
     }
 
-    private void ParseFieldResponse() {
-        try {
-            // Get tasks Json array
-            JSONArray fieldsJson = responseJson.getJSONArray(Constants.Server.KEY_FIELDS);
+    private void ParseLeads(JSONObject json) throws JSONException {
+        // Save objects from response
+        JSONArray leadsJson = json.getJSONArray(Constants.Server.KEY_LEADS);
+        for (int i = 0; i < leadsJson.length(); i++) {
+            // Parse JSON into object
+            JSONObject leadJson = leadsJson.getJSONObject(i);
 
-            // Parse each JSON Object to Field object
-            ArrayList<Field> fields = new ArrayList<>();
-            for (int i = 0; i < fieldsJson.length(); i++) {
-                JSONObject fieldJson = fieldsJson.getJSONObject(i);
-                fields.add(Field.FromJson(fieldJson));
+            // Get object by server ID or create new
+            Lead lead = DbHelper.leadTable.GetByServerId(leadJson.getString(Constants.Server.KEY_ID));
+            if (lead != null) {
+                lead.fromJson(leadJson);
+            } else {
+                lead = new Lead(leadJson);
             }
 
-            // Save all new forms in database
-            for (Field field : fields) {
-                DbHelper.fieldTable.Save(field);
+            // Save object in DB
+            DbHelper.leadTable.Save(lead);
+        }
+
+        // Remove objects as per response
+        JSONArray removeIds = json.getJSONArray(Constants.Server.KEY_REMOVE);
+        for (int i = 0; i < removeIds.length(); i++) {
+            Lead lead = DbHelper.leadTable.GetByServerId(removeIds.getString(i));
+            if (lead != null) {
+                DbHelper.leadTable.Remove(lead);
             }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing field response");
-            Dbg.stack(e);
         }
     }
 
-    private void ParseDataResponse() {
-        try {
-            // Get tasks Json array
-            JSONArray datasJson = responseJson.getJSONArray(Constants.Server.KEY_DATA);
+    private void ParseTasks(JSONObject json) throws JSONException {
+        // Save objects from response
+        JSONArray tasksJson = json.getJSONArray(Constants.Server.KEY_TASKS);
+        for (int i = 0; i < tasksJson.length(); i++) {
+            // Parse JSON into object
+            JSONObject taskJson = tasksJson.getJSONObject(i);
 
-            // Parse each JSON Object to Field object
-            ArrayList<Data> datas = new ArrayList<>();
-            for (int i = 0; i < datasJson.length(); i++) {
-                JSONObject dataJson = datasJson.getJSONObject(i);
-                datas.add(Data.FromJson(dataJson));
+            // Get object by server ID or create new
+            Task task = DbHelper.taskTable.GetByServerId(taskJson.getLong(Constants.Server.KEY_ID));
+            if (task != null) {
+                task.fromJson(taskJson);
+            } else {
+                task = new Task(taskJson);
             }
 
-            // Save all new forms in database
-            for (Data data : datas) {
-                DbHelper.dataTable.Save(data);
-            }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing data response");
-            Dbg.stack(e);
-        }
-    }
-
-    private void ParseValueResponse() {
-        try {
-            // Get tasks Json array
-            JSONArray valuesJson = responseJson.getJSONArray(Constants.Server.KEY_VALUES);
-
-            // Parse each JSON Object to Field object
-            ArrayList<Value> values = new ArrayList<>();
-            for (int i = 0; i < valuesJson.length(); i++) {
-                JSONObject valueJson = valuesJson.getJSONObject(i);
-                values.add(Value.FromJson(valueJson));
-            }
-
-            // Save all new forms in database
-            for (Value value : values) {
-                DbHelper.valueTable.Save(value);
-            }
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while parsing value response");
-            Dbg.stack(e);
-        }
-    }
-
-    // API to post request to server
-    private void PostToServer(JSONArray syncData, String url) {
-        // Set URL
-        this.url = url;
-
-        // Create request JSON
-        JSONObject requestJson = new JSONObject();
-        try {
-            requestJson.put(Constants.Server.KEY_SYNC_DATA, syncData);
-        } catch (JSONException e) {
-            Dbg.error(TAG, "Error while putting initData in JSON");
-            Dbg.stack(e);
+            // Save object in DB
+            DbHelper.taskTable.Save(task);
         }
 
-        // Update Okhttp request builder
-        reqBuilder.method("POST", RequestBody.create(JSON, requestJson.toString()));
-
-        // Call super to send request
-        super.doInBackground();
-    }
-
-    // API to get server recognizable sync data from db objects
-    private JSONArray GetSyncData(ArrayList<? extends ServerObject> items) {
-        JSONArray syncData = new JSONArray();
-
-        // Iterate through db items and add version and id
-        for (ServerObject item : items) {
-            // Create sync object
-            JSONObject syncObject = new JSONObject();
-            try {
-                syncObject.put(Constants.Server.KEY_ID, item.serverId);
-                syncObject.put(Constants.Server.KEY_VERSION, item.version);
-            } catch (JSONException e) {
-                Dbg.error(TAG, "Error while putting sync data in object");
-                Dbg.stack(e);
+        // Remove objects as per response
+        JSONArray removeIds = json.getJSONArray(Constants.Server.KEY_REMOVE);
+        for (int i = 0; i < removeIds.length(); i++) {
+            Task task = DbHelper.taskTable.GetByServerId(removeIds.getLong(i));
+            if (task != null) {
+                DbHelper.taskTable.Remove(task);
             }
-
-            // Add to array
-            syncData.put(syncObject);
         }
-
-        return syncData;
     }
 }

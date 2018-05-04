@@ -36,6 +36,11 @@ public class Preferences {
     // User Location cache
     private static LocationObj lastKnowLocation         = null;
 
+    // Last Sync times for different objects
+    private static long taskSyncTimeMs = 0;
+    private static long leadSyncTimeMs = 0;
+    private static long templateSyncTimeMs = 0;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
@@ -67,6 +72,11 @@ public class Preferences {
         lastKnowLocation        = new LocationObj(  Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LATITUDE, "0")),
                                                     Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LONGITUDE, "0")),
                                                     sharedPref.getLong(Constants.Preferences.KEY_TIMESTAMP, 0L), 0.0f);
+
+        // Read Sync TImes
+        taskSyncTimeMs                 = sharedPref.getLong(Constants.Preferences.KEY_TASK_SYNC_TIME, 0);
+        leadSyncTimeMs                 = sharedPref.getLong(Constants.Preferences.KEY_LEAD_SYNC_TIME, 0);
+        templateSyncTimeMs             = sharedPref.getLong(Constants.Preferences.KEY_TEMPLATE_SYNC_TIME, 0);
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -153,6 +163,44 @@ public class Preferences {
         Preferences.accountSettings = accountSettings;
     }
 
+    // Set Sync Times
+    public static void SetTaskSyncTime(Context context, long timeMs) {
+        SharedPreferences sharedPref = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                                                                     Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Write App registration data
+        prefEdit.putLong(Constants.Preferences.KEY_TASK_SYNC_TIME, timeMs);
+        prefEdit.apply();
+
+        // Set cache
+        Preferences.taskSyncTimeMs = timeMs;
+    }
+    public static void SetLeadSyncTime(Context context, long timeMs) {
+        SharedPreferences sharedPref = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Write App registration data
+        prefEdit.putLong(Constants.Preferences.KEY_LEAD_SYNC_TIME, timeMs);
+        prefEdit.apply();
+
+        // Set cache
+        Preferences.leadSyncTimeMs = timeMs;
+    }
+    public static void SetTemplateSyncTime(Context context, long timeMs) {
+        SharedPreferences sharedPref = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                                                                     Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Write App registration data
+        prefEdit.putLong(Constants.Preferences.KEY_TEMPLATE_SYNC_TIME, timeMs);
+        prefEdit.apply();
+
+        // Set cache
+        Preferences.templateSyncTimeMs = timeMs;
+    }
+
     /*
      * GET APIs
      */
@@ -188,4 +236,9 @@ public class Preferences {
     {
         return accountSettings;
     }
+
+    // Get Sync Times
+    public static long GetTaskSyncTime() {return taskSyncTimeMs;}
+    public static long GetLeadSyncTime() {return leadSyncTimeMs;}
+    public static long GetTemplateSyncTime() {return templateSyncTimeMs;}
 }
