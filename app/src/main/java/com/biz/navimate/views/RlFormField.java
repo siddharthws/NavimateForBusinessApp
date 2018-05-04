@@ -39,7 +39,6 @@ import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
-import com.biz.navimate.objects.Value;
 import com.biz.navimate.zxing.IntentIntegrator;
 
 /**
@@ -115,7 +114,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     }
 
     // ----------------------- Public APIs ----------------------- //
-    public Value GetValue() {
+    public String GetValue() {
         String value = "";
 
         switch (entry.field.type) {
@@ -173,7 +172,12 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
         }
 
-        return new Value(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, value, entry.field.dbId);
+        return value;
+    }
+
+    public FormEntry.Base GetEntry() {
+        FormEntry.Base formEntry = FormEntry.Parse(entry.field, GetValue());
+        return formEntry;
     }
 
     // ----------------------- Private APIs ----------------------- //

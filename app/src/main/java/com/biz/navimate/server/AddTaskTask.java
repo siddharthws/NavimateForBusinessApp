@@ -8,7 +8,7 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Value;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
@@ -32,16 +32,16 @@ public class AddTaskTask extends BaseServerTask {
     private long leadId;
     private long formTemplateId;
     private long templateId;
-    private ArrayList<Value> values;
+    private ArrayList<FormEntry.Base> entries;
 
     // ----------------------- Constructor ----------------------- //
-    public AddTaskTask(Context parentContext, long leadId, long formTemplateId, long templateId, ArrayList<Value> values)
+    public AddTaskTask(Context parentContext, long leadId, long formTemplateId, long templateId, ArrayList<FormEntry.Base> entries)
     {
         super(parentContext, Constants.Server.URL_ADD_TASK);
         this.leadId = leadId;
         this.formTemplateId = formTemplateId;
         this.templateId = templateId;
-        this.values=values;
+        this.entries=entries;
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -63,14 +63,14 @@ public class AddTaskTask extends BaseServerTask {
             requestJson.put(Constants.Server.KEY_TEMPLATE_ID, templateId);
 
             JSONArray valuesJson = new JSONArray();
-            for (Value value : values) {
+            for (FormEntry.Base entry : entries) {
                 // Get Value and Field
-                Field field = (Field) DbHelper.fieldTable.GetById(value.fieldId);
+                Field field = (Field) DbHelper.fieldTable.GetById(entry.field.dbId);
 
                 // Create Value JSON
                 JSONObject valueJson = new JSONObject();
                 valueJson.put(Constants.Server.KEY_FIELD_ID, field.serverId);
-                valueJson.put(Constants.Server.KEY_VALUE, value.value);
+                valueJson.put(Constants.Server.KEY_VALUE, entry.toString());
 
                 // Add to Values JSON Array
                 valuesJson.put(valueJson);
@@ -103,8 +103,8 @@ public class AddTaskTask extends BaseServerTask {
         if (IsResponseValid())
         {
             Dbg.Toast(parentContext,"Task Created Successfully", Toast.LENGTH_SHORT);
-            SyncDbTask syncDbTask = new SyncDbTask(parentContext, false);
-            syncDbTask.execute();
+            SyncDbTask syncTask = new SyncDbTask(parentContext, false, false, true, true);
+            syncTask.execute();
         }
         else
         {

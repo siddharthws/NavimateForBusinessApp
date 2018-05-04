@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 7;
+    private static final int     DATABASE_VERSION                = 8;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
@@ -28,8 +28,6 @@ public class DbHelper extends SQLiteOpenHelper
     public static TaskTable             taskTable               = null;
     public static TemplateTable         templateTable           = null;
     public static FieldTable            fieldTable              = null;
-    public static DataTable             dataTable               = null;
-    public static ValueTable            valueTable              = null;
     public static LocationReportTable   locationReportTable     = null;
 
 
@@ -38,13 +36,11 @@ public class DbHelper extends SQLiteOpenHelper
     {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-        formTable              = new FormTable(this);
+        fieldTable             = new FieldTable(this);
+        templateTable          = new TemplateTable(this);
         leadTable              = new LeadTable(this);
         taskTable              = new TaskTable(this);
-        templateTable          = new TemplateTable(this);
-        fieldTable             = new FieldTable(this);
-        dataTable              = new DataTable(this);
-        valueTable             = new ValueTable(this);
+        formTable              = new FormTable(this);
         locationReportTable    = new LocationReportTable(this);
     }
 
@@ -54,13 +50,11 @@ public class DbHelper extends SQLiteOpenHelper
     {
         Dbg.info(TAG, "Creating database");
 
-        db.execSQL(FormTable.CREATE_TABLE);
+        db.execSQL(FieldTable.CREATE_TABLE);
+        db.execSQL(TemplateTable.CREATE_TABLE);
         db.execSQL(LeadTable.CREATE_TABLE);
         db.execSQL(TaskTable.CREATE_TABLE);
-        db.execSQL(TemplateTable.CREATE_TABLE);
-        db.execSQL(DataTable.CREATE_TABLE);
-        db.execSQL(FieldTable.CREATE_TABLE);
-        db.execSQL(ValueTable.CREATE_TABLE);
+        db.execSQL(FormTable.CREATE_TABLE);
         db.execSQL(LocationReportTable.CREATE_TABLE);
     }
 
@@ -68,14 +62,16 @@ public class DbHelper extends SQLiteOpenHelper
     public void onUpgrade(SQLiteDatabase db, int i, int i1)
     {
        // Drop & recreate template and field table
-        db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + DataTable.TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + ValueTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
+
+        // TODO : Remove after release v2.8.0
+        db.execSQL("DROP TABLE IF EXISTS data_table");
+        db.execSQL("DROP TABLE IF EXISTS value_table");
 
         onCreate(db);
     }

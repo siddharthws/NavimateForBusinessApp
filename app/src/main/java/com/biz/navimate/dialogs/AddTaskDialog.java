@@ -18,7 +18,6 @@ import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Template;
-import com.biz.navimate.objects.Value;
 import com.biz.navimate.server.AddTaskTask;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
@@ -160,8 +159,7 @@ public class AddTaskDialog    extends     BaseDialog
         ui.fields.clear();
 
         // Set Form Fields
-        for (Long fieldId  : selectedTaskTemplate.fieldIds) {
-            Field field = (Field) DbHelper.fieldTable.GetById(fieldId);
+        for (Field field  : selectedTaskTemplate.fields) {
             FormEntry.Base entry = FormEntry.Parse(field, field.value);
             RlFormField fieldUi = new RlFormField(context, entry, false);
             ui.llFields.addView(fieldUi);
@@ -179,14 +177,13 @@ public class AddTaskDialog    extends     BaseDialog
         }
 
         // Get Value object in each form field
-        ArrayList<Value> values = new ArrayList<>();
+        ArrayList<FormEntry.Base> entries = new ArrayList<>();
         for (RlFormField rlField : ui.fields) {
             // Get Value from UI and save in table
-            Value value = rlField.GetValue();
-            values.add(value);
+            entries.add(rlField.GetEntry());
         }
 
-        AddTaskTask addTaskTask = new AddTaskTask(context, selectedLead.serverId, selectedFormTemplate.serverId, selectedTaskTemplate.serverId, values);
+        AddTaskTask addTaskTask = new AddTaskTask(context, selectedLead.serverId, selectedFormTemplate.serverId, selectedTaskTemplate.serverId, entries);
         addTaskTask.execute();
     }
 }
