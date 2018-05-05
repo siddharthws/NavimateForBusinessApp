@@ -3,6 +3,7 @@ package com.biz.navimate.server;
 import android.content.Context;
 
 import com.biz.navimate.activities.HomescreenActivity;
+import com.biz.navimate.activities.TaskActivity;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
@@ -98,6 +99,9 @@ public class SyncDbTask extends BaseServerTask {
 
         // Refresh Homescreen Activity
         HomescreenActivity.Refresh();
+
+        // Refresh Task Activity
+        TaskActivity.Refresh();
     }
 
     // ----------------------- Public APIs ----------------------- //

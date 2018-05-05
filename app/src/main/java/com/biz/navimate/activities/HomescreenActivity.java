@@ -188,7 +188,6 @@ public class HomescreenActivity     extends     BaseActivity
         // Check if homescreen is active
         if ((currentActivity != null) &&
             (currentActivity.getClass().equals(HomescreenActivity.class))) {
-            // Re-initialize Tasks UI
             ((HomescreenActivity) currentActivity).InitMap();
         }
     }
@@ -268,9 +267,6 @@ public class HomescreenActivity     extends     BaseActivity
         syncTask.SetListener(new IfaceServer.SyncTasks() {
             @Override
             public void onTaskCompleted() {
-                // Re-Initialize UI
-                InitMap();
-
                 // Sync Forms
                 SyncFormsTask syncForms = new SyncFormsTask(context, bDialog);
                 syncForms.execute();

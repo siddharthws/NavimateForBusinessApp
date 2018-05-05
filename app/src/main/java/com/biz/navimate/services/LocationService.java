@@ -16,9 +16,9 @@ import com.biz.navimate.objects.Statics;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Siddharth on 18-12-2017.
@@ -37,7 +37,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         void onLocationError(int errorCode, Status status);
         void onLocationSuccess(LocationObj location);
     }
-    private static ArrayList<IfaceLocationInit> initListeners = new ArrayList<>();
+    private static CopyOnWriteArrayList<IfaceLocationInit> initListeners = new CopyOnWriteArrayList<>();
     public static void AddInitListener(IfaceLocationInit listener) {
         if (!initListeners.contains(listener)) {
             initListeners.add(listener);

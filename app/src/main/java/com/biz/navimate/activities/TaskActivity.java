@@ -5,6 +5,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.biz.navimate.R;
+import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceList;
@@ -70,6 +71,17 @@ public class TaskActivity   extends     BaseActivity
         BaseActivity.Start(parentActivity, TaskActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
     }
 
+    public static void Refresh() {
+        // Get current activity
+        BaseActivity currentActivity = App.GetCurrentActivity();
+
+        // Check if task activity is active
+        if ((currentActivity != null) && (currentActivity.getClass().equals(TaskActivity.class))) {
+            // Re-initialize Tasks UI
+            ((TaskActivity) currentActivity).InitList();
+        }
+    }
+
     // Button Click APIs
     public void ButtonClickBack(View view)
     {
@@ -79,10 +91,6 @@ public class TaskActivity   extends     BaseActivity
     public void ButtonClickSync(View view)
     {
         SyncDbTask syncTask = new SyncDbTask(this, true, false, true, true);
-        syncTask.SetListener(() -> {
-            // Re-Initialize UI
-            InitList();
-        });
         syncTask.execute();
     }
 

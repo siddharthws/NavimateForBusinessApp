@@ -3,7 +3,6 @@ package com.biz.navimate.runnables;
 import android.Manifest;
 import android.content.Context;
 import android.content.IntentSender;
-import android.os.Looper;
 import android.widget.Toast;
 
 import com.biz.navimate.activities.BaseActivity;
@@ -72,169 +71,177 @@ public class LocationUpdateRunnable extends     BaseRunnable
     // Location Update Listeners
     @Override
     public void onLocationSuccess(LocationObj location) {
-        // Prepare Looper
-        if (Looper.myLooper() == null) {
-            Looper.prepare();
-        }
+        // Run code on UI Thread
+        BaseActivity cActivity = App.GetCurrentActivity();
+        if (cActivity != null) {
+            cActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Hide dialog box
+                    RlDialog.Hide();
 
-        // Hide dialog box
-        RlDialog.Hide();
+                    // Call SetAlarm Success Listener
+                    if (initListener != null)
+                    {
+                        initListener.onLocationInitSuccess(location);
+                    }
+                }
+            });
+        }
 
         // Remove Location service Listener
         LocationService.RemoveInitListener(this);
-
-        // Call SetAlarm Success Listener
-        if (initListener != null)
-        {
-            initListener.onLocationInitSuccess(location);
-        }
     }
 
     @Override
     public void onLocationError(int errorCode, Status status) {
-        // Prepare Looper
-        if (Looper.myLooper() == null) {
-            Looper.prepare();
-        }
+        // Run code on UI Thread
+        BaseActivity cActivity = App.GetCurrentActivity();
+        if (cActivity != null) {
+            cActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Hide previously started dialog box
+                    RlDialog.Hide();
 
-        // Hide previously started dialog box
-        RlDialog.Hide();
-
-        // Remove Location service Listener
-        LocationService.RemoveInitListener(this);
-
-        // Service Error
-        switch (errorCode)
-        {
-            case Constants.Location.ERROR_API_CLIENT:
-            case Constants.Location.ERROR_UNAVAILABLE:
-            case Constants.Location.ERROR_UNKNOWN:
-            case Constants.Location.ERROR_UPDATES_ERROR:
-            case Constants.Location.ERROR_NO_CLIENTS: {
-                Dialog.Alert dialogData = new Dialog.Alert("Failed to get location : " + errorCode);
-                RlDialog.Show(dialogData);
-
-                // Call Init Error Listener
-                if (initListener != null)
-                {
-                    initListener.onLocationInitError();
-                }
-                break;
-            }
-            case Constants.Location.ERROR_NO_GPS: {
-                BaseActivity currentActivity = App.GetCurrentActivity();
-                if (currentActivity != null)
-                {
-                    currentActivity.SetGpsResultListener(new IfaceResult.ResultGps()
+                    // Service Error
+                    switch (errorCode)
                     {
-                        @Override
-                        public void onGpsEnableSuccess()
-                        {
-                            // Try again
-                            Post(0);
-                        }
+                        case Constants.Location.ERROR_API_CLIENT:
+                        case Constants.Location.ERROR_UNAVAILABLE:
+                        case Constants.Location.ERROR_UNKNOWN:
+                        case Constants.Location.ERROR_UPDATES_ERROR:
+                        case Constants.Location.ERROR_NO_CLIENTS: {
+                            Dialog.Alert dialogData = new Dialog.Alert("Failed to get location : " + errorCode);
+                            RlDialog.Show(dialogData);
 
-                        @Override
-                        public void onGpsEnableFailure()
-                        {
-                            // Call Init Erorr Listener
-                            if (initListener != null)
-                            {
-                                initListener.onLocationInitError();
-                            }
-                        }
-                    });
-                    if (status.hasResolution())
-                    {
-                        // start resolution
-                        try
-                        {
-                            Dbg.info(TAG, "Started Resolution for result");
-                            status.startResolutionForResult(currentActivity, Constants.RequestCodes.GPS);
-                        }
-                        catch (IntentSender.SendIntentException e)
-                        {
-                            Dbg.error(TAG, "Exception while trying to resolve result");
-                            Dbg.stack(e);
-                        }
-                    }
-                    else
-                    {
-                        Dbg.error(TAG, "Status does not have resolution");
-                    }
-                }
-                else
-                {
-                    Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
-
-                    // Call Init Error Listener
-                    if (initListener != null)
-                    {
-                        initListener.onLocationInitError();
-                    }
-                }
-                break;
-            }
-            case Constants.Location.ERROR_NO_PERMISSION: {
-                BaseActivity currentActivity = App.GetCurrentActivity();
-                if (currentActivity != null)
-                {
-                    currentActivity.SetLocationPermissionListener(new IfacePermission.Location()
-                    {
-                        @Override
-                        public void onLocationPermissionSuccess()
-                        {
-                            // Try again
-                            Post(0);
-                        }
-
-                        @Override
-                        public void onLocationPermissionFailure()
-                        {
                             // Call Init Error Listener
                             if (initListener != null)
                             {
                                 initListener.onLocationInitError();
                             }
+                            break;
                         }
-                    });
-                    currentActivity.RequestPermission(new String[] {Manifest.permission.ACCESS_FINE_LOCATION});
-                }
-                else
-                {
-                    Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
+                        case Constants.Location.ERROR_NO_GPS: {
+                            BaseActivity currentActivity = App.GetCurrentActivity();
+                            if (currentActivity != null)
+                            {
+                                currentActivity.SetGpsResultListener(new IfaceResult.ResultGps()
+                                {
+                                    @Override
+                                    public void onGpsEnableSuccess()
+                                    {
+                                        // Try again
+                                        Post(0);
+                                    }
 
-                    // Call Init Error Listener
-                    if (initListener != null)
-                    {
-                        initListener.onLocationInitError();
+                                    @Override
+                                    public void onGpsEnableFailure()
+                                    {
+                                        // Call Init Erorr Listener
+                                        if (initListener != null)
+                                        {
+                                            initListener.onLocationInitError();
+                                        }
+                                    }
+                                });
+                                if (status.hasResolution())
+                                {
+                                    // start resolution
+                                    try
+                                    {
+                                        Dbg.info(TAG, "Started Resolution for result");
+                                        status.startResolutionForResult(currentActivity, Constants.RequestCodes.GPS);
+                                    }
+                                    catch (IntentSender.SendIntentException e)
+                                    {
+                                        Dbg.error(TAG, "Exception while trying to resolve result");
+                                        Dbg.stack(e);
+                                    }
+                                }
+                                else
+                                {
+                                    Dbg.error(TAG, "Status does not have resolution");
+                                }
+                            }
+                            else
+                            {
+                                Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
+
+                                // Call Init Error Listener
+                                if (initListener != null)
+                                {
+                                    initListener.onLocationInitError();
+                                }
+                            }
+                            break;
+                        }
+                        case Constants.Location.ERROR_NO_PERMISSION: {
+                            BaseActivity currentActivity = App.GetCurrentActivity();
+                            if (currentActivity != null)
+                            {
+                                currentActivity.SetLocationPermissionListener(new IfacePermission.Location()
+                                {
+                                    @Override
+                                    public void onLocationPermissionSuccess()
+                                    {
+                                        // Try again
+                                        Post(0);
+                                    }
+
+                                    @Override
+                                    public void onLocationPermissionFailure()
+                                    {
+                                        // Call Init Error Listener
+                                        if (initListener != null)
+                                        {
+                                            initListener.onLocationInitError();
+                                        }
+                                    }
+                                });
+                                currentActivity.RequestPermission(new String[] {Manifest.permission.ACCESS_FINE_LOCATION});
+                            }
+                            else
+                            {
+                                Dbg.error(TAG, "Current activity is null. Cannot ask for permissions");
+
+                                // Call Init Error Listener
+                                if (initListener != null)
+                                {
+                                    initListener.onLocationInitError();
+                                }
+                            }
+                            break;
+                        }
+                        case Constants.Location.ERROR_CURRENT_LOC_UNAVAILABLE: {
+                            // Show error toast
+                            Dbg.Toast(context, "Your location is being enabled...", Toast.LENGTH_SHORT);
+
+                            // Call Init Error Listener
+                            if (initListener != null)
+                            {
+                                initListener.onLocationInitError();
+                            }
+                            break;
+                        }
+                        default:
+                        {
+                            Dbg.error(TAG, "Unserviceable Init Error");
+
+                            // Call Init Error Listener
+                            if (initListener != null)
+                            {
+                                initListener.onLocationInitError();
+                            }
+                            break;
+                        }
                     }
                 }
-                break;
-            }
-            case Constants.Location.ERROR_CURRENT_LOC_UNAVAILABLE: {
-                // Show error toast
-                Dbg.Toast(context, "Your location is being enabled...", Toast.LENGTH_SHORT);
-
-                // Call Init Error Listener
-                if (initListener != null)
-                {
-                    initListener.onLocationInitError();
-                }
-                break;
-            }
-            default:
-            {
-                Dbg.error(TAG, "Unserviceable Init Error");
-
-                // Call Init Error Listener
-                if (initListener != null)
-                {
-                    initListener.onLocationInitError();
-                }
-                break;
-            }
+            });
         }
+
+        // Remove Location service Listener
+        LocationService.RemoveInitListener(this);
     }
 
 // ----------------------- Public APIs ----------------------- //
