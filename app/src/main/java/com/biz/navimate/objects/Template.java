@@ -24,7 +24,7 @@ public class Template extends ServerObject {
 
     // ----------------------- Globals ----------------------- //
     public String name = "";
-    public ArrayList<Field> fields = null;
+    public ArrayList<Field> fields = new ArrayList<>();
     public int type = 0;
 
     // ----------------------- Constructor ----------------------- //

@@ -58,7 +58,7 @@ public class FormListAdapter extends BaseListAdapter {
         holder.tvForm.setText(form.template.name);
 
         // Set Lead Title
-        holder.tvLead.setText((form.task.lead != null) ? form.task.lead.title : "");
+        holder.tvLead.setText(form.task != null ? form.task.lead.title : "");
 
         // Set Sync Status
         if (form.serverId == Constants.Misc.ID_INVALID) {

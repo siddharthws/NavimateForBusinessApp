@@ -4,6 +4,7 @@ import com.biz.navimate.application.App;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.misc.NotificationHelper;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.server.SyncDbTask;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -82,7 +83,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         // Sync Data if app is initialized
         if (App.IsInitialized()) {
             // sync DB from server
-            SyncDbTask syncTask = new SyncDbTask(this, false, false, true, false);
+            SyncDbTask syncTask = new SyncDbTask(this, false);
 
             // Execute task
             syncTask.execute();
@@ -96,7 +97,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         // Sync Data if app is initialized
         if (App.IsInitialized()) {
             // sync DB from server
-            SyncDbTask syncTask = new SyncDbTask(this, false, true, false, false);
+            SyncDbTask syncTask = new SyncDbTask(this, false);
 
             // Execute task
             syncTask.execute();
@@ -110,7 +111,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         // Sync Data if app is initialized
         if (App.IsInitialized()) {
             // sync DB from server
-            SyncDbTask syncTask = new SyncDbTask(this, false, false, false, true);
+            SyncDbTask syncTask = new SyncDbTask(this, false);
 
             // Execute task
             syncTask.execute();
@@ -123,7 +124,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
     private void ServiceAccountAdded() {
         if (App.IsInitialized()) {
             // Sync Data from server
-            SyncDbTask syncTask = new SyncDbTask(this, false, true, true, true);
+            SyncDbTask syncTask = new SyncDbTask(this, false);
             syncTask.execute();
         }
 
@@ -143,5 +144,8 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         DbHelper.leadTable.Clear();
         DbHelper.templateTable.Clear();
         DbHelper.fieldTable.Clear();
+
+        // Clear Preferences
+        Preferences.SetTaskSyncTime(this, 0);
     }
 }
