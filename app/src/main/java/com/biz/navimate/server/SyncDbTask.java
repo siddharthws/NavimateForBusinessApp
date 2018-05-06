@@ -39,17 +39,11 @@ public class SyncDbTask extends BaseServerTask {
 
     // ----------------------- Globals ----------------------- //
     private boolean bDialog = false;
-    private boolean bTemplates = false;
-    private boolean bTasks = false;
-    private boolean bLeads = false;
 
     // ----------------------- Constructor ----------------------- //
-    public SyncDbTask(Context parentContext, boolean bDialog, boolean bTemplates, boolean bTasks, boolean bLeads) {
+    public SyncDbTask(Context parentContext, boolean bDialog) {
         super(parentContext, Constants.Server.URL_SYNC);
         this.bDialog = bDialog;
-        this.bTemplates = bTemplates;
-        this.bTasks = bTasks;
-        this.bLeads = bLeads;
     }
 
     // ----------------------- Overrides ----------------------- //
@@ -109,48 +103,23 @@ public class SyncDbTask extends BaseServerTask {
     private JSONObject GetRequestJson() throws JSONException {
         JSONObject json = new JSONObject();
 
-        // Add templates
-        if (bTemplates) {
-            json.put(Constants.Server.KEY_TEMPLATES, Preferences.GetTemplateSyncTime());
-        }
-
-        // Add leads
-        if (bLeads) {
-            json.put(Constants.Server.KEY_LEADS, Preferences.GetLeadSyncTime());
-        }
-
-        // Add tasks
-        if (bTasks) {
-            json.put(Constants.Server.KEY_TASKS, Preferences.GetTaskSyncTime());
-        }
+        json.put(Constants.Server.KEY_LAST_SYNC_TIME, Preferences.GetTaskSyncTime());
 
         return json;
     }
 
     private void ParseResponse() throws JSONException {
-        if (bTemplates) {
-            // Parse Templates
-            ParseTemplates(responseJson.getJSONObject(Constants.Server.KEY_TEMPLATES));
+        // Parse Templates
+        ParseTemplates(responseJson.getJSONObject(Constants.Server.KEY_TEMPLATES));
 
-            // Update Sync Time
-            Preferences.SetTemplateSyncTime(parentContext, System.currentTimeMillis());
-        }
+        // Parse leads
+        ParseLeads(responseJson.getJSONObject(Constants.Server.KEY_LEADS));
 
-        if (bLeads) {
-            // Parse leads
-            ParseLeads(responseJson.getJSONObject(Constants.Server.KEY_LEADS));
+        // Parse Tasks
+        ParseTasks(responseJson.getJSONObject(Constants.Server.KEY_TASKS));
 
-            // Update Sync Time
-            Preferences.SetLeadSyncTime(parentContext, System.currentTimeMillis());
-        }
-
-        if (bTasks) {
-            // Parse Tasks
-            ParseTasks(responseJson.getJSONObject(Constants.Server.KEY_TASKS));
-
-            // Update Sync Time
-            Preferences.SetTaskSyncTime(parentContext, System.currentTimeMillis());
-        }
+        // Update Sync Time
+        Preferences.SetTaskSyncTime(parentContext, System.currentTimeMillis());
     }
 
     private void ParseTemplates(JSONObject json) throws JSONException {

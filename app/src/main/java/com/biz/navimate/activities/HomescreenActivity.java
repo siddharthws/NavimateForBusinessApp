@@ -263,7 +263,7 @@ public class HomescreenActivity     extends     BaseActivity
         final Context context = this;
 
         // Sync Forms followed by DB
-        SyncDbTask syncTask = new SyncDbTask(context, bDialog, true, true, true);
+        SyncDbTask syncTask = new SyncDbTask(context, bDialog);
         syncTask.SetListener(new IfaceServer.SyncTasks() {
             @Override
             public void onTaskCompleted() {

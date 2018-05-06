@@ -106,7 +106,7 @@ public class FormTable extends BaseTable {
 
         // Create list of forms that have not been sent to server
         for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
-            if (form.task.dbId == task.dbId) {
+            if (form.task != null && form.task.dbId == task.dbId) {
                 forms.add(form);
             }
         }

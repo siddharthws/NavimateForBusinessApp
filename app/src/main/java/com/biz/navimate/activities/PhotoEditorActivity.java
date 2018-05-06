@@ -109,6 +109,12 @@ public class PhotoEditorActivity extends BaseActivity {
     public void ButtonClickCrop(View view)
     {
         BaseActivity activity = App.GetCurrentActivity();
+
+        // Ignore if activity is not available
+        if (activity == null) {
+            return;
+        }
+
         Intent cropPictureIntent = new Intent("com.android.camera.action.CROP");
         //get Image URI
         File photoFile = new File(absPath);

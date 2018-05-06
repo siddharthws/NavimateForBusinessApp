@@ -90,7 +90,7 @@ public class TaskActivity   extends     BaseActivity
 
     public void ButtonClickSync(View view)
     {
-        SyncDbTask syncTask = new SyncDbTask(this, true, false, true, true);
+        SyncDbTask syncTask = new SyncDbTask(this, true);
         syncTask.execute();
     }
 

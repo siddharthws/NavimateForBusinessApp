@@ -27,7 +27,7 @@ public class Form extends ServerObject {
     // ----------------------- Globals ----------------------- //
     public Boolean bCloseTask = false;
     public Long timestamp = 0L;
-    public LatLng latlng = null;
+    public LatLng latlng = new LatLng(0, 0);
     public Task task = null;
     public Template template = null;
     public ArrayList<FormEntry.Base> values = new ArrayList<>();
@@ -174,7 +174,7 @@ public class Form extends ServerObject {
         // Enter values into Database
         cv.put(FormTable.COLUMN_SRV_ID,         serverId);
         cv.put(FormTable.COLUMN_TEMPLATE_ID,    template.dbId);
-        cv.put(FormTable.COLUMN_TASK_ID,        task.dbId);
+        cv.put(FormTable.COLUMN_TASK_ID,        task != null ? task.dbId : Constants.Misc.ID_INVALID);
         cv.put(FormTable.COLUMN_CLOSE_TASK,     bCloseTask);
         cv.put(FormTable.COLUMN_LATITUDE,       latlng.latitude);
         cv.put(FormTable.COLUMN_LONGITUDE,      latlng.longitude);

@@ -103,7 +103,7 @@ public class AddTaskTask extends BaseServerTask {
         if (IsResponseValid())
         {
             Dbg.Toast(parentContext,"Task Created Successfully", Toast.LENGTH_SHORT);
-            SyncDbTask syncTask = new SyncDbTask(parentContext, false, false, true, true);
+            SyncDbTask syncTask = new SyncDbTask(parentContext, false);
             syncTask.execute();
         }
         else
