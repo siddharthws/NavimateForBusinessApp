@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.biz.navimate"
@@ -31,7 +31,9 @@ dependencies {
     })
 
     compile 'com.android.support:multidex:1.0.0'
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:support-media-compat:27.1.1'
+    compile 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.github.NaikSoftware:StompProtocolAndroid:1.4.3'
