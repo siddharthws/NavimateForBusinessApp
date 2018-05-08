@@ -46,7 +46,6 @@ public class Field extends ServerObject {
             title                = json.getString(Constants.Server.KEY_TITLE);
             type                 = json.getInt(Constants.Server.KEY_TYPE);
             value                = json.getString(Constants.Server.KEY_VALUE);
-            bMandatory           = json.getBoolean(Constants.Server.KEY_IS_MANDATORY);
         } catch (Exception e) {
             Dbg.error(TAG, "Exception while converting from JSON");
             Dbg.stack(e);
@@ -63,7 +62,6 @@ public class Field extends ServerObject {
         title                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_TITLE));
         type                    = cursor.getInt     (cursor.getColumnIndex(FieldTable.COLUMN_TYPE));
         value                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_VALUE));
-        bMandatory              = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(FieldTable.COLUMN_IS_MANDATORY)));
     }
 
     public ContentValues toContentValues () {
@@ -74,7 +72,6 @@ public class Field extends ServerObject {
         cv.put(FieldTable.COLUMN_TITLE,          title);
         cv.put(FieldTable.COLUMN_TYPE,           type);
         cv.put(FieldTable.COLUMN_VALUE,          value);
-        cv.put(FieldTable.COLUMN_IS_MANDATORY,   bMandatory);
 
         return cv;
     }
