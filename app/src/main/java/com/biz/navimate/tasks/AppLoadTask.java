@@ -3,12 +3,16 @@ package com.biz.navimate.tasks;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.server.GetWorkingHoursTask;
 import com.biz.navimate.services.LocReportService;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.services.WebSocketService;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.acra.ACRA;
 
 /**
  * Created by Siddharth on 25-09-2017.
@@ -60,6 +64,9 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
         WebSocketService.StartService(parentContext);
         LocationService.StartService(parentContext);
         //LocReportService.StartService(parentContext);
+
+        // Add app ID to ACRA
+        ACRA.getErrorReporter().putCustomData(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
 
         // Wait for FCM ID Token
         while (FirebaseInstanceId.getInstance().getToken() == null);
