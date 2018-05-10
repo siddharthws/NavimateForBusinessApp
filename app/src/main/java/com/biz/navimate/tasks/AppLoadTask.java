@@ -66,7 +66,9 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
         //LocReportService.StartService(parentContext);
 
         // Add app ID to ACRA
-        ACRA.getErrorReporter().putCustomData(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
+        if (!Constants.App.DEBUG) {
+            ACRA.getErrorReporter().putCustomData(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
+        }
 
         // Wait for FCM ID Token
         while (FirebaseInstanceId.getInstance().getToken() == null);
