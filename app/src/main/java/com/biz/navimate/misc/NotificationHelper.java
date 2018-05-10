@@ -41,6 +41,14 @@ public class NotificationHelper {
             "You have been added to a new account...",
     };
 
+    private static final String[] NOTIFICATION_TITLES = {
+            "",
+            "Task Updated",
+            "Template Updated",
+            "Leads Updated",
+            "Added to New Account",
+    };
+
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -52,13 +60,18 @@ public class NotificationHelper {
     {
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
 
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
+        remoteViews.setTextViewText(R.id.tv_title, NOTIFICATION_TITLES[type]);
+        remoteViews.setTextViewText(R.id.notif_message, NOTIFICATION_MESSAGES[type]);
         // Set common properties
         nBuilder.setAutoCancel(true);
         nBuilder.setSmallIcon(R.mipmap.status_bar_icon);
         nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        nBuilder.setLights(Color.BLUE, ledOnMs, ledOffMs);
+        nBuilder.setVibrate(Vibrate);
+        nBuilder.setContent(remoteViews);
+        nBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        // Set specific properties for notification
-        nBuilder.setContentText(NOTIFICATION_MESSAGES[type]);
         //nBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon));
 
         // Set pending intent
