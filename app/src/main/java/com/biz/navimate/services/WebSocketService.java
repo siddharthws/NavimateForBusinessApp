@@ -179,69 +179,88 @@ public class WebSocketService extends BaseService {
         }
     }
 
+    // APIs to Start / Stop Tracking
+    private void StartTracking() {
+        if (!IsRunning()) {
+            Dbg.error(TAG, "Service is not running. Cannot start tracking");
+            return;
+        }
+
+        // Add tracker client to receive fast updates
+        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.MODERATE);
+
+        // Set Tracking Flag
+        service.bTrack = true;
+
+        // Invalidate location cache
+        locCache = null;
+
+        // Interrupt sleep to execute 1 iteration
+        service.bInterruptSleep = true;
+    }
+
+    private void StopTracking() {
+        // Remove tracker client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_TRACKER);
+
+        // Set Tracking Flag
+        service.bTrack = false;
+    }
+
     // API to perform tracking logic
     private void Track() {
         if (LocationService.IsUpdating()) {
-            if (!IsLocationCacheUpdated()) {
-                // Send location on socket only if server cache is not updated. Ignore otherwise
-                SendLocation();
+            if (!IsTrackingCacheUpdated()) {
+                // Send location on socket
+                LocationObj currentLoc = LocationService.cache.GetLocation();
+                SendTrackingUpdate(currentLoc, Constants.Tracker.ERROR_NONE);
             } else if ((System.currentTimeMillis() - locCache.timestamp) > TIME_MS_30_S) {
                 // Send IDLE status if last location update was 30 seconds ago
-                SendTrackingError(Constants.Tracker.ERROR_IDLE);
+                SendTrackingUpdate(null, Constants.Tracker.ERROR_IDLE);
             }
         } else if (!LocationService.IsGpsEnabled(this)) {
             // Send GPS error to server
-            SendTrackingError(Constants.Tracker.ERROR_NO_GPS);
+            SendTrackingUpdate(null, Constants.Tracker.ERROR_NO_GPS);
         } else if (!LocationService.IsLocationPermissionGranted(this)) {
             // Send Permission error to server
-            SendTrackingError(Constants.Tracker.ERROR_NO_PERMISSION);
+            SendTrackingUpdate(null, Constants.Tracker.ERROR_NO_PERMISSION);
         } else {
             // Send Location not updating error to server
-            SendTrackingError(Constants.Tracker.ERROR_NO_UPDATES);
+            SendTrackingUpdate(null, Constants.Tracker.ERROR_NO_UPDATES);
         }
     }
 
     // API to send tracking related data to server
-    private void SendLocation() {
-        // Get current location
-        LocationObj currentLoc = LocationService.cache.GetLocation();
-
+    private void SendTrackingUpdate(LocationObj location, int status) {
+        // Prepare Base Payload
+        JSONObject payload = new JSONObject();
         try {
-            // Prepare Base Payload
-            JSONObject payload = new JSONObject();
-            payload.put(Constants.Server.KEY_LATITUDE, currentLoc.latlng.latitude);
-            payload.put(Constants.Server.KEY_LONGITUDE, currentLoc.latlng.longitude);
-            payload.put(Constants.Server.KEY_TIMESTAMP, currentLoc.timestamp);
-            payload.put(Constants.Server.KEY_SPEED, LocationService.cache.GetSpeed());
+            if (location != null) {
+                payload.put(Constants.Server.KEY_LAT,  location.latlng.latitude);
+                payload.put(Constants.Server.KEY_LNG, location.latlng.longitude);
+                payload.put(Constants.Server.KEY_TIMESTAMP, location.timestamp);
+                payload.put(Constants.Server.KEY_SPEED,     LocationService.cache.GetSpeed());
+            }
 
-            // Send to server through stomp
-            wsClient.send(Constants.Server.URL_TRACK_DATA, payload.toString()).subscribe();
-
-            // Update Cache
-            locCache = currentLoc;
+            // Add status to payload
+            payload.put(Constants.Server.KEY_STATUS,     status);
         } catch (JSONException e) {
-            Dbg.error(TAG, "JSON Exception while preparing payload");
+            Dbg.error(TAG, "JSON Exception while preparing tracking payload");
             Dbg.stack(e);
+            return;
         }
-    }
 
-    // API to send Error Code to server
-    private void SendTrackingError(int code) {
-        try {
-            // Prepare Base Payload
-            JSONObject payload = new JSONObject();
-            payload.put(Constants.Server.KEY_ERROR_CODE, code);
+        // Send to server through stomp
+        wsClient.send(Constants.Server.URL_TRACKING_UPDATE, payload.toString()).subscribe();
 
-            // Send to server through stomp
-            wsClient.send(Constants.Server.URL_TRACK_ERROR, payload.toString()).subscribe();
-        } catch (JSONException e) {
-            Dbg.error(TAG, "JSON Exception while preparing payload");
-            Dbg.stack(e);
+        // Update Cache
+        if (location != null) {
+            locCache = location;
         }
     }
 
     // API to check if location cache is updated
-    private boolean IsLocationCacheUpdated() {
+    private boolean IsTrackingCacheUpdated() {
         // Get current location
         LocationObj currentLoc = LocationService.cache.GetLocation();
 
@@ -271,33 +290,5 @@ public class WebSocketService extends BaseService {
         }
 
         return interval;
-    }
-
-    // APIs to Start / Stop Tracking
-    private void StartTracking() {
-        if (!IsRunning()) {
-            Dbg.error(TAG, "Service is not running. Cannot start tracking");
-            return;
-        }
-
-        // Add tracker client to receive fast updates
-        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.MODERATE);
-
-        // Set Tracking Flag
-        service.bTrack = true;
-
-        // Invalidate location cache
-        locCache = null;
-
-        // Interrupt sleep to execute 1 iteration
-        service.bInterruptSleep = true;
-    }
-
-    private void StopTracking() {
-        // Remove tracker client
-        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_TRACKER);
-
-        // Set Tracking Flag
-        service.bTrack = false;
     }
 }
