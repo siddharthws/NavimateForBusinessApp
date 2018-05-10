@@ -41,6 +41,14 @@ public class NotificationHelper {
             "You have been added to a new account...",
     };
 
+    private static final String[] NOTIFICATION_TITLES = {
+            "",
+            "Task Updated",
+            "Template Updated",
+            "Leads Updated",
+            "Added to New Account",
+    };
+
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -52,13 +60,18 @@ public class NotificationHelper {
     {
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
 
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
+        remoteViews.setTextViewText(R.id.tv_title, NOTIFICATION_TITLES[type]);
+        remoteViews.setTextViewText(R.id.notif_message, NOTIFICATION_MESSAGES[type]);
         // Set common properties
         nBuilder.setAutoCancel(true);
         nBuilder.setSmallIcon(R.mipmap.status_bar_icon);
         nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        nBuilder.setLights(Color.BLUE, ledOnMs, ledOffMs);
+        nBuilder.setVibrate(Vibrate);
+        nBuilder.setContent(remoteViews);
+        nBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        // Set specific properties for notification
-        nBuilder.setContentText(NOTIFICATION_MESSAGES[type]);
         //nBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon));
 
         // Set pending intent
@@ -76,42 +89,43 @@ public class NotificationHelper {
         // Play notification sound
         RingtoneHelper.PlayNotificationSound(context);
     }
-        public static void GMNotification(Context context) {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            //Create Notification Channel(only for API 26 and above)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel == null) {
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                channel = new NotificationChannel("Navimate", "Navimate", importance);
-                channel.setDescription("Channel Description");
-                channel.enableLights(true);
-                channel.setLightColor(Color.BLUE);
-                channel.enableVibration(true);
-                notificationManager.createNotificationChannel(channel);
-            }
+     public static void GMNotification(Context context)
+     {
+         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            //Create RemoteView for custom notification layout
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
-            //remoteViews.setTextViewText(R.id.notif_title, "Good Morning!");
+         //Create Notification Channel(only for API 26 and above)
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel == null)
+         {
+             int importance = NotificationManager.IMPORTANCE_HIGH;
+             channel = new NotificationChannel("Navimate", "Navimate", importance);
+             channel.setDescription("Channel Description");
+             channel.enableLights(true);
+             channel.setLightColor(Color.BLUE);
+             channel.enableVibration(true);
+             notificationManager.createNotificationChannel(channel);
+         }
+         //Create RemoteView for custom notification layout
+         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
+         //remoteViews.setTextViewText(R.id.notif_title, "Good Morning!");
 
-            //Set Intent and Pending Intent
-            Intent gmIntent = new Intent(context, AppLoadActivity.class);
-            gmIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent gmPendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID_GM, gmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+         //Set Intent and Pending Intent
+         Intent gmIntent = new Intent(context, AppLoadActivity.class);
+         gmIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+         PendingIntent gmPendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID_GM, gmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            //Create Notification Compat Builder object and setting common properties of the notification with it
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-            builder.setSmallIcon(R.drawable.animation_clock);
-            builder.setContentText("Text Here");
-            builder.setLights(Color.BLUE, ledOnMs, ledOffMs);
-            builder.setVibrate(Vibrate);
-            builder.setAutoCancel(true);
-            builder.setContent(remoteViews);
-            builder.setContentIntent(gmPendingIntent);
-            builder.setPriority(NotificationCompat.PRIORITY_HIGH);
+         //Create Notification Compat Builder object and setting common properties of the notification with it
+         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+         builder.setSmallIcon(R.drawable.animation_clock);
+         builder.setLights(Color.BLUE, ledOnMs, ledOffMs);
+         builder.setVibrate(Vibrate);
+         builder.setAutoCancel(true);
+         builder.setContent(remoteViews);
+         builder.setContentIntent(gmPendingIntent);
+         builder.setPriority(NotificationCompat.PRIORITY_HIGH);
 
-            //Launch Notification
-            notificationManager.notify(NOTIFICATION_ID_GM, builder.build());
-        }
-    // ----------------------- Private APIs ----------------------- //
+         //Launch Notification
+         notificationManager.notify(NOTIFICATION_ID_GM, builder.build());
+     }
+     // ----------------------- Private APIs ----------------------- //
 }
