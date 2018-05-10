@@ -100,8 +100,7 @@ public class Constants {
 
         // Sending channels
         public static final String URL_HEARTBEAT        = "/rxc/heart-beat";
-        public static final String URL_TRACK_DATA       = "/rxc/tracking-update";
-        public static final String URL_TRACK_ERROR      = "/rxc/tracking-error";
+        public static final String URL_TRACKING_UPDATE  = "/rxc/tracking-update";
 
         // Subsciprtion channels
         public static final String URL_START_TRACKING   = "/user/txc/start-tracking";
