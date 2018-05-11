@@ -163,8 +163,8 @@ public class WebSocketService extends BaseService {
             StopTracking();
         });
 
-        // Execute next cycle immediately
-        bInterruptSleep = true;
+        // Start tracking by default
+        StartTracking();
     }
 
     // API to send heart beat to server
