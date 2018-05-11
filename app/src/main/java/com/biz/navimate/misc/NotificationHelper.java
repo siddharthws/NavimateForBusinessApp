@@ -13,6 +13,7 @@ import android.widget.RemoteViews;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.AppLoadActivity;
+import com.biz.navimate.constants.Constants;
 
 /**
  * Created by Siddharth on 01-10-2017.
@@ -22,98 +23,59 @@ public class NotificationHelper {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "NOTIFICATION_HELPER";
 
-    // Notification IDs for different notification Types
-    public static final int TYPE_TASK_UPDATE         = 1;
-    public static final int TYPE_TEMPLATE_UPDATE     = 2;
-    public static final int TYPE_LEAD_UPDATE         = 3;
-    public static final int TYPE_ACCOUNT_ADDED       = 4;
-    public static final int NOTIFICATION_ID_GM       = 5;
-    private static final int ledOnMs = 2000;
-    private static final int ledOffMs = 500;
-    private static final long Vibrate[] = {0, 300, 200, 500};
-    public static NotificationChannel channel = null;
-    // Strign messages for each notification message
-    private static final String[] NOTIFICATION_MESSAGES = {
-            "",
-            "Your tasks have been updated...",
-            "Your templates have been updated...",
-            "Your leads have been updated...",
-            "You have been added to a new account...",
-    };
-
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+    public static NotificationChannel channel = null;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
 
-    public static void Notify(Context context, int type)
+    public static void Notify(Context context, int id)
     {
-        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
+        NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Set common properties
-        nBuilder.setAutoCancel(true);
-        nBuilder.setSmallIcon(R.mipmap.status_bar_icon);
-        nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        //Create Notification Channel(only for API 26 and above)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel == null)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            channel = new NotificationChannel("Navimate", "Navimate", importance);
+            channel.setDescription("Channel Description");
+            channel.enableLights(true);
+            channel.setLightColor(Color.BLUE);
+            channel.enableVibration(true);
+            nManager.createNotificationChannel(channel);
+        }
 
-        // Set specific properties for notification
-        nBuilder.setContentText(NOTIFICATION_MESSAGES[type]);
-        //nBuilder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.appicon));
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
+        remoteViews.setTextViewText(R.id.tv_title, Constants.Notification.NOTIFICATION_TITLES[id]);
+        remoteViews.setTextViewText(R.id.notif_message, Constants.Notification.NOTIFICATION_MESSAGES[id]);
 
         // Set pending intent
         Intent appLoadIntent = new Intent(context, AppLoadActivity.class);
         appLoadIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent appLoadPendingIntent = PendingIntent.getActivity(     context,
-                type,
+                id,
                 appLoadIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Set Notification properties
+        NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context);
+        nBuilder.setAutoCancel(true);
+        nBuilder.setSmallIcon(R.mipmap.status_bar_icon);
+        nBuilder.setColor(ContextCompat.getColor(context, R.color.colorPrimary));
+        nBuilder.setLights(Color.BLUE, Constants.Notification.ledOnMs, Constants.Notification.ledOffMs);
+        nBuilder.setVibrate(Constants.Notification.Vibrate);
+        nBuilder.setContent(remoteViews);
+        nBuilder.setPriority(NotificationCompat.PRIORITY_HIGH);
         nBuilder.setContentIntent(appLoadPendingIntent);
+
         // Launch notification
-        NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        nManager.notify(type, nBuilder.build());
+        nManager.notify(id, nBuilder.build());
 
         // Play notification sound
         RingtoneHelper.PlayNotificationSound(context);
-    }
-    public static void GMNotification(Context context)
-    {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        //Create Notification Channel(only for API 26 and above)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && channel == null)
-            {
-                int importance = NotificationManager.IMPORTANCE_HIGH;
-                channel = new NotificationChannel("Navimate", "Navimate", importance);
-                channel.setDescription("Channel Description");
-                channel.enableLights(true);
-                channel.setLightColor(Color.BLUE);
-                channel.enableVibration(true);
-                notificationManager.createNotificationChannel(channel);
-            }
-
-        //Create RemoteView for custom notification layout
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
-        //remoteViews.setTextViewText(R.id.notif_title, "Good Morning!");
-
-        //Set Intent and Pending Intent
-        Intent gmIntent = new Intent(context, AppLoadActivity.class);
-        gmIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent gmPendingIntent = PendingIntent.getActivity(context, NOTIFICATION_ID_GM, gmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //Create Notification Compat Builder object and setting common properties of the notification with it
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.drawable.animation_clock);
-        builder.setContentText("Text Here");
-        builder.setLights(Color.BLUE, ledOnMs, ledOffMs);
-        builder.setVibrate(Vibrate);
-        builder.setAutoCancel(true);
-        builder.setContent(remoteViews);
-        builder.setContentIntent(gmPendingIntent);
-        builder.setPriority(NotificationCompat.PRIORITY_HIGH);
-
-        //Launch Notification
-        notificationManager.notify(NOTIFICATION_ID_GM, builder.build());
     }
     // ----------------------- Private APIs ----------------------- //
 }
