@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/m_xs"
             android:text="It's time to start work !"
-            android:textColor="#ffffffbb"
+            android:textColor="#ffffff"
             android:textSize="@dimen/textsize_description"/>
 
     </LinearLayout>
