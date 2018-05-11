@@ -223,4 +223,39 @@ public class Constants {
         public static final String FORMAT_BACKEND   = "yyyy-MM-dd HH:mm:ss";
         public static final String FORMAT_FRONTEND  = "dd-MM-yyyy";
     }
+
+
+    public static class Notification {
+        //Notification IDs
+        public static final int ID_TASK_UPDATE         = 1;
+        public static final int ID_TEMPLATE_UPDATE     = 2;
+        public static final int ID_LEAD_UPDATE         = 3;
+        public static final int ID_ACCOUNT_ADDED       = 4;
+        public static final int ID_GOOD_MORNING        = 5;
+
+        //Misc. Notification controls
+        public static final int ledOnMs = 2000;
+        public static final int ledOffMs = 500;
+        public static final long Vibrate[] = {0, 300, 200, 500};
+
+        //Notification Messages
+        public static final String[] NOTIFICATION_MESSAGES = {
+                "",
+                "Tap here to open the App",
+                "Tap here to open the App",
+                "Tap here to open the App",
+                "Tap here to open the App",
+                "It's time to start work !"
+        };
+
+        //Notification Titles
+        public static final String[] NOTIFICATION_TITLES = {
+                "",
+                "Task Updated",
+                "Template Updated",
+                "Leads Updated",
+                "Added to New Account",
+                "Good Morning"
+        };
+    }
 }

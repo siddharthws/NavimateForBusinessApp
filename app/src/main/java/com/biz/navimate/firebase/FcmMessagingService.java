@@ -1,6 +1,7 @@
 package com.biz.navimate.firebase;
 
 import com.biz.navimate.application.App;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.misc.NotificationHelper;
@@ -90,7 +91,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         }
 
         // Send notification to user
-        NotificationHelper.Notify(this, NotificationHelper.TYPE_TASK_UPDATE);
+        NotificationHelper.Notify(this, Constants.Notification.ID_TASK_UPDATE);
     }
 
     private void ServiceTemplateUpdate() {
@@ -104,7 +105,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         }
 
         // Send notification to user
-        NotificationHelper.Notify(this, NotificationHelper.TYPE_TEMPLATE_UPDATE);
+        NotificationHelper.Notify(this, Constants.Notification.ID_TEMPLATE_UPDATE);
     }
 
     private void ServiceLeadUpdate() {
@@ -118,7 +119,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         }
 
         // Send notification to user
-        NotificationHelper.Notify(this, NotificationHelper.TYPE_LEAD_UPDATE);
+        NotificationHelper.Notify(this, Constants.Notification.ID_LEAD_UPDATE);
     }
 
     private void ServiceAccountAdded() {
@@ -129,7 +130,7 @@ public class FcmMessagingService extends    FirebaseMessagingService {
         }
 
         // Send notification to user
-        NotificationHelper.Notify(this, NotificationHelper.TYPE_ACCOUNT_ADDED);
+        NotificationHelper.Notify(this, Constants.Notification.ID_ACCOUNT_ADDED);
     }
 
     private void ServiceAccountRemoved() {
