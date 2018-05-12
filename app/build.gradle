@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.biz.navimate"
         minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 27
-        versionName "2.8.3"
+        targetSdkVersion 27
+        versionCode 28
+        versionName "2.9.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.android.support:support-media-compat:27.1.1'
     compile 'com.android.support:support-v4:27.1.1'
+    compile 'com.android.support:animated-vector-drawable:27.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.github.NaikSoftware:StompProtocolAndroid:1.4.3'
@@ -45,6 +46,10 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.8.0'
     compile 'ch.acra:acra:4.9.0-RC-2'
     testCompile 'junit:junit:4.12'
+}
+
+repositories {
+    google()
 }
 
 apply plugin: 'com.google.gms.google-services'
