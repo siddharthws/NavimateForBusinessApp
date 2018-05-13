@@ -2,6 +2,7 @@
 <resources>
 
     <!-- Margins -->
+    <dimen name="m_xxs">2dp</dimen>
     <dimen name="m_xs">5dp</dimen>
     <dimen name="m_small">10dp</dimen>
     <dimen name="m_large">20dp</dimen>
