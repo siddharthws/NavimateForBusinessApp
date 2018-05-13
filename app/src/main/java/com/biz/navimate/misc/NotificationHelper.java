@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import com.biz.navimate.R;
 import com.biz.navimate.activities.AppLoadActivity;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.Statics;
 
 /**
  * Created by Siddharth on 01-10-2017.
@@ -51,6 +52,7 @@ public class NotificationHelper {
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.custom_notification);
         remoteViews.setTextViewText(R.id.tv_title, Constants.Notification.NOTIFICATION_TITLES[id]);
         remoteViews.setTextViewText(R.id.notif_message, Constants.Notification.NOTIFICATION_MESSAGES[id]);
+        remoteViews.setTextViewText(R.id.tv_time_stamp, Statics.GetFormattedDate(System.currentTimeMillis(), "HH:mm"));
 
         // Set pending intent
         Intent appLoadIntent = new Intent(context, AppLoadActivity.class);
