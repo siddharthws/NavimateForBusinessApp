@@ -61,7 +61,8 @@
             android:background="@drawable/selector_btn_bg_colored_shadow"
             android:textColor="@android:color/white"
             android:text="Draw"
-            android:onClick="ButtonClickDraw"/>
+            android:onClick="ButtonClickDraw"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
