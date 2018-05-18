@@ -131,14 +131,9 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                 break;
             }
             case Constants.Template.FIELD_TYPE_PHOTO :
-            case Constants.Template.FIELD_TYPE_SIGN : {
-                value = entry.toString();
-                break;
-            }
+            case Constants.Template.FIELD_TYPE_SIGN :
             case Constants.Template.FIELD_TYPE_DATE : {
-                FormEntry.Date date = (FormEntry.Date) entry;
-                SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
-                value = sdf.format(date.cal.getTime());
+                value = entry.toString();
                 break;
             }
             case Constants.Template.FIELD_TYPE_CHECKLIST : {

@@ -96,7 +96,7 @@ public class FormEntry {
         public String toString()
         {
             if (cal != null) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
                 return sdf.format(cal.getTime());
             } else {
                 return "";
