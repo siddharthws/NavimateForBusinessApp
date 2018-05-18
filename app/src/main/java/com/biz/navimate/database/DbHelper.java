@@ -17,7 +17,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 9;
+    private static final int     DATABASE_VERSION                = 10;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
@@ -68,10 +68,6 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
-
-        // TODO : Remove after release v2.8.0
-        db.execSQL("DROP TABLE IF EXISTS data_table");
-        db.execSQL("DROP TABLE IF EXISTS value_table");
 
         onCreate(db);
     }
