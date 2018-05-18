@@ -137,8 +137,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
             case Constants.Template.FIELD_TYPE_DATE : {
                 FormEntry.Date date = (FormEntry.Date) entry;
-                SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
-                value = sdf.format(date.cal.getTime());
+                if (date.cal != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
+                    value = sdf.format(date.cal.getTime());
+                }
                 break;
             }
             case Constants.Template.FIELD_TYPE_CHECKLIST : {
