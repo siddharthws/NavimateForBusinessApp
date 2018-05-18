@@ -51,6 +51,7 @@ public class SubmitFormDialog   extends     BaseDialog
     private DialogHolder.SubmitForm ui = null;
     private LocationUpdateRunnable locUpdateRunnable = null;
     private SpinnerAdapter spinnerAdapter = null;
+    private boolean bRogueSelection = false;
 
     // ----------------------- Constructor ----------------------- //
     public SubmitFormDialog(Context context)
@@ -101,6 +102,7 @@ public class SubmitFormDialog   extends     BaseDialog
 
                 // Set selected template if task's form template matches this
                 if (form.template != null && template.dbId == form.template.dbId) {
+                    bRogueSelection = true;
                     ui.spTemplate.setSelection(spinnerAdapter.getCount() - 1, false);
                 }
             }
@@ -126,7 +128,14 @@ public class SubmitFormDialog   extends     BaseDialog
         if (form.values.size() > 0) {
             SetFields(form.values);
         } else if (form.template != null) {
-            onItemSelected(form.template.dbId);
+            // Prepare array for fields and values
+            ArrayList<FormEntry.Base> entries = new ArrayList<>();
+            for (Field field : form.template.fields) {
+                entries.add(FormEntry.Parse(field, field.value));
+            }
+
+            // Set fields to default data of this template
+            SetFields(entries);
         }
 
         // Set Spinner item click listener
@@ -139,6 +148,11 @@ public class SubmitFormDialog   extends     BaseDialog
 
     @Override
     public void onItemSelected(long id) {
+        if (bRogueSelection) {
+            bRogueSelection = false;
+            return;
+        }
+
         // Get current data
         Form form = ((Dialog.SubmitForm) data).form;
 
