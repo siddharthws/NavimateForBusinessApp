@@ -117,8 +117,8 @@ public class HomescreenActivity     extends     BaseActivity
     public void onDestroy() {
         // Stop Services
         WebSocketService.StopService();
-        LocationService.StopService();
         LocReportService.StopService();
+        LocationService.StopService();
 
         // Uninit App
         App.Uninitialize();

@@ -8,6 +8,8 @@ import android.os.BatteryManager;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.interfaces.IfaceLocation;
+import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationReportObject;
@@ -20,24 +22,26 @@ import java.util.Calendar;
  */
 
 public class LocReportService   extends     BaseService
-                                implements  IfaceServer.SyncLocReport {
+                                implements  IfaceServer.SyncLocReport, IfaceLocation.MovementUpdate {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOC_REPORT_SERVICE";
-
-    // Macros for time intervals
-    private static final int   TIME_MS_60_S            = 60 * 1000; // 60 second interval
-    private static final int   TIME_MS_15_M            = 15 * 60 * 1000; // 15 Minute interval
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private static LocReportService service   = null;
     private long lastSyncTime = 0L;
+    private LocationUpdate lastLocUpdate = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
     @Override
-    public void Init(){ service = this; }
+    public void Init(){
+        service = this;
+
+        // Add Movement Update listener
+        LocationCache.AddMovementListener(this);
+    }
 
     @Override
     public void StickyServiceJob() {
@@ -45,6 +49,9 @@ public class LocReportService   extends     BaseService
         if (isWorkingHours()) {
             //Location Report Logic
             checkLocationStatus();
+
+            // Request Location updates based on current movement pattern
+            RefreshLocationUpdates();
         }
 
         //check if last sync time is expired
@@ -60,12 +67,18 @@ public class LocReportService   extends     BaseService
             }
         }
 
-        // Sleep
-        Sleep(TIME_MS_60_S);
+        // Sleep for given interval
+        Sleep(GetInterval());
     }
 
     @Override
-    public void Destroy(){}
+    public void Destroy(){
+        // Remove Location Client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_LOC_REPORT);
+
+        // Remove Movement Udpate Listener
+        LocationCache.RemoveMovementListener(this);
+    }
 
     // Listeners for Location report success / failure
     @Override
@@ -79,12 +92,17 @@ public class LocReportService   extends     BaseService
         // Do Nothing. Report will try syncing again on next iteration
     }
 
+    @Override
+    public void onMovementUpdated() {
+        bInterruptSleep = true;
+    }
+
     // ----------------------- Public APIs ----------------------- //
     // APIs to start / stop the service
     public static void StartService(Context context) {
         if (!IsRunning()) {
             // Add tracker client to receive slow updates
-            LocationService.AddClient(service, Constants.Location.CLIENT_TAG_LOC_REPORT, LocationUpdate.SLOW);
+            LocationService.AddClient(service, Constants.Location.CLIENT_TAG_LOC_REPORT, LocationUpdate.FAST);
 
             // Start Service
             StartService(context, LocReportService.class);
@@ -137,6 +155,12 @@ public class LocReportService   extends     BaseService
             latitude = currentLoc.latlng.latitude;
             longitude = currentLoc.latlng.longitude;
             speed = currentLoc.speed;
+        } else {
+            // Ignore if last saved status is same as this one
+            LocationReportObject latestReport = DbHelper.locationReportTable.GetLatest();
+            if (latestReport.status == statusCode) {
+                return;
+            }
         }
 
         // Get battery info
@@ -182,6 +206,67 @@ public class LocReportService   extends     BaseService
         long elapsedTimeMs = currentTime - lastSyncTime;
 
         // Check if elapsed time is more than required sync time (15 minutes)
-        return (elapsedTimeMs > TIME_MS_15_M);
+        return (elapsedTimeMs > Constants.Date.TIME_1_HR);
+    }
+
+    private long GetInterval() {
+        long interval = 0;
+
+        // Gte last saved location report object
+        LocationReportObject locReport = DbHelper.locationReportTable.GetLatest();
+
+        // Set 1 minute interval for invalid status
+        if (locReport == null || locReport.status != Constants.Tracker.ERROR_NONE) {
+            interval = Constants.Date.TIME_1_MIN;
+        } else {
+            // get interval using last known movement type
+            LocationObj latestLoc = LocationService.cache.GetLocation();
+            switch (latestLoc.GetMovement()) {
+                case LocationObj.STANDING: {
+                    interval = Constants.Date.TIME_5_MIN;
+                    break;
+                }
+                case LocationObj.WALKING: {
+                    interval = Constants.Date.TIME_1_MIN;
+                    break;
+                }
+                case LocationObj.DRIVING: {
+                    interval = Constants.Date.TIME_30_SEC;
+                    break;
+                }
+                default: {
+                    interval = Constants.Date.TIME_1_MIN;
+                }
+            }
+        }
+
+        return interval;
+    }
+
+    private void RefreshLocationUpdates() {
+        // Get latest location object
+        LocationObj locObj = LocationService.cache.GetLocation();
+
+        // Update Location Client for this service if required
+        if (locObj != null && GetUpdateForMovementType(locObj.GetMovement()) != lastLocUpdate) {
+            lastLocUpdate = GetUpdateForMovementType(locObj.GetMovement());
+            LocationService.AddClient(this, Constants.Location.CLIENT_TAG_LOC_REPORT, lastLocUpdate);
+        }
+    }
+
+    private LocationUpdate GetUpdateForMovementType(int type) {
+        switch (type) {
+            case LocationObj.STANDING: {
+                return LocationUpdate.SLOW;
+            }
+            case LocationObj.WALKING: {
+                return LocationUpdate.MODERATE;
+            }
+            case LocationObj.DRIVING: {
+                return LocationUpdate.FAST;
+            }
+        }
+
+        return null;
     }
 }
