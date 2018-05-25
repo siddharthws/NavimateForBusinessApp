@@ -59,7 +59,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     private static HashMap<Integer, LocationUpdate> clients = new HashMap<>();
 
     // Location Cache
-    public static LocationCache cache = null;
+    public static LocationCache cache = new LocationCache();
 
     // Location Init Helper for initializing location when not available
     private LocationUpdateHelper locUpdateHelper = null;
@@ -73,11 +73,6 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     public void Init() {
         // Set Service
         service = this;
-
-        // Init Cache
-        if (cache == null) {
-            cache = new LocationCache();
-        }
 
         // Init Location Update Helper
         locUpdateHelper = new LocationUpdateHelper(this);
