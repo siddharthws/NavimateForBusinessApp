@@ -28,9 +28,6 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOCATION_SERVICE";
 
-    private static final long UPDATE_INTERVAL_MS     = 10 * 1000; // 10 seconds
-    private static final long PREF_SAVE_INTERVAL_MS  = 60 * 1000; // 60 seconds
-
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     public interface IfaceLocationInit {
@@ -92,7 +89,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Location Init State Machine
         if (IsUpdating()) {
             // Save in preferences if old location has expired
-            if ((System.currentTimeMillis() - Preferences.GetLocation().timestamp) > PREF_SAVE_INTERVAL_MS) {
+            if ((System.currentTimeMillis() - Preferences.GetLocation().timestamp) > Constants.Date.TIME_1_MIN) {
                 Preferences.SetLocation(this, cache.GetLocation());
             }
 
@@ -116,7 +113,11 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         }
 
         // Sleep for sometime
-        Sleep(UPDATE_INTERVAL_MS);
+        if (bOngoingUpdate) {
+            Sleep(Constants.Date.TIME_5_SEC);
+        } else {
+            Sleep(Constants.Date.TIME_1_MIN);
+        }
     }
 
     @Override
@@ -172,10 +173,12 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Add to clients
         clients.put(tag, serviceObject);
 
-        if(service != null)
-        {
+        if(IsRunning()) {
             // Interrupt sleep to re run init logic
             service.bInterruptSleep = true;
+        } else {
+            // Restart the service
+            StartService(context);
         }
     }
 
@@ -183,7 +186,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Remove from clients
         clients.remove(tag);
 
-        if (service != null) {
+        if (IsRunning()) {
             // Interrupt sleep to re run init logic
             service.bInterruptSleep = true;
         }
