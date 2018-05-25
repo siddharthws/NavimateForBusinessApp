@@ -71,7 +71,7 @@ public class Preferences {
         // Init Location Object
         lastKnowLocation        = new LocationObj(  Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LATITUDE, "0")),
                                                     Double.valueOf(sharedPref.getString(Constants.Preferences.KEY_LONGITUDE, "0")),
-                                                    sharedPref.getLong(Constants.Preferences.KEY_TIMESTAMP, 0L), 0.0f);
+                                                    sharedPref.getLong(Constants.Preferences.KEY_TIMESTAMP, 0L), 0.0f, 0.0f);
 
         // Read Sync TImes
         taskSyncTimeMs                 = sharedPref.getLong(Constants.Preferences.KEY_TASK_SYNC_TIME, 0);

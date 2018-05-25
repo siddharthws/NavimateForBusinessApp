@@ -7,6 +7,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Statics;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -48,11 +49,12 @@ public class LocationCache implements LocationListener {
             return;
         }
 
-        // Create location object form newly received location
-        LocationObj newLocation = new LocationObj(location);
+        // Create local Location Object
+        float speed = GetSpeedForNewLocation(location);
+        LocationObj locObj = new LocationObj(location.getLatitude(), location.getLongitude(), location.getTime(), location.getAccuracy(), speed);
 
         // Add Location to cache
-        AddToCache(newLocation);
+        AddToCache(locObj);
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -60,44 +62,6 @@ public class LocationCache implements LocationListener {
     public LocationObj GetLocation()
     {
         return GetLocationAtIndex(0);
-    }
-
-    public float GetSpeed()
-    {
-        float speed = 0;
-        int speedCacheSize = 2;
-
-        // Calculate Speed by averaging last 2 values
-        for (int i = 1; i <= speedCacheSize; i++)
-        {
-            if (cache.size() > i)
-            {
-                LocationObj segmentStart = GetLocationAtIndex(i);
-                LocationObj segmentEnd = GetLocationAtIndex(i-1);
-
-                // Calculate only for valid values
-                if (Statics.IsPositionValid(segmentStart.latlng) && Statics.IsPositionValid(segmentEnd.latlng))
-                {
-                    int    segmentDistanceM = Statics.GetDistanceBetweenCoordinates(segmentStart.latlng, segmentEnd.latlng);
-                    long   segmentTimeS = (segmentEnd.timestamp - segmentStart.timestamp) / 1000;
-                    if (segmentTimeS < 0)
-                    {
-                        segmentTimeS = 1;
-                    }
-
-                    double segmentSpeed = (((double) segmentDistanceM) / (double) segmentTimeS);
-                    speed += segmentSpeed;
-                }
-            }
-        }
-
-        // Average out
-        speed = speed / (float) speedCacheSize;
-
-        // Convert to km/hr
-        speed = ((speed * 18.0f) / 5.0f);
-
-        return speed;
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -167,5 +131,56 @@ public class LocationCache implements LocationListener {
 
         // Return false for very less accurate data
         return false;
+    }
+
+    // Speed calculator
+    private float GetSpeedForNewLocation(Location location)
+    {
+        float speed = 0;
+
+        // Return 0 if no valid values available in cache
+        if (cache.size() == 0 || (location.getTime() - GetLocationAtIndex(0).timestamp > 15*60*1000)) {
+            return 0;
+        }
+
+        // Add speeds for last 4 segments
+        int speedCacheSize = Math.min(3, cache.size());
+
+        // Calculate Speed by averaging last 3 values
+        for (int i = 0; i < speedCacheSize; i++)
+        {
+            // Get start and end of segment
+            LocationObj segmentStart = GetLocationAtIndex(i);
+            LocationObj segmentEnd = GetLocationAtIndex(i+1);
+
+            // Get distance and time to cover the segment
+            int    segmentDistanceM = Statics.GetDistanceBetweenCoordinates(segmentStart.latlng, segmentEnd.latlng);
+            long   segmentTimeS = (Math.abs(segmentEnd.timestamp - segmentStart.timestamp)) / 1000;
+
+            // Get speed adn add to total
+            double segmentSpeed = (((double) segmentDistanceM) / (double) segmentTimeS);
+            speed += segmentSpeed;
+        }
+
+        // Add speed for current segment
+        LatLng segmentStart = new LatLng(location.getLatitude(), location.getLongitude());
+        LocationObj segmentEnd = GetLocationAtIndex(0);
+        if (Statics.IsPositionValid(segmentStart) && Statics.IsPositionValid(segmentEnd.latlng) && (segmentEnd.timestamp < location.getTime()))
+        {
+            int    segmentDistanceM = Statics.GetDistanceBetweenCoordinates(segmentStart, segmentEnd.latlng);
+            long   segmentTimeS = (segmentEnd.timestamp - location.getTime()) / 1000;
+
+            double segmentSpeed = (((double) segmentDistanceM) / (double) segmentTimeS);
+            speed += segmentSpeed;
+            speedCacheSize++;
+        }
+
+        // Average out
+        speed = speed / (float) speedCacheSize;
+
+        // Convert to km/hr
+        speed = ((speed * 18.0f) / 5.0f);
+
+        return speed;
     }
 }
