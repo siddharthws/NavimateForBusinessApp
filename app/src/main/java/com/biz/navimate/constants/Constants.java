@@ -221,6 +221,15 @@ public class Constants {
         // Date Formats
         public static final String FORMAT_BACKEND   = "yyyy-MM-dd HH:mm:ss";
         public static final String FORMAT_FRONTEND  = "dd-MM-yyyy";
+
+        // Time values in milliseconds
+        public static final int TIME_5_SEC  = 5 * 1000;
+        public static final int TIME_1_MIN  = 60 * 1000;
+        public static final int TIME_2_MIN  = 2 * 60 * 1000;
+        public static final int TIME_5_MIN  = 5 * 60 * 1000;
+        public static final int TIME_15_MIN = 15 * 60 * 1000;
+        public static final int TIME_30_MIN = 30 * 60 * 1000;
+        public static final int TIME_1_HR   = 60 * 60 * 1000;
     }
 
 
