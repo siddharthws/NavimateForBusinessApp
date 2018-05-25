@@ -164,6 +164,7 @@ public class Constants {
         public static final String KEY_MANDATORY_UPDATE = "mandatoryUpdate";
         public static final String KEY_FCM              = "fcmId";
         public static final String KEY_SPEED            = "speed";
+        public static final String KEY_BATTERY          = "battery";
         public static final String KEY_MESSAGE          = "message";
         public static final String KEY_ERROR_CODE       = "errorCode";
         public static final String KEY_DATA_ID          = "dataId";
