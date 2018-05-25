@@ -2,6 +2,7 @@ package com.biz.navimate.misc;
 
 import android.location.Location;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Statics;
@@ -40,6 +41,13 @@ public class LocationCache implements LocationListener {
     @Override
     public void onLocationChanged(Location location)
     {
+        // Check if new location is better
+        if (!isBetterLocation(location, GetLocation()))
+        {
+            Dbg.info(TAG, "Location is worse than previous one. Ignoring");
+            return;
+        }
+
         // Create location object form newly received location
         LocationObj newLocation = new LocationObj(location);
 
@@ -96,13 +104,6 @@ public class LocationCache implements LocationListener {
     // APi to add a Location Object to cache
     private void AddToCache(LocationObj location)
     {
-        // Check if new location is better
-        if (!IsLocationBetterThanCurrent(location))
-        {
-            Dbg.info(TAG, "Location is worse than previous one. Ignoring");
-            return;
-        }
-
         // Add to cache
         cache.add(0, location);
 
@@ -127,10 +128,44 @@ public class LocationCache implements LocationListener {
         return null;
     }
 
-    // Location Filter
-    private boolean IsLocationBetterThanCurrent(LocationObj location)
-    {
-        // Place Holder. Add Location Filters here
-        return true;
+    /** Determines whether one Location reading is better than the current Location fix
+     * @param location  The new Location that you want to evaluate
+     * @param currentLocation  The current Location fix, to which you want to compare the new one
+     */
+    protected boolean isBetterLocation(Location location, LocationObj currentLocation) {
+        if (currentLocation == null) {
+            // A new location is always better than no location
+            return true;
+        }
+
+        // Check whether the new location fix is newer or older
+        long timeDelta = location.getTime() - currentLocation.timestamp;
+        boolean isSignificantlyNewer = timeDelta > Constants.Date.TIME_2_MIN;
+        boolean isSignificantlyOlder = timeDelta < Constants.Date.TIME_2_MIN;
+        boolean isNewer = timeDelta > 0;
+
+        // If it's been more than two minutes since the current location, use the new location
+        // because the user has likely moved
+        if (isSignificantlyNewer) {
+            return true;
+            // If the new location is more than two minutes older, it must be worse
+        } else if (isSignificantlyOlder) {
+            return false;
+        }
+
+        // Check whether the new location fix is more or less accurate
+        int accuracyDelta = (int) (location.getAccuracy() - currentLocation.accuracy);
+        boolean isMoreAccurate = accuracyDelta < 0;
+        boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+        // Determine location quality using a combination of timeliness and accuracy
+        if (isMoreAccurate) {
+            return true;
+        } else if (isNewer && !isSignificantlyLessAccurate) {
+            return true;
+        }
+
+        // Return false for very less accurate data
+        return false;
     }
 }
