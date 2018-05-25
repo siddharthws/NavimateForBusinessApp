@@ -1,6 +1,9 @@
 package com.biz.navimate.services;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
@@ -124,15 +127,24 @@ public class LocReportService   extends     BaseService
     // API to fetch Lat Long Details and store in local DB
     private void saveLocReport(int statusCode) {
         // Get current location
-        LocationObj currentLoc = LocationService.cache.GetLocation();
         double latitude  = 0;
         double longitude = 0;
+        float speed = 0.0f;
 
         //check if status is invalid or valid
         if(statusCode == Constants.Tracker.ERROR_NONE) {
+            LocationObj currentLoc = LocationService.cache.GetLocation();
             latitude = currentLoc.latlng.latitude;
             longitude = currentLoc.latlng.longitude;
+            speed = currentLoc.speed;
         }
+
+        // Get battery info
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, ifilter);
+        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        int battery = Math.round(level / (float)scale);
 
         //create a LocReportObject
         LocationReportObject locationReportObject = new LocationReportObject(
@@ -140,7 +152,9 @@ public class LocReportService   extends     BaseService
                                                         latitude,
                                                         longitude,
                                                         System.currentTimeMillis(),
-                                                        statusCode);
+                                                        statusCode,
+                                                        battery,
+                                                        speed);
 
         //Save the LocReportObject in DB
         DbHelper.locationReportTable.Save(locationReportObject);

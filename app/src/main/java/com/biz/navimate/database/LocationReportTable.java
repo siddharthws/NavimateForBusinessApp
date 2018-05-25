@@ -23,6 +23,8 @@ public class LocationReportTable extends BaseTable {
     public static final String COLUMN_LONGITUDE       = "longitude";
     public static final String COLUMN_TIMESTAMP       = "timestamp";
     public static final String COLUMN_STATUS          = "status";
+    public static final String COLUMN_BATTERY         = "battery";
+    public static final String COLUMN_SPEED           = "speed";
 
     // Create query
     public static final String CREATE_TABLE =
@@ -31,7 +33,9 @@ public class LocationReportTable extends BaseTable {
                     COLUMN_LATITUDE         + " REAL," +
                     COLUMN_LONGITUDE        + " REAL," +
                     COLUMN_TIMESTAMP        + " INTEGER," +
-                    COLUMN_STATUS           + " INTEGER)";
+                    COLUMN_STATUS           + " INTEGER," +
+                    COLUMN_BATTERY          + " INTEGER," +
+                    COLUMN_SPEED            + " REAL)";
 
     // ----------------------- Constructor ----------------------- //
     public LocationReportTable(DbHelper dbHelper)
@@ -40,10 +44,20 @@ public class LocationReportTable extends BaseTable {
                                                     COLUMN_LATITUDE,
                                                     COLUMN_LONGITUDE,
                                                     COLUMN_TIMESTAMP,
-                                                    COLUMN_STATUS});
+                                                    COLUMN_STATUS,
+                                                    COLUMN_BATTERY,
+                                                    COLUMN_SPEED});
     }
 
     // ----------------------- Public APIs ----------------------- //
+    public LocationReportObject GetLatest() {
+        if (cache.size() > 0) {
+            return (LocationReportObject) cache.get(0);
+        }
+
+        return null;
+    }
+
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected DbObject ParseToObject(Cursor cursor)
@@ -53,8 +67,10 @@ public class LocationReportTable extends BaseTable {
         double longitude               = cursor.getDouble (cursor.getColumnIndex(COLUMN_LONGITUDE));
         long timeStamp                 = cursor.getLong   (cursor.getColumnIndex(COLUMN_TIMESTAMP));
         int status                     = cursor.getInt    (cursor.getColumnIndex(COLUMN_STATUS));
+        int battery                    = cursor.getInt    (cursor.getColumnIndex(COLUMN_BATTERY));
+        float speed                    = cursor.getFloat  (cursor.getColumnIndex(COLUMN_SPEED));
 
-        return new LocationReportObject(dbId, latitude, longitude, timeStamp, status);
+        return new LocationReportObject(dbId, latitude, longitude, timeStamp, status, battery, speed);
     }
 
     @Override
@@ -68,6 +84,8 @@ public class LocationReportTable extends BaseTable {
         dbEntry.put(COLUMN_LONGITUDE,        locationReportObject.longitude);
         dbEntry.put(COLUMN_TIMESTAMP,        locationReportObject.timestamp);
         dbEntry.put(COLUMN_STATUS,           locationReportObject.status);
+        dbEntry.put(COLUMN_SPEED,            locationReportObject.speed);
+        dbEntry.put(COLUMN_BATTERY,          locationReportObject.battery);
 
         return dbEntry;
     }

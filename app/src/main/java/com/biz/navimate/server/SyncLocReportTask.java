@@ -104,6 +104,8 @@ public class SyncLocReportTask extends BaseServerTask {
                recordJson.put(Constants.Server.KEY_LONGITUDE, reportObj.longitude);
                recordJson.put(Constants.Server.KEY_TIMESTAMP, reportObj.timestamp);
                recordJson.put(Constants.Server.KEY_STATUS, reportObj.status);
+               recordJson.put(Constants.Server.KEY_SPEED, reportObj.speed);
+               recordJson.put(Constants.Server.KEY_BATTERY, reportObj.battery);
 
                //Put record in JsonArray
                reportJsonArray.put(recordJson);
