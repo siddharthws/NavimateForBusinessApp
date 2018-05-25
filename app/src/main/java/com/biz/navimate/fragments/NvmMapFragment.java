@@ -151,7 +151,7 @@ public class NvmMapFragment     extends     BaseFragment
         super.onResume();
 
         // Add Location client (since map is visible)
-        LocationService.AddClient(getContext(), Constants.Location.CLIENT_TAG_MAP, LocationUpdate.FAST);
+        LocationService.AddClient(getContext(), Constants.Location.CLIENT_TAG_MAP, LocationUpdate.V_FAST);
 
         // Start map update callbacks
         mapUpdateHandler.postDelayed(this, MAP_UPDATE_CB_TIME_MS);

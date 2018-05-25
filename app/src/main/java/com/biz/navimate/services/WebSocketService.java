@@ -187,7 +187,7 @@ public class WebSocketService extends BaseService {
         }
 
         // Add tracker client to receive fast updates
-        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.MODERATE);
+        LocationService.AddClient(service, Constants.Location.CLIENT_TAG_TRACKER, LocationUpdate.V_FAST);
 
         // Set Tracking Flag
         service.bTrack = true;
@@ -239,7 +239,7 @@ public class WebSocketService extends BaseService {
                 payload.put(Constants.Server.KEY_LAT,  location.latlng.latitude);
                 payload.put(Constants.Server.KEY_LNG, location.latlng.longitude);
                 payload.put(Constants.Server.KEY_TIMESTAMP, location.timestamp);
-                payload.put(Constants.Server.KEY_SPEED,     LocationService.cache.GetSpeed());
+                payload.put(Constants.Server.KEY_SPEED,     location.speed);
             }
 
             // Add status to payload
