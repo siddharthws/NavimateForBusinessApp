@@ -18,20 +18,15 @@ public class LocationObj {
     public LatLng latlng = null;
     public long   timestamp = 0;
     public float  accuracy = 0.0f;
+    public float  speed = 0.0f;
 
     // ----------------------- Constructor ----------------------- //
-    public LocationObj(double lat, double lng, long timestamp, float accuracy)
+    public LocationObj(double lat, double lng, long timestamp, float accuracy, float speed)
     {
         this.latlng = new LatLng(lat, lng);
         this.timestamp  = timestamp;
         this.accuracy   = accuracy;
-    }
-
-    public LocationObj(Location location)
-    {
-        this.latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        this.accuracy   = location.getAccuracy();
-        this.timestamp  = location.getTime();
+        this.speed      = speed;
     }
 
     // ----------------------- Overrides ----------------------- //
