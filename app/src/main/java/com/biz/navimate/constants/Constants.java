@@ -225,6 +225,7 @@ public class Constants {
 
         // Time values in milliseconds
         public static final int TIME_5_SEC  = 5 * 1000;
+        public static final int TIME_30_SEC = 30 * 1000;
         public static final int TIME_1_MIN  = 60 * 1000;
         public static final int TIME_2_MIN  = 2 * 60 * 1000;
         public static final int TIME_5_MIN  = 5 * 60 * 1000;

@@ -86,8 +86,8 @@ public class AppLoadActivity    extends     BaseActivity
         if (!bLoadComplete) {
             // Stop Services
             WebSocketService.StopService();
-            LocationService.StopService();
             LocReportService.StopService();
+            LocationService.StopService();
 
             // Uninit App
             App.Uninitialize();

@@ -61,9 +61,9 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
         DbHelper.Init(parentContext);
 
         // Start Services
-        WebSocketService.StartService(parentContext);
         LocationService.StartService(parentContext);
-        //LocReportService.StartService(parentContext);
+        WebSocketService.StartService(parentContext);
+        LocReportService.StartService(parentContext);
 
         // Add app ID to ACRA
         if (!Constants.App.DEBUG) {
