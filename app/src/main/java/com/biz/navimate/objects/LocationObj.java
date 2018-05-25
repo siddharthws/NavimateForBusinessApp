@@ -12,6 +12,11 @@ public class LocationObj {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LOCATION_OBJECT";
 
+    // Movement Types
+    public static final int STANDING    = 1;
+    public static final int WALKING     = 2;
+    public static final int DRIVING     = 3;
+
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
@@ -31,5 +36,16 @@ public class LocationObj {
 
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
+    public int GetMovement() {
+        // get type of movement from speed
+        if (speed > 18) {
+            return DRIVING;
+        } else if (speed >= 1) {
+            return WALKING;
+        } else {
+            return STANDING;
+        }
+    }
+
     // ----------------------- Private APIs ----------------------- //
 }

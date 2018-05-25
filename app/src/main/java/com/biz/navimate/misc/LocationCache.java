@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceLocation;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Statics;
 import com.google.android.gms.location.LocationListener;
@@ -24,6 +25,9 @@ public class LocationCache implements LocationListener {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+    // movement update listeners
+    private static ArrayList<IfaceLocation.MovementUpdate> listeners = new ArrayList<>();
+
     // Cache of Locations
     private ArrayList<LocationObj> cache = null;
 
@@ -55,9 +59,24 @@ public class LocationCache implements LocationListener {
 
         // Add Location to cache
         AddToCache(locObj);
+
+        // Call movement listeners if movement type got updated
+        if (cache.size() < 2 || cache.get(0).GetMovement() != cache.get(1).GetMovement()) {
+            for (IfaceLocation.MovementUpdate listener : listeners) {
+                listener.onMovementUpdated();
+            }
+        }
     }
 
     // ----------------------- Public APIs ----------------------- //
+    // Methods to add and remove movement listeners
+    public static void AddMovementListener (IfaceLocation.MovementUpdate listener) {
+        listeners.add(listener);
+    }
+    public static void RemoveMovementListener (IfaceLocation.MovementUpdate listener) {
+        listeners.remove(listener);
+    }
+
     // APIs to get latest location related data
     public LocationObj GetLocation()
     {
