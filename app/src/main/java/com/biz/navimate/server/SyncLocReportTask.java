@@ -60,7 +60,10 @@ public class SyncLocReportTask extends BaseServerTask {
 
         // If successful, deleete all records in DB
         if (IsResponseValid()) {
+            // Remove all entries except for last
+            LocationReportObject latest = DbHelper.locationReportTable.GetLatest();
             DbHelper.locationReportTable.Clear();
+            DbHelper.locationReportTable.Save(latest);
         }
 
         return null;
@@ -96,7 +99,7 @@ public class SyncLocReportTask extends BaseServerTask {
         JSONArray reportJsonArray = new JSONArray();
 
         // Get all records in Loc report Table
-       for(LocationReportObject reportObj : (CopyOnWriteArrayList<LocationReportObject>) DbHelper.locationReportTable.GetAll()) {
+       for(LocationReportObject reportObj : DbHelper.locationReportTable.GetReportsToSync()) {
            try {
                // Create JSOn Obejct for this record
                JSONObject recordJson = new JSONObject();

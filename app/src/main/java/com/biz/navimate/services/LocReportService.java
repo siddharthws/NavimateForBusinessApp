@@ -14,6 +14,7 @@ import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationReportObject;
 import com.biz.navimate.objects.LocationUpdate;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.server.SyncLocReportTask;
 import java.util.Calendar;
 
@@ -49,14 +50,11 @@ public class LocReportService   extends     BaseService
         if (isWorkingHours()) {
             //Location Report Logic
             checkLocationStatus();
-
-            // Request Location updates based on current movement pattern
-            RefreshLocationUpdates();
         }
 
         //check if last sync time is expired
         if (isSyncTimeExpired()) {
-            if (DbHelper.locationReportTable.GetAll().size() > 0) {
+            if (DbHelper.locationReportTable.GetAll().size() > 1) {
                 // Trigger Sync task
                 SyncLocReportTask syncLocReportTask = new SyncLocReportTask(this);
                 syncLocReportTask.SetListener(this);
@@ -69,15 +67,6 @@ public class LocReportService   extends     BaseService
 
         // Sleep for given interval
         Sleep(GetInterval());
-    }
-
-    @Override
-    public void Destroy(){
-        // Remove Location Client
-        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_LOC_REPORT);
-
-        // Remove Movement Udpate Listener
-        LocationCache.RemoveMovementListener(this);
     }
 
     // Listeners for Location report success / failure
@@ -112,8 +101,7 @@ public class LocReportService   extends     BaseService
     public static void StopService() {
         // Stop service
         if (IsRunning()) {
-            // Remove tracker client
-            LocationService.RemoveClient(Constants.Location.CLIENT_TAG_LOC_REPORT);
+            service.Destroy();
 
             // Stop this service
             StopService(service);
@@ -149,26 +137,28 @@ public class LocReportService   extends     BaseService
         double longitude = 0;
         float speed = 0.0f;
 
-        //check if status is invalid or valid
+        // Add other values for submission with OK Status code
         if(statusCode == Constants.Tracker.ERROR_NONE) {
             LocationObj currentLoc = LocationService.cache.GetLocation();
-            latitude = currentLoc.latlng.latitude;
-            longitude = currentLoc.latlng.longitude;
+            latitude = Statics.round(currentLoc.latlng.latitude, 5);
+            longitude = Statics.round(currentLoc.latlng.longitude, 5);
             speed = currentLoc.speed;
-        } else {
-            // Ignore if last saved status is same as this one
-            LocationReportObject latestReport = DbHelper.locationReportTable.GetLatest();
-            if (latestReport.status == statusCode) {
-                return;
-            }
+        }
+
+        // Ignore update if last submission contains the same values as this one and is not very new
+        LocationReportObject latestReport = DbHelper.locationReportTable.GetLatest();
+        if (latestReport != null &&
+            latestReport.status == statusCode &&
+            latestReport.latitude == latitude &&
+            latestReport.longitude == longitude &&
+            System.currentTimeMillis() - latestReport.timestamp < Constants.Date.TIME_1_HR) {
+            return;
         }
 
         // Get battery info
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = registerReceiver(null, ifilter);
-        int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        int battery = Math.round(level / (float)scale);
+        int battery = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
 
         //create a LocReportObject
         LocationReportObject locationReportObject = new LocationReportObject(
@@ -210,32 +200,23 @@ public class LocReportService   extends     BaseService
     }
 
     private long GetInterval() {
-        long interval = 0;
+        long interval = Constants.Date.TIME_1_MIN;
 
         // Gte last saved location report object
         LocationReportObject locReport = DbHelper.locationReportTable.GetLatest();
+        LocationObj latestLoc = LocationService.cache.GetLocation();
 
         // Set 1 minute interval for invalid status
-        if (locReport == null || locReport.status != Constants.Tracker.ERROR_NONE) {
-            interval = Constants.Date.TIME_1_MIN;
-        } else {
-            // get interval using last known movement type
-            LocationObj latestLoc = LocationService.cache.GetLocation();
+        if (locReport != null && locReport.status == Constants.Tracker.ERROR_NONE) {
+            // Change period if user is going too slow or fast
             switch (latestLoc.GetMovement()) {
                 case LocationObj.STANDING: {
-                    interval = Constants.Date.TIME_5_MIN;
-                    break;
-                }
-                case LocationObj.WALKING: {
-                    interval = Constants.Date.TIME_1_MIN;
+                    interval = Constants.Date.TIME_2_MIN;
                     break;
                 }
                 case LocationObj.DRIVING: {
                     interval = Constants.Date.TIME_30_SEC;
                     break;
-                }
-                default: {
-                    interval = Constants.Date.TIME_1_MIN;
                 }
             }
         }
@@ -243,30 +224,14 @@ public class LocReportService   extends     BaseService
         return interval;
     }
 
-    private void RefreshLocationUpdates() {
-        // Get latest location object
-        LocationObj locObj = LocationService.cache.GetLocation();
+    private void Destroy() {
+        // Save Offline status to report
+        saveLocReport(Constants.Tracker.ERROR_OFFLINE);
 
-        // Update Location Client for this service if required
-        if (locObj != null && GetUpdateForMovementType(locObj.GetMovement()) != lastLocUpdate) {
-            lastLocUpdate = GetUpdateForMovementType(locObj.GetMovement());
-            LocationService.AddClient(this, Constants.Location.CLIENT_TAG_LOC_REPORT, lastLocUpdate);
-        }
-    }
+        // Remove Location Client
+        LocationService.RemoveClient(Constants.Location.CLIENT_TAG_LOC_REPORT);
 
-    private LocationUpdate GetUpdateForMovementType(int type) {
-        switch (type) {
-            case LocationObj.STANDING: {
-                return LocationUpdate.SLOW;
-            }
-            case LocationObj.WALKING: {
-                return LocationUpdate.MODERATE;
-            }
-            case LocationObj.DRIVING: {
-                return LocationUpdate.FAST;
-            }
-        }
-
-        return null;
+        // Remove Movement Udpate Listener
+        LocationCache.RemoveMovementListener(this);
     }
 }

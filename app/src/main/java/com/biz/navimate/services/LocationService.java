@@ -116,12 +116,6 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     }
 
     @Override
-    public void Destroy(){
-        // Stop location updates
-        locUpdateHelper.Stop();
-    }
-
-    @Override
     public void onLocationInitError(int errorCode, Status status) {
         // Report success
         ReportError(errorCode, status);
@@ -151,6 +145,9 @@ public class LocationService extends BaseService implements LocationUpdateHelper
     public static void StopService() {
         // Stop service
         if (IsRunning()) {
+            // Stop Location Updates
+            service.locUpdateHelper.Stop();
+
             // Stop this service
             StopService(service);
         }
@@ -171,9 +168,6 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         if(IsRunning()) {
             // Interrupt sleep to re run init logic
             service.bInterruptSleep = true;
-        } else {
-            // Restart the service
-            StartService(context);
         }
     }
 

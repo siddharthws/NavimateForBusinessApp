@@ -87,17 +87,6 @@ public class WebSocketService extends BaseService {
         Sleep(interval);
     }
 
-    @Override
-    public void Destroy(){
-        // Stop Tracking
-        StopTracking();
-
-        // Disconnect WS Client
-        if (wsClient.isConnected() || wsClient.isConnecting()) {
-            wsClient.disconnect();
-        }
-    }
-
     // ----------------------- Public APIs ----------------------- //
     // APIs to start / stop / check status of the service
     public static void StartService(Context context) {
@@ -110,6 +99,8 @@ public class WebSocketService extends BaseService {
     public static void StopService() {
         // Stop service
         if (IsRunning()) {
+            service.Destroy();
+
             // Stop this service
             StopService(service);
         }
@@ -282,13 +273,23 @@ public class WebSocketService extends BaseService {
 
     // API to get sleep interval as per current params
     private long GetSleepInterval() {
-        long interval = TIME_MS_30_S;
+        long interval = Constants.Date.TIME_1_MIN;
 
         if (service.bTrack && LocationService.IsUpdating() && wsClient.isConnected()) {
             // Change to 5 seconds for Tracking
-            interval = TIME_MS_5_S;
+            interval = Constants.Date.TIME_5_SEC;
         }
 
         return interval;
+    }
+
+    private void Destroy(){
+        // Stop Tracking
+        StopTracking();
+
+        // Disconnect WS Client
+        if (wsClient.isConnected() || wsClient.isConnecting()) {
+            wsClient.disconnect();
+        }
     }
 }
