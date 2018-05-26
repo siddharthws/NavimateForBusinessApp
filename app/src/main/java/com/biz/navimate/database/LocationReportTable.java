@@ -6,6 +6,8 @@ import android.database.Cursor;
 import com.biz.navimate.objects.DbObject;
 import com.biz.navimate.objects.LocationReportObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sai_Kameswari on 11-02-2018.
  */
@@ -52,10 +54,20 @@ public class LocationReportTable extends BaseTable {
     // ----------------------- Public APIs ----------------------- //
     public LocationReportObject GetLatest() {
         if (cache.size() > 0) {
-            return (LocationReportObject) cache.get(0);
+            return (LocationReportObject) cache.get(cache.size() - 1);
         }
 
         return null;
+    }
+
+    public ArrayList<LocationReportObject> GetReportsToSync() {
+        ArrayList<LocationReportObject> syncList = new ArrayList<>();
+
+        for (int i = 1; i < cache.size(); i++) {
+            syncList.add((LocationReportObject) cache.get(i));
+        }
+
+        return syncList;
     }
 
     // ----------------------- Private APIs ----------------------- //

@@ -124,7 +124,7 @@ public class LocationCache implements LocationListener {
         // Check whether the new location fix is newer or older
         long timeDelta = location.getTime() - currentLocation.timestamp;
         boolean isSignificantlyNewer = timeDelta > Constants.Date.TIME_2_MIN;
-        boolean isSignificantlyOlder = timeDelta < Constants.Date.TIME_2_MIN;
+        boolean isSignificantlyOlder = timeDelta < -Constants.Date.TIME_2_MIN;
         boolean isNewer = timeDelta > 0;
 
         // If it's been more than two minutes since the current location, use the new location
@@ -166,7 +166,7 @@ public class LocationCache implements LocationListener {
         int speedCacheSize = Math.min(3, cache.size());
 
         // Calculate Speed by averaging last 3 values
-        for (int i = 0; i < speedCacheSize; i++)
+        for (int i = 0; i < speedCacheSize - 1; i++)
         {
             // Get start and end of segment
             LocationObj segmentStart = GetLocationAtIndex(i);
@@ -187,7 +187,7 @@ public class LocationCache implements LocationListener {
         if (Statics.IsPositionValid(segmentStart) && Statics.IsPositionValid(segmentEnd.latlng) && (segmentEnd.timestamp < location.getTime()))
         {
             int    segmentDistanceM = Statics.GetDistanceBetweenCoordinates(segmentStart, segmentEnd.latlng);
-            long   segmentTimeS = (segmentEnd.timestamp - location.getTime()) / 1000;
+            long   segmentTimeS = (Math.abs(segmentEnd.timestamp - location.getTime())) / 1000;
 
             double segmentSpeed = (((double) segmentDistanceM) / (double) segmentTimeS);
             speed += segmentSpeed;
@@ -199,6 +199,9 @@ public class LocationCache implements LocationListener {
 
         // Convert to km/hr
         speed = ((speed * 18.0f) / 5.0f);
+
+        // Round to 2 decimal places
+        speed = (float) Statics.round(speed, 2);
 
         return speed;
     }

@@ -57,6 +57,11 @@ public class Statics {
         return px;
     }
 
+    public static double round(double in, int places) {
+        double factor = Math.pow(10, places);
+        return ((double) Math.round(in * factor)) / factor;
+    }
+
     // Get API key from Manifest's Meta data TAG
     public static String GetApiKey(Context context)
     {
