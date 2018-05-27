@@ -108,13 +108,15 @@ public class CameraHelper {
         }
 
         // Move camera as per animation params
-        if (camera.bAnimate)
-        {
-            map.animateCamera(camUpdate);
-        }
-        else
-        {
-            map.moveCamera(camUpdate);
+        if (camUpdate != null) {
+            if (camera.bAnimate)
+            {
+                map.animateCamera(camUpdate);
+            }
+            else
+            {
+                map.moveCamera(camUpdate);
+            }
         }
     }
 
