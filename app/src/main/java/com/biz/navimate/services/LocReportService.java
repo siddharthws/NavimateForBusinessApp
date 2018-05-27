@@ -9,6 +9,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.interfaces.IfaceLocation;
+import com.biz.navimate.misc.InternetHelper;
 import com.biz.navimate.misc.LocationCache;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.LocationObj;
@@ -52,17 +53,12 @@ public class LocReportService   extends     BaseService
             checkLocationStatus();
         }
 
-        //check if last sync time is expired
-        if (isSyncTimeExpired()) {
-            if (DbHelper.locationReportTable.GetAll().size() > 1) {
-                // Trigger Sync task
-                SyncLocReportTask syncLocReportTask = new SyncLocReportTask(this);
-                syncLocReportTask.SetListener(this);
-                syncLocReportTask.execute();
-            } else {
-                // Nothing to sync. Just Update Last Sync time
-                lastSyncTime = System.currentTimeMillis();
-            }
+        // Check if report syncing is required
+        if (shouldSync()) {
+            // Trigger Sync task
+            SyncLocReportTask syncLocReportTask = new SyncLocReportTask(this);
+            syncLocReportTask.SetListener(this);
+            syncLocReportTask.execute();
         }
 
         // Sleep for given interval
@@ -189,14 +185,29 @@ public class LocReportService   extends     BaseService
         return false;
     }
 
-    //API to check if the sync time with server is expired
-    private boolean isSyncTimeExpired() {
-        // Get elapsed time
-        long currentTime = System.currentTimeMillis();
-        long elapsedTimeMs = currentTime - lastSyncTime;
+    //API to check if report syncing is required
+    private boolean shouldSync() {
+        boolean bSync = false;
 
-        // Check if elapsed time is more than required sync time (15 minutes)
-        return (elapsedTimeMs > Constants.Date.TIME_1_HR);
+        // Check Internet
+        if (InternetHelper.IsInternetAvailable(this)) {
+            // Get number of records and time since last sync
+            int recordsCount = DbHelper.locationReportTable.GetReportsToSync().size();
+
+            // Check if there are any records to sync
+            if (recordsCount > 0) {
+                // Get elapsed time since last sync
+                long currentTime = System.currentTimeMillis();
+                long elapsedTimeMs = currentTime - lastSyncTime;
+
+                // Sync if too many unsynced records or too much time has passed since last sync
+                if (recordsCount >= 50 || elapsedTimeMs > Constants.Date.TIME_1_HR) {
+                    bSync = true;
+                }
+            }
+        }
+
+        return bSync;
     }
 
     private long GetInterval() {
