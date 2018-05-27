@@ -58,7 +58,10 @@ public class GrowCircleRunnable extends BaseRunnable {
         }
 
         // Update circle
-        circle.setRadius((t * endRadius) + ((1 - t)*startRadius));
+        double newRadius = (t * endRadius) + ((1 - t)*startRadius);
+        if (newRadius >= 0) {
+            circle.setRadius(newRadius);
+        }
 
         // Re-schedule callback if more adjustment is required
         if (t < 1.0)
