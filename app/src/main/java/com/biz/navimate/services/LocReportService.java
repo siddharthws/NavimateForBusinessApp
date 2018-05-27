@@ -179,9 +179,10 @@ public class LocReportService   extends     BaseService
         //Get current time in Hour format(0-23)
         Calendar rightNow = Calendar.getInstance();
         int currentHr = rightNow.get(Calendar.HOUR_OF_DAY);
+        boolean bSunday = rightNow.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
 
         //check if currrent time is between working hours
-        if(currentHr >= startHr && currentHr < endHr) {return true;}
+        if(currentHr >= startHr && currentHr < endHr && !bSunday) {return true;}
         return false;
     }
 
