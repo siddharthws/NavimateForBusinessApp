@@ -263,7 +263,7 @@ public class SubmitFormDialog   extends     BaseDialog
             DbHelper.taskTable.Save(form.task);
 
             // Refresh Homescreen Tasks
-            HomescreenActivity.Refresh();
+            HomescreenActivity.RefreshHome();
         }
 
         // Show Success toast

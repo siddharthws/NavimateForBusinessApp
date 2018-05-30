@@ -90,7 +90,7 @@ public class SyncFormsTask extends BaseServerTask {
         }
 
         // Refresh Homescreen
-        HomescreenActivity.Refresh();
+        HomescreenActivity.RefreshHome();
 
         // Call listener
         if (listener != null) {
