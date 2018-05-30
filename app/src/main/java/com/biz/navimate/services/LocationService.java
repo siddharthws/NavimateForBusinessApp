@@ -41,9 +41,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         }
 
         // Interrupt sleep
-        if (service != null) {
-            service.bInterruptSleep = true;
-        }
+        Interrupt();
     }
     public static void RemoveInitListener(IfaceLocationInit listener) {
         if (initListeners.contains(listener)) {
@@ -158,6 +156,10 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         return IsRunning(service);
     }
 
+    public static void Interrupt() {
+        Interrupt(service);
+    }
+
     // APIs to Add / Remove Location Clients
     // Each client provides a LocationUpdate object depending on what type of service it wants
     // Arbiter decides which LocationUpdate object needs to be used depending on different clients
@@ -165,20 +167,16 @@ public class LocationService extends BaseService implements LocationUpdateHelper
         // Add to clients
         clients.put(tag, serviceObject);
 
-        if(IsRunning()) {
-            // Interrupt sleep to re run init logic
-            service.bInterruptSleep = true;
-        }
+        // Interrupt service
+        Interrupt();
     }
 
     public static void RemoveClient(int tag) {
         // Remove from clients
         clients.remove(tag);
 
-        if (IsRunning()) {
-            // Interrupt sleep to re run init logic
-            service.bInterruptSleep = true;
-        }
+        // Interrupt service
+        Interrupt();
     }
 
     // API to check if location is updating correctly
