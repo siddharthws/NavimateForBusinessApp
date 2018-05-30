@@ -29,6 +29,9 @@ public class Preferences {
     private static User user;
     private static AccountSettings accountSettings;
 
+    // Tracking Control
+    private static boolean bTracking = false;
+
     // Map Settings
     private static int mapType                      = -1;
     private static Boolean bMapTrafficOverlay       = false;
@@ -63,6 +66,9 @@ public class Preferences {
                         sharedPref.getString(Constants.Preferences.KEY_PHONE, ""),
                         sharedPref.getString(Constants.Preferences.KEY_EMAIL, ""),
                         sharedPref.getInt(Constants.Preferences.KEY_APP_ID, User.INVALID_ID));
+
+        // Read tracking settings
+        bTracking                 = sharedPref.getBoolean(Constants.Preferences.KEY_IS_TRACKING, false);
 
         // Read map settings
         mapType                 = sharedPref.getInt(Constants.Preferences.KEY_MAP_TYPE, GoogleMap.MAP_TYPE_NORMAL);
@@ -100,6 +106,20 @@ public class Preferences {
 
         // Set cache
         Preferences.user = user;
+    }
+
+    public static void SetTracking(Context context, Boolean bTracking)
+    {
+        SharedPreferences sharedPref        = context.getSharedPreferences( Constants.Preferences.PREF_FILE,
+                                                                            Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefEdit   = sharedPref.edit();
+
+        // Set setting
+        prefEdit.putBoolean(Constants.Preferences.KEY_IS_TRACKING, bTracking);
+        prefEdit.commit();
+
+        // Set cache
+        Preferences.bTracking = bTracking;
     }
 
     public static void SetLocation(Context context, LocationObj location)
@@ -213,6 +233,11 @@ public class Preferences {
     public static AppVersionObject GetVersion ()
     {
         return currentVersion;
+    }
+
+    public static boolean GetTracking ()
+    {
+        return bTracking;
     }
 
     public static LocationObj GetLocation()

@@ -52,6 +52,7 @@ public class Constants {
         public static final String KEY_TASK_SYNC_TIME           = "taskSyncTime";
         public static final String KEY_LEAD_SYNC_TIME           = "leadSyncTime";
         public static final String KEY_TEMPLATE_SYNC_TIME       = "templateSyncTime";
+        public static final String KEY_IS_TRACKING              = "is_tracking";
     }
 
     // Template related constants
