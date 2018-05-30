@@ -111,6 +111,10 @@ public class WebSocketService extends BaseService {
         return IsRunning(service);
     }
 
+    public static void Interrupt() {
+        Interrupt(service);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     // API to connect to server through stomp client
     private void Connect() {
@@ -187,7 +191,7 @@ public class WebSocketService extends BaseService {
         locCache = null;
 
         // Interrupt sleep to execute 1 iteration
-        service.bInterruptSleep = true;
+        Interrupt();
     }
 
     private void StopTracking() {

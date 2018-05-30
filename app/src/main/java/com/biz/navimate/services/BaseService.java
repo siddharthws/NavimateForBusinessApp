@@ -146,6 +146,13 @@ public abstract class BaseService   extends     Service
         return false;
     }
 
+    public static void Interrupt(BaseService service)
+    {
+        if (IsRunning(service)) {
+            service.bInterruptSleep = true;
+        }
+    }
+
     // ----------------------- Private APIs ----------------------- //
 
     public void HandleCommand()

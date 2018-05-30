@@ -79,7 +79,7 @@ public class LocReportService   extends     BaseService
 
     @Override
     public void onMovementUpdated() {
-        bInterruptSleep = true;
+        Interrupt();
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -107,6 +107,10 @@ public class LocReportService   extends     BaseService
     public static boolean IsRunning()
     {
         return IsRunning(service);
+    }
+
+    public static void Interrupt() {
+        Interrupt(service);
     }
 
     // ----------------------- Private APIs ----------------------- //
