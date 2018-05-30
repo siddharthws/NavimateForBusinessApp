@@ -7,6 +7,7 @@ import java.util.Calendar;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
@@ -66,6 +68,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     private TvCalibri tvPhoto = null, tvSignature = null;
     private TvCalibri tvDate = null;
     private DatePickerDialog dateDialog = null;
+    private TimePickerDialog timeDialog = null;
 
     private FormEntry.Base entry = null;
     private boolean bReadOnly = false;
@@ -318,7 +321,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         // Set formatted date
         FormEntry.Date dateEntry = (FormEntry.Date) entry;
         if (dateEntry.cal != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_FRONTEND);
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
             String date = sdf.format(dateEntry.cal.getTime());
             tvDate.setText(date);
         } else {
@@ -343,9 +346,20 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                             if (dateEntry.cal == null) dateEntry.cal = Calendar.getInstance();
 
                             dateEntry.cal.set(year, month, dayOfMonth);
-                            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_FRONTEND);
-                            String date = sdf.format(dateEntry.cal.getTime());
-                            tvDate.setText(date);
+                            timeDialog = new TimePickerDialog(getContext(), R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
+                                @Override
+                                public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+                                    dateEntry.cal.set(dateEntry.cal.get(Calendar.YEAR),
+                                            dateEntry.cal.get(Calendar.MONTH),
+                                            dateEntry.cal.get(Calendar.DATE),
+                                            hourOfDay,
+                                            minute);
+                                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
+                                    String date = sdf.format(dateEntry.cal.getTime());
+                                    tvDate.setText(date);
+                                }
+                            }, dateEntry.cal.get(Calendar.HOUR_OF_DAY), dateEntry.cal.get(Calendar.MINUTE), false);
+                            timeDialog.show();
                         }
                     }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
 
