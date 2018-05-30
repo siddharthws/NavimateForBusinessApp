@@ -181,7 +181,7 @@ public class HomescreenActivity     extends     BaseActivity
         BaseActivity.Start(activity, HomescreenActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
     }
 
-    public static void Refresh() {
+    public static void RefreshHome() {
         // Get current activity
         BaseActivity currentActivity = App.GetCurrentActivity();
 
