@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
  * Created by Siddharth on 22-09-2017.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements Runnable {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "BASE_ACTIVITY";
 
@@ -59,12 +60,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     private IfaceResult.PhotoEditor   photoEditorListener       = null;
     private IfaceResult.Signature     signListener              = null;
 
+    // Periodic callback handler
+    private Handler refreshHandler = null;
+
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
     // Manadatory overrides to initialize activitiy views
     protected abstract void InflateLayout();
     protected abstract void FindViews();
     protected abstract void SetViews();
+
+    // Optional Overrides
+    protected void Refresh(){};
 
     // ----------------------- Overrides ----------------------- //
     // Lifecycle overrides
@@ -98,6 +105,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Init View Data
         SetViews();
+
+        // Init refresh callback hanlder
+        refreshHandler = new Handler();
     }
 
     @Override
@@ -151,11 +161,17 @@ public abstract class BaseActivity extends AppCompatActivity {
             this.resumeResultCode = 0;
             this.resumeResultIntent = null;
         }
+
+        // Start periodic callbacks
+        refreshHandler.post(this);
     }
 
     @Override
     public void onPause()
     {
+        // Stop periodic updates
+        refreshHandler.removeCallbacks(this);
+
         // Clear this as current activity
         App.ClearCurrentActivity(this);
 
@@ -222,6 +238,15 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         // Call Super
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void run() {
+        // Trigger refresh callback
+        Refresh();
+
+        // Schedule next callback
+        refreshHandler.postDelayed(this, Constants.Date.TIME_5_SEC);
     }
 
     // ----------------------- Public APIs ----------------------- //
