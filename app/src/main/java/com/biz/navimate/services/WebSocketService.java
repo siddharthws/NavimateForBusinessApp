@@ -216,7 +216,7 @@ public class WebSocketService extends BaseService {
         } else if (!LocationService.IsGpsEnabled(this)) {
             // Send GPS error to server
             SendTrackingUpdate(null, Constants.Tracker.ERROR_NO_GPS);
-        } else if (!LocationService.IsLocationPermissionGranted(this)) {
+        } else if (!LocationService.IsLocationPermissionGranted(this) || !Preferences.GetTracking()) {
             // Send Permission error to server
             SendTrackingUpdate(null, Constants.Tracker.ERROR_NO_PERMISSION);
         } else {

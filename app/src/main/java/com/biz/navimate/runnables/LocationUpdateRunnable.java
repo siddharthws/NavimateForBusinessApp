@@ -9,8 +9,10 @@ import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceDialog;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.services.LocationService;
@@ -222,6 +224,30 @@ public class LocationUpdateRunnable extends     BaseRunnable
                             {
                                 initListener.onLocationInitError();
                             }
+                            break;
+                        }
+                        case Constants.Location.ERROR_TRACKING_DISABLED: {
+                            // Show dialog to enable tracking
+                            RlDialog.Show(  new Dialog.Confirm("Your location updates are currently disabled. Would you like to enable updates now ?",
+                                            new IfaceDialog.Confirm() {
+                                @Override
+                                public void onConfirmYesClick() {
+                                    // Set Tracking in preferences
+                                    Preferences.SetTracking(context, true);
+
+                                    // Try again
+                                    Post(0);
+                                }
+
+                                @Override
+                                public void onConfirmNoClick() {
+                                    // Call Init Error Listener
+                                    if (initListener != null)
+                                    {
+                                        initListener.onLocationInitError();
+                                    }
+                                }
+                            }));
                             break;
                         }
                         default:

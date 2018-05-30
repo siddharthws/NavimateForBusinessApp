@@ -94,7 +94,7 @@ public class LocationService extends BaseService implements LocationUpdateHelper
 
             // Report success
             ReportSuccess(LocationService.cache.GetLocation());
-        } else if (clients.size() == 0) {
+        } else if (clients.size() == 0 || !Preferences.GetTracking()) {
             // Stop Location Updates
             locUpdateHelper.Stop();
 
