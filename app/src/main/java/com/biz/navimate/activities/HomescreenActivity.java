@@ -127,6 +127,27 @@ public class HomescreenActivity     extends     BaseActivity
     }
 
     @Override
+    protected void Refresh() {
+        // Set Task Count
+        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
+        if (openTasks.size() == 0) {
+            ui.tvTaskCount.setVisibility(View.INVISIBLE);
+        } else {
+            ui.tvTaskCount.setVisibility(View.VISIBLE);
+            ui.tvTaskCount.setText(String.valueOf(openTasks.size()));
+        }
+
+        // Set Forms Count
+        int formsCount = DbHelper.formTable.GetUnsyncedForms().size();
+        if (formsCount == 0) {
+            ui.tvFormCount.setVisibility(View.INVISIBLE);
+        } else {
+            ui.tvFormCount.setVisibility(View.VISIBLE);
+            ui.tvFormCount.setText(String.valueOf(formsCount));
+        }
+    }
+
+    @Override
     public void onBackPressed()
     {
         if (RlDialog.IsShowing()) {
@@ -240,22 +261,7 @@ public class HomescreenActivity     extends     BaseActivity
             ui.mapFragment.cameraHelper.Move(new Camera.Location(bounds.get(0), 0, true));
         }
 
-        // Set Task Count
-        if (openTasks.size() == 0) {
-            ui.tvTaskCount.setVisibility(View.INVISIBLE);
-        } else {
-            ui.tvTaskCount.setVisibility(View.VISIBLE);
-            ui.tvTaskCount.setText(String.valueOf(openTasks.size()));
-        }
-
-        // Set Forms Count
-        int formsCount = DbHelper.formTable.GetUnsyncedForms().size();
-        if (formsCount == 0) {
-            ui.tvFormCount.setVisibility(View.INVISIBLE);
-        } else {
-            ui.tvFormCount.setVisibility(View.VISIBLE);
-            ui.tvFormCount.setText(String.valueOf(formsCount));
-        }
+        Refresh();
     }
 
     // API to send Sync Db Request
