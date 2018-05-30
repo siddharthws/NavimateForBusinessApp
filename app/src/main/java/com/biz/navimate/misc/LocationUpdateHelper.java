@@ -200,16 +200,15 @@ public class LocationUpdateHelper {
         int permissionCheck = ContextCompat.checkSelfPermission(context, locationPermission);
         GoogleApiClient apiClient = GoogleApiClientHolder.instance.apiClient;
 
-        if (permissionCheck != PermissionChecker.PERMISSION_GRANTED)
-        {
+        if (!Preferences.GetTracking()) {
+            ReportError(Constants.Location.ERROR_TRACKING_DISABLED, null);
+        } else if (permissionCheck != PermissionChecker.PERMISSION_GRANTED) {
             ReportError(Constants.Location.ERROR_NO_PERMISSION, null);
         }
-        else if (!apiClient.isConnected())
-        {
+        else if (!apiClient.isConnected()) {
             ReportError(Constants.Location.ERROR_API_CLIENT, null);
         }
-        else
-        {
+        else {
             // Request Location Updates
             PendingResult<Status> result = LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, requiredUpdate.locationRequest, LocationService.cache);
 

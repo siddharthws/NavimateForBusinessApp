@@ -186,6 +186,7 @@ public class Constants {
         public static final int ERROR_UPDATES_ERROR             = 6;
         public static final int ERROR_API_CLIENT                = 7;
         public static final int ERROR_CURRENT_LOC_UNAVAILABLE   = 8;
+        public static final int ERROR_TRACKING_DISABLED         = 9;
 
         // Client Tags
         public static final int CLIENT_TAG_MAP          = 1;
