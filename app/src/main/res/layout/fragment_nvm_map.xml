@@ -20,10 +20,16 @@
         android:layout_alignParentRight="true"
         android:orientation="vertical">
 
+        <com.biz.navimate.views.buttons.IbTrackingCtrl
+            android:id="@+id/ib_tracking_ctrl"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
         <ImageButton
             android:id="@+id/ib_current_location"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/selector_round_buttons"
             android:src="@mipmap/ic_cl"/>
 
@@ -34,14 +40,6 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/selector_round_buttons"
             android:src="@mipmap/ic_get_directions"/>
-
-        <ImageButton
-            android:id="@+id/ib_cusotmize"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/selector_round_buttons"
-            android:src="@mipmap/icon_customize_white"/>
 
     </LinearLayout>
 
