@@ -71,7 +71,7 @@ public class TaskActivity   extends     BaseActivity
         BaseActivity.Start(parentActivity, TaskActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
     }
 
-    public static void Refresh() {
+    public static void RefreshList() {
         // Get current activity
         BaseActivity currentActivity = App.GetCurrentActivity();
 

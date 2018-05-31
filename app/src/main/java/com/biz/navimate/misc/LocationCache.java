@@ -46,6 +46,11 @@ public class LocationCache implements LocationListener {
     @Override
     public void onLocationChanged(Location location)
     {
+        // Ignore if tracking is disabled
+        if (!Preferences.GetTracking()) {
+            return;
+        }
+
         // Check if new location is better
         if (!isBetterLocation(location, GetLocation()))
         {
