@@ -95,7 +95,7 @@ public class SyncDbTask extends BaseServerTask {
         HomescreenActivity.RefreshHome();
 
         // Refresh Task Activity
-        TaskActivity.Refresh();
+        TaskActivity.RefreshList();
     }
 
     // ----------------------- Public APIs ----------------------- //
