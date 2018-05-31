@@ -128,6 +128,11 @@ public class HomescreenActivity     extends     BaseActivity
 
     @Override
     protected void Refresh() {
+        // Reset Tracking Button
+        if (ui.mapFragment != null && ui.mapFragment.ibTracking != null) {
+            ui.mapFragment.ibTracking.Reset();
+        }
+
         // Set Task Count
         ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
         if (openTasks.size() == 0) {

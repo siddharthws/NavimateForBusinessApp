@@ -29,6 +29,7 @@ import com.biz.navimate.objects.Statics;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.buttons.IbTrackingCtrl;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
@@ -63,7 +64,8 @@ public class NvmMapFragment     extends     BaseFragment
     private MarkerObj.CurrentLocation clMarker                     = null;
 
     // UI
-    private ImageButton ibCurrentLocation = null, ibRoute = null, ibCustomize = null;
+    private ImageButton ibCurrentLocation = null, ibRoute = null;
+    public IbTrackingCtrl ibTracking = null;
 
     // Helpers
     public MarkerHelper markerHelper                                = null;
@@ -106,7 +108,7 @@ public class NvmMapFragment     extends     BaseFragment
         supportMapFragment             = (TouchableSupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
         ibCurrentLocation = (ImageButton) fragmentView.findViewById(R.id.ib_current_location);
         ibRoute = (ImageButton) fragmentView.findViewById(R.id.ib_route);
-        ibCustomize = (ImageButton) fragmentView.findViewById(R.id.ib_cusotmize);
+        ibTracking = (IbTrackingCtrl) fragmentView.findViewById(R.id.ib_tracking_ctrl);
 
         // Ready the map
         supportMapFragment.getMapAsync(this);
@@ -132,13 +134,6 @@ public class NvmMapFragment     extends     BaseFragment
             @Override
             public void onClick(View v) {
                 ButtonClickRoute();
-            }
-        });
-
-        ibCustomize.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ButtonClickCustomize();
             }
         });
 
