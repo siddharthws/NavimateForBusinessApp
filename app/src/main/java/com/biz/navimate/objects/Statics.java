@@ -43,6 +43,9 @@ public class Statics {
     // Screen Density
     public static float SCREEN_DENSITY = 0f;
 
+    // Flag to indicate if Db Got Upgraded while app start
+    public static boolean bDbUpgraded = false;
+
     // ----------------------- Public APIs ----------------------- //
     // Check if this thread is UI thread
     public static boolean IsOnUiThread()

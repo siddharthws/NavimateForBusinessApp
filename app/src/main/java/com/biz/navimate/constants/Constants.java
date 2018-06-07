@@ -173,6 +173,7 @@ public class Constants {
         public static final String KEY_REPORT           = "report";
         public static final String KEY_REMOVE           = "remove";
         public static final String KEY_LAST_SYNC_TIME   = "lastSyncTime";
+        public static final String KEY_PUBLIC_ID        = "publicId";
     }
 
     // Location related constants

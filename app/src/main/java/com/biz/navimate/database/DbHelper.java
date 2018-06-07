@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.Statics;
 
 /**
  * Created by Jagannath on 08-11-2017.
@@ -17,7 +18,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 11;
+    private static final int     DATABASE_VERSION                = 12;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
@@ -59,11 +60,28 @@ public class DbHelper extends SQLiteOpenHelper
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1)
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-       // Drop & recreate template and field table
-        db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
-        db.execSQL(LocationReportTable.CREATE_TABLE);
+        // Upgrade database
+        if (oldVersion < 10) {
+            // Reset database
+            RemoveAll(db);
+            onCreate(db);
+        } else {
+            switch (oldVersion) {
+                case 10:
+                    // Drop & recreate location report
+                    db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
+                    db.execSQL(LocationReportTable.CREATE_TABLE);
+                case 11:
+                    // Add Public ID to task with default value
+                    db.execSQL( "ALTER TABLE " + TaskTable.TABLE_NAME +
+                                " ADD COLUMN " + TaskTable.COLUMN_PUBLIC_ID + " TEXT DEFAULT '-'");
+            }
+        }
+
+        // Set Upgrade Flag
+        Statics.bDbUpgraded = true;
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -73,5 +91,14 @@ public class DbHelper extends SQLiteOpenHelper
         {
             dbHelper = new DbHelper(context);
         }
+    }
+
+    private void RemoveAll(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
     }
 }

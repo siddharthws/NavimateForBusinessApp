@@ -67,7 +67,7 @@ public class TaskInfoDialog     extends     BaseDialog
         Task task = ((Dialog.TaskInfo) data).task;
 
         // Set Text
-        ui.tvId.setText("ID : " + String.valueOf(task.serverId));
+        ui.tvId.setText("ID : " + task.publicId);
         ui.btnLead.setText(task.lead.title);
 
         // Set Form Fields

@@ -44,6 +44,7 @@ public class Task extends ServerObject {
     }
 
     // ----------------------- Globals ----------------------- //
+    public String publicId                      = "";
     public Lead lead                            = null;
     public Template formTemplate                = null;
     public Template template                    = null;
@@ -67,7 +68,8 @@ public class Task extends ServerObject {
     //
     public void fromJson(JSONObject json) {
         try {
-            serverId           = json.getLong(Constants.Server.KEY_ID);
+            serverId     = json.getLong(Constants.Server.KEY_ID);
+            publicId     = json.getString(Constants.Server.KEY_PUBLIC_ID);
             status       = TaskStatus.valueOf(json.getInt(Constants.Server.KEY_STATUS));
 
             // Get Local Lead Object
@@ -108,6 +110,7 @@ public class Task extends ServerObject {
     public void fromCursor(Cursor cursor)
     {
         dbId                  = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_ID));
+        publicId              = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_PUBLIC_ID));
         serverId              = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_SRV_ID));
         status       = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_STATUS)));
 
@@ -146,6 +149,7 @@ public class Task extends ServerObject {
 
         // Enter values into Database
         cv.put(TaskTable.COLUMN_SRV_ID,            serverId);
+        cv.put(TaskTable.COLUMN_PUBLIC_ID,         publicId);
         cv.put(TaskTable.COLUMN_LEAD_ID,           lead.dbId);
         cv.put(TaskTable.COLUMN_FORM_TEMPLATE_ID,  formTemplate.dbId);
         cv.put(TaskTable.COLUMN_TEMPLATE_ID,       template.dbId);

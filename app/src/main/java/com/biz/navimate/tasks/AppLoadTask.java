@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.misc.Preferences;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.server.GetWorkingHoursTask;
 import com.biz.navimate.services.LocReportService;
 import com.biz.navimate.services.LocationService;
@@ -68,6 +69,12 @@ public class AppLoadTask extends AsyncTask<Void, Void, Void> {
         // Add app ID to ACRA
         if (!Constants.App.DEBUG) {
             ACRA.getErrorReporter().putCustomData(Constants.Server.KEY_ID, String.valueOf(Preferences.GetUser().appId));
+        }
+
+        // Perform Database upgrade related stuff
+        if (Statics.bDbUpgraded) {
+            // Reset last sync time for Db to get task public IDs correctly
+            Preferences.SetTaskSyncTime(parentContext, 0);
         }
 
         // Wait for FCM ID Token
