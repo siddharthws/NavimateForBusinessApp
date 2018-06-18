@@ -1,11 +1,14 @@
 package com.biz.navimate.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.Button;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.viewholders.ActivityHolder;
+import com.biz.navimate.views.DrawableImageView;
 import com.biz.navimate.views.VwPhotoDraw;
 
 public class PhotoDrawActivity extends BaseActivity {
@@ -18,6 +21,7 @@ public class PhotoDrawActivity extends BaseActivity {
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.PhotoDraw ui = null;
+    Bitmap bitmap = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -39,11 +43,17 @@ public class PhotoDrawActivity extends BaseActivity {
         ui.btnBack  = (Button) findViewById(R.id.btn_back);
         ui.btnClear = (Button) findViewById(R.id.btn_clear);
         ui.btnSave  = (Button) findViewById(R.id.btn_save);
-        ui.vwPhotoDraw = (VwPhotoDraw) findViewById(R.id.vw_photoDraw);
+        ui.vwPhotoDraw = (DrawableImageView) findViewById(R.id.vw_photoDraw);
     }
 
     @Override
-    protected void SetViews() {}
+    protected void SetViews() {
+        // Get bitmap
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test2).copy(Bitmap.Config.ARGB_8888, true);
+
+        // Set bitmap
+        ui.vwPhotoDraw.setNewImage(bitmap);
+    }
 
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity) {
@@ -57,7 +67,7 @@ public class PhotoDrawActivity extends BaseActivity {
 
     public void ButtonClickClear(View view) {
         // Clear Signature View
-        ui.vwPhotoDraw.startNew();
+        ui.vwPhotoDraw.setNewImage(bitmap);
     }
 
     public void ButtonClickSave(View view) {

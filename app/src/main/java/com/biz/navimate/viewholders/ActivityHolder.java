@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
+import com.biz.navimate.views.DrawableImageView;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
 import com.biz.navimate.views.RlEnterName;
@@ -89,7 +90,7 @@ public class ActivityHolder {
     public static class PhotoDraw extends Base
     {
         public Button btnSave, btnBack, btnClear        = null;
-        public VwPhotoDraw vwPhotoDraw = null;
+        public DrawableImageView vwPhotoDraw = null;
     }
 
     public static class ViewPhoto extends Base
