@@ -13,6 +13,7 @@ import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.TvCalibri;
+import com.biz.navimate.views.VwPhotoDraw;
 import com.biz.navimate.views.VwSignature;
 
 /**
@@ -83,6 +84,12 @@ public class ActivityHolder {
     {
         public Button btnSave, btnBack, btnClear        = null;
         public VwSignature vwSignature = null;
+    }
+
+    public static class PhotoDraw extends Base
+    {
+        public Button btnSave, btnBack, btnClear        = null;
+        public VwPhotoDraw vwPhotoDraw = null;
     }
 
     public static class ViewPhoto extends Base

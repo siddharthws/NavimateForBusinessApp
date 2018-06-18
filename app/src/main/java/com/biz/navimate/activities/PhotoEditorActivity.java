@@ -17,6 +17,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 
@@ -144,7 +145,17 @@ public class PhotoEditorActivity extends BaseActivity {
     }
 
     public void ButtonClickDraw(View view)
-    {}
+    {
+        BaseActivity activity = App.GetCurrentActivity();
+        //set photo editor activity listener
+        activity.SetPhotoDrawListener(new IfaceResult.PhotoDraw() {
+            @Override
+            public void onPhotoDraw() {
+                System.out.println("Reached the photo draw");
+            }
+        });
+        PhotoDrawActivity.Start(activity);
+    }
 
     // ----------------------- Private APIs ----------------------- //
 }

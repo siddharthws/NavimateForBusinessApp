@@ -99,6 +99,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <activity android:name=".activities.PhotoDrawActivity"></activity>
     </application>
 
 </manifest>

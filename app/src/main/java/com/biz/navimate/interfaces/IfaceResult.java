@@ -48,4 +48,9 @@ public class IfaceResult {
     {
         void onSignatureResult(String fileName);
     }
+
+    public interface PhotoDraw
+    {
+        void onPhotoDraw();
+    }
 }
