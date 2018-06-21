@@ -1,27 +1,33 @@
 package com.biz.navimate.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.DrawableImageView;
-import com.biz.navimate.views.VwPhotoDraw;
+
+import java.io.File;
 
 public class PhotoDrawActivity extends BaseActivity {
 
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "PHOTO_DRAW_ACTIVITY";
-
+    private String absPath     = "";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.PhotoDraw ui = null;
     Bitmap bitmap = null;
+    Bitmap reduced_bitmap = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -48,25 +54,39 @@ public class PhotoDrawActivity extends BaseActivity {
 
     @Override
     protected void SetViews() {
-        // Get bitmap
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.test2).copy(Bitmap.Config.ARGB_8888, true);
-
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            absPath = extras.getString(Constants.Extras.IMAGE_PATH);
+        }
+        System.out.println("ImagepATH: "+absPath);
+        // Add to imageview if file is existing
+        if (absPath.length() > 0) {
+            File imageFile = new File(absPath);
+            if (imageFile.exists())
+            {
+                bitmap = BitmapFactory.decodeFile(absPath).copy(Bitmap.Config.ARGB_8888, true);
+                reduced_bitmap = getResizedBitmap(bitmap, 512, 1024);
+            }
+        }
+        System.out.println("setViews Called");
         // Set bitmap
-        ui.vwPhotoDraw.setNewImage(bitmap);
+        ui.vwPhotoDraw.setNewImage(reduced_bitmap);
     }
 
     // ----------------------- Public APIs ----------------------- //
-    public static void Start(BaseActivity activity) {
-        BaseActivity.Start(activity, PhotoDrawActivity.class, -1, null, Constants.RequestCodes.PHOTO_DRAW, null);
+    public static void Start(BaseActivity activity, String absPath) {
+
+            Bundle extras = new Bundle();
+            extras.putString(Constants.Extras.IMAGE_PATH, absPath);
+            BaseActivity.Start(activity, PhotoDrawActivity.class, -1, extras, Constants.RequestCodes.PHOTO_DRAW, null);
     }
 
     public void ButtonClickBack(View view) {
-        // Finish this activity
         finish();
     }
 
     public void ButtonClickClear(View view) {
-        // Clear Signature View
+        // Clear Draw View
         ui.vwPhotoDraw.setNewImage(bitmap);
     }
 
@@ -76,4 +96,18 @@ public class PhotoDrawActivity extends BaseActivity {
     }
 
     // ----------------------- Private APIs ----------------------- //
+    private static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // create a matrix for the manipulation
+        Matrix matrix = new Matrix();
+        // resize the bit map
+        matrix.postScale(scaleWidth, scaleHeight);
+        // recreate the new Bitmap
+        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
+                matrix, false);
+        return resizedBitmap;
+    }
 }

@@ -25,12 +25,14 @@ public class DrawableImageView extends AppCompatImageView implements View.OnTouc
     public DrawableImageView(Context context)
     {
         super(context);
+        System.out.println("const 1 Called");
         setOnTouchListener(this);
     }
 
     public DrawableImageView(Context context, AttributeSet attrs)
     {
         super(context, attrs);
+        System.out.println("const 2 Called");
         setOnTouchListener(this);
     }
 
@@ -38,12 +40,14 @@ public class DrawableImageView extends AppCompatImageView implements View.OnTouc
                              int defStyleAttr)
     {
         super(context, attrs, defStyleAttr);
+        System.out.println("const 3 Called");
         setOnTouchListener(this);
     }
 
     public void setNewImage(Bitmap bmp)
     {
-        canvas = new Canvas(bmp );
+        System.out.println("SetNewImage Called");
+        canvas = new Canvas(bmp);
         paint = new Paint();
         paint.setColor(Color.GREEN);
         paint.setStrokeWidth(5);
@@ -55,6 +59,7 @@ public class DrawableImageView extends AppCompatImageView implements View.OnTouc
     @Override
     public boolean onTouch(View v, MotionEvent event)
     {
+        System.out.println("OnTouch Called");
         int action = event.getAction();
 
         switch (action)
@@ -87,6 +92,7 @@ public class DrawableImageView extends AppCompatImageView implements View.OnTouc
 
     final float[] getPointerCoords(MotionEvent e)
     {
+        System.out.println("getPointercoord Called");
         final int index = e.getActionIndex();
         final float[] coords = new float[] { e.getX(index), e.getY(index) };
         Matrix matrix = new Matrix();

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -154,8 +155,10 @@ public class PhotoEditorActivity extends BaseActivity {
                 System.out.println("Reached the photo draw");
             }
         });
-        PhotoDrawActivity.Start(activity);
+        System.out.println("Abspath at editor: "+absPath);
+        PhotoDrawActivity.Start(activity, absPath);
     }
 
     // ----------------------- Private APIs ----------------------- //
+
 }
