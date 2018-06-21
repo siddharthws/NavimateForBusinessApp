@@ -420,6 +420,9 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                                 @Override
                                 public void onPhotoResult() {
                                     if (photoFile.exists()) {
+                                        //scale the Image
+                                        String scaledImageName = Statics.ScaleImageFile(getContext(), photoFile.getAbsolutePath());
+
                                         //set photo editor activity listener
                                         activity.SetPhotoEditorListener(new IfaceResult.PhotoEditor() {
                                             @Override
@@ -432,7 +435,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                                                 SetPhoto(ivPhoto, tvPhoto);
                                             }
                                         });
-                                        PhotoEditorActivity.Start(App.GetCurrentActivity(), photoFile.getName());
+                                        PhotoEditorActivity.Start(App.GetCurrentActivity(), scaledImageName);
                                     }
                                 }
                             });
