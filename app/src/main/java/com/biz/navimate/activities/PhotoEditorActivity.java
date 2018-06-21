@@ -3,6 +3,7 @@ package com.biz.navimate.activities;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class PhotoEditorActivity extends BaseActivity {
     // ----------------------- Globals ---------------------- //
     private ActivityHolder.PhotoEditor  ui          = null;
     private String absPath     = "";
+    private File imageFile = null;
 
     // ----------------------- Constructor ------------------------ //
     // ----------------------- Overrides ----------------------- //
@@ -67,13 +69,14 @@ public class PhotoEditorActivity extends BaseActivity {
         // Add to imageview if file is existing
         if (imageName.length() > 0) {
             absPath = Statics.GetAbsolutePath(this, imageName);
-            File imageFile = new File(absPath);
+            imageFile = new File(absPath);
             if (imageFile.exists()) {
                 // Set image view to visible
                 ui.ivImage.setVisibility(View.VISIBLE);
 
                 // Set bitmap to image view
-                ui.ivImage.setImageBitmap(BitmapFactory.decodeFile(absPath));
+                Bitmap bitmap = BitmapFactory.decodeFile(absPath);
+                ui.ivImage.setImageBitmap(bitmap);
             }
         }
     }
@@ -94,12 +97,9 @@ public class PhotoEditorActivity extends BaseActivity {
 
     public void ButtonClickSave(View view)
     {
-        // Scale Image File after cropping
-        String compressedFile = Statics.ScaleImageFile(this, absPath);
-
         // Send file path as result
         Intent intent = new Intent();
-        intent.putExtra(Constants.Extras.IMAGE_NAME, compressedFile);
+        intent.putExtra(Constants.Extras.IMAGE_NAME, imageFile.getName());
         setResult(RESULT_OK, intent);
 
         // Finish this activity
@@ -122,10 +122,7 @@ public class PhotoEditorActivity extends BaseActivity {
             Uri photoURI = FileProvider.getUriForFile(  this,"com.biz.navimate.fileprovider", photoFile);
             cropPictureIntent.setDataAndType(photoURI, "image/*");
             cropPictureIntent.putExtra("crop", "true");
-            cropPictureIntent.putExtra("aspectX", 1);
-            cropPictureIntent.putExtra("aspectY", 1.5);
             cropPictureIntent.putExtra("scaleUpIfNeeded", true);
-            cropPictureIntent.putExtra("scale", true);
             cropPictureIntent.putExtra("return-data", false);
             cropPictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
             cropPictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
