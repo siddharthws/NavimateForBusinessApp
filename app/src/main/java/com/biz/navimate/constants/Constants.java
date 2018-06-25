@@ -76,6 +76,7 @@ public class Constants {
         public static final int FIELD_TYPE_LOCATION       = 7;
         public static final int FIELD_TYPE_CHECKBOX       = 8;
         public static final int FIELD_TYPE_DATE           = 9;
+        public static final int FIELD_TYPE_FILE           = 10;
     }
 
     // Server related constants
@@ -91,6 +92,7 @@ public class Constants {
         public static final String URL_UPDATE_NAME      = URL_BASE + "/api/reps/name";
         public static final String URL_REGISTER         = URL_BASE + "/api/reps/register";
         public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
+        public static final String URL_UPLOAD_FILE      = URL_BASE + "/api/photos/uploadFile";
         public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
         public static final String URL_SYNC             = URL_BASE + "/api/reps/sync";
         public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
