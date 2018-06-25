@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -172,8 +174,23 @@ public class Statics {
         return image;
     }
 
-    public static String GetAbsolutePath(Context context, String filename) {
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+    public static File CreateFile(Context context, String ext) {
+        // Create an image file name
+        String fileName = UUID.randomUUID().toString();
+        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        File file = null;
+        ext = ext != null ? '.' + ext : null;
+        try {
+            file = File.createTempFile(fileName, ext, storageDir);
+        } catch (IOException e) {
+            Dbg.error(TAG, "Error while creating file");
+            Dbg.stack(e);
+        }
+        return file;
+    }
+
+    public static String GetAbsolutePath(Context context, String filename, String directory) {
+        File storageDir = context.getExternalFilesDir(directory);
         String absPath = storageDir.getAbsolutePath() + "/" + filename;
         return absPath;
     }
@@ -276,6 +293,30 @@ public class Statics {
         }
 
         return compressedName;
+    }
+
+    public static File CopyFileFromUri(Context context, File file, Uri uri) {
+        try {
+            // Get input stream
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+
+            // Create output stream for file
+            OutputStream output = new FileOutputStream(file);
+
+            // Copy bytes into output stream
+            byte[] buffer = new byte[4 * 1024]; // or other buffer size
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                output.write(buffer, 0, read);
+            }
+
+            output.flush();
+            output.close();
+        } catch (IOException e) {
+            Dbg.error(TAG, "Exception while creating file form input stream");
+        }
+
+        return file;
     }
 
     // Formatting helper APIs

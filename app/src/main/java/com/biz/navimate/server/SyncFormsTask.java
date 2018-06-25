@@ -1,6 +1,7 @@
 package com.biz.navimate.server;
 
 import android.content.Context;
+import android.os.Environment;
 import android.widget.Toast;
 
 import com.biz.navimate.activities.HomescreenActivity;
@@ -167,7 +168,7 @@ public class SyncFormsTask extends BaseServerTask {
         responseJson = null;
 
         // Get Image Path
-        String imagePath = Statics.GetAbsolutePath(parentContext, image);
+        String imagePath = Statics.GetAbsolutePath(parentContext, image, Environment.DIRECTORY_PICTURES);
 
         // Check if image exists
         if (!new File(imagePath).exists()) {
