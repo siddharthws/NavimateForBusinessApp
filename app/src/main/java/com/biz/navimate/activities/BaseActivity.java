@@ -476,7 +476,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
                         Bundle extras = resumeResultIntent.getExtras();
-                      photoDrawlistener.onPhotoDraw();
+                        if (extras != null) {
+                            String imagePath = extras.getString(Constants.Extras.IMAGE_NAME);
+                            photoDrawlistener.onPhotoDraw(imagePath);
+                        }
                     }
                 }
                 break;

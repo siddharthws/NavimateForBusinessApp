@@ -151,11 +151,16 @@ public class PhotoEditorActivity extends BaseActivity {
         //set photo editor activity listener
         activity.SetPhotoDrawListener(new IfaceResult.PhotoDraw() {
             @Override
-            public void onPhotoDraw() {
-                System.out.println("Reached the photo draw");
+            public void onPhotoDraw(String drawnImageName)
+            {
+                absPath = Statics.GetAbsolutePath(getApplicationContext(), drawnImageName);
+                imageFile = new File(absPath);
+
+                // Set bitmap to image view
+                Bitmap bitmap = BitmapFactory.decodeFile(absPath);
+                ui.ivImage.setImageBitmap(bitmap);
             }
         });
-        System.out.println("Abspath at editor: "+absPath);
         PhotoDrawActivity.Start(activity, absPath);
     }
 

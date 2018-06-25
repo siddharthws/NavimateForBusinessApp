@@ -51,6 +51,6 @@ public class IfaceResult {
 
     public interface PhotoDraw
     {
-        void onPhotoDraw();
+        void onPhotoDraw(String fileName);
     }
 }

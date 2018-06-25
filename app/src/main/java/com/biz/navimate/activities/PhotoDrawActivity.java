@@ -3,7 +3,6 @@ package com.biz.navimate.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +26,6 @@ public class PhotoDrawActivity extends BaseActivity {
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.PhotoDraw ui = null;
     Bitmap bitmap = null;
-    Bitmap reduced_bitmap = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Abstracts ----------------------- //
@@ -58,19 +56,18 @@ public class PhotoDrawActivity extends BaseActivity {
         if (extras != null) {
             absPath = extras.getString(Constants.Extras.IMAGE_PATH);
         }
-        System.out.println("ImagepATH: "+absPath);
+
         // Add to imageview if file is existing
         if (absPath.length() > 0) {
             File imageFile = new File(absPath);
             if (imageFile.exists())
             {
                 bitmap = BitmapFactory.decodeFile(absPath).copy(Bitmap.Config.ARGB_8888, true);
-                reduced_bitmap = getResizedBitmap(bitmap, 512, 1024);
             }
         }
-        System.out.println("setViews Called");
+
         // Set bitmap
-        ui.vwPhotoDraw.setNewImage(reduced_bitmap);
+        ui.vwPhotoDraw.setNewImage(bitmap);
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -91,23 +88,18 @@ public class PhotoDrawActivity extends BaseActivity {
     }
 
     public void ButtonClickSave(View view) {
+
+        // Get image file from Signature View contents
+        String compressedFileName = Statics.GetFileFromView(ui.vwPhotoDraw);
+
+        // Send file path as result
+        Intent intent = new Intent();
+        intent.putExtra(Constants.Extras.IMAGE_NAME, compressedFileName);
+        setResult(RESULT_OK, intent);
+
         // Finish this activity
         finish();
     }
 
     // ----------------------- Private APIs ----------------------- //
-    private static Bitmap getResizedBitmap(Bitmap image, int newHeight, int newWidth) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // create a matrix for the manipulation
-        Matrix matrix = new Matrix();
-        // resize the bit map
-        matrix.postScale(scaleWidth, scaleHeight);
-        // recreate the new Bitmap
-        Bitmap resizedBitmap = Bitmap.createBitmap(image, 0, 0, width, height,
-                matrix, false);
-        return resizedBitmap;
-    }
 }
