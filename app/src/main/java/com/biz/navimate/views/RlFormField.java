@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -557,7 +558,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         }
 
         // Check valid file name
-        String absolutePath = Statics.GetAbsolutePath(getContext(), imagename);
+        String absolutePath = Statics.GetAbsolutePath(getContext(), imagename, Environment.DIRECTORY_PICTURES);
         File imageFile = new File(absolutePath);
         if (!imageFile.exists()) {
             Dbg.error(TAG, "Image File not found");

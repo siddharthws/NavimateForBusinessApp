@@ -53,4 +53,9 @@ public class IfaceResult {
     {
         void onSignatureResult(String fileName);
     }
+
+    public interface FilePicker
+    {
+        void onFilePicked(String filename);
+    }
 }

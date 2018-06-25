@@ -3,23 +3,29 @@ package com.biz.navimate.activities;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
+import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.zxing.IntentIntegrator;
 import com.biz.navimate.zxing.IntentResult;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -60,6 +66,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
     private IfaceResult.PhotoEditor   photoEditorListener       = null;
     private IfaceResult.Signature     signListener              = null;
     private IfaceResult.PhotoDraw     photoDrawlistener         = null;
+    private IfaceResult.FilePicker    filePickerListener        = null;
 
     // Periodic callback handler
     private Handler refreshHandler = null;
@@ -334,6 +341,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
         this.signListener = listener;
     }
 
+    public void SetFilePickerResultListener(IfaceResult.FilePicker listener)
+    {
+        this.filePickerListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -479,6 +491,35 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
                         if (extras != null) {
                             String imageName = extras.getString(Constants.Extras.IMAGE_NAME);
                             photoDrawlistener.onPhotoDraw(imageName);
+                        }
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.FILE_PICKER:
+            {
+                if (filePickerListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        // Get file extension from URI
+                        Uri fileUri = resumeResultIntent.getData();
+                        String mimetype = getContentResolver().getType(fileUri);
+                        String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimetype);
+
+                        // Create a temp file with selected extension
+                        File file = Statics.CreateFile(this, extension);
+
+                        // Fill file using input stream from content resolver
+                        Statics.CopyFileFromUri(this, file, fileUri);
+
+                        // Check if file size is greater than 2 MB
+                        if (file.length() > 2000000) {
+                            Dbg.Toast(this, "File is larger than 2 MB", Toast.LENGTH_SHORT);
+                            file.delete();
+                        } else {
+                            // Trigger file picker listener
+                            filePickerListener.onFilePicked(file.getName());
                         }
                     }
                 }

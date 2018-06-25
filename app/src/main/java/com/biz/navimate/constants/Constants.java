@@ -23,6 +23,7 @@ public class Constants {
         public static final int PHOTO_EDITOR    = 7;
         public static final int PHOTO_CROP      = 8;
         public static final int PHOTO_DRAW      = 9;
+        public static final int FILE_PICKER     = 10;
     }
 
     // Map related constants

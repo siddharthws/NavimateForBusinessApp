@@ -2,6 +2,7 @@ package com.biz.navimate.activities;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -50,7 +51,7 @@ public class ViewPhotoActivity extends BaseActivity {
 
         // Add to imageview if file is existing
         if (imageName.length() > 0) {
-            String absPath = Statics.GetAbsolutePath(this, imageName);
+            String absPath = Statics.GetAbsolutePath(this, imageName, Environment.DIRECTORY_PICTURES);
             Dbg.info(TAG, "Path = " + absPath);
             File imageFile = new File(absPath);
             if (imageFile.exists()) {

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
@@ -73,8 +74,8 @@ public class PhotoEditorActivity extends BaseActivity {
 
         // Add to imageview if file is existing
         if (imageName.length() > 0) {
-            absPath = Statics.GetAbsolutePath(this, imageName);
-            imageFile = new File(absPath);
+            absPath = Statics.GetAbsolutePath(this, imageName, Environment.DIRECTORY_PICTURES);
+            File imageFile = new File(absPath);
             if (imageFile.exists()) {
                 // Set image view to visible
                 ui.ivImage.setVisibility(View.VISIBLE);
