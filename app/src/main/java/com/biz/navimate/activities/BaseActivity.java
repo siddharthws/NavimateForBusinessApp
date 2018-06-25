@@ -59,6 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
     private IfaceResult.Crop          photoCropListener         = null;
     private IfaceResult.PhotoEditor   photoEditorListener       = null;
     private IfaceResult.Signature     signListener              = null;
+    private IfaceResult.PhotoDraw     photoDrawlistener         = null;
 
     // Periodic callback handler
     private Handler refreshHandler = null;
@@ -323,6 +324,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
         this.photoEditorListener = listener;
     }
 
+    public void SetPhotoDrawListener(IfaceResult.PhotoDraw listener)
+    {
+        this.photoDrawlistener = listener;
+    }
+
     public void SetSignResultListener(IfaceResult.Signature listener)
     {
         this.signListener = listener;
@@ -458,6 +464,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
                         if (extras != null) {
                             String imagePath = extras.getString(Constants.Extras.SIGNATURE_IMAGE_PATH);
                             signListener.onSignatureResult(imagePath);
+                        }
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.PHOTO_DRAW:
+            {
+                if (photoDrawlistener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        Bundle extras = resumeResultIntent.getExtras();
+                        if (extras != null) {
+                            String imagePath = extras.getString(Constants.Extras.IMAGE_NAME);
+                            photoDrawlistener.onPhotoDraw(imagePath);
                         }
                     }
                 }

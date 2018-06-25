@@ -8,7 +8,7 @@ public class Constants {
     // General App Constants
     public static class App {
         // Toggle debug mode
-        public static final Boolean DEBUG        = false;
+        public static final Boolean DEBUG        = true;
     }
 
     // Request codes for activity results
@@ -22,6 +22,7 @@ public class Constants {
         public static final int SIGNATURE       = 6;
         public static final int PHOTO_EDITOR    = 7;
         public static final int PHOTO_CROP      = 8;
+        public static final int PHOTO_DRAW      = 9;
     }
 
     // Map related constants
@@ -29,6 +30,7 @@ public class Constants {
         // Activity Result Extras
         public static final String LEAD_PICKER          = "leadPicker";
         public static final String IMAGE_NAME           = "imageName";
+        public static final String IMAGE_PATH           = "imagepath";
         public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
     }
 

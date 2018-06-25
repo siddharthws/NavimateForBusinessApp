@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 
@@ -144,7 +146,24 @@ public class PhotoEditorActivity extends BaseActivity {
     }
 
     public void ButtonClickDraw(View view)
-    {}
+    {
+        BaseActivity activity = App.GetCurrentActivity();
+        //set photo editor activity listener
+        activity.SetPhotoDrawListener(new IfaceResult.PhotoDraw() {
+            @Override
+            public void onPhotoDraw(String drawnImageName)
+            {
+                absPath = Statics.GetAbsolutePath(getApplicationContext(), drawnImageName);
+                imageFile = new File(absPath);
+
+                // Set bitmap to image view
+                Bitmap bitmap = BitmapFactory.decodeFile(absPath);
+                ui.ivImage.setImageBitmap(bitmap);
+            }
+        });
+        PhotoDrawActivity.Start(activity, absPath);
+    }
 
     // ----------------------- Private APIs ----------------------- //
+
 }
