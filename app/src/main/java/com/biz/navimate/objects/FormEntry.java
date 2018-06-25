@@ -237,6 +237,26 @@ public class FormEntry {
         }
     }
 
+    // File Form Field
+    public static class File extends Base
+    {
+        // List of strings to store
+        public String filename = "";
+
+        public File (Field field, String filename)
+        {
+            super(field);
+            this.filename = filename;
+        }
+
+        // Convert object to JSON
+        @Override
+        public String toString()
+        {
+            return filename;
+        }
+    }
+
     public static Base Parse(Field field, String value) {
         switch (field.type) {
             case Constants.Template.FIELD_TYPE_TEXT : {
@@ -265,6 +285,9 @@ public class FormEntry {
             }
             case Constants.Template.FIELD_TYPE_PHOTO : {
                 return new Photo(field, value);
+            }
+            case Constants.Template.FIELD_TYPE_FILE : {
+                return new File(field, value);
             }
             case Constants.Template.FIELD_TYPE_SIGN : {
                 return new Signature(field, value);

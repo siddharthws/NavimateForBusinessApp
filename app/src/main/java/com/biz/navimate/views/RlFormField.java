@@ -64,9 +64,9 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     private TvCalibri tvNumber, tvText = null;
     private RadioGroup rgRadioList = null;
     private LinearLayout llCheckList = null;
-    private RelativeLayout rlPhoto = null, rlSignature = null;
+    private RelativeLayout rlPhoto = null, rlSignature = null, rlFile = null;
     private ImageView ivPhoto = null, ivSignature = null;
-    private TvCalibri tvPhoto = null, tvSignature = null;
+    private TvCalibri tvPhoto = null, tvSignature = null, tvFile = null;
     private TvCalibri tvDate = null;
     private DatePickerDialog dateDialog = null;
     private TimePickerDialog timeDialog = null;
@@ -135,6 +135,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                 break;
             }
             case Constants.Template.FIELD_TYPE_PHOTO :
+            case Constants.Template.FIELD_TYPE_FILE :
             case Constants.Template.FIELD_TYPE_SIGN :
             case Constants.Template.FIELD_TYPE_DATE : {
                 value = entry.toString();
@@ -199,10 +200,12 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         tvText = (TvCalibri) view.findViewById(R.id.tv_text);
         rgRadioList = (RadioGroup) view.findViewById(R.id.rg_radioList);
         rlPhoto = (RelativeLayout) view.findViewById(R.id.rl_photo);
+        rlFile = (RelativeLayout) view.findViewById(R.id.rl_file);
         rlSignature = (RelativeLayout)  view.findViewById(R.id.rl_signature);
         ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
         ivSignature = (ImageView)       view.findViewById(R.id.iv_signature);
         tvPhoto = (TvCalibri) view.findViewById(R.id.tv_photo);
+        tvFile = (TvCalibri) view.findViewById(R.id.tv_file);
         tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
         tvDate = (TvCalibri) view.findViewById(R.id.tv_date);
 
@@ -229,6 +232,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
             case Constants.Template.FIELD_TYPE_PHOTO : {
                 InitPhotoField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_FILE : {
+                InitFileField();
                 break;
             }
             case Constants.Template.FIELD_TYPE_SIGN : {
@@ -446,6 +453,41 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                         }
                     } else {
                         Dbg.Toast(getContext(), "Camera App not available...", Toast.LENGTH_SHORT);
+                    }
+                }
+            });
+        }
+    }
+
+    private void InitFileField() {
+        // Set photo layout visible
+        rlFile.setVisibility(VISIBLE);
+
+        if (bReadOnly) {
+            tvFile.setText("");
+        } else {
+            // Set listener to launch file browser
+            rlFile.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    BaseActivity activity = App.GetCurrentActivity();
+                    if (activity != null) {
+                        Intent filePickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                        filePickerIntent.setType("*/*");
+
+                        // Set Photo Result Listener
+                        activity.SetFilePickerResultListener(new IfaceResult.FilePicker() {
+                            @Override
+                            public void onFilePicked(String name) {
+                                FormEntry.File fileEntry = (FormEntry.File) entry;
+                                fileEntry.filename = name;
+                                tvFile.setText("File Picked");
+                            }
+                        });
+                        activity.startActivityForResult(filePickerIntent, Constants.RequestCodes.FILE_PICKER);
+                    } else {
+                        Dbg.Toast(getContext(), "File picker not available...", Toast.LENGTH_SHORT);
                     }
                 }
             });

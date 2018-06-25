@@ -109,21 +109,25 @@ public class SyncFormsTask extends BaseServerTask {
         // Try syncing images for forms
         JSONArray formsJson = new JSONArray();
         for (Form form : unsyncedForms) {
-            // Get images in this form
-            ArrayList<String> images = GetFormImages(form);
-
             // Sync images with server
+            ArrayList<String> images = GetFormImages(form);
             boolean bImagesSynced = true;
             for (String image : images) {
                 bImagesSynced = SyncImage(image);
+                if (!bImagesSynced) {break;}
+            }
 
-                if (!bImagesSynced) {
-                    break;
+            // Sync files with server
+            boolean bFilesSynced = true;
+            if (bImagesSynced) {
+                ArrayList<String> files = GetFormFiles(form);
+                for (String file : files) {
+                    bFilesSynced = SyncFile(file);
+                    if (!bFilesSynced) {break;}
                 }
             }
 
-
-            if (!bImagesSynced) {
+            if (!bImagesSynced || !bFilesSynced) {
                 // Skip this form submission if image sync failed
                 continue;
             }
@@ -160,6 +164,20 @@ public class SyncFormsTask extends BaseServerTask {
         return images;
     }
 
+    private ArrayList<String> GetFormFiles(Form form) {
+        ArrayList<String> files = new ArrayList<>();
+
+        // Iterate through values
+        for (FormEntry.Base value : form.values) {
+            if ((value.field.type == Constants.Template.FIELD_TYPE_FILE) &&
+                    (value.toString().length() > 0)) {
+                files.add(value.toString());
+            }
+        }
+
+        return files;
+    }
+
     private boolean SyncImage(String image) {
         // Set URL for uploading images
         this.url = Constants.Server.URL_UPLOAD_PHOTO;
@@ -187,6 +205,41 @@ public class SyncFormsTask extends BaseServerTask {
         if (!IsResponseValid()) {
             return false;
         }
+
+        return true;
+    }
+
+    private boolean SyncFile(String filename) {
+        // Set URL for uploading images
+        this.url = Constants.Server.URL_UPLOAD_FILE;
+
+        // Set response to null
+        responseJson = null;
+
+        // Get Image Path
+        String absPath = Statics.GetAbsolutePath(parentContext, filename, Environment.DIRECTORY_DOCUMENTS);
+
+        // Check if image exists
+        File file = new File(absPath);
+        if (!new File(absPath).exists()) {
+            return false;
+        }
+
+        // Create Multipart request body
+        MultipartRequestBody fileBody = new MultipartRequestBody(absPath);
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM).addFormDataPart("uploadedFile", filename, fileBody).build();
+        reqBuilder.method("POST", requestBody);
+
+        // Send Request
+        super.doInBackground();
+
+        // Validate response
+        if (!IsResponseValid()) {
+            return false;
+        }
+
+        // Delete File since succesfully synced
+        file.delete();
 
         return true;
     }
