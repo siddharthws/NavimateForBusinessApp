@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.biz.navimate.activities.PhotoEditorActivity"
     android:background="@android:color/black">
 
@@ -21,48 +22,13 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:textColor="@android:color/white"
-            android:text="Back"
-            android:onClick="ButtonClickBack"/>
-
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:textColor="@android:color/white"
-            android:text="Save"
-            android:onClick="ButtonClickSave"/>
-
-        <Button
-            android:id="@+id/btn_crop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:textColor="@android:color/white"
-            android:text="Crop"
-            android:layout_marginLeft="35dp"
-            android:onClick="ButtonClickCrop"/>
-
-        <Button
-            android:id="@+id/btn_draw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selector_btn_bg_colored_shadow"
-            android:textColor="@android:color/white"
-            android:text="Draw"
-            android:onClick="ButtonClickDraw"/>
-
-    </LinearLayout>
+        android:background="@color/alphaBlack"
+        app:titleTextColor="@color/colorAccent"
+        android:minHeight="?attr/actionBarSize"/>
 
 </RelativeLayout>
