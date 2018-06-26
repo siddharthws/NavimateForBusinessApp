@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -44,10 +47,11 @@ public class PhotoDrawActivity extends BaseActivity {
         holder = ui;
 
         // Fins Views by ID
-        ui.btnBack  = (Button) findViewById(R.id.btn_back);
-        ui.btnClear = (Button) findViewById(R.id.btn_clear);
-        ui.btnSave  = (Button) findViewById(R.id.btn_save);
         ui.vwPhotoDraw = (DrawableImageView) findViewById(R.id.vw_photoDraw);
+        ui.toolbar     = (Toolbar) findViewById(R.id.toolbar);
+
+        //call method to Set toolbar
+        setToolbar();
     }
 
     @Override
@@ -70,6 +74,31 @@ public class PhotoDrawActivity extends BaseActivity {
         ui.vwPhotoDraw.setNewImage(bitmap);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.photodrawtools, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_save:
+            {
+                ButtonClickSave();
+                break;
+            }
+            case R.id.action_clear:
+            {
+                ButtonClickClear();
+                break;
+            }
+        }
+        return true;
+    }
+
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity activity, String absPath) {
         Bundle extras = new Bundle();
@@ -77,18 +106,18 @@ public class PhotoDrawActivity extends BaseActivity {
         BaseActivity.Start(activity, PhotoDrawActivity.class, -1, extras, Constants.RequestCodes.PHOTO_DRAW, null);
     }
 
-    public void ButtonClickBack(View view) {
+    public void ButtonClickBack() {
         finish();
     }
 
-    public void ButtonClickClear(View view) {
+    public void ButtonClickClear() {
         // Clear existing Bitmap and write a new bitmap
         bitmap.recycle();
         bitmap = BitmapFactory.decodeFile(absPath).copy(Bitmap.Config.ARGB_8888, true);
         ui.vwPhotoDraw.setNewImage(bitmap);
     }
 
-    public void ButtonClickSave(View view) {
+    public void ButtonClickSave() {
         // Get image file from Signature View contents
         String compressedFileName = Statics.GetFileFromView(ui.vwPhotoDraw);
 
@@ -102,4 +131,17 @@ public class PhotoDrawActivity extends BaseActivity {
     }
 
     // ----------------------- Private APIs ----------------------- //
+    private void setToolbar()
+    {
+        setSupportActionBar(ui.toolbar);
+        getSupportActionBar().setTitle("Photo Draw");
+        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white_24dp);
+
+        ui.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButtonClickBack();
+            }
+        });
+    }
 }

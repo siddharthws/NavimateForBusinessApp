@@ -5,11 +5,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,7 +20,6 @@ import com.biz.navimate.R;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceResult;
-import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 
@@ -55,8 +56,10 @@ public class PhotoEditorActivity extends BaseActivity {
 
         // Activity View
         ui.ivImage              = (ImageView)    findViewById(R.id.iv_image);
-        ui.btnSave              = (Button)       findViewById(R.id.btn_save);
-        ui.btnBack              = (Button)       findViewById(R.id.btn_back);
+        ui.toolbar              = (Toolbar)       findViewById(R.id.toolbar);
+
+        //call method to Set toolbar
+        setToolbar();
     }
 
     @Override
@@ -83,6 +86,36 @@ public class PhotoEditorActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.photoeditortools, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.action_save:
+            {
+                ButtonClickSave();
+                break;
+            }
+            case R.id.action_crop:
+            {
+                ButtonClickCrop();
+                break;
+            }
+            case R.id.action_draw:
+            {
+                ButtonClickDraw();
+                break;
+            }
+        }
+        return true;
+    }
+
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity parentActivity, String filename)
     {
@@ -91,13 +124,13 @@ public class PhotoEditorActivity extends BaseActivity {
         BaseActivity.Start(parentActivity, PhotoEditorActivity.class, -1, extras, Constants.RequestCodes.PHOTO_EDITOR, null);
     }
 
-    // Button Click APIs
-    public void ButtonClickBack(View view)
+    // Menu Button Click APIs
+    public void ButtonClickBack()
     {
-        super.onBackPressed();
+        finish();
     }
 
-    public void ButtonClickSave(View view)
+    public void ButtonClickSave()
     {
         // Send file path as result
         Intent intent = new Intent();
@@ -108,7 +141,7 @@ public class PhotoEditorActivity extends BaseActivity {
         finish();
     }
 
-    public void ButtonClickCrop(View view)
+    public void ButtonClickCrop()
     {
         BaseActivity activity = App.GetCurrentActivity();
 
@@ -145,7 +178,7 @@ public class PhotoEditorActivity extends BaseActivity {
         }
     }
 
-    public void ButtonClickDraw(View view)
+    public void ButtonClickDraw()
     {
         BaseActivity activity = App.GetCurrentActivity();
         //set photo editor activity listener
@@ -165,5 +198,17 @@ public class PhotoEditorActivity extends BaseActivity {
     }
 
     // ----------------------- Private APIs ----------------------- //
+    private void setToolbar()
+    {
+        setSupportActionBar(ui.toolbar);
+        getSupportActionBar().setTitle("Photo Editor");
+        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white_24dp);
 
+        ui.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ButtonClickBack();
+            }
+        });
+    }
 }

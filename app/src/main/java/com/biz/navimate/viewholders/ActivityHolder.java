@@ -1,5 +1,6 @@
 package com.biz.navimate.viewholders;
 
+import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -82,14 +83,14 @@ public class ActivityHolder {
 
     public static class Signature extends Base
     {
-        public Button btnSave, btnBack, btnClear        = null;
         public VwSignature vwSignature = null;
+        public Toolbar toolbar           = null;
     }
 
     public static class PhotoDraw extends Base
     {
-        public Button btnSave, btnBack, btnClear        = null;
         public DrawableImageView vwPhotoDraw = null;
+        public Toolbar toolbar           = null;
     }
 
     public static class ViewPhoto extends Base
@@ -100,6 +101,6 @@ public class ActivityHolder {
     public static class PhotoEditor extends Base
     {
         public ImageView ivImage         = null;
-        public Button btnSave, btnBack   = null;
+        public Toolbar toolbar           = null;
     }
 }

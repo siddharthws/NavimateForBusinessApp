@@ -51,7 +51,7 @@
         <activity
             android:name=".activities.SignatureActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.FormsActivity"
             android:launchMode="singleTop"
