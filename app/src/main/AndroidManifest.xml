@@ -68,6 +68,10 @@
             android:name=".activities.PhotoEditorActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.PhotoDrawActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!-- Services -->
         <service android:name=".firebase.FcmMessagingService">
@@ -100,5 +104,4 @@
                 android:resource="@xml/file_paths" />
         </provider>
     </application>
-
 </manifest>
