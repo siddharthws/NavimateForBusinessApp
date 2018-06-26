@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.PhotoDrawActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/alphaBlack">
+
+    <com.biz.navimate.views.DrawableImageView
+        android:id="@+id/vw_photoDraw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:textColor="@android:color/white"
+            android:text="Back"
+            android:onClick="ButtonClickBack"/>
+
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:textColor="@android:color/white"
+            android:text="Clear"
+            android:onClick="ButtonClickClear"/>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/selector_btn_bg_colored_shadow"
+            android:textColor="@android:color/white"
+            android:text="Save"
+            android:onClick="ButtonClickSave"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

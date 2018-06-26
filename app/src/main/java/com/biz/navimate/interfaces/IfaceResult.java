@@ -44,6 +44,11 @@ public class IfaceResult {
         void onPhotoEditorResult(String fileName);
     }
 
+    public interface PhotoDraw
+    {
+        void onPhotoDraw(String fileName);
+    }
+
     public interface Signature
     {
         void onSignatureResult(String fileName);
