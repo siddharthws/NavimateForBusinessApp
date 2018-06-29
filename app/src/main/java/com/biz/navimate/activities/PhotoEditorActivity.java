@@ -187,7 +187,7 @@ public class PhotoEditorActivity extends BaseActivity {
             @Override
             public void onPhotoDraw(String drawnImageName)
             {
-                absPath = Statics.GetAbsolutePath(getApplicationContext(), drawnImageName);
+                absPath = Statics.GetAbsolutePath(getApplicationContext(), drawnImageName, Environment.DIRECTORY_PICTURES);
                 imageFile = new File(absPath);
 
                 // Set bitmap to image view
