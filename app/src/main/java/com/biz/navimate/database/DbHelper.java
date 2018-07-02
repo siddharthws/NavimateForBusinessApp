@@ -62,23 +62,9 @@ public class DbHelper extends SQLiteOpenHelper
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        // Upgrade database
-        if (oldVersion < 10) {
-            // Reset database
-            RemoveAll(db);
-            onCreate(db);
-        } else {
-            switch (oldVersion) {
-                case 10:
-                    // Drop & recreate location report
-                    db.execSQL("DROP TABLE IF EXISTS " + LocationReportTable.TABLE_NAME);
-                    db.execSQL(LocationReportTable.CREATE_TABLE);
-                case 11:
-                    // Add Public ID to task with default value
-                    db.execSQL( "ALTER TABLE " + TaskTable.TABLE_NAME +
-                                " ADD COLUMN " + TaskTable.COLUMN_PUBLIC_ID + " TEXT DEFAULT '-'");
-            }
-        }
+        // Reset database
+        RemoveAll(db);
+        onCreate(db);
 
         // Set Upgrade Flag
         Statics.bDbUpgraded = true;
