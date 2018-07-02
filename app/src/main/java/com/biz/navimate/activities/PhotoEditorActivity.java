@@ -39,7 +39,6 @@ public class PhotoEditorActivity extends BaseActivity {
     // ----------------------- Globals ---------------------- //
     private ActivityHolder.PhotoEditor  ui          = null;
     private String absPath     = "";
-    private File imageFile = null;
 
     // ----------------------- Constructor ------------------------ //
     // ----------------------- Overrides ----------------------- //
@@ -135,6 +134,7 @@ public class PhotoEditorActivity extends BaseActivity {
     {
         // Send file path as result
         Intent intent = new Intent();
+        File imageFile = new File(absPath);
         intent.putExtra(Constants.Extras.IMAGE_NAME, imageFile.getName());
         setResult(RESULT_OK, intent);
 
@@ -188,7 +188,6 @@ public class PhotoEditorActivity extends BaseActivity {
             public void onPhotoDraw(String drawnImageName)
             {
                 absPath = Statics.GetAbsolutePath(getApplicationContext(), drawnImageName, Environment.DIRECTORY_PICTURES);
-                imageFile = new File(absPath);
 
                 // Set bitmap to image view
                 Bitmap bitmap = BitmapFactory.decodeFile(absPath);
