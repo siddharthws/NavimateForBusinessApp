@@ -10,6 +10,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Dialog;
+import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -118,6 +119,9 @@ public class SyncDbTask extends BaseServerTask {
         // Parse Tasks
         ParseTasks(responseJson.getJSONObject(Constants.Server.KEY_TASKS));
 
+        // Parse Forms
+        ParseForms(responseJson.getJSONObject(Constants.Server.KEY_FORMS));
+
         // Update Sync Time
         Preferences.SetTaskSyncTime(parentContext, System.currentTimeMillis());
     }
@@ -206,6 +210,26 @@ public class SyncDbTask extends BaseServerTask {
             if (task != null) {
                 DbHelper.taskTable.Remove(task);
             }
+        }
+    }
+
+    private void ParseForms(JSONObject json) throws JSONException {
+        // Save objects from response
+        JSONArray formsJson = json.getJSONArray(Constants.Server.KEY_FORMS);
+        for (int i = 0; i < formsJson.length(); i++) {
+            // Parse JSON into object
+            JSONObject formJson = formsJson.getJSONObject(i);
+
+            // Get object by server ID or create new
+            Form form = DbHelper.formTable.GetByServerId(formJson.getLong(Constants.Server.KEY_ID));
+            if (form != null) {
+                form.fromJson(formJson);
+            } else {
+                form = new Form(formJson);
+            }
+
+            // Save object in DB
+            DbHelper.formTable.Save(form);
         }
     }
 }

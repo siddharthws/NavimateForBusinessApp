@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -61,8 +62,13 @@ public class Form extends ServerObject {
     public void fromJson(JSONObject formJson) {
         try {
             serverId       = formJson.getLong(Constants.Server.KEY_ID);
-            bCloseTask  = formJson.getBoolean(Constants.Server.KEY_CLOSE_TASK);
-            timestamp      = formJson.getLong(Constants.Server.KEY_TIMESTAMP);
+
+            String status = formJson.getString(Constants.Server.KEY_STATUS);
+            bCloseTask          = ((status != null) && (status.equals(Task.TaskStatus.CLOSED.name())));
+
+            SimpleDateFormat sdf = new SimpleDateFormat(Constants.Date.FORMAT_BACKEND);
+            timestamp           = sdf.parse(formJson.getString(Constants.Server.KEY_SUBMIT_TIME)).getTime();
+
             double latitude     = formJson.getDouble(Constants.Server.KEY_LAT);
             double longitude    = formJson.getDouble(Constants.Server.KEY_LNG);
             latlng = new LatLng(latitude, longitude);
@@ -72,8 +78,11 @@ public class Form extends ServerObject {
             template = DbHelper.templateTable.GetByServerId(templateId);
 
             // Get Local Template Object
-            long taskId         = formJson.getLong(Constants.Server.KEY_TASK_ID);
-            task           = DbHelper.taskTable.GetByServerId(taskId);
+            JSONObject taskJson = formJson.getJSONObject(Constants.Server.KEY_TASK);
+            if (taskJson != null) {
+                long taskId     = taskJson.getLong(Constants.Server.KEY_ID);
+                task            = DbHelper.taskTable.GetByServerId(taskId);
+            }
 
             // Parse values into Form Entry objects
             JSONArray valuesJson    = formJson.getJSONArray(Constants.Server.KEY_VALUES);

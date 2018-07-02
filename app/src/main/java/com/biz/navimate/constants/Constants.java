@@ -127,6 +127,7 @@ public class Constants {
         // Keys for data arrays sent by / to server
         public static final String KEY_SYNC_DATA        = "syncData";
         public static final String KEY_TASKS            = "tasks";
+        public static final String KEY_TASK             = "task";
         public static final String KEY_LEADS            = "leads";
         public static final String KEY_LEAD             = "lead";
         public static final String KEY_TEMPLATES        = "templates";
@@ -179,6 +180,7 @@ public class Constants {
         public static final String KEY_REMOVE           = "remove";
         public static final String KEY_LAST_SYNC_TIME   = "lastSyncTime";
         public static final String KEY_PUBLIC_ID        = "publicId";
+        public static final String KEY_SUBMIT_TIME      = "submitTime";
     }
 
     // Location related constants
