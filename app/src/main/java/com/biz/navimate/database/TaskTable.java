@@ -37,7 +37,7 @@ public class TaskTable extends BaseTable {
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID           + " INTEGER," +
+                    COLUMN_SRV_ID           + " TEXT," +
                     COLUMN_PUBLIC_ID        + " TEXT," +
                     COLUMN_LEAD_ID          + " INTEGER," +
                     COLUMN_FORM_TEMPLATE_ID + " INTEGER," +
@@ -86,10 +86,10 @@ public class TaskTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public Task GetByServerId(long serverId) {
+    public Task GetByServerId(String textServerId) {
         for (DbObject dbItem : cache) {
             Task task = (Task) dbItem;
-            if (task.serverId == serverId) {
+            if (task.textServerId.equals(textServerId)) {
                 return task;
             }
         }

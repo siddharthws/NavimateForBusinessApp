@@ -252,7 +252,7 @@ public class SyncFormsTask extends BaseServerTask {
             for (int i = 0; i < formsJson.length(); i++) {
                 // Update server Id of form object
                 Form form = unsyncedForms.get(i);
-                form.serverId = formsJson.getLong(i);
+                form.textServerId = formsJson.getString(i);
                 DbHelper.formTable.Save(form);
             }
         } catch (JSONException e) {

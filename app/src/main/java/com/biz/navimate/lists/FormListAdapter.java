@@ -61,7 +61,7 @@ public class FormListAdapter extends BaseListAdapter {
         holder.tvLead.setText(form.task != null ? form.task.lead.title : "");
 
         // Set Sync Status
-        if (form.serverId == Constants.Misc.ID_INVALID) {
+        if (form.textServerId.length() == 0) {
             holder.tvStatus.setText("Saved...");
         } else {
             holder.tvStatus.setText("Synced...");

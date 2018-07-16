@@ -74,10 +74,10 @@ public class LeadTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public Lead GetByServerId(String serverId) {
+    public Lead GetByServerId(String textServerId) {
         for (DbObject dbItem : cache) {
             Lead lead = (Lead) dbItem;
-            if (lead.textServerId.equals(serverId)) {
+            if (lead.textServerId.equals(textServerId)) {
                 return lead;
             }
         }

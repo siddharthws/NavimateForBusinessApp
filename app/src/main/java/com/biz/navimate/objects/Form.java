@@ -26,12 +26,13 @@ public class Form extends ServerObject {
     private static final String TAG = "FORM";
 
     // ----------------------- Globals ----------------------- //
-    public Boolean bCloseTask = false;
-    public Long timestamp = 0L;
-    public LatLng latlng = new LatLng(0, 0);
-    public Task task = null;
-    public Template template = null;
-    public ArrayList<FormEntry.Base> values = new ArrayList<>();
+    public String textServerId                  = "";
+    public Boolean bCloseTask                   = false;
+    public Long timestamp                       = 0L;
+    public LatLng latlng                        = new LatLng(0, 0);
+    public Task task                            = null;
+    public Template template                    = null;
+    public ArrayList<FormEntry.Base> values     = new ArrayList<>();
 
     // ----------------------- Constructor ----------------------- //
     public Form() {
@@ -61,7 +62,7 @@ public class Form extends ServerObject {
     //
     public void fromJson(JSONObject formJson) {
         try {
-            serverId       = formJson.getLong(Constants.Server.KEY_ID);
+            textServerId        = formJson.getString(Constants.Server.KEY_ID);
 
             String status = formJson.getString(Constants.Server.KEY_STATUS);
             bCloseTask          = ((status != null) && (status.equals(Task.TaskStatus.CLOSED.name())));
@@ -80,7 +81,7 @@ public class Form extends ServerObject {
             // Get Local Template Object
             JSONObject taskJson = formJson.getJSONObject(Constants.Server.KEY_TASK);
             if (taskJson != null) {
-                long taskId     = taskJson.getLong(Constants.Server.KEY_ID);
+                String taskId   = taskJson.getString(Constants.Server.KEY_ID);
                 task            = DbHelper.taskTable.GetByServerId(taskId);
             }
 
@@ -112,7 +113,7 @@ public class Form extends ServerObject {
             formJson.put(Constants.Server.KEY_LATITUDE, latlng.latitude);
             formJson.put(Constants.Server.KEY_LONGITUDE, latlng.longitude);
             formJson.put(Constants.Server.KEY_TIMESTAMP, timestamp);
-            formJson.put(Constants.Server.KEY_TASK_ID, task != null ? task.serverId : Constants.Misc.ID_INVALID);
+            formJson.put(Constants.Server.KEY_TASK_ID, task != null ? task.textServerId : Constants.Misc.ID_INVALID);
             formJson.put(Constants.Server.KEY_CLOSE_TASK, bCloseTask);
             formJson.put(Constants.Server.KEY_TEMPLATE_ID, template.serverId);
 
@@ -142,7 +143,7 @@ public class Form extends ServerObject {
     public void fromCursor(Cursor cursor)
     {
         dbId                    = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_ID));
-        serverId                = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_SRV_ID));
+        textServerId            = cursor.getString  (cursor.getColumnIndex(FormTable.COLUMN_SRV_ID));
         bCloseTask              = Boolean.valueOf   (cursor.getString(cursor.getColumnIndex(FormTable.COLUMN_CLOSE_TASK)));
         timestamp               = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_TIMESTAMP));
         double latitude                = cursor.getDouble  (cursor.getColumnIndex(FormTable.COLUMN_LATITUDE));
@@ -181,7 +182,7 @@ public class Form extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(FormTable.COLUMN_SRV_ID,         serverId);
+        cv.put(FormTable.COLUMN_SRV_ID,         textServerId);
         cv.put(FormTable.COLUMN_TEMPLATE_ID,    template.dbId);
         cv.put(FormTable.COLUMN_TASK_ID,        task != null ? task.dbId : Constants.Misc.ID_INVALID);
         cv.put(FormTable.COLUMN_CLOSE_TASK,     bCloseTask);

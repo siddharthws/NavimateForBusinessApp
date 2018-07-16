@@ -44,6 +44,7 @@ public class Task extends ServerObject {
     }
 
     // ----------------------- Globals ----------------------- //
+    public String textServerId                  = "";
     public String publicId                      = "";
     public Lead lead                            = null;
     public Template formTemplate                = null;
@@ -68,7 +69,7 @@ public class Task extends ServerObject {
     //
     public void fromJson(JSONObject json) {
         try {
-            serverId     = json.getLong(Constants.Server.KEY_ID);
+            textServerId = json.getString(Constants.Server.KEY_ID);
             publicId     = json.getString(Constants.Server.KEY_PUBLIC_ID);
             status       = TaskStatus.valueOf(json.getInt(Constants.Server.KEY_STATUS));
 
@@ -109,10 +110,10 @@ public class Task extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId                  = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_ID));
-        publicId              = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_PUBLIC_ID));
-        serverId              = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_SRV_ID));
-        status       = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_STATUS)));
+        dbId                = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_ID));
+        publicId            = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_PUBLIC_ID));
+        textServerId        = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_SRV_ID));
+        status              = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_STATUS)));
 
         long   leadId                = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_LEAD_ID));
         lead = (Lead) DbHelper.leadTable.GetById(leadId);
@@ -148,7 +149,7 @@ public class Task extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(TaskTable.COLUMN_SRV_ID,            serverId);
+        cv.put(TaskTable.COLUMN_SRV_ID,            textServerId);
         cv.put(TaskTable.COLUMN_PUBLIC_ID,         publicId);
         cv.put(TaskTable.COLUMN_LEAD_ID,           lead.dbId);
         cv.put(TaskTable.COLUMN_FORM_TEMPLATE_ID,  formTemplate.dbId);

@@ -38,7 +38,7 @@ public class FormTable extends BaseTable {
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID        + " INTEGER," +
+                    COLUMN_SRV_ID        + " TEXT," +
                     COLUMN_TEMPLATE_ID   + " INTEGER," +
                     COLUMN_TASK_ID       + " INTEGER," +
                     COLUMN_VALUES        + " TEXT," +
@@ -68,7 +68,7 @@ public class FormTable extends BaseTable {
 
         // Create list of forms that have not been sent to server
         for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
-            if (form.serverId == Constants.Misc.ID_INVALID) {
+            if (form.textServerId.length() == 0) {
                 forms.add(form);
             }
         }
@@ -77,10 +77,10 @@ public class FormTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public Form GetByServerId(long serverId) {
+    public Form GetByServerId(String textServerId) {
         for (DbObject dbItem : cache) {
             Form form = (Form) dbItem;
-            if (form.serverId == serverId) {
+            if (form.textServerId.equals(textServerId)) {
                 return form;
             }
         }

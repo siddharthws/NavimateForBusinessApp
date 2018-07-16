@@ -192,7 +192,7 @@ public class SyncDbTask extends BaseServerTask {
             JSONObject taskJson = tasksJson.getJSONObject(i);
 
             // Get object by server ID or create new
-            Task task = DbHelper.taskTable.GetByServerId(taskJson.getLong(Constants.Server.KEY_ID));
+            Task task = DbHelper.taskTable.GetByServerId(taskJson.getString(Constants.Server.KEY_ID));
             if (task != null) {
                 task.fromJson(taskJson);
             } else {
@@ -206,7 +206,7 @@ public class SyncDbTask extends BaseServerTask {
         // Remove objects as per response
         JSONArray removeIds = json.getJSONArray(Constants.Server.KEY_REMOVE);
         for (int i = 0; i < removeIds.length(); i++) {
-            Task task = DbHelper.taskTable.GetByServerId(removeIds.getLong(i));
+            Task task = DbHelper.taskTable.GetByServerId(removeIds.getString(i));
             if (task != null) {
                 DbHelper.taskTable.Remove(task);
             }
@@ -221,7 +221,7 @@ public class SyncDbTask extends BaseServerTask {
             JSONObject formJson = formsJson.getJSONObject(i);
 
             // Get object by server ID or create new
-            Form form = DbHelper.formTable.GetByServerId(formJson.getLong(Constants.Server.KEY_ID));
+            Form form = DbHelper.formTable.GetByServerId(formJson.getString(Constants.Server.KEY_ID));
             if (form != null) {
                 form.fromJson(formJson);
             } else {
