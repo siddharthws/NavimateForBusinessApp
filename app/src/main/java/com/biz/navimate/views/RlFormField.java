@@ -137,7 +137,8 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             case Constants.Template.FIELD_TYPE_PHOTO :
             case Constants.Template.FIELD_TYPE_FILE :
             case Constants.Template.FIELD_TYPE_SIGN :
-            case Constants.Template.FIELD_TYPE_DATE : {
+            case Constants.Template.FIELD_TYPE_DATE :
+            case Constants.Template.FIELD_TYPE_PRODUCT :    {
                 value = entry.toString();
                 break;
             }

@@ -77,6 +77,7 @@ public class Constants {
         public static final int FIELD_TYPE_CHECKBOX       = 8;
         public static final int FIELD_TYPE_DATE           = 9;
         public static final int FIELD_TYPE_FILE           = 10;
+        public static final int FIELD_TYPE_PRODUCT        = 11;
     }
 
     // Server related constants

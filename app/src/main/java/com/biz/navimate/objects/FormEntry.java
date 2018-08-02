@@ -237,6 +237,37 @@ public class FormEntry {
         }
     }
 
+    // Signature Form Field
+    public static class Product extends Base
+    {
+        // List of strings to store
+        public String id = "";
+        public String name = "";
+
+        public Product (Field field, String id, String name)
+        {
+            super(field);
+            this.id = id;
+            this.name = name;
+        }
+
+        // Convert object to JSON
+        @Override
+        public String toString()
+        {
+            JSONObject productJson = new JSONObject();
+            // Create JSON Object for Product Data
+            try {
+                productJson.put(Constants.Server.KEY_ID, id);
+                productJson.put(Constants.Server.KEY_NAME, name);
+            } catch (JSONException e) {
+                Dbg.stack(e);
+            }
+
+            return productJson.toString();
+        }
+    }
+
     // File Form Field
     public static class File extends Base
     {
@@ -324,6 +355,18 @@ public class FormEntry {
                     return new CheckList(field, options, selection);
                 } catch (JSONException e) {
                     Dbg.error(TAG, "Error while converting check list data");
+                    Dbg.stack(e);
+                }
+            }
+            case Constants.Template.FIELD_TYPE_PRODUCT : {
+                // Parse value in product
+                try {
+                    JSONObject productJson = new JSONObject(value);
+                    String id = productJson.getString(Constants.Server.KEY_ID);
+                    String name = productJson.getString(Constants.Server.KEY_NAME);
+                    return new Product(field, id, name);
+                } catch (JSONException e) {
+                    Dbg.error(TAG, "Error while converting product data");
                     Dbg.stack(e);
                 }
             }
