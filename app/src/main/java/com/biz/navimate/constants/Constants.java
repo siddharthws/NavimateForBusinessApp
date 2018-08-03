@@ -101,6 +101,7 @@ public class Constants {
         public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
         public static final String URL_APP_START        = URL_BASE + "/api/reps/appStart";
         public static final String URL_LOCATION_REPORT  = URL_BASE + "/api/reps/locationReport";
+        public static final String URL_GET_PRODUCT      = URL_BASE + "/api/reps/product/id";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
@@ -117,6 +118,7 @@ public class Constants {
 
         // ID Keys for different object types
         public static final String KEY_LEAD_ID          = "leadId";
+        public static final String KEY_PRODUCT_ID       = "productId";
         public static final String KEY_TASK_ID          = "taskId";
         public static final String KEY_TEMPLATE_ID      = "templateId";
         public static final String KEY_FIELD_ID         = "fieldId";

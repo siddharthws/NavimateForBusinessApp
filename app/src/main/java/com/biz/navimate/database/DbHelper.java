@@ -18,7 +18,7 @@ public class DbHelper extends SQLiteOpenHelper
 
     // DB Properties
     private static final String  DATABASE_NAME                   = "DB_HELPER";
-    private static final int     DATABASE_VERSION                = 13;
+    private static final int     DATABASE_VERSION                = 14;
 
     // ----------------------- Globals ----------------------- //
     private static DbHelper             dbHelper                = null;
@@ -26,6 +26,7 @@ public class DbHelper extends SQLiteOpenHelper
     // Table Class Objects for different table implementations
     public static FormTable             formTable               = null;
     public static LeadTable             leadTable               = null;
+    public static ProductTable          productTable            = null;
     public static TaskTable             taskTable               = null;
     public static TemplateTable         templateTable           = null;
     public static FieldTable            fieldTable              = null;
@@ -39,6 +40,7 @@ public class DbHelper extends SQLiteOpenHelper
 
         fieldTable             = new FieldTable(this);
         templateTable          = new TemplateTable(this);
+        productTable           = new ProductTable(this);
         leadTable              = new LeadTable(this);
         taskTable              = new TaskTable(this);
         formTable              = new FormTable(this);
@@ -53,6 +55,7 @@ public class DbHelper extends SQLiteOpenHelper
 
         db.execSQL(FieldTable.CREATE_TABLE);
         db.execSQL(TemplateTable.CREATE_TABLE);
+        db.execSQL(ProductTable.CREATE_TABLE);
         db.execSQL(LeadTable.CREATE_TABLE);
         db.execSQL(TaskTable.CREATE_TABLE);
         db.execSQL(FormTable.CREATE_TABLE);
@@ -84,6 +87,7 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + FormTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TaskTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + LeadTable.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + ProductTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
     }
