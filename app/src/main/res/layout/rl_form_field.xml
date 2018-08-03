@@ -123,6 +123,15 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/btn_product"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:textSize="@dimen/textsize_primary_small"
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone"/>
+
             <RelativeLayout
                 android:id="@+id/rl_photo"
                 android:layout_width="match_parent"

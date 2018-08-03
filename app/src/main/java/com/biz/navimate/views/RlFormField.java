@@ -20,6 +20,7 @@ import android.support.v4.content.PermissionChecker;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -70,6 +71,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     private TvCalibri tvDate = null;
     private DatePickerDialog dateDialog = null;
     private TimePickerDialog timeDialog = null;
+    private Button btnProduct = null;
 
     private FormEntry.Base entry = null;
     private boolean bReadOnly = false;
@@ -209,6 +211,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         tvFile = (TvCalibri) view.findViewById(R.id.tv_file);
         tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
         tvDate = (TvCalibri) view.findViewById(R.id.tv_date);
+        btnProduct = (Button) view.findViewById(R.id.btn_product);
 
         // Populate title
         tvTitle.setText(entry.field.title);
@@ -250,6 +253,10 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
             }
             case Constants.Template.FIELD_TYPE_CHECKLIST : {
                 InitChecklistField();
+                break;
+            }
+            case Constants.Template.FIELD_TYPE_PRODUCT : {
+                InitProductField();
                 break;
             }
         }
@@ -614,5 +621,22 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
 
         // Set error field invisible
         tvError.setVisibility(GONE);
+    }
+
+    private void InitProductField() {
+        // Set product UI visible
+        btnProduct.setVisibility(VISIBLE);
+
+        FormEntry.Product pEntry = (FormEntry.Product) entry;
+
+        btnProduct.setText(pEntry.name);
+
+        btnProduct.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Dbg.Toast(getContext(), "Product Clicked...", Toast.LENGTH_SHORT);
+            }
+        });
     }
 }
