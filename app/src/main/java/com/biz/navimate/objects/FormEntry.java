@@ -63,9 +63,9 @@ public class FormEntry {
     public static class Number extends Base
     {
         // Number to store
-        public Long number = 0L;
+        public Double number = 0.0;
 
-        public Number (Field field, Long number)
+        public Number (Field field, Double number)
         {
             super(field);
             this.number = number;
@@ -294,7 +294,7 @@ public class FormEntry {
                 return new Text(field, value);
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
-                return new Number(field, Long.valueOf(value));
+                return new Number(field, Double.valueOf(value));
             }
             case Constants.Template.FIELD_TYPE_DATE : {
                 Calendar cal = null;
