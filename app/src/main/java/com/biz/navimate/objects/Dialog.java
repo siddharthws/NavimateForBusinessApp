@@ -24,6 +24,7 @@ public class Dialog {
     public static final int TYPE_MAP_SETTINGS               = 8;
     public static final int TYPE_LEAD                       = 9;
     public static final int TYPE_ADD_TASK                   = 10;
+    public static final int TYPE_PRODUCT_VIEWER             = 11;
 
     // Base class for all dialog objects
     public static abstract class Base
@@ -145,6 +146,17 @@ public class Dialog {
         {
             super(TYPE_LEAD, true);
             this.lead = lead;
+        }
+    }
+
+    public static class ProductViewer extends Base
+    {
+        public ObjProduct product = null;
+
+        public ProductViewer(ObjProduct product)
+        {
+            super(TYPE_PRODUCT_VIEWER, true);
+            this.product = product;
         }
     }
 

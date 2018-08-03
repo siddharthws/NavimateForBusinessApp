@@ -99,6 +99,15 @@ public class DialogHolder {
         public Button btnCancel = null;
     }
 
+    public static class ProductViewer extends Base
+    {
+        public TvCalibri tvName = null;
+        public TvCalibri tvProductId = null;
+        public ArrayList<RlFormField> fields = null;
+        public LinearLayout llFields = null;
+        public Button btnClose = null;
+    }
+
     public static class RouteBuilder extends Base
     {
         public LinearLayout llAddLeads = null;

@@ -15,6 +15,7 @@ import com.biz.navimate.dialogs.BaseDialog;
 import com.biz.navimate.dialogs.ConfirmDialog;
 import com.biz.navimate.dialogs.LeadDialog;
 import com.biz.navimate.dialogs.MapSettingsDialog;
+import com.biz.navimate.dialogs.ProductViewerDialog;
 import com.biz.navimate.dialogs.ProgressDialog;
 import com.biz.navimate.dialogs.RouteBuilderDialog;
 import com.biz.navimate.dialogs.SubmitFormDialog;
@@ -395,6 +396,11 @@ public class RlDialog   extends     RelativeLayout
 
             case Dialog.TYPE_LEAD : {
                 currentDialog = new LeadDialog(getContext());
+                break;
+            }
+
+            case Dialog.TYPE_PRODUCT_VIEWER : {
+                currentDialog = new ProductViewerDialog(getContext());
                 break;
             }
 
