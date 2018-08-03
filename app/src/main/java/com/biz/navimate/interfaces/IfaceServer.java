@@ -1,5 +1,6 @@
 package com.biz.navimate.interfaces;
 
+import com.biz.navimate.objects.ObjProduct;
 import com.biz.navimate.objects.User;
 
 /**
@@ -69,5 +70,11 @@ public class IfaceServer {
     public interface SyncLocReport {
         void onLocReportSynced();
         void onLocReportSyncFailed();
+    }
+
+    // Check LocReport Sync Task interface
+    public interface GetProduct {
+        void onProductReceived(ObjProduct product);
+        void onProductFailed();
     }
 }

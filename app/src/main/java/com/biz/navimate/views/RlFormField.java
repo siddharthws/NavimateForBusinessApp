@@ -38,11 +38,16 @@ import com.biz.navimate.activities.SignatureActivity;
 import com.biz.navimate.activities.ViewPhotoActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.FormEntry;
+import com.biz.navimate.objects.ObjProduct;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.server.GetProductTask;
 import com.biz.navimate.zxing.IntentIntegrator;
 
 /**
@@ -634,8 +639,23 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         btnProduct.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Check if product exists in database
+                ObjProduct product = DbHelper.productTable.GetByServerId(pEntry.id);
+                if (product == null) {
+                    GetProductTask prodTask = new GetProductTask(getContext(), pEntry.id);
+                    prodTask.SetListener(new IfaceServer.GetProduct() {
+                        @Override
+                        public void onProductReceived(ObjProduct product) {
+                            RlDialog.Show(new Dialog.ProductViewer(product));
+                        }
 
-                Dbg.Toast(getContext(), "Product Clicked...", Toast.LENGTH_SHORT);
+                        @Override
+                        public void onProductFailed() {}
+                    });
+                    prodTask.execute();
+                } else {
+                    RlDialog.Show(new Dialog.ProductViewer(product));
+                }
             }
         });
     }
