@@ -8,7 +8,7 @@ public class Constants {
     // General App Constants
     public static class App {
         // Toggle debug mode
-        public static final Boolean DEBUG        = true;
+        public static final Boolean DEBUG        = false;
     }
 
     // Request codes for activity results
