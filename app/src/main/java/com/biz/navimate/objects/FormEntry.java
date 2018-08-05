@@ -294,6 +294,9 @@ public class FormEntry {
                 return new Text(field, value);
             }
             case Constants.Template.FIELD_TYPE_NUMBER : {
+                if (value == null || value.length() == 0) {
+                    value = "0";
+                }
                 return new Number(field, Double.valueOf(value));
             }
             case Constants.Template.FIELD_TYPE_DATE : {
