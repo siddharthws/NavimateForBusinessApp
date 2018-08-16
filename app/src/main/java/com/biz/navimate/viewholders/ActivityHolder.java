@@ -13,6 +13,7 @@ import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
 import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
+import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.TvCalibri;
 import com.biz.navimate.views.VwSignature;
@@ -60,7 +61,7 @@ public class ActivityHolder {
         public TvCalibri tvSelectedCount                         = null;
 
         // List
-        public ListView lvList                                  = null;
+        public RlListView rlvList                                = null;
     }
 
     public static class Task extends Base
@@ -69,7 +70,7 @@ public class ActivityHolder {
         public ImageButton ibSync, ibBack                        = null;
 
         // List
-        public ListView lvList                                  = null;
+        public RlListView rlvList                                = null;
     }
 
     public static class Forms extends Base
@@ -78,7 +79,7 @@ public class ActivityHolder {
         public ImageButton ibSync, ibBack                        = null;
 
         // List
-        public ListView lvList                                  = null;
+        public RlListView rlvList                                = null;
     }
 
     public static class Signature extends Base

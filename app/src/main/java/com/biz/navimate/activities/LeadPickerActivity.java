@@ -15,6 +15,7 @@ import com.biz.navimate.lists.LeadListAdapter;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ActivityHolder;
+import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class LeadPickerActivity extends         BaseActivity
         ui.ibDone               = (ImageButton)     findViewById(R.id.ib_toolbar_done);
         ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
         ui.tvSelectedCount      = (TvCalibri)       findViewById(R.id.tv_selected_count);
-        ui.lvList               = (ListView)        findViewById(R.id.lv_leads);
+        ui.rlvList              = (RlListView)      findViewById(R.id.rlv_leads);
     }
 
     @Override
@@ -61,14 +62,11 @@ public class LeadPickerActivity extends         BaseActivity
         ui.tvSelectedCount.setText("0 leads picked...");
 
         // Initialize List
-        listAdpater = new LeadListAdapter(this, ui.lvList);
-        for (Lead lead : (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll())
-        {
-            listAdpater.Add(new ListItem.Lead(lead, false));
-        }
+        listAdpater = new LeadListAdapter(this, ui.rlvList.GetListView());
+        InitList();
 
         // Set Listeners
-        ui.lvList.setOnItemClickListener(this);
+        ui.rlvList.GetListView().setOnItemClickListener(this);
     }
 
     @Override
@@ -134,4 +132,21 @@ public class LeadPickerActivity extends         BaseActivity
     }
 
     // ----------------------- Private APIs ----------------------- //
+    private void InitList() {
+        // Reset Adapter
+        listAdpater.Clear();
+
+        // Add all tasks to list in reverse order of ID
+        CopyOnWriteArrayList<Lead> leads = (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll();
+        for (int i = 0; i < leads.size(); i++) {
+            listAdpater.Add(new ListItem.Lead(leads.get(i), false));
+        }
+
+        // Update List UI
+        if (leads.size() == 0) {
+            ui.rlvList.ShowBlank();
+        } else {
+            ui.rlvList.ShowList();
+        }
+    }
 }

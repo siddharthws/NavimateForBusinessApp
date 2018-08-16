@@ -16,6 +16,7 @@ import com.biz.navimate.objects.Task;
 import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlListView;
 
 import java.util.ArrayList;
 
@@ -48,13 +49,13 @@ public class TaskActivity   extends     BaseActivity
         // Activity View
         ui.ibSync               = (ImageButton)     findViewById(R.id.ib_toolbar_sync);
         ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
-        ui.lvList               = (ListView)        findViewById(R.id.lv_task);
+        ui.rlvList              = (RlListView)      findViewById(R.id.rlv_task);
     }
 
     @Override
     protected void SetViews() {
         // Initialize List
-        listAdpater = new TaskListAdapter(this, ui.lvList);
+        listAdpater = new TaskListAdapter(this, ui.rlvList.GetListView());
         listAdpater.SetListener(this);
         InitList();
     }
@@ -104,16 +105,18 @@ public class TaskActivity   extends     BaseActivity
         // Reset Adapter
         listAdpater.Clear();
 
-        // Add Open tasks on top in reverse order of ID
-        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
-        for (int i = openTasks.size() - 1; i >= 0; i--) {
-            listAdpater.Add(new ListItem.Task(openTasks.get(i)));
+        // Add all tasks to list in reverse order of ID
+        ArrayList<Task> tasks = DbHelper.taskTable.GetClosedTasks();
+        tasks.addAll(DbHelper.taskTable.GetOpenTasks());
+        for (int i = tasks.size() - 1; i >= 0; i--) {
+            listAdpater.Add(new ListItem.Task(tasks.get(i)));
         }
 
-        // Add Closed tasks on bottom in reverse order of ID
-        ArrayList<Task> closedTasks = DbHelper.taskTable.GetClosedTasks();
-        for (int i = closedTasks.size() - 1; i >= 0; i--) {
-            listAdpater.Add(new ListItem.Task(closedTasks.get(i)));
+        // Update List UI
+        if (tasks.size() == 0) {
+            ui.rlvList.ShowBlank();
+        } else {
+            ui.rlvList.ShowList();
         }
     }
 }

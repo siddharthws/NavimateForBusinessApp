@@ -16,6 +16,7 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.RlListView;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -48,17 +49,17 @@ public class FormsActivity  extends     BaseActivity
         // Activity View
         ui.ibSync               = (ImageButton)     findViewById(R.id.ib_toolbar_sync);
         ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
-        ui.lvList               = (ListView)        findViewById(R.id.lv_forms);
+        ui.rlvList              = (RlListView)      findViewById(R.id.rlv_forms);
     }
 
     @Override
     protected void SetViews() {
         // Initialize List
-        listAdpater = new FormListAdapter(this, ui.lvList);
+        listAdpater = new FormListAdapter(this, ui.rlvList.GetListView());
         InitList();
 
         // Set Listeners
-        ui.lvList.setOnItemClickListener(this);
+        ui.rlvList.GetListView().setOnItemClickListener(this);
     }
 
     @Override
@@ -106,6 +107,13 @@ public class FormsActivity  extends     BaseActivity
         CopyOnWriteArrayList<Form> forms = (CopyOnWriteArrayList<Form>) DbHelper.formTable.GetAll();
         for (int i = forms.size() - 1; i >= 0; i--) {
             listAdpater.Add(new ListItem.Form(forms.get(i).dbId));
+        }
+
+        // Update List UI
+        if (forms.size() == 0) {
+            ui.rlvList.ShowBlank();
+        } else {
+            ui.rlvList.ShowList();
         }
     }
 }

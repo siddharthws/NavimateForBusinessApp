@@ -47,10 +47,11 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/lv_leads"
+    <com.biz.navimate.views.RlListView
+        android:id="@+id/rlv_leads"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ll_toolbar_pick_contacts"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/ll_toolbar_pick_contacts">
+    </com.biz.navimate.views.RlListView>
 
 </RelativeLayout>
