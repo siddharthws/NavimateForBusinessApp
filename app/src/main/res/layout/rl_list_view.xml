@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- List View -->
+    <ListView
+        android:id="@+id/lv_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:divider="@android:color/transparent">
+    </ListView>
+
+    <!-- Waiting / Error / Blank UI -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lv_list"
+        android:layout_marginTop="@dimen/m_small"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_vertical">
+        <!-- Loader -->
+        <ProgressBar
+            android:id="@+id/pb_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/m_small"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/pb_primary"
+            android:visibility="gone"/>
+
+        <!-- Message -->
+        <com.biz.navimate.views.TvCalibri
+            android:id="@+id/tv_list_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <!-- Load More Button -->
+    <Button
+        android:id="@+id/btn_load_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lv_list"
+        android:layout_marginTop="@dimen/m_small"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+</RelativeLayout>
