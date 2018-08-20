@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Calendar Icon -->
+    <ImageView
+        android:id="@+id/iv_calendar"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:src="@drawable/ic_date_range_grey"/>
+
+    <!-- Text showing date -->
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/m_small"
+        android:text="Date not set..."/>
+
+    <!-- Clear Button -->
+    <com.biz.navimate.views.core.NvmImageButton
+        android:id="@+id/ib_clear"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_small"
+        android:src="@drawable/ic_cross_grey"
+        android:visibility="gone"/>
+
+    <!-- Edit Button -->
+    <com.biz.navimate.views.core.NvmImageButton
+        android:id="@+id/ib_edit"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_small"
+        android:src="@drawable/ic_edit_grey"/>
+
+</merge>

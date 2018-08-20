@@ -1,5 +1,7 @@
 package com.biz.navimate.constants;
 
+import java.text.SimpleDateFormat;
+
 /**
  * Created by Siddharth on 24-09-2017.
  */
@@ -235,6 +237,7 @@ public class Constants {
         // Date Formats
         public static final String FORMAT_BACKEND   = "yyyy-MM-dd HH:mm:ss";
         public static final String FORMAT_FRONTEND  = "dd-MM-yyyy";
+        public static final String FORMAT_LONG  = "d MMM yyyy - h:mm a";
 
         // Time values in milliseconds
         public static final int TIME_5_SEC  = 5 * 1000;
@@ -280,5 +283,9 @@ public class Constants {
                 "Added to New Account",
                 "Good Morning"
         };
+    }
+
+    public static class Formatters {
+        public static SimpleDateFormat DATE_LONG = new SimpleDateFormat(Date.FORMAT_LONG);
     }
 }

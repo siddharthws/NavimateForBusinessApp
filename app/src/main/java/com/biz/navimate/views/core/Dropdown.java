@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class Dropdown extends AppCompatSpinner {
     // ----------------------- Constants ----------------------- //
+    private static final String TAG = "DROPDOWN";
+
     // ----------------------- Interfaces ----------------------- //
     public void SetListener(BaseSpinnerAdapter.IfaceSpinner listener) {
         adapter.SetListener(listener);

@@ -15,4 +15,8 @@
     <!-- Dropdown related attributes -->
     <declare-styleable name="Dropdown">
     </declare-styleable>
+
+    <!-- Date Editor related attributes -->
+    <declare-styleable name="DateEditor">
+    </declare-styleable>
 </resources>
