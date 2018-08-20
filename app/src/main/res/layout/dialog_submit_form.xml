@@ -28,11 +28,11 @@
                 android:layout_height="wrap_content"
                 app:text="Submit Form"/>
 
-            <Spinner
+            <com.biz.navimate.views.core.Dropdown
                 android:id="@+id/spFormTemplate"
                 android:layout_below="@+id/rl_dialog_title_submit_form"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp" />
+                android:layout_height="40dp"/>
 
             <LinearLayout
                 android:id="@+id/ll_fields"

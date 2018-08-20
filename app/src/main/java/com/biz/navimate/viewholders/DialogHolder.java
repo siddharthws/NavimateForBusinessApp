@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.biz.navimate.views.RlFormField;
 import com.biz.navimate.views.TvCalibri;
+import com.biz.navimate.views.core.Dropdown;
 
 import java.util.ArrayList;
 
@@ -71,7 +72,7 @@ public class DialogHolder {
 
     public static class SubmitForm extends Base
     {
-        public Spinner spTemplate = null;
+        public Dropdown ddTemplate = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;
         public CheckBox cbCloseTask = null;

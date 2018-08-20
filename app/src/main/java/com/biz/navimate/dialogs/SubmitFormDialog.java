@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.HomescreenActivity;
+import com.biz.navimate.adapters.spinner.BaseSpinnerAdapter;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.lists.SpinnerAdapter;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
@@ -30,10 +29,10 @@ import com.biz.navimate.services.LocationService;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
+import com.biz.navimate.views.core.Dropdown;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by Siddharth on 29-09-2017.
@@ -41,7 +40,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SubmitFormDialog   extends     BaseDialog
                                 implements  View.OnClickListener,
-                                            LocationUpdateRunnable.IfaceRunnableLocationInit, SpinnerAdapter.IfaceSpinner {
+                                            LocationUpdateRunnable.IfaceRunnableLocationInit,
+                                            BaseSpinnerAdapter.IfaceSpinner {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "SUBMIT_FORM_DIALOG";
 
@@ -50,8 +50,8 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Globals ----------------------- //
     private DialogHolder.SubmitForm ui = null;
     private LocationUpdateRunnable locUpdateRunnable = null;
-    private SpinnerAdapter spinnerAdapter = null;
     private boolean bRogueSelection = false;
+    private ArrayList<Template> templates = null;
 
     // ----------------------- Constructor ----------------------- //
     public SubmitFormDialog(Context context)
@@ -73,8 +73,8 @@ public class SubmitFormDialog   extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_submit_form, container);
 
         // Find Views
-        ui.spTemplate   = (Spinner) ui.dialogView.findViewById(R.id.spFormTemplate);
-        ui.llFields      = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields);
+        ui.ddTemplate   = (Dropdown) ui.dialogView.findViewById(R.id.spFormTemplate);
+        ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields);
         ui.fields       = new ArrayList<>();
         ui.cbCloseTask  = (CheckBox)   ui.dialogView.findViewById(R.id.cbCloseTask);
         ui.btnSubmit    = (Button)     ui.dialogView.findViewById(R.id.btn_submit);
@@ -88,24 +88,19 @@ public class SubmitFormDialog   extends     BaseDialog
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
         Form form = currentData.form;
 
-        // Initialize Spinner
-        spinnerAdapter = new SpinnerAdapter(context, ui.spTemplate);
+        // Cache a list of form templates
+        templates = DbHelper.templateTable.GetByType(Constants.Template.TYPE_FORM);
 
-        // Add a descriptive item to spinner
-        spinnerAdapter.AddItem("-- select form --", Constants.Misc.ID_INVALID);
+        // Set template names in dropdown
+        ArrayList<String> templateNames = new ArrayList<>();
+        for (Template template : templates) {
+            templateNames.add(template.name);
+        }
+        ui.ddTemplate.SetList(templateNames);
 
-        // Add all form templates to spinner
-        for (Template template : (CopyOnWriteArrayList<Template>) DbHelper.templateTable.GetAll()) {
-            if (template.type == Constants.Template.TYPE_FORM) {
-                // Add to spinner
-                spinnerAdapter.AddItem(template.name, template.dbId);
-
-                // Set selected template if task's form template matches this
-                if (form.template != null && template.dbId == form.template.dbId) {
-                    bRogueSelection = true;
-                    ui.spTemplate.setSelection(spinnerAdapter.getCount() - 1, false);
-                }
-            }
+        // Set current selection in dropdown
+        if (form.template != null) {
+            ui.ddTemplate.setSelection(templates.indexOf(form.template));
         }
 
         // Set checkbox only for forms attached to open tasks
@@ -121,7 +116,7 @@ public class SubmitFormDialog   extends     BaseDialog
         if (currentData.bReadOnly) {
             ui.btnSubmit.setVisibility(View.GONE);
             ui.cbCloseTask.setEnabled(false);
-            ui.spTemplate.setEnabled(false);
+            ui.ddTemplate.setEnabled(false);
         }
 
         // Set fields using value IDs
@@ -139,7 +134,7 @@ public class SubmitFormDialog   extends     BaseDialog
         }
 
         // Set Spinner item click listener
-        spinnerAdapter.SetListener(this);
+        ui.ddTemplate.SetListener(this);
 
         // Set Listeners
         ui.btnSubmit.setOnClickListener(this);
@@ -147,25 +142,22 @@ public class SubmitFormDialog   extends     BaseDialog
     }
 
     @Override
-    public void onItemSelected(long id) {
-        if (bRogueSelection) {
-            bRogueSelection = false;
-            return;
-        }
-
+    public void onItemSelected(int position) {
         // Get current data
         Form form = ((Dialog.SubmitForm) data).form;
 
-        // Get template
-        form.template = (Template) DbHelper.templateTable.GetById(id);
+        // Ignore if the selected template is the same as current template
+        Template newTemplate = templates.get(position);
+        if (newTemplate == form.template) {
+            return;
+        }
 
-        // Prepare array for fields and values
+        // Apply template & fields to form
+        form.template = newTemplate;
         ArrayList<FormEntry.Base> entries = new ArrayList<>();
         for (Field field : form.template.fields) {
             entries.add(FormEntry.Parse(field, field.value));
         }
-
-        // Set fields to default data of this template
         SetFields(entries);
     }
 

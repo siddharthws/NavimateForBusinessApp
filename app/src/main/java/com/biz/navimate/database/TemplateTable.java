@@ -66,6 +66,20 @@ public class TemplateTable extends BaseTable {
         return templates;
     }
 
+    // API to get object by type
+    public ArrayList<Template> GetByType(int type) {
+        ArrayList<Template> templates = new ArrayList<>();
+
+        for (DbObject dbItem : cache) {
+            Template template = (Template) dbItem;
+            if (template.type == type) {
+                templates.add(template);
+            }
+        }
+
+        return templates;
+    }
+
     // API to get object by serverId
     public Template GetByServerId(long serverId) {
         for (DbObject dbItem : cache) {
