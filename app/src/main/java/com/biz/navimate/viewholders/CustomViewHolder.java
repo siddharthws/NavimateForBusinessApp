@@ -3,7 +3,7 @@ package com.biz.navimate.viewholders;
 import android.widget.ImageButton;
 
 import com.biz.navimate.views.TvCalibri;
-import com.biz.navimate.views.core.NvmImageButton;
+import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.NvmEditText;
 
 public class CustomViewHolder {
