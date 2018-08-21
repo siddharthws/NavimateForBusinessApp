@@ -1,4 +1,4 @@
-package com.biz.navimate.views.core;
+package com.biz.navimate.views.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -64,29 +64,7 @@ public class Dropdown extends AppCompatSpinner {
 
     // Method to initialize view
     private void Init(Context ctx, AttributeSet attrs) {
-        // Read attributes
-        ReadAttributes(ctx, attrs);
-
         // Initialize Adapter
         adapter = new DropdownAdapter(ctx, this);
-    }
-
-    // Method read attributes and populate global variables
-    private void ReadAttributes(Context ctx, AttributeSet attrs) {
-        // Ignore if no attributes supplied
-        if (attrs == null) {
-            return;
-        }
-
-        // Get attributes as array
-        TypedArray a = ctx.getTheme().obtainStyledAttributes(attrs, R.styleable.Dropdown, 0, 0);
-
-        // Try reading attributes
-        try {
-
-        } finally {
-            // Recycle attributes after use
-            a.recycle();
-        }
     }
 }

@@ -29,7 +29,7 @@ import com.biz.navimate.services.LocationService;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
-import com.biz.navimate.views.core.Dropdown;
+import com.biz.navimate.views.custom.Dropdown;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 app:text="Submit Form"/>
 
-            <com.biz.navimate.views.core.Dropdown
+            <com.biz.navimate.views.custom.Dropdown
                 android:id="@+id/spFormTemplate"
                 android:layout_below="@+id/rl_dialog_title_submit_form"
                 android:layout_width="wrap_content"
