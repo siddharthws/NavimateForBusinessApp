@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Icon -->
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:src="@drawable/ic_location_grey"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Text showing date -->
+    <com.biz.navimate.views.TvCalibri
+        android:id="@+id/tv_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/m_small"
+        android:text="Location not set..."
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Clear Button -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_clear"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_small"
+        android:src="@drawable/ic_cross_grey"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Edit Button -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_edit"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:layout_marginLeft="@dimen/m_small"
+        android:src="@drawable/ic_edit_grey"
+        android:layout_gravity="center_vertical"/>
+
+</merge>
