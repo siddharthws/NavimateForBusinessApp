@@ -12,6 +12,11 @@ public class CustomViewHolder {
         public TvCalibri tvText = null;
     }
 
+    public static class LocationEditor {
+        public ImageButton ibEdit, ibClear = null;
+        public TvCalibri tvText = null;
+    }
+
     public static class EtClearable {
         public NvmEditText etText = null;
         public NvmImageButton ibClear = null;
