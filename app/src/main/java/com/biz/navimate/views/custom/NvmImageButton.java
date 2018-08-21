@@ -1,4 +1,4 @@
-package com.biz.navimate.views.core;
+package com.biz.navimate.views.custom;
 
 import android.content.Context;
 import android.content.res.TypedArray;
