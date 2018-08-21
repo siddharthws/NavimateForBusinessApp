@@ -12,6 +12,11 @@
         <attr name="text"          format="string" />
     </declare-styleable>
 
+    <!-- Clearable Edit Text related attributes -->
+    <declare-styleable name="EtClearable">
+        <attr name="android:inputType" />
+    </declare-styleable>
+
     <!-- Dropdown related attributes -->
     <declare-styleable name="Dropdown">
     </declare-styleable>
