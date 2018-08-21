@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.biz.navimate.views.RlFormField;
 import com.biz.navimate.views.TvCalibri;
-import com.biz.navimate.views.core.Dropdown;
+import com.biz.navimate.views.custom.Dropdown;
 
 import java.util.ArrayList;
 
