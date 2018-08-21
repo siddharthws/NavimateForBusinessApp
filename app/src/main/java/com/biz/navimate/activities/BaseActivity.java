@@ -19,11 +19,14 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.zxing.IntentIntegrator;
 import com.biz.navimate.zxing.IntentResult;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,6 +70,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
     private IfaceResult.Signature     signListener              = null;
     private IfaceResult.PhotoDraw     photoDrawlistener         = null;
     private IfaceResult.FilePicker    filePickerListener        = null;
+    private IfaceResult.PlacePicker   placePickerListener       = null;
 
     // Periodic callback handler
     private Handler refreshHandler = null;
@@ -346,6 +350,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
         this.filePickerListener = listener;
     }
 
+    public void SetPlacePickerResultListener(IfaceResult.PlacePicker listener)
+    {
+        this.placePickerListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -521,6 +530,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
                             // Trigger file picker listener
                             filePickerListener.onFilePicked(file.getName());
                         }
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.PLACE_PICKER:
+            {
+                if (placePickerListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        Place place = PlacePicker.getPlace(this, resumeResultIntent);
+                        ObjPlace objPlace = new ObjPlace(   place.getLatLng().latitude,
+                                                            place.getLatLng().longitude,
+                                                            place.getAddress().toString());
+                        placePickerListener.onPlacePicked(objPlace);
                     }
                 }
                 break;

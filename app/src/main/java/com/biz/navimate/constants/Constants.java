@@ -26,6 +26,7 @@ public class Constants {
         public static final int PHOTO_CROP      = 8;
         public static final int PHOTO_DRAW      = 9;
         public static final int FILE_PICKER     = 10;
+        public static final int PLACE_PICKER    = 11;
     }
 
     // Map related constants
