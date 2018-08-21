@@ -6,6 +6,17 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- Custom styles -->
+        <item name="editTextStyle">@style/AppTheme.Widget.EditText</item>
+    </style>
+
+    <!-- Edit text Styling -->
+    <style name="AppTheme.Widget.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/nvm_font</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="backgroundTint">@color/lightGrey</item>
     </style>
 
     <!-- Theme for date picker dialog -->
