@@ -1,5 +1,7 @@
 package com.biz.navimate.interfaces;
 
+import com.biz.navimate.objects.ObjPlace;
+
 import java.util.ArrayList;
 
 /**
@@ -57,5 +59,10 @@ public class IfaceResult {
     public interface FilePicker
     {
         void onFilePicked(String filename);
+    }
+
+    public interface PlacePicker
+    {
+        void onPlacePicked(ObjPlace place);
     }
 }
