@@ -6,11 +6,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ListHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 23-11-2016.
@@ -36,7 +36,7 @@ public class DrawerListAdapter extends BaseListAdapter
         ListHolder.Drawer holder = new ListHolder.Drawer();
         holder.rlDrawerItem         = (RelativeLayout) view.findViewById(R.id.rl_drawer_item);
         holder.ivIcon               = (ImageView) view.findViewById(R.id.ivDrawerIcon);
-        holder.tvTitle              = (TvCalibri) view.findViewById(R.id.tvDrawerTitle);
+        holder.tvTitle              = (TextView) view.findViewById(R.id.tvDrawerTitle);
         holder.vwItemSep            =  view.findViewById(R.id.vw_drawer_item_separator);
         holder.vwGroupSep           =  view.findViewById(R.id.vw_drawer_group_separator);
 

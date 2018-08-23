@@ -41,13 +41,13 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tvMapTrafficOverlayLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="@dimen/textsize_primary_small"
-                app:bold="true"
+                android:textStyle="bold"
                 android:text="Show Traffic"/>
 
             <ImageView

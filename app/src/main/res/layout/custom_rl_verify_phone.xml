@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_fragment_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -12,10 +12,10 @@
         android:layout_marginTop="@dimen/m_large"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/textsize_primary"
-        app:bold="true"
+        android:textStyle="bold"
         android:text="Verifying Number"/>
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_verify_phone_descriptor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
         android:textSize="@dimen/textsize_description"
         android:textAlignment="center"/>
 
-    <com.biz.navimate.views.EtCalibri
+    <EditText
         android:id="@+id/et_otp"
         android:layout_width="250dp"
         android:layout_height="50dp"

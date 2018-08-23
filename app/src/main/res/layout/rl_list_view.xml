@@ -33,7 +33,7 @@
             android:visibility="gone"/>
 
         <!-- Message -->
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_list_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

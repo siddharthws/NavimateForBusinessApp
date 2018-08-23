@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 
@@ -26,7 +27,7 @@ public class RlDialogTitle extends RelativeLayout {
     // UI
     private View vwSeparator = null;
     private ImageView ivIcon = null;
-    private TvCalibri tvText = null;
+    private TextView tvText = null;
 
     // ----------------------- Constructor ----------------------- //
 
@@ -62,7 +63,7 @@ public class RlDialogTitle extends RelativeLayout {
         // Init UI
         vwSeparator = view.findViewById(R.id.vw_dialog_title_separator);
         ivIcon = (ImageView) view.findViewById(R.id.iv_title_icon);
-        tvText = (TvCalibri) view.findViewById(R.id.tv_title_text);
+        tvText = (TextView)  view.findViewById(R.id.tv_title_text);
 
         // Set gradient to separator
         vwSeparator.setBackground(new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, new int[]{0, android.R.color.black, 0}));

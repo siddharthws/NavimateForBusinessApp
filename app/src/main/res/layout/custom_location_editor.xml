@@ -10,7 +10,7 @@
         android:layout_gravity="center_vertical"/>
 
     <!-- Text showing date -->
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

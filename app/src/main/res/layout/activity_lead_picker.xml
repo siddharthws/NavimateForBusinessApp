@@ -25,13 +25,13 @@
             android:scaleType="fitXY"
             android:onClick="ButtonClickBack"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_selected_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/m_small"
-            app:bold="true"
+            android:textStyle="bold"
             android:textSize="@dimen/textsize_primary_small"
             android:textColor="@android:color/white"/>
 

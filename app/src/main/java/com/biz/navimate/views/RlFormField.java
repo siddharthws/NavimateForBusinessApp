@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -64,16 +65,16 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
     // UI
     private LinearLayout llText = null;
     private ImageButton ibQr, ibPhone = null;
-    private TvCalibri tvTitle;
+    private TextView tvTitle;
     private EditText etNumber, etText = null;
     private CbCustom cbCheckbox = null;
-    private TvCalibri tvNumber, tvText = null;
+    private TextView tvNumber, tvText = null;
     private RadioGroup rgRadioList = null;
     private LinearLayout llCheckList = null;
     private RelativeLayout rlPhoto = null, rlSignature = null, rlFile = null;
     private ImageView ivPhoto = null, ivSignature = null;
-    private TvCalibri tvPhoto = null, tvSignature = null, tvFile = null;
-    private TvCalibri tvDate = null;
+    private TextView tvPhoto = null, tvSignature = null, tvFile = null;
+    private TextView tvDate = null;
     private DatePickerDialog dateDialog = null;
     private TimePickerDialog timeDialog = null;
     private Button btnProduct = null;
@@ -200,22 +201,22 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         llCheckList = (LinearLayout) view.findViewById(R.id.ll_checkList);
         ibQr = (ImageButton) view.findViewById(R.id.ib_qr);
         ibPhone = (ImageButton) view.findViewById(R.id.ib_phone);
-        tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
+        tvTitle = (TextView) view.findViewById(R.id.tv_title);
         etNumber = (EditText) view.findViewById(R.id.et_number);
         etText = (EditText) view.findViewById(R.id.et_text);
         cbCheckbox = (CbCustom) view.findViewById(R.id.cb_checkbox);
-        tvNumber = (TvCalibri) view.findViewById(R.id.tv_number);
-        tvText = (TvCalibri) view.findViewById(R.id.tv_text);
+        tvNumber = (TextView) view.findViewById(R.id.tv_number);
+        tvText = (TextView) view.findViewById(R.id.tv_text);
         rgRadioList = (RadioGroup) view.findViewById(R.id.rg_radioList);
         rlPhoto = (RelativeLayout) view.findViewById(R.id.rl_photo);
         rlFile = (RelativeLayout) view.findViewById(R.id.rl_file);
         rlSignature = (RelativeLayout)  view.findViewById(R.id.rl_signature);
         ivPhoto = (ImageView) view.findViewById(R.id.iv_photo);
         ivSignature = (ImageView)       view.findViewById(R.id.iv_signature);
-        tvPhoto = (TvCalibri) view.findViewById(R.id.tv_photo);
-        tvFile = (TvCalibri) view.findViewById(R.id.tv_file);
-        tvSignature = (TvCalibri)       view.findViewById(R.id.tv_signature);
-        tvDate = (TvCalibri) view.findViewById(R.id.tv_date);
+        tvPhoto = (TextView) view.findViewById(R.id.tv_photo);
+        tvFile = (TextView) view.findViewById(R.id.tv_file);
+        tvSignature = (TextView)       view.findViewById(R.id.tv_signature);
+        tvDate = (TextView) view.findViewById(R.id.tv_date);
         btnProduct = (Button) view.findViewById(R.id.btn_product);
 
         // Populate title
@@ -604,7 +605,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
         }
     }
 
-    private void SetPhoto(ImageView ivImage, TvCalibri tvError) {
+    private void SetPhoto(ImageView ivImage, TextView tvError) {
         // Don't update if invalid photo name
         String imagename = entry.toString();
         if (imagename.length() == 0) {

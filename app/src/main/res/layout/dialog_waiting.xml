@@ -25,7 +25,7 @@
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/pb_primary"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_message_waiting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

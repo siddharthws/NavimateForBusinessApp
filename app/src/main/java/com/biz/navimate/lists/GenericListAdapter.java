@@ -5,11 +5,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ListHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 17-02-2017.
@@ -35,7 +35,7 @@ public class GenericListAdapter extends BaseListAdapter
     {
         // Init Holder
         ListHolder.Generic holder = new ListHolder.Generic();
-        holder.tvText       = (TvCalibri)   view.findViewById(R.id.tv_text);
+        holder.tvText       = (TextView)    view.findViewById(R.id.tv_text);
         holder.ivStart      = (ImageView)   view.findViewById(R.id.ivListIconStart);
         holder.ivEnd        = (ImageView)   view.findViewById(R.id.ivListIconEnd);
 

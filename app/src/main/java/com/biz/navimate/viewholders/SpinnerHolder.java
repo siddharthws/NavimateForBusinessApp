@@ -1,10 +1,10 @@
 package com.biz.navimate.viewholders;
 
-import com.biz.navimate.views.TvCalibri;
+import android.widget.TextView;
 
 public class SpinnerHolder {
     // Dropdown item
     public static class Dropdown {
-        public TvCalibri tvText;
+        public TextView tvText;
     }
 }

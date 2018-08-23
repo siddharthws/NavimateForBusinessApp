@@ -28,14 +28,14 @@
                 android:layout_height="wrap_content"
                 app:text="Task Information"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_task_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/m_small"
                 android:layout_below="@id/rl_dialog_title_task_info"
                 android:textSize="@dimen/textsize_primary_small"
-                app:bold="true"/>
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/btn_lead"

@@ -59,7 +59,7 @@
                 android:focusableInTouchMode="false"
                 android:onClick="ButtonClickForms"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_toolbar_forms_count"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
@@ -68,7 +68,7 @@
                 android:background="@mipmap/bg_red"
                 android:textSize="@dimen/textsize_description"
                 android:textColor="@android:color/white"
-                app:bold="true"
+                android:textStyle="bold"
                 android:textAlignment="center"/>
 
         </RelativeLayout>
@@ -89,7 +89,7 @@
                 android:focusableInTouchMode="false"
                 android:onClick="ButtonClickTask"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_toolbar_tasks_count"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
@@ -98,7 +98,7 @@
                 android:background="@mipmap/bg_red"
                 android:textSize="@dimen/textsize_description"
                 android:textColor="@android:color/white"
-                app:bold="true"
+                android:textStyle="bold"
                 android:textAlignment="center"/>
 
         </RelativeLayout>

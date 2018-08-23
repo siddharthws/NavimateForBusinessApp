@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ListHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 02-10-2017.
@@ -32,7 +32,7 @@ public class RemovableListAdapter   extends     BaseListAdapter
     protected void SetViewHolder(View view) {
         // Init Holder
         ListHolder.Removable holder = new ListHolder.Removable();
-        holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
+        holder.tvTitle  = (TextView)    view.findViewById(R.id.tv_title);
         holder.ibRemove = (ImageButton) view.findViewById(R.id.ib_remove);
 
         // Assign holder to view

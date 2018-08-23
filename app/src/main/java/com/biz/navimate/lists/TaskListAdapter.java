@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.interfaces.IfaceList;
@@ -16,7 +17,6 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.ListHolder;
 import com.biz.navimate.views.RlDialog;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 29-09-2017.
@@ -50,8 +50,8 @@ public class TaskListAdapter    extends     BaseListAdapter
     protected void SetViewHolder(View view) {
         // Init Holder
         ListHolder.Task holder = new ListHolder.Task();
-        holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
-        holder.tvDescription = (TvCalibri) view.findViewById(R.id.tv_description);
+        holder.tvTitle          = (TextView) view.findViewById(R.id.tv_title);
+        holder.tvDescription    = (TextView) view.findViewById(R.id.tv_description);
         holder.btnForm = (Button) view.findViewById(R.id.btn_submit_form);
         holder.llRoot = (LinearLayout) view.findViewById(R.id.ll_task_list_root);
 

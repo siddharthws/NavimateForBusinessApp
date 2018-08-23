@@ -12,7 +12,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.biz.navimate.views.RlFormField;
-import com.biz.navimate.views.TvCalibri;
 import com.biz.navimate.views.custom.Dropdown;
 
 import java.util.ArrayList;
@@ -65,8 +64,8 @@ public class DialogHolder {
 
     public static class Progress extends Base
     {
-        public TvCalibri tvMessage = null;
-        public TvCalibri tvProgress = null;
+        public TextView tvMessage = null;
+        public TextView tvProgress = null;
         public ProgressBar pbProgress = null;
     }
 
@@ -82,7 +81,7 @@ public class DialogHolder {
 
     public static class TaskInfo extends Base
     {
-        public TvCalibri tvId = null;
+        public TextView tvId = null;
         public Button btnLead = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;
@@ -93,8 +92,8 @@ public class DialogHolder {
 
     public static class Lead extends Base
     {
-        public TvCalibri tvTitle = null;
-        public TvCalibri tvAddress = null;
+        public TextView tvTitle = null;
+        public TextView tvAddress = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;
         public Button btnCancel = null;
@@ -102,8 +101,8 @@ public class DialogHolder {
 
     public static class ProductViewer extends Base
     {
-        public TvCalibri tvName = null;
-        public TvCalibri tvProductId = null;
+        public TextView tvName = null;
+        public TextView tvProductId = null;
         public ArrayList<RlFormField> fields = null;
         public LinearLayout llFields = null;
         public Button btnClose = null;

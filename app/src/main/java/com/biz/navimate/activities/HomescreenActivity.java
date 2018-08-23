@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.application.App;
@@ -29,7 +30,6 @@ import com.biz.navimate.services.WebSocketService;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlDrawer;
-import com.biz.navimate.views.TvCalibri;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -68,8 +68,8 @@ public class HomescreenActivity     extends     BaseActivity
         ui.flMap            = (FrameLayout) findViewById(R.id.fl_map_fragment);
         ui.mapFragment      = NvmMapFragment.AddFragment(getSupportFragmentManager());
         ui.rlDrawer         = (RlDrawer) findViewById(R.id.rl_drawer);
-        ui.tvTaskCount      = (TvCalibri) findViewById(R.id.tv_toolbar_tasks_count);
-        ui.tvFormCount      = (TvCalibri) findViewById(R.id.tv_toolbar_forms_count);
+        ui.tvTaskCount      = (TextView) findViewById(R.id.tv_toolbar_tasks_count);
+        ui.tvFormCount      = (TextView) findViewById(R.id.tv_toolbar_forms_count);
     }
 
     @Override

@@ -3,11 +3,11 @@ package com.biz.navimate.adapters.spinner;
 import android.content.Context;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.View;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.ObjSpinner;
 import com.biz.navimate.viewholders.SpinnerHolder;
-import com.biz.navimate.views.TvCalibri;
 
 public class DropdownAdapter extends BaseSpinnerAdapter {
     // ----------------------- Constants ----------------------- //
@@ -24,7 +24,7 @@ public class DropdownAdapter extends BaseSpinnerAdapter {
     protected void SetViewHolder(View view) {
         // Init Holder
         SpinnerHolder.Dropdown holder = new SpinnerHolder.Dropdown();
-        holder.tvText = (TvCalibri) view.findViewById(R.id.tv_text);
+        holder.tvText = (TextView) view.findViewById(R.id.tv_text);
 
         // Assign holder to view
         view.setTag(holder);

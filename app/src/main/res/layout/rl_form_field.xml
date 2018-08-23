@@ -10,7 +10,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical">
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
                 android:visibility="gone"
                 android:gravity="center_vertical">
 
-                <com.biz.navimate.views.EtCalibri
+                <EditText
                     android:id="@+id/et_text"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -40,8 +40,7 @@
                     android:inputType="text"
                     android:minLines="3"
                     android:padding="@dimen/m_small"
-                    android:background="@drawable/bg_textbox"
-                    android:textCursorDrawable="@null"/>
+                    android:background="@drawable/bg_textbox"/>
 
                 <ImageButton
                     android:id="@+id/ib_qr"
@@ -61,7 +60,7 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <com.biz.navimate.views.TvCalibri
+                <TextView
                     android:id="@+id/tv_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -82,7 +81,7 @@
 
             </LinearLayout>
 
-            <com.biz.navimate.views.EtCalibri
+            <EditText
                 android:id="@+id/et_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,10 +89,9 @@
                 android:maxLines="1"
                 android:padding="@dimen/m_small"
                 android:background="@drawable/bg_textbox"
-                android:textCursorDrawable="@null"
                 android:visibility="gone"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -148,7 +146,7 @@
                     android:background="@android:color/transparent"
                     android:visibility="gone"/>
 
-                <com.biz.navimate.views.TvCalibri
+                <TextView
                     android:id="@+id/tv_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -167,7 +165,7 @@
                 android:layout_margin="@dimen/m_small"
                 android:visibility="gone">
 
-                <com.biz.navimate.views.TvCalibri
+                <TextView
                     android:id="@+id/tv_file"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -195,7 +193,7 @@
                     android:background="@android:color/holo_purple"
                     android:visibility="gone"/>
 
-                <com.biz.navimate.views.TvCalibri
+                <TextView
                     android:id="@+id/tv_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -207,7 +205,7 @@
 
             </RelativeLayout>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

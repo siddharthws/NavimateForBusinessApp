@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
 import com.biz.navimate.views.DrawableImageView;
@@ -15,7 +16,6 @@ import com.biz.navimate.views.RlEnterName;
 import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.RlVerifyPhone;
-import com.biz.navimate.views.TvCalibri;
 import com.biz.navimate.views.VwSignature;
 
 /**
@@ -47,8 +47,8 @@ public class ActivityHolder {
         public FrameLayout flMap = null;
 
         // Task Count
-        public TvCalibri tvTaskCount = null;
-        public TvCalibri tvFormCount = null;
+        public TextView tvTaskCount = null;
+        public TextView tvFormCount = null;
 
         // Drawer
         public RlDrawer rlDrawer = null;
@@ -58,7 +58,7 @@ public class ActivityHolder {
     {
         // Toolbar
         public ImageButton ibDone, ibBack                        = null;
-        public TvCalibri tvSelectedCount                         = null;
+        public TextView tvSelectedCount                          = null;
 
         // List
         public RlListView rlvList                                = null;

@@ -28,16 +28,16 @@
                 android:layout_height="wrap_content"
                 app:text="Lead"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_lead_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_dialog_title_lead"
                 android:layout_marginTop="@dimen/m_small"
                 android:textSize="@dimen/textsize_primary_small"
-                app:bold="true"/>
+                android:textStyle="bold"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_lead_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
