@@ -47,13 +47,13 @@
                     android:src="@mipmap/icon_add_grey"
                     android:scaleType="fitXY"/>
 
-                <com.biz.navimate.views.TvCalibri
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:textSize="@dimen/textsize_primary_small"
                     android:textColor="@color/darkGrey"
-                    app:bold="true"
+                    android:textStyle="bold"
                     android:text="Add Leads"
                     android:gravity="center_vertical"/>
 

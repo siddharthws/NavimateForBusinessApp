@@ -21,14 +21,14 @@
             android:layout_centerVertical="true"
             android:scaleType="fitXY"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tvDrawerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ivDrawerIcon"
             android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"
-            app:bold="true"
+            android:textStyle="bold"
             android:textSize="@dimen/textsize_primary_small"
             android:textColor="@color/darkGrey"/>
 

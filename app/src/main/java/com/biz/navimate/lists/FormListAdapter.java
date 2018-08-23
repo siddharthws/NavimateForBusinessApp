@@ -3,6 +3,7 @@ package com.biz.navimate.lists;
 import android.content.Context;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
@@ -11,7 +12,6 @@ import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ListHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 11-12-2017.
@@ -36,10 +36,10 @@ public class FormListAdapter extends BaseListAdapter {
     {
         // Init Holder
         ListHolder.Form holder = new ListHolder.Form();
-        holder.tvLead       = (TvCalibri)   view.findViewById(R.id.tv_lead_title);
-        holder.tvForm       = (TvCalibri)   view.findViewById(R.id.tv_form_name);
-        holder.tvDate       = (TvCalibri)   view.findViewById(R.id.tv_date);
-        holder.tvStatus     = (TvCalibri)   view.findViewById(R.id.tv_sync_status);
+        holder.tvLead       = (TextView)   view.findViewById(R.id.tv_lead_title);
+        holder.tvForm       = (TextView)   view.findViewById(R.id.tv_form_name);
+        holder.tvDate       = (TextView)   view.findViewById(R.id.tv_date);
+        holder.tvStatus     = (TextView)   view.findViewById(R.id.tv_sync_status);
 
         // Assign holder to view
         view.setTag(holder);

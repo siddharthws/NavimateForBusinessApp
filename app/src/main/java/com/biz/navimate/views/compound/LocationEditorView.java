@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
@@ -17,7 +18,6 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.viewholders.CustomViewHolder;
-import com.biz.navimate.views.TvCalibri;
 import com.biz.navimate.views.custom.NvmImageButton;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
@@ -165,7 +165,7 @@ public class LocationEditorView     extends     LinearLayout
         inflater.inflate(R.layout.custom_location_editor, this, true);
 
         // Init UI
-        ui.tvText   = (TvCalibri)       findViewById(R.id.tv_text);
+        ui.tvText   = (TextView)        findViewById(R.id.tv_text);
         ui.ibClear  = (NvmImageButton)  findViewById(R.id.ib_clear);
         ui.ibEdit   = (NvmImageButton)  findViewById(R.id.ib_edit);
 

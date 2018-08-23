@@ -21,12 +21,12 @@
             android:background="@android:color/transparent"
             android:scaleType="fitXY"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/m_small"
-            app:bold="true"
+            android:textStyle="bold"
             android:textSize="@dimen/textsize_primary"
             android:textColor="@color/darkGrey"/>
 

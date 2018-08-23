@@ -18,7 +18,7 @@
         android:background="@drawable/bg_white_shadow_slant"
         android:clickable="true">
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_message_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,12 +31,12 @@
             android:layout_alignBottom="@id/tv_message_progress"
             android:orientation="horizontal">
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <com.biz.navimate.views.TvCalibri
+            <TextView
                 android:id="@+id/tv_progress_percent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

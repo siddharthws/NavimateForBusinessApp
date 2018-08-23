@@ -16,15 +16,15 @@
         android:layout_marginLeft="@dimen/m_small"
         android:orientation="vertical">
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_form_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:textSize="@dimen/textsize_primary_small"
-            app:bold="true"/>
+            android:textStyle="bold"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_lead_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,19 +41,19 @@
         android:layout_marginRight="@dimen/m_small"
         android:gravity="end">
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_sync_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/m_small"
             android:maxLines="1"
-            app:italic="true"/>
+            android:textStyle="italic"/>
 
     </LinearLayout>
 

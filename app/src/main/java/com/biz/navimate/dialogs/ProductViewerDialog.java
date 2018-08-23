@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.debug.Dbg;
@@ -14,7 +15,6 @@ import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
-import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 
@@ -43,8 +43,8 @@ public class ProductViewerDialog extends BaseDialog implements View.OnClickListe
         ui.dialogView = inflater.inflate(R.layout.dialog_product_viewer, container);
 
         // Find Views
-        ui.tvName       = (TvCalibri) ui.dialogView.findViewById(R.id.tv_product_name);
-        ui.tvProductId  = (TvCalibri) ui.dialogView.findViewById(R.id.tv_product_id);
+        ui.tvName       = (TextView) ui.dialogView.findViewById(R.id.tv_product_name);
+        ui.tvProductId  = (TextView) ui.dialogView.findViewById(R.id.tv_product_id);
         ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_pv);
         ui.fields       = new ArrayList<>();
         ui.btnClose     = (Button) ui.dialogView.findViewById(R.id.btn_close);

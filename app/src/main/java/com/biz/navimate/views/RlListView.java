@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.lists.BaseListAdapter;
@@ -33,7 +34,7 @@ public class RlListView extends     RelativeLayout
     // ----------------------- Globals ----------------------- //
     // UI
     private ListView lvList;
-    private TvCalibri tvMessage;
+    private TextView tvMessage;
     private ProgressBar pbLoader;
     private Button btnLoadMore;
 
@@ -121,7 +122,7 @@ public class RlListView extends     RelativeLayout
 
         // Init UI
         lvList      = (ListView)    view.findViewById(R.id.lv_list);
-        tvMessage   = (TvCalibri)   view.findViewById(R.id.tv_list_message);
+        tvMessage   = (TextView)   view.findViewById(R.id.tv_list_message);
         pbLoader    = (ProgressBar) view.findViewById(R.id.pb_list);
         btnLoadMore = (Button)      view.findViewById(R.id.btn_load_more);
 

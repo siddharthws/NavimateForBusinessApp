@@ -25,7 +25,7 @@
             app:image="@mipmap/icon_alert_grey"
             app:text="Alert"/>
 
-        <com.biz.navimate.views.TvCalibri
+        <TextView
             android:id="@+id/tv_message_alert"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

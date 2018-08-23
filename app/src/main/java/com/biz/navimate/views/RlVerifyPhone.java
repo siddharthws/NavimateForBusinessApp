@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
@@ -65,7 +66,7 @@ public class RlVerifyPhone  extends     RelativeLayout
     // UI
     private EditText etOtp = null;
     private Button btnVerify = null, btnCancel = null, btnResend = null;
-    private TvCalibri tvDescriptor = null;
+    private TextView tvDescriptor = null;
 
     private KeyboardRunnable keyboardRunnable = null;
     private static String generatedOtp = "";
@@ -208,7 +209,7 @@ public class RlVerifyPhone  extends     RelativeLayout
         btnVerify = (Button) view.findViewById(R.id.btn_verify);
         btnCancel = (Button) view.findViewById(R.id.btn_cancel);
         btnResend = (Button) view.findViewById(R.id.btn_resend);
-        tvDescriptor = (TvCalibri) view.findViewById(R.id.tv_verify_phone_descriptor);
+        tvDescriptor = (TextView) view.findViewById(R.id.tv_verify_phone_descriptor);
 
         // Disable Resend and Verify button
         btnVerify.setEnabled(false);

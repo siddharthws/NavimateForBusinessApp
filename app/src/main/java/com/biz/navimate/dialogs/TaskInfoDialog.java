@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.Dialog;
@@ -17,7 +18,6 @@ import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
-import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 
@@ -52,7 +52,7 @@ public class TaskInfoDialog     extends     BaseDialog
         ui.dialogView = inflater.inflate(R.layout.dialog_task_info, container);
 
         // Find Views
-        ui.tvId         = (TvCalibri) ui.dialogView.findViewById(R.id.tv_task_id);
+        ui.tvId         = (TextView) ui.dialogView.findViewById(R.id.tv_task_id);
         ui.btnLead      = (Button) ui.dialogView.findViewById(R.id.btn_lead);
         ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_task_info);
         ui.fields       = new ArrayList<>();

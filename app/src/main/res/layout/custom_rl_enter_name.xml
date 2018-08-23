@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_fragment_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,10 +13,10 @@
         android:layout_marginTop="@dimen/m_large"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/textsize_primary"
-        app:bold="true"
+        android:textStyle="bold"
         android:text="Enter Your Name"/>
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_enter_name_descriptor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:textAlignment="center"
         android:text="Your name will be shown on the web-based dashboard to identify you in the team."/>
 
-    <com.biz.navimate.views.EtCalibri
+    <EditText
         android:id="@+id/et_name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -41,7 +41,6 @@
         android:layout_below="@id/tv_enter_name_descriptor"
         android:layout_centerHorizontal="true"
         android:background="@drawable/bg_textbox"
-        android:textCursorDrawable="@null"
         android:hint="Enter Name"
         android:textAlignment="center"
         android:textSize="@dimen/textsize_primary_small"

@@ -6,8 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.biz.navimate.views.TvCalibri;
+import android.widget.TextView;
 
 /**
  * Created by Siddharth on 29-09-2017.
@@ -18,21 +17,21 @@ public class ListHolder {
     public static class Task
     {
         public LinearLayout llRoot;
-        public TvCalibri    tvTitle, tvDescription;
+        public TextView     tvTitle, tvDescription;
         public Button       btnForm;
     }
 
     // Lead List Item
     public static class Lead
     {
-        public TvCalibri    tvTitle;
+        public TextView     tvTitle;
         public ImageView    ivTick;
     }
 
     // Removable List Item
     public static class Removable
     {
-        public TvCalibri    tvTitle;
+        public TextView     tvTitle;
         public ImageButton  ibRemove;
     }
 
@@ -41,7 +40,7 @@ public class ListHolder {
     {
         public RelativeLayout rlDrawerItem;
         public ImageView      ivIcon;
-        public TvCalibri      tvTitle;
+        public TextView       tvTitle;
         public View           vwItemSep;
         public View           vwGroupSep;
     }
@@ -50,16 +49,16 @@ public class ListHolder {
     public static class Generic
     {
         public ImageView            ivStart;
-        public TvCalibri            tvText;
+        public TextView             tvText;
         public ImageView            ivEnd;
     }
 
     // Form list item
     public static class Form
     {
-        public TvCalibri            tvLead;
-        public TvCalibri            tvForm;
-        public TvCalibri            tvDate;
-        public TvCalibri            tvStatus;
+        public TextView            tvLead;
+        public TextView            tvForm;
+        public TextView            tvDate;
+        public TextView            tvStatus;
     }
 }

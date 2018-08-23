@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.viewholders.CustomViewHolder;
-import com.biz.navimate.views.TvCalibri;
 import com.biz.navimate.views.custom.NvmImageButton;
 
 import java.util.Calendar;
@@ -208,7 +208,7 @@ public class DateEditorView     extends     LinearLayout
         SetUiAttributes();
 
         // Init UI
-        ui.tvText   = (TvCalibri)       findViewById(R.id.tv_text);
+        ui.tvText   = (TextView)        findViewById(R.id.tv_text);
         ui.ibClear  = (NvmImageButton)  findViewById(R.id.ib_clear);
         ui.ibEdit   = (NvmImageButton)  findViewById(R.id.ib_edit);
 

@@ -4,11 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.viewholders.DialogHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 09-11-2017.
@@ -41,8 +41,8 @@ public class ProgressDialog extends BaseDialog {
         ui.dialogView = inflater.inflate(R.layout.dialog_progress, container);
 
         // Find Views
-        ui.tvMessage    = (TvCalibri)   ui.dialogView.findViewById(R.id.tv_message_progress);
-        ui.tvProgress   = (TvCalibri)   ui.dialogView.findViewById(R.id.tv_progress);
+        ui.tvMessage    = (TextView)    ui.dialogView.findViewById(R.id.tv_message_progress);
+        ui.tvProgress   = (TextView)    ui.dialogView.findViewById(R.id.tv_progress);
         ui.pbProgress   = (ProgressBar) ui.dialogView.findViewById(R.id.pb_progress);
     }
 

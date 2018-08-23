@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
@@ -16,7 +17,6 @@ import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlListView;
-import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -51,7 +51,7 @@ public class LeadPickerActivity extends         BaseActivity
         // Activity View
         ui.ibDone               = (ImageButton)     findViewById(R.id.ib_toolbar_done);
         ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
-        ui.tvSelectedCount      = (TvCalibri)       findViewById(R.id.tv_selected_count);
+        ui.tvSelectedCount      = (TextView)        findViewById(R.id.tv_selected_count);
         ui.rlvList              = (RlListView)      findViewById(R.id.rlv_leads);
     }
 

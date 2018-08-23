@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.objects.Dialog;
@@ -13,7 +14,6 @@ import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
-import com.biz.navimate.views.TvCalibri;
 
 import java.util.ArrayList;
 
@@ -46,8 +46,8 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
         ui.dialogView = inflater.inflate(R.layout.dialog_lead, container);
 
         // Find Views
-        ui.tvTitle      = (TvCalibri) ui.dialogView.findViewById(R.id.tv_lead_title);
-        ui.tvAddress    = (TvCalibri) ui.dialogView.findViewById(R.id.tv_lead_address);
+        ui.tvTitle      = (TextView) ui.dialogView.findViewById(R.id.tv_lead_title);
+        ui.tvAddress    = (TextView) ui.dialogView.findViewById(R.id.tv_lead_address);
         ui.llFields     = (LinearLayout)   ui.dialogView.findViewById(R.id.ll_fields_lead);
         ui.fields       = new ArrayList<>();
         ui.btnCancel    = (Button) ui.dialogView.findViewById(R.id.btn_cancel);

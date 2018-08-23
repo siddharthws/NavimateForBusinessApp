@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent">
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_fragment_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,10 +13,10 @@
         android:layout_marginTop="@dimen/m_large"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/textsize_primary"
-        app:bold="true"
+        android:textStyle="bold"
         android:text="Enter Phone Number"/>
 
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_enter_phone_descriptor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
             android:textStyle="bold"
             android:text="+"/>
 
-        <com.biz.navimate.views.EtCalibri
+        <EditText
             android:id="@+id/et_country_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
             android:layout_toRightOf="@id/et_country_code"
             android:background="@color/lightGrey"/>
 
-        <com.biz.navimate.views.EtCalibri
+        <EditText
             android:id="@+id/et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

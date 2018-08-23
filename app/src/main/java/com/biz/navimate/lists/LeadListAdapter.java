@@ -5,12 +5,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ListHolder;
-import com.biz.navimate.views.TvCalibri;
 
 /**
  * Created by Siddharth on 02-10-2017.
@@ -45,8 +45,8 @@ public class LeadListAdapter    extends     BaseListAdapter
         // Init Holder
         ListHolder.Lead holder = new ListHolder.Lead();
 
-        holder.tvTitle = (TvCalibri) view.findViewById(R.id.tv_title);
-        holder.ivTick = (ImageView) view.findViewById(R.id.iv_tick);
+        holder.tvTitle  = (TextView)    view.findViewById(R.id.tv_title);
+        holder.ivTick   = (ImageView)   view.findViewById(R.id.iv_tick);
 
         // Assign holder to view
         view.setTag(holder);

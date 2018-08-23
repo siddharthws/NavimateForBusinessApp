@@ -9,7 +9,7 @@
         android:src="@drawable/ic_date_range_grey"/>
 
     <!-- Text showing date -->
-    <com.biz.navimate.views.TvCalibri
+    <TextView
         android:id="@+id/tv_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
