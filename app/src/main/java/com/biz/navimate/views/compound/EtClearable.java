@@ -47,7 +47,7 @@ public class EtClearable    extends     LinearLayout
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ib_clear:
+            case R.id.ib_etc_clear:
                 // Set the current date to null
                 ui.etText.setText("");
                 break;
@@ -91,8 +91,8 @@ public class EtClearable    extends     LinearLayout
         inflater.inflate(R.layout.custom_et_clearable, this, true);
 
         // Init UI
-        ui.etText   = (NvmEditText)     findViewById(R.id.et_text);
-        ui.ibClear  = (NvmImageButton)  findViewById(R.id.ib_clear);
+        ui.etText   = (NvmEditText)     findViewById(R.id.et_etc_text);
+        ui.ibClear  = (NvmImageButton)  findViewById(R.id.ib_etc_clear);
 
         // Set UI properties from attributes
         SetUiAttributes(attrs);
