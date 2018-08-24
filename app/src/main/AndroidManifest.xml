@@ -73,6 +73,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".activities.ProductPickerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
         <!-- Services -->
         <service android:name=".firebase.FcmMessagingService">
             <intent-filter>

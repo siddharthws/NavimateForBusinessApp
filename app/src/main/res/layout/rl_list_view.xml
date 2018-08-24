@@ -48,6 +48,7 @@
         android:layout_below="@id/lv_list"
         android:layout_marginTop="@dimen/m_small"
         android:layout_centerHorizontal="true"
+        android:text="Load More..."
         android:visibility="gone"/>
 
 </RelativeLayout>

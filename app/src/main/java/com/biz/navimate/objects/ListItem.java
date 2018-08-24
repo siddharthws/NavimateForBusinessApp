@@ -88,6 +88,7 @@ public class ListItem {
         // ----------------------- Globals ----------------------- //
         public String title             = "";
         public long id                  = 0L;
+        public String sId               = "";
         public int startImageId         = 0;
         public int endImageId           = 0;
         public int background           = 0;
@@ -98,6 +99,18 @@ public class ListItem {
             super(TYPE_GENERIC);
 
             this.id                 = id;
+            this.title              = title;
+            this.startImageId       = startImageId;
+            this.endImageId         = endImageId;
+            this.background         = background;
+        }
+
+        public Generic(long id, String sId, String title, int startImageId, int endImageId, int background)
+        {
+            super(TYPE_GENERIC);
+
+            this.id                 = id;
+            this.sId                = sId;
             this.title              = title;
             this.startImageId       = startImageId;
             this.endImageId         = endImageId;
