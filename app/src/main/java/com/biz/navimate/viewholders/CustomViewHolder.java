@@ -1,6 +1,7 @@
 package com.biz.navimate.viewholders;
 
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.biz.navimate.views.custom.NvmImageButton;
@@ -14,6 +15,12 @@ public class CustomViewHolder {
     public static class NvmToolbar {
         public ImageButton ibSave, ibBack = null;
         public TextView tvText = null;
+    }
+
+    // Label Box
+    public static class LabelBox {
+        public TextView         tvLabel = null;
+        public RelativeLayout   rlContainer = null;
     }
 
     public static class DateEditor {

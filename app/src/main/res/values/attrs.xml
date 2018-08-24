@@ -16,6 +16,12 @@
         <attr name="saveBtn"    format="boolean" />
     </declare-styleable>
 
+    <!-- Labelled View Attributes -->
+    <declare-styleable name="LabelBox">
+        <!-- Label -->
+        <attr name="label"    format="string" />
+    </declare-styleable>
+
     <!-- Clearable Edit Text related attributes -->
     <declare-styleable name="EtClearable">
         <attr name="android:inputType" />
