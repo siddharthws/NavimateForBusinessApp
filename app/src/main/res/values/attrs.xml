@@ -6,6 +6,16 @@
         <attr name="text"          format="string" />
     </declare-styleable>
 
+    <!-- NvmToolbar Attributes -->
+    <declare-styleable name="NvmToolbar">
+        <!-- Toolbar Title -->
+        <attr name="title"    format="string" />
+
+        <!-- Button visibility -->
+        <attr name="backBtn"    format="boolean" />
+        <attr name="saveBtn"    format="boolean" />
+    </declare-styleable>
+
     <!-- Clearable Edit Text related attributes -->
     <declare-styleable name="EtClearable">
         <attr name="android:inputType" />
