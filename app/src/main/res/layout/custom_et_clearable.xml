@@ -3,7 +3,7 @@
 
     <!-- Edit text -->
     <com.biz.navimate.views.custom.NvmEditText
-        android:id="@+id/et_text"
+        android:id="@+id/et_etc_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -11,7 +11,7 @@
 
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
-        android:id="@+id/ib_clear"
+        android:id="@+id/ib_etc_clear"
         android:layout_width="@dimen/m_large"
         android:layout_height="@dimen/m_large"
         android:layout_marginLeft="@dimen/m_small"
