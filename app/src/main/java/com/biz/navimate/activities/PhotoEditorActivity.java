@@ -14,7 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.biz.navimate.R;
@@ -202,7 +201,7 @@ public class PhotoEditorActivity extends BaseActivity {
     {
         setSupportActionBar(ui.toolbar);
         getSupportActionBar().setTitle("Photo Editor");
-        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white_24dp);
+        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white);
 
         ui.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

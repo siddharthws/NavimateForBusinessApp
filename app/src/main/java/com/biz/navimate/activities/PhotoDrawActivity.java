@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
@@ -135,7 +134,7 @@ public class PhotoDrawActivity extends BaseActivity {
     {
         setSupportActionBar(ui.toolbar);
         getSupportActionBar().setTitle("Photo Draw");
-        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white_24dp);
+        ui.toolbar.setNavigationIcon(R.drawable.ic_back_white);
 
         ui.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
