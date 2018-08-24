@@ -7,6 +7,15 @@ import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.NvmEditText;
 
 public class CustomViewHolder {
+    /*
+     * Compound Views
+     */
+    // Toolbar
+    public static class NvmToolbar {
+        public ImageButton ibSave, ibBack = null;
+        public TextView tvText = null;
+    }
+
     public static class DateEditor {
         public ImageButton ibEdit, ibClear = null;
         public TextView tvText = null;
