@@ -65,7 +65,7 @@ public class LabelBox extends LinearLayout {
         inflater.inflate(R.layout.custom_label_box, this, true);
 
         // Init UI
-        ui.tvLabel      = (TextView)        findViewById(R.id.tv_label);
+        ui.tvLabel      = (TextView)        findViewById(R.id.tv_lbl_label);
         ui.rlContainer  = (RelativeLayout)  findViewById(R.id.rl_lbl_child_root);
 
         // Set UI properties
