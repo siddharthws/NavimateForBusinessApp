@@ -2,6 +2,7 @@ package com.biz.navimate.interfaces;
 
 import com.biz.navimate.objects.ObjProduct;
 import com.biz.navimate.objects.User;
+import java.util.HashMap;
 
 /**
  * Created by Siddharth on 25-09-2017.
@@ -72,9 +73,15 @@ public class IfaceServer {
         void onLocReportSyncFailed();
     }
 
-    // Check LocReport Sync Task interface
+    // Get Product Task interface
     public interface GetProduct {
         void onProductReceived(ObjProduct product);
         void onProductFailed();
+    }
+
+    // Get Product List Task interface
+    public interface GetProductList {
+        void onProductReceived(HashMap<String, String> products, int totalCount);
+        void onProductListFailed();
     }
 }

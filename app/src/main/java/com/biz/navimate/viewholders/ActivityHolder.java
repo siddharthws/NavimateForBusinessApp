@@ -1,11 +1,9 @@
 package com.biz.navimate.viewholders;
 
 import android.support.v7.widget.Toolbar;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
@@ -17,6 +15,7 @@ import com.biz.navimate.views.RlEnterPhone;
 import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.VwSignature;
+import com.biz.navimate.views.compound.EtClearable;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -59,6 +58,16 @@ public class ActivityHolder {
         // Toolbar
         public ImageButton ibDone, ibBack                        = null;
         public TextView tvSelectedCount                          = null;
+
+        // List
+        public RlListView rlvList                                = null;
+    }
+
+    public static class ProductPicker extends Base
+    {
+        // Toolbar
+        public ImageButton ibBack                                  = null;
+        public EtClearable etSearch                                = null;
 
         // List
         public RlListView rlvList                                = null;
