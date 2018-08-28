@@ -97,7 +97,6 @@ public class RlListView extends     RelativeLayout
     }
 
     public void ShowWaiting() {
-        lvList.setVisibility(GONE);
         btnLoadMore.setVisibility(GONE);
         pbLoader.setVisibility(VISIBLE);
         tvMessage.setVisibility(VISIBLE);

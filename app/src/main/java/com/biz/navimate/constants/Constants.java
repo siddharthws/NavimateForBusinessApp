@@ -27,12 +27,14 @@ public class Constants {
         public static final int PHOTO_DRAW      = 9;
         public static final int FILE_PICKER     = 10;
         public static final int PLACE_PICKER    = 11;
+        public static final int PRODUCT_PICKER  = 12;
     }
 
     // Map related constants
     public class Extras {
         // Activity Result Extras
         public static final String LEAD_PICKER          = "leadPicker";
+        public static final String PICKED_PRODUCT       = "pickedProduct";
         public static final String IMAGE_NAME           = "imageName";
         public static final String IMAGE_PATH           = "imagepath";
         public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
@@ -105,6 +107,7 @@ public class Constants {
         public static final String URL_APP_START        = URL_BASE + "/api/reps/appStart";
         public static final String URL_LOCATION_REPORT  = URL_BASE + "/api/reps/locationReport";
         public static final String URL_GET_PRODUCT      = URL_BASE + "/api/reps/product/id";
+        public static final String URL_GET_PRODUCT_LIST = URL_BASE + "/api/reps/products/search";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
@@ -165,6 +168,14 @@ public class Constants {
 
         // Value related keys
         public static final String KEY_VALUE            = "value";
+
+        // Product related keys
+        public static final String KEY_PAGER            = "pager";
+        public static final String KEY_RESULTS           = "results";
+        public static final String KEY_TOTAL_COUNT      = "totalCount";
+        public static final String KEY_COUNT            = "count";
+        public static final String KEY_START            = "start";
+        public static final String KEY_TEXT             = "text";
 
         // Misc Keys
         public static final String KEY_ID               = "id";
