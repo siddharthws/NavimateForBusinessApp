@@ -39,7 +39,7 @@ public class TaskListAdapter    extends     BaseListAdapter
 
     // ----------------------- Constructor ----------------------- //
     public TaskListAdapter(Context parentContext, ListView lvList) {
-        super(parentContext, lvList, R.layout.list_task);
+        super(parentContext, lvList, R.layout.list_task, true);
 
         // Set List Click Listener
         lvList.setOnItemClickListener(this);

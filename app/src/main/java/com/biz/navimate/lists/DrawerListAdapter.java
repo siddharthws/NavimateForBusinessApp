@@ -25,7 +25,7 @@ public class DrawerListAdapter extends BaseListAdapter
     // ----------------------- Constructor ----------------------- //
     public DrawerListAdapter(Context parentContext, ListView lvDrawer)
     {
-        super(parentContext, lvDrawer, R.layout.list_item_drawer);
+        super(parentContext, lvDrawer, R.layout.list_item_drawer, false);
     }
 
     // ----------------------- Overrides ----------------------- //

@@ -24,9 +24,9 @@ public class GenericListAdapter extends BaseListAdapter
     // ----------------------- Globals ----------------------- //
 
     // ----------------------- Constructor ----------------------- //
-    public GenericListAdapter(Context parentContext, ListView lvList)
+    public GenericListAdapter(Context parentContext, ListView lvList, boolean bRequireHeightAdjustment)
     {
-        super(parentContext, lvList, R.layout.list_generic);
+        super(parentContext, lvList, R.layout.list_generic, bRequireHeightAdjustment);
     }
 
     // ----------------------- Overrides ----------------------- //

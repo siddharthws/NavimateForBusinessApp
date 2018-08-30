@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.ListItem;
@@ -26,9 +27,10 @@ public abstract class BaseListAdapter extends BaseAdapter {
     protected ListView lvList                       = null;
     protected ArrayList<ListItem.Base> data         = null;
     private int itemLayoutId                        = 0;
+    private boolean bRequireHeightAdjustment        = false;
 
     // ----------------------- Constructor ----------------------- //
-    public BaseListAdapter(Context parentContext, ListView lvList, int itemLayoutId)
+    public BaseListAdapter(Context parentContext, ListView lvList, int itemLayoutId, boolean bRequireHeightAdjustment)
     {
         super();
 
@@ -36,6 +38,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         this.lvList = lvList;
         this.data = new ArrayList<>();
         this.itemLayoutId = itemLayoutId;
+        this.bRequireHeightAdjustment = bRequireHeightAdjustment;
 
         // Set List Adapter this this
         lvList.setAdapter(this);
@@ -118,6 +121,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         if (data != null)
         {
             data.clear();
+            SetHeightBasedOnChildren();
         }
 
         this.notifyDataSetChanged();
@@ -136,6 +140,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         if (this.data != null)
         {
             this.data.add(position, data);
+            SetHeightBasedOnChildren();
         }
 
         this.notifyDataSetChanged();
@@ -146,6 +151,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         if (this.data != null)
         {
             this.data.addAll(data);
+            SetHeightBasedOnChildren();
         }
 
         this.notifyDataSetChanged();
@@ -156,6 +162,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         if ((position >= 0) && (position < data.size()))
         {
             data.remove(position);
+            SetHeightBasedOnChildren();
         }
 
         this.notifyDataSetChanged();
@@ -166,6 +173,7 @@ public abstract class BaseListAdapter extends BaseAdapter {
         if (data.contains(item))
         {
             data.remove(item);
+            SetHeightBasedOnChildren();
         }
 
         this.notifyDataSetChanged();
@@ -189,5 +197,25 @@ public abstract class BaseListAdapter extends BaseAdapter {
     }
 
     // ----------------------- Private APIs ----------------------- //
-    // ----------------------- Private APIs ----------------------- //
+    private void SetHeightBasedOnChildren() {
+        // ignore if not required
+        if (!bRequireHeightAdjustment) {
+            return;
+        }
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(lvList.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < getCount(); i++) {
+            view = getView(i, view, lvList);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, RelativeLayout.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = lvList.getLayoutParams();
+        params.height = totalHeight + (lvList.getDividerHeight() * (getCount() - 1));
+        lvList.setLayoutParams(params);
+    }
 }

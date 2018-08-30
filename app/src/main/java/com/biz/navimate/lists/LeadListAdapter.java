@@ -33,7 +33,7 @@ public class LeadListAdapter    extends     BaseListAdapter
 
     // ----------------------- Constructor ----------------------- //
     public LeadListAdapter(Context parentContext, ListView lvList) {
-        super(parentContext, lvList, R.layout.list_lead);
+        super(parentContext, lvList, R.layout.list_lead, true);
 
         // Set List Click Listener
         lvList.setOnItemClickListener(this);

@@ -65,7 +65,7 @@ public class MapSettingsDialog  extends     BaseDialog
     protected void SetContentView()
     {
         // Init list adapter and add data
-        listAdapter = new GenericListAdapter(context, ui.lvMapType);
+        listAdapter = new GenericListAdapter(context, ui.lvMapType, false);
         InitTypeList();
 
         // Init Traffic overlay check

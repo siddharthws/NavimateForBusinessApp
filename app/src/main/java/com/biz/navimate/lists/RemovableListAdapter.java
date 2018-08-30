@@ -24,7 +24,7 @@ public class RemovableListAdapter   extends     BaseListAdapter
 
     // ----------------------- Constructor ----------------------- //
     public RemovableListAdapter(Context parentContext, ListView lvList) {
-        super(parentContext, lvList, R.layout.list_removable);
+        super(parentContext, lvList, R.layout.list_removable, false);
     }
 
     // ----------------------- Overrides ----------------------- //

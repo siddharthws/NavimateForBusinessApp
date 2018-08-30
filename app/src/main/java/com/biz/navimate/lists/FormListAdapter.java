@@ -27,7 +27,7 @@ public class FormListAdapter extends BaseListAdapter {
     // ----------------------- Constructor ----------------------- //
     public FormListAdapter(Context parentContext, ListView lvList)
     {
-        super(parentContext, lvList, R.layout.list_form);
+        super(parentContext, lvList, R.layout.list_form, true);
     }
 
     // ----------------------- Overrides ----------------------- //
