@@ -194,7 +194,8 @@ public class Constants {
 
         // Field related keys
         public static final String KEY_TYPE             = "type";
-        public static final String KEY_IS_MANDATORY     = "isMandatory";
+        public static final String KEY_SETTINGS         = "settings";
+        public static final String KEY_B_MANDATORY      = "bMandatory";
 
         // Value related keys
         public static final String KEY_VALUE            = "value";
