@@ -61,15 +61,22 @@ public class NvmToolbar     extends     LinearLayout
         ui.tvText.setText(text);
     }
 
-    public void ShowButton(int id) {
+    public void ShowButton(int id, boolean bShow) {
+        View view = null;
+
+        // Get button reference to update visibility
         switch (id) {
             case R.id.ib_tb_back:
-                ui.ibBack.setVisibility(VISIBLE);
+                view = ui.ibBack;
                 break;
             case R.id.ib_tb_save:
-                ui.ibSave.setVisibility(VISIBLE);
+                view = ui.ibSave;
                 break;
         }
+
+        // Set visibility as per flag
+        if (bShow) { view.setVisibility(VISIBLE); }
+        else { view.setVisibility(GONE); }
     }
 
     // ----------------------- Private APIs ----------------------- //
@@ -100,8 +107,8 @@ public class NvmToolbar     extends     LinearLayout
         setOrientation(LinearLayout.HORIZONTAL);
 
         // Set Padding
-        int marginLarge = (int) getResources().getDimension(R.dimen.m_large);
-        setPadding(marginLarge, marginLarge, marginLarge, marginLarge);
+        int marginS = (int) getResources().getDimension(R.dimen.margin_s);
+        setPadding(marginS, marginS, marginS, marginS);
 
         // Set Background
         setBackground(ContextCompat.getDrawable(ctx, R.drawable.bg_primary_shadow_down));
@@ -114,8 +121,8 @@ public class NvmToolbar     extends     LinearLayout
             // Try reading attributes
             try {
                 // Show buttons based on input
-                if(a.getBoolean(R.styleable.NvmToolbar_backBtn, false)) { ShowButton(R.id.ib_tb_back); }
-                if(a.getBoolean(R.styleable.NvmToolbar_saveBtn, false)) { ShowButton(R.id.ib_tb_save); }
+                if(a.getBoolean(R.styleable.NvmToolbar_backBtn, false)) { ShowButton(R.id.ib_tb_back, true); }
+                if(a.getBoolean(R.styleable.NvmToolbar_saveBtn, false)) { ShowButton(R.id.ib_tb_save, true); }
 
                 // Set Title in toolbar
                 String title = a.getString(R.styleable.NvmToolbar_title);
