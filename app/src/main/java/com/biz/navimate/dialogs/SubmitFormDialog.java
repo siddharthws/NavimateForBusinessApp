@@ -100,7 +100,7 @@ public class SubmitFormDialog   extends     BaseDialog
 
         // Set current selection in dropdown
         if (form.template != null) {
-            ui.ddTemplate.setSelection(templates.indexOf(form.template));
+            ui.ddTemplate.SetSelectionNoCallback(templates.indexOf(form.template));
         }
 
         // Set checkbox only for forms attached to open tasks
