@@ -21,6 +21,15 @@
         android:textSize="@dimen/textsize_primary"
         android:textColor="@android:color/white"/>
 
+    <!-- Edit Button -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_tb_edit"
+        android:layout_width="@dimen/m_large"
+        android:layout_height="@dimen/m_large"
+        android:src="@drawable/ic_edit_white"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical"/>
+
     <!-- Save Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_tb_save"

@@ -69,6 +69,9 @@ public class NvmToolbar     extends     LinearLayout
             case R.id.ib_tb_back:
                 view = ui.ibBack;
                 break;
+            case R.id.ib_tb_edit:
+                view = ui.ibEdit;
+                break;
             case R.id.ib_tb_save:
                 view = ui.ibSave;
                 break;
@@ -91,6 +94,7 @@ public class NvmToolbar     extends     LinearLayout
         // Init UI
         ui.tvText   = (TextView)        findViewById(R.id.tv_tb_text);
         ui.ibBack   = (NvmImageButton)  findViewById(R.id.ib_tb_back);
+        ui.ibEdit   = (NvmImageButton)  findViewById(R.id.ib_tb_edit);
         ui.ibSave   = (NvmImageButton)  findViewById(R.id.ib_tb_save);
 
         // Set UI properties
@@ -98,6 +102,7 @@ public class NvmToolbar     extends     LinearLayout
 
         // Set listeners
         ui.ibBack.setOnClickListener(this);
+        ui.ibEdit.setOnClickListener(this);
         ui.ibSave.setOnClickListener(this);
     }
 
@@ -122,6 +127,7 @@ public class NvmToolbar     extends     LinearLayout
             try {
                 // Show buttons based on input
                 if(a.getBoolean(R.styleable.NvmToolbar_backBtn, false)) { ShowButton(R.id.ib_tb_back, true); }
+                if(a.getBoolean(R.styleable.NvmToolbar_editBtn, false)) { ShowButton(R.id.ib_tb_edit, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_saveBtn, false)) { ShowButton(R.id.ib_tb_save, true); }
 
                 // Set Title in toolbar

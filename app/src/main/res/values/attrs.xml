@@ -13,6 +13,7 @@
 
         <!-- Button visibility -->
         <attr name="backBtn"    format="boolean" />
+        <attr name="editBtn"    format="boolean" />
         <attr name="saveBtn"    format="boolean" />
     </declare-styleable>
 
