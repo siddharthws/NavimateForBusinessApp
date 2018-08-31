@@ -2,6 +2,7 @@ package com.biz.navimate.viewholders;
 
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.biz.navimate.views.custom.NvmImageButton;
@@ -24,6 +25,11 @@ public class CustomViewHolder {
         public TextView         tvLabel = null;
         public TextView         tvError = null;
         public RelativeLayout   rlContainer = null;
+    }
+
+    // Custom Scroll View
+    public static class NvmScrollView {
+        public ScrollView svContainer = null;
     }
 
     public static class DateEditor {
