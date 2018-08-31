@@ -13,7 +13,9 @@ public class CustomViewHolder {
      */
     // Toolbar
     public static class NvmToolbar {
-        public ImageButton ibSave, ibBack = null;
+        public ImageButton  ibSave = null,
+                            ibEdit = null,
+                            ibBack = null;
         public TextView tvText = null;
     }
 
