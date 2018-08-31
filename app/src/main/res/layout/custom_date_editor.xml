@@ -6,7 +6,8 @@
         android:id="@+id/iv_calendar"
         android:layout_width="@dimen/m_large"
         android:layout_height="@dimen/m_large"
-        android:src="@drawable/ic_date_range_grey"/>
+        android:src="@drawable/ic_date_range_grey"
+        android:layout_gravity="center_vertical"/>
 
     <!-- Text showing date -->
     <TextView
@@ -15,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:layout_marginLeft="@dimen/m_small"
-        android:text="Date not set..."/>
+        android:text="Date not set..."
+        android:layout_gravity="center_vertical"/>
 
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
@@ -24,6 +26,7 @@
         android:layout_height="@dimen/m_large"
         android:layout_marginLeft="@dimen/m_small"
         android:src="@drawable/ic_cross_grey"
+        android:layout_gravity="center_vertical"
         android:visibility="gone"/>
 
     <!-- Edit Button -->
@@ -32,6 +35,7 @@
         android:layout_width="@dimen/m_large"
         android:layout_height="@dimen/m_large"
         android:layout_marginLeft="@dimen/m_small"
-        android:src="@drawable/ic_edit_grey"/>
+        android:src="@drawable/ic_edit_grey"
+        android:layout_gravity="center_vertical"/>
 
 </merge>

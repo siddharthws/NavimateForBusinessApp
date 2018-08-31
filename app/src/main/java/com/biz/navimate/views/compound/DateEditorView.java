@@ -133,7 +133,7 @@ public class DateEditorView     extends     LinearLayout
         // Show / Hide editing buttons
         if (bEditable) {
             ui.ibEdit.setVisibility(VISIBLE);
-            ui.ibClear.setVisibility(VISIBLE);
+            RefreshClear();
         } else {
             ui.ibEdit.setVisibility(GONE);
             ui.ibClear.setVisibility(GONE);
