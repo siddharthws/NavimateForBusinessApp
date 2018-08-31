@@ -23,6 +23,7 @@ import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
+import com.biz.navimate.views.compound.NvmToolbar;
 import com.biz.navimate.zxing.IntentIntegrator;
 import com.biz.navimate.zxing.IntentResult;
 import com.google.android.gms.location.places.Place;
@@ -35,7 +36,9 @@ import java.util.ArrayList;
  * Created by Siddharth on 22-09-2017.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements Runnable {
+public abstract class BaseActivity  extends     AppCompatActivity
+                                    implements  Runnable,
+                                                NvmToolbar.IfaceToolbar {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "BASE_ACTIVITY";
 
@@ -110,6 +113,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
 
         // Find Views
         FindViews();
+
+        // Find Toolbar
+        holder.toolbar       = (NvmToolbar) findViewById(R.id.toolbar);
+        if (holder.toolbar != null) {
+            holder.toolbar.SetListener(this);
+        }
 
         // Set Dialog View to this activity's layout
         holder.rlDialog       = (RlDialog) findViewById(R.id.rl_dialog);
@@ -252,6 +261,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Runnable
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    // Toolbar button click overrides
+    @Override
+    public void onToolbarButtonClick(int id) {
+        switch (id) {
+            case R.id.ib_tb_back:
+                onBackPressed();
+                break;
+        }
+    }
+
+    // Activity Refresh Runnable
     @Override
     public void run() {
         // Trigger refresh callback
