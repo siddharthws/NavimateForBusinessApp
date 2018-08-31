@@ -19,9 +19,8 @@ public class EtClearable    extends     LinearLayout
     private static final String TAG = "ET_CLEARABLE";
 
     // ----------------------- Interfaces ----------------------- //
-    public void SetListener(NvmEditText.IfaceEditText listener) {
-        ui.etText.SetListener(listener);
-    }
+    public void SetListener(NvmEditText.IfaceEditText listener) { ui.etText.SetListener(listener); }
+    public void SetImmediateListener(NvmEditText.IfaceEditTextImmediate listener) { ui.etText.SetImmediateListener(listener); }
 
     // ----------------------- Globals ----------------------- //
     private Context ctx = null;
