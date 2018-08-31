@@ -16,6 +16,7 @@ import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.VwSignature;
 import com.biz.navimate.views.compound.EtClearable;
+import com.biz.navimate.views.compound.NvmToolbar;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -25,6 +26,7 @@ public class ActivityHolder {
     // Base (Common) activity holder
     public static class Base {
         public RlDialog rlDialog = null;
+        public NvmToolbar toolbar = null;
     }
 
     // App loading activity holder
