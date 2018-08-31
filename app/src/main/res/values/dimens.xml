@@ -2,6 +2,9 @@
 <resources>
 
     <!-- Margins -->
+    <dimen name="margin_s">8dp</dimen>
+
+    <!-- to be replaced by above settings -->
     <dimen name="m_xxs">2dp</dimen>
     <dimen name="m_xs">5dp</dimen>
     <dimen name="m_small">10dp</dimen>
