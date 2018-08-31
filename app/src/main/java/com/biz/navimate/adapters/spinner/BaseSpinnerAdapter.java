@@ -31,6 +31,7 @@ public abstract class BaseSpinnerAdapter    extends     BaseAdapter
     protected AppCompatSpinner spinner = null;
     protected ArrayList<ObjSpinner.Base> data = null;
     private int itemLayoutId = 0;
+    private int selectedIdx = -1;
 
     // ----------------------- Constructor ----------------------- //
     public BaseSpinnerAdapter(Context ctx, AppCompatSpinner spinner, int itemLayoutId) {
@@ -106,6 +107,15 @@ public abstract class BaseSpinnerAdapter    extends     BaseAdapter
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        // Do nothing if old selection is selected again
+        if (selectedIdx == i) {
+            return;
+        }
+
+        // Update cache
+        selectedIdx = i;
+
+        // Trigger listener
         if (listener != null) {
             listener.onItemSelected(i);
         }
@@ -168,6 +178,11 @@ public abstract class BaseSpinnerAdapter    extends     BaseAdapter
 
     public int GetItemPosition(ObjSpinner.Base item) {
         return data.indexOf(item);
+    }
+
+    // Method to set currently selected index
+    public void SetSelectedIdx(int idx) {
+        selectedIdx = idx;
     }
 
     // ----------------------- Private APIs ----------------------- //
