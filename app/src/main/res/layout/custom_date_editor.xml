@@ -15,16 +15,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginLeft="@dimen/m_small"
         android:text="Date not set..."
         android:layout_gravity="center_vertical"/>
 
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_clear"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
-        android:layout_marginLeft="@dimen/m_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_cross_grey"
         android:layout_gravity="center_vertical"
         android:visibility="gone"/>
@@ -32,9 +30,8 @@
     <!-- Edit Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_edit"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
-        android:layout_marginLeft="@dimen/m_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_edit_grey"
         android:layout_gravity="center_vertical"/>
 

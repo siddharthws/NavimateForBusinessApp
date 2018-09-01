@@ -33,12 +33,5 @@ public class NvmImageButton extends AppCompatImageButton {
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     // Method to initialize view
-    private void Init(Context ctx, AttributeSet a) {
-        // Set ripple effect
-        int[] attrs = new int[]{R.attr.selectableItemBackgroundBorderless};
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs);
-        int backgroundResource = typedArray.getResourceId(0, 0);
-        setBackgroundResource(backgroundResource);
-        typedArray.recycle();
-    }
+    private void Init(Context ctx, AttributeSet a) {}
 }

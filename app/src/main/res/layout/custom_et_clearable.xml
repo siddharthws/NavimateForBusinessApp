@@ -12,9 +12,8 @@
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_etc_clear"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
-        android:layout_marginLeft="@dimen/m_small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_cross_grey"
         android:layout_gravity="center_vertical"/>
 
