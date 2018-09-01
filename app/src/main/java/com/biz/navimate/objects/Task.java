@@ -111,24 +111,24 @@ public class Task extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId                = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_ID));
-        publicId            = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_PUBLIC_ID));
-        textServerId        = cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_SRV_ID));
-        status              = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(TaskTable.COLUMN_STATUS)));
+        dbId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        publicId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_PUBLIC_ID));
+        textServerId        = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        status              = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_STATUS)));
 
-        long   leadId                = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_LEAD_ID));
+        long   leadId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_LEAD_ID));
         lead = (Lead) DbHelper.leadTable.GetById(leadId);
 
-        long   formTemplateId        = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_FORM_TEMPLATE_ID));
+        long   formTemplateId        = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_FORM_TEMPLATE_ID));
         formTemplate = (Template) DbHelper.templateTable.GetById(formTemplateId);
 
-        long   templateId        = cursor.getLong    (cursor.getColumnIndex(TaskTable.COLUMN_TEMPLATE_ID));
+        long   templateId        = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template = (Template) DbHelper.templateTable.GetById(templateId);
 
         // Parse values into Form Entry objects
         values = new ArrayList<>();
         try {
-            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(TaskTable.COLUMN_VALUES)));
+            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_VALUES)));
             for (int i = 0; i < valuesJson.length(); i++) {
                 JSONObject valueJson = valuesJson.getJSONObject(i);
 
@@ -150,12 +150,12 @@ public class Task extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(TaskTable.COLUMN_SRV_ID,            textServerId);
-        cv.put(TaskTable.COLUMN_PUBLIC_ID,         publicId);
-        cv.put(TaskTable.COLUMN_LEAD_ID,           lead.dbId);
-        cv.put(TaskTable.COLUMN_FORM_TEMPLATE_ID,  formTemplate.dbId);
-        cv.put(TaskTable.COLUMN_TEMPLATE_ID,       template.dbId);
-        cv.put(TaskTable.COLUMN_STATUS,            status.name());
+        cv.put(Constants.DB.COLUMN_SRV_ID,            textServerId);
+        cv.put(Constants.DB.COLUMN_PUBLIC_ID,         publicId);
+        cv.put(Constants.DB.COLUMN_LEAD_ID,           lead.dbId);
+        cv.put(Constants.DB.COLUMN_FORM_TEMPLATE_ID,  formTemplate.dbId);
+        cv.put(Constants.DB.COLUMN_TEMPLATE_ID,       template.dbId);
+        cv.put(Constants.DB.COLUMN_STATUS,            status.name());
 
         // Prepare JSON Array for values
         JSONArray valuesJson = new JSONArray();
@@ -170,7 +170,7 @@ public class Task extends ServerObject {
             Dbg.error(TAG, "JSON Exception while converting to DB string");
             Dbg.stack(e);
         }
-        cv.put(TaskTable.COLUMN_VALUES,          valuesJson.toString());
+        cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
     }

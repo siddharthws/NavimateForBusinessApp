@@ -3,6 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Task;
@@ -23,41 +24,31 @@ public class FormTable extends BaseTable {
     // Table name
     public static final String TABLE_NAME             = "form_table";
 
-    // Columns
-    public static final String COLUMN_SRV_ID        = "server_id";
-    public static final String COLUMN_TEMPLATE_ID   = "template_id";
-    public static final String COLUMN_TASK_ID       = "task_id";
-    public static final String COLUMN_CLOSE_TASK    = "close_task";
-    public static final String COLUMN_LATITUDE      = "latitude";
-    public static final String COLUMN_LONGITUDE     = "longitude";
-    public static final String COLUMN_TIMESTAMP     = "timestamp";
-    public static final String COLUMN_VALUES        = "_values";
-
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                    COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID        + " TEXT," +
-                    COLUMN_TEMPLATE_ID   + " INTEGER," +
-                    COLUMN_TASK_ID       + " INTEGER," +
-                    COLUMN_VALUES        + " TEXT," +
-                    COLUMN_CLOSE_TASK    + " TEXT," +
-                    COLUMN_LATITUDE      + " REAL," +
-                    COLUMN_LONGITUDE     + " REAL," +
-                    COLUMN_TIMESTAMP     + " INTEGER)";
+                    Constants.DB.COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_SRV_ID        + " TEXT," +
+                    Constants.DB.COLUMN_TEMPLATE_ID   + " INTEGER," +
+                    Constants.DB.COLUMN_TASK_ID       + " INTEGER," +
+                    Constants.DB.COLUMN_VALUES        + " TEXT," +
+                    Constants.DB.COLUMN_CLOSE_TASK    + " TEXT," +
+                    Constants.DB.COLUMN_LATITUDE      + " REAL," +
+                    Constants.DB.COLUMN_LONGITUDE     + " REAL," +
+                    Constants.DB.COLUMN_TIMESTAMP     + " INTEGER)";
 
     // ----------------------- Constructor ----------------------- //
     public FormTable(DbHelper dbHelper)
     {
-        super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
-                                                    COLUMN_SRV_ID,
-                                                    COLUMN_TEMPLATE_ID,
-                                                    COLUMN_TASK_ID,
-                                                    COLUMN_VALUES,
-                                                    COLUMN_CLOSE_TASK,
-                                                    COLUMN_LATITUDE,
-                                                    COLUMN_LONGITUDE,
-                                                    COLUMN_TIMESTAMP});
+        super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_SRV_ID,
+                                                    Constants.DB.COLUMN_TEMPLATE_ID,
+                                                    Constants.DB.COLUMN_TASK_ID,
+                                                    Constants.DB.COLUMN_VALUES,
+                                                    Constants.DB.COLUMN_CLOSE_TASK,
+                                                    Constants.DB.COLUMN_LATITUDE,
+                                                    Constants.DB.COLUMN_LONGITUDE,
+                                                    Constants.DB.COLUMN_TIMESTAMP});
     }
 
     // ----------------------- Public APIs ----------------------- //

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.objects.core.ObjDb;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.LocationReportObject;
 
 import java.util.ArrayList;
@@ -20,35 +21,27 @@ public class LocationReportTable extends BaseTable {
     // Table name
     public static final String TABLE_NAME       = "locationReport_table";
 
-    // Columns
-    public static final String COLUMN_LATITUDE        = "latitude";
-    public static final String COLUMN_LONGITUDE       = "longitude";
-    public static final String COLUMN_TIMESTAMP       = "timestamp";
-    public static final String COLUMN_STATUS          = "status";
-    public static final String COLUMN_BATTERY         = "battery";
-    public static final String COLUMN_SPEED           = "speed";
-
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS "   + TABLE_NAME + " (" +
-                    COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_LATITUDE         + " REAL," +
-                    COLUMN_LONGITUDE        + " REAL," +
-                    COLUMN_TIMESTAMP        + " INTEGER," +
-                    COLUMN_STATUS           + " INTEGER," +
-                    COLUMN_BATTERY          + " INTEGER," +
-                    COLUMN_SPEED            + " REAL)";
+                    Constants.DB.COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_LATITUDE         + " REAL," +
+                    Constants.DB.COLUMN_LONGITUDE        + " REAL," +
+                    Constants.DB.COLUMN_TIMESTAMP        + " INTEGER," +
+                    Constants.DB.COLUMN_STATUS           + " INTEGER," +
+                    Constants.DB.COLUMN_BATTERY          + " INTEGER," +
+                    Constants.DB.COLUMN_SPEED            + " REAL)";
 
     // ----------------------- Constructor ----------------------- //
     public LocationReportTable(DbHelper dbHelper)
     {
-        super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
-                                                    COLUMN_LATITUDE,
-                                                    COLUMN_LONGITUDE,
-                                                    COLUMN_TIMESTAMP,
-                                                    COLUMN_STATUS,
-                                                    COLUMN_BATTERY,
-                                                    COLUMN_SPEED});
+        super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_LATITUDE,
+                                                    Constants.DB.COLUMN_LONGITUDE,
+                                                    Constants.DB.COLUMN_TIMESTAMP,
+                                                    Constants.DB.COLUMN_STATUS,
+                                                    Constants.DB.COLUMN_BATTERY,
+                                                    Constants.DB.COLUMN_SPEED});
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -74,13 +67,13 @@ public class LocationReportTable extends BaseTable {
     @Override
     protected ObjDb ParseToObject(Cursor cursor)
     {
-        long   dbId                    = cursor.getLong   (cursor.getColumnIndex(COLUMN_ID));
-        double latitude                = cursor.getDouble (cursor.getColumnIndex(COLUMN_LATITUDE));
-        double longitude               = cursor.getDouble (cursor.getColumnIndex(COLUMN_LONGITUDE));
-        long timeStamp                 = cursor.getLong   (cursor.getColumnIndex(COLUMN_TIMESTAMP));
-        int status                     = cursor.getInt    (cursor.getColumnIndex(COLUMN_STATUS));
-        int battery                    = cursor.getInt    (cursor.getColumnIndex(COLUMN_BATTERY));
-        float speed                    = cursor.getFloat  (cursor.getColumnIndex(COLUMN_SPEED));
+        long   dbId                    = cursor.getLong   (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        double latitude                = cursor.getDouble (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
+        double longitude               = cursor.getDouble (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
+        long timeStamp                 = cursor.getLong   (cursor.getColumnIndex(Constants.DB.COLUMN_TIMESTAMP));
+        int status                     = cursor.getInt    (cursor.getColumnIndex(Constants.DB.COLUMN_STATUS));
+        int battery                    = cursor.getInt    (cursor.getColumnIndex(Constants.DB.COLUMN_BATTERY));
+        float speed                    = cursor.getFloat  (cursor.getColumnIndex(Constants.DB.COLUMN_SPEED));
 
         return new LocationReportObject(dbId, latitude, longitude, timeStamp, status, battery, speed);
     }
@@ -92,12 +85,12 @@ public class LocationReportTable extends BaseTable {
         ContentValues dbEntry = new ContentValues();
 
         // Enter values into Database
-        dbEntry.put(COLUMN_LATITUDE,         locationReportObject.latitude);
-        dbEntry.put(COLUMN_LONGITUDE,        locationReportObject.longitude);
-        dbEntry.put(COLUMN_TIMESTAMP,        locationReportObject.timestamp);
-        dbEntry.put(COLUMN_STATUS,           locationReportObject.status);
-        dbEntry.put(COLUMN_SPEED,            locationReportObject.speed);
-        dbEntry.put(COLUMN_BATTERY,          locationReportObject.battery);
+        dbEntry.put(Constants.DB.COLUMN_LATITUDE,         locationReportObject.latitude);
+        dbEntry.put(Constants.DB.COLUMN_LONGITUDE,        locationReportObject.longitude);
+        dbEntry.put(Constants.DB.COLUMN_TIMESTAMP,        locationReportObject.timestamp);
+        dbEntry.put(Constants.DB.COLUMN_STATUS,           locationReportObject.status);
+        dbEntry.put(Constants.DB.COLUMN_SPEED,            locationReportObject.speed);
+        dbEntry.put(Constants.DB.COLUMN_BATTERY,          locationReportObject.battery);
 
         return dbEntry;
     }
