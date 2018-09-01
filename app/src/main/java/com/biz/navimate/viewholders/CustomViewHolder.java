@@ -22,6 +22,7 @@ public class CustomViewHolder {
     // Label Box
     public static class LabelBox {
         public TextView         tvLabel = null;
+        public TextView         tvError = null;
         public RelativeLayout   rlContainer = null;
     }
 

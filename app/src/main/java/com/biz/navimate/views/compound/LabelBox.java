@@ -55,6 +55,16 @@ public class LabelBox extends LinearLayout {
         ui.tvLabel.setText(label);
     }
 
+    // Methods to toggle error status
+    public void ShowError (String error) {
+        ui.tvError.setText(error);
+        ui.tvError.setVisibility(VISIBLE);
+    }
+
+    public void HideError () {
+        ui.tvError.setVisibility(GONE);
+    }
+
     // ----------------------- Private APIs ----------------------- //
     // Method to initialize view
     private void Init(Context ctx, AttributeSet attrs) {
@@ -66,6 +76,7 @@ public class LabelBox extends LinearLayout {
 
         // Init UI
         ui.tvLabel      = (TextView)        findViewById(R.id.tv_lbl_label);
+        ui.tvError      = (TextView)        findViewById(R.id.tv_lbl_error);
         ui.rlContainer  = (RelativeLayout)  findViewById(R.id.rl_lbl_child_root);
 
         // Set UI properties
