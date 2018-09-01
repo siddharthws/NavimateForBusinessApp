@@ -6,7 +6,7 @@
         android:id="@+id/action_clear"
         android:orderInCategory="300"
         android:title="Clear"
-        android:icon="@drawable/ic_clear_white"
+        android:icon="@drawable/ic_bin_white"
         app:showAsAction="always">
     </item>
 
@@ -14,7 +14,7 @@
         android:id="@+id/action_save"
         android:orderInCategory="300"
         android:title="Save"
-        android:icon="@drawable/ic_save_white_27dp"
+        android:icon="@drawable/ic_check_white"
         app:showAsAction="always">
     </item>
 

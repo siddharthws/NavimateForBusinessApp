@@ -6,7 +6,7 @@
         android:id="@+id/action_crop"
         android:orderInCategory="300"
         android:title="Crop"
-        android:icon="@drawable/ic_crop_white_24dp"
+        android:icon="@drawable/ic_crop_white"
         app:showAsAction="always">
     </item>
 
@@ -14,7 +14,7 @@
         android:id="@+id/action_draw"
         android:orderInCategory="300"
         android:title="Draw"
-        android:icon="@drawable/ic_edit_white_24dp"
+        android:icon="@drawable/ic_edit_white"
         app:showAsAction="always">
     </item>
 
@@ -22,7 +22,7 @@
         android:id="@+id/action_save"
         android:orderInCategory="300"
         android:title="Save"
-        android:icon="@drawable/ic_save_white_27dp"
+        android:icon="@drawable/ic_check_white"
         app:showAsAction="always">
     </item>
 
