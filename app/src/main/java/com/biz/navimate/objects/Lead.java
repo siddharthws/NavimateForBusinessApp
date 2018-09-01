@@ -85,21 +85,21 @@ public class Lead extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId             = cursor.getLong    (cursor.getColumnIndex(LeadTable.COLUMN_ID));
-        textServerId     = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_SRV_ID));
-        title            = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_TITLE));
-        address          = cursor.getString  (cursor.getColumnIndex(LeadTable.COLUMN_ADDRESS));
-        double latitude         = cursor.getDouble  (cursor.getColumnIndex(LeadTable.COLUMN_LATITUDE));
-        double longitude        = cursor.getDouble  (cursor.getColumnIndex(LeadTable.COLUMN_LONGITUDE));
+        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        title                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
+        address                 = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
+        double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
+        double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
         position = new LatLng(latitude, longitude);
 
-        long   templateId       = cursor.getLong    (cursor.getColumnIndex(LeadTable.COLUMN_TEMPLATE_ID));
+        long   templateId       = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template       = (Template) DbHelper.templateTable.GetById(templateId);
 
         // Parse values into Form Entry objects
         values = new ArrayList<>();
         try {
-            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(LeadTable.COLUMN_VALUES)));
+            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_VALUES)));
             for (int i = 0; i < valuesJson.length(); i++) {
                 JSONObject valueJson = valuesJson.getJSONObject(i);
 
@@ -121,12 +121,12 @@ public class Lead extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(LeadTable.COLUMN_SRV_ID,          textServerId);
-        cv.put(LeadTable.COLUMN_TITLE,           title);
-        cv.put(LeadTable.COLUMN_ADDRESS,         address);
-        cv.put(LeadTable.COLUMN_LATITUDE,        position.latitude);
-        cv.put(LeadTable.COLUMN_LONGITUDE,       position.longitude);
-        cv.put(LeadTable.COLUMN_TEMPLATE_ID,     template.dbId);
+        cv.put(Constants.DB.COLUMN_SRV_ID,          textServerId);
+        cv.put(Constants.DB.COLUMN_TITLE,           title);
+        cv.put(Constants.DB.COLUMN_ADDRESS,         address);
+        cv.put(Constants.DB.COLUMN_LATITUDE,        position.latitude);
+        cv.put(Constants.DB.COLUMN_LONGITUDE,       position.longitude);
+        cv.put(Constants.DB.COLUMN_TEMPLATE_ID,     template.dbId);
 
         // Prepare JSON Array for values
         JSONArray valuesJson = new JSONArray();
@@ -141,7 +141,7 @@ public class Lead extends ServerObject {
             Dbg.error(TAG, "JSON Exception while converting to DB string");
             Dbg.stack(e);
         }
-        cv.put(LeadTable.COLUMN_VALUES,          valuesJson.toString());
+        cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
     }

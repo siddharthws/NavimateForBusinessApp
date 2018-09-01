@@ -26,29 +26,23 @@ public class TemplateTable extends BaseTable {
     // Table name
     public static final String TABLE_NAME       = "template_table";
 
-    // Columns
-    public static final String COLUMN_SRV_ID    = "server_id";
-    public static final String COLUMN_NAME      = "name";
-    public static final String COLUMN_TYPE      = "type";
-    public static final String COLUMN_FIELD_IDS = "fieldIds";
-
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                    COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID        + " INTEGER," +
-                    COLUMN_NAME          + " TEXT," +
-                    COLUMN_TYPE          + " INTEGER," +
-                    COLUMN_FIELD_IDS     + " TEXT)";
+                    Constants.DB.COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_SRV_ID        + " INTEGER," +
+                    Constants.DB.COLUMN_NAME          + " TEXT," +
+                    Constants.DB.COLUMN_TYPE          + " INTEGER," +
+                    Constants.DB.COLUMN_FIELD_IDS     + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
     public TemplateTable(DbHelper dbHelper)
     {
-        super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
-                                                    COLUMN_SRV_ID,
-                                                    COLUMN_NAME,
-                                                    COLUMN_TYPE,
-                                                    COLUMN_FIELD_IDS});
+        super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_SRV_ID,
+                                                    Constants.DB.COLUMN_NAME,
+                                                    Constants.DB.COLUMN_TYPE,
+                                                    Constants.DB.COLUMN_FIELD_IDS});
     }
 
     // ----------------------- Public APIs ----------------------- //

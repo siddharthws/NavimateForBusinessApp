@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.objects.core.ObjDb;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -22,38 +23,29 @@ public class LeadTable extends BaseTable {
     // Table name
     public static final String TABLE_NAME             = "lead_table";
 
-    // Columns
-    public static final String COLUMN_SRV_ID           = "server_id";
-    public static final String COLUMN_TITLE            = "title";
-    public static final String COLUMN_ADDRESS          = "address";
-    public static final String COLUMN_LATITUDE         = "latitude";
-    public static final String COLUMN_LONGITUDE        = "longitude";
-    public static final String COLUMN_TEMPLATE_ID      = "template_id";
-    public static final String COLUMN_VALUES           = "_values";
-
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
-                    COLUMN_ID             + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID         + " TEXT," +
-                    COLUMN_TITLE          + " TEXT," +
-                    COLUMN_ADDRESS        + " TEXT," +
-                    COLUMN_LATITUDE       + " REAL," +
-                    COLUMN_LONGITUDE      + " REAL," +
-                    COLUMN_TEMPLATE_ID    + " INTEGER," +
-                    COLUMN_VALUES         + " TEXT)";
+                    Constants.DB.COLUMN_ID             + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_SRV_ID         + " TEXT," +
+                    Constants.DB.COLUMN_TITLE          + " TEXT," +
+                    Constants.DB.COLUMN_ADDRESS        + " TEXT," +
+                    Constants.DB.COLUMN_LATITUDE       + " REAL," +
+                    Constants.DB.COLUMN_LONGITUDE      + " REAL," +
+                    Constants.DB.COLUMN_TEMPLATE_ID    + " INTEGER," +
+                    Constants.DB.COLUMN_VALUES         + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
     public LeadTable(DbHelper dbHelper)
     {
-        super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
-                                                    COLUMN_SRV_ID,
-                                                    COLUMN_TITLE,
-                                                    COLUMN_ADDRESS,
-                                                    COLUMN_LATITUDE,
-                                                    COLUMN_LONGITUDE,
-                                                    COLUMN_TEMPLATE_ID,
-                                                    COLUMN_VALUES});
+        super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_SRV_ID,
+                                                    Constants.DB.COLUMN_TITLE,
+                                                    Constants.DB.COLUMN_ADDRESS,
+                                                    Constants.DB.COLUMN_LATITUDE,
+                                                    Constants.DB.COLUMN_LONGITUDE,
+                                                    Constants.DB.COLUMN_TEMPLATE_ID,
+                                                    Constants.DB.COLUMN_VALUES});
     }
 
     // ----------------------- Public APIs ----------------------- //

@@ -63,6 +63,36 @@ public class Constants {
         public static final String KEY_IS_TRACKING              = "is_tracking";
     }
 
+    // Database related constants
+    public static class DB {
+        // Column Titles
+        public static final String COLUMN_ID                = "_id";
+        public static final String COLUMN_SRV_ID            = "server_id";
+        public static final String COLUMN_TEMPLATE_ID       = "template_id";
+        public static final String COLUMN_OWNER_ID          = "owner_id";
+        public static final String COLUMN_TASK_ID           = "task_id";
+        public static final String COLUMN_PRODUCT_ID        = "product_id";
+        public static final String COLUMN_PUBLIC_ID         = "public_id";
+        public static final String COLUMN_LEAD_ID           = "lead_id";
+        public static final String COLUMN_FORM_TEMPLATE_ID  = "form_template_id";
+        public static final String COLUMN_FIELD_IDS         = "fieldIds";
+        public static final String COLUMN_DIRTY             = "dirty";
+        public static final String COLUMN_TITLE             = "title";
+        public static final String COLUMN_ADDRESS           = "address";
+        public static final String COLUMN_LATITUDE          = "latitude";
+        public static final String COLUMN_LONGITUDE         = "longitude";
+        public static final String COLUMN_VALUES            = "_values";
+        public static final String COLUMN_VALUE             = "value";
+        public static final String COLUMN_TYPE              = "type";
+        public static final String COLUMN_IS_MANDATORY      = "isMandatory";
+        public static final String COLUMN_CLOSE_TASK        = "close_task";
+        public static final String COLUMN_TIMESTAMP         = "timestamp";
+        public static final String COLUMN_STATUS            = "status";
+        public static final String COLUMN_BATTERY           = "battery";
+        public static final String COLUMN_SPEED             = "speed";
+        public static final String COLUMN_NAME              = "name";
+    }
+
     // Template related constants
     public static class Template {
         // Template Types

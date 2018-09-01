@@ -18,9 +18,6 @@ public abstract class BaseTable {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "BASE_TABLE";
 
-    // Column Names
-    public static final String COLUMN_ID = "_id";
-
     // ----------------------- Globals ----------------------- //
     // Table parameters
     protected DbHelper dbHelper = null;
@@ -67,7 +64,7 @@ public abstract class BaseTable {
 
         // Remove this db id from table
         int affectedRows = db.delete(tableName,
-                COLUMN_ID + "=?",
+                Constants.DB.COLUMN_ID + "=?",
                 new String[]{Long.toString(dbId)});
 
         if (affectedRows != 1) {
@@ -98,7 +95,7 @@ public abstract class BaseTable {
         for (ObjDb dbItem : cache) {
             // Delete using ID
             int affectedRows = db.delete(tableName,
-                    COLUMN_ID + "=?",
+                    Constants.DB.COLUMN_ID + "=?",
                     new String[]{Long.toString(dbItem.dbId)});
 
             if (affectedRows != 1) {
@@ -198,7 +195,7 @@ public abstract class BaseTable {
         // Update database
         int affectedRows = db.update(tableName,
                 content,
-                COLUMN_ID + "=?",
+                Constants.DB.COLUMN_ID + "=?",
                 new String[]{Long.toString(dbItem.dbId)});
 
         if (affectedRows != 1) {

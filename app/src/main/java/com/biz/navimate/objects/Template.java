@@ -81,13 +81,13 @@ public class Template extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(TemplateTable.COLUMN_ID));
-        serverId                = cursor.getLong    (cursor.getColumnIndex(TemplateTable.COLUMN_SRV_ID));
-        name                    = cursor.getString  (cursor.getColumnIndex(TemplateTable.COLUMN_NAME));
-        type                    = cursor.getInt     (cursor.getColumnIndex(TemplateTable.COLUMN_TYPE));
+        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        serverId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        name                    = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_NAME));
+        type                    = cursor.getInt     (cursor.getColumnIndex(Constants.DB.COLUMN_TYPE));
 
         // Create Field IDs array
-        String fieldsString     = cursor.getString  (cursor.getColumnIndex(TemplateTable.COLUMN_FIELD_IDS));
+        String fieldsString     = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_FIELD_IDS));
         fields = new ArrayList<>();
         try
         {
@@ -106,15 +106,15 @@ public class Template extends ServerObject {
     public ContentValues toContentValues () {
         ContentValues cv = new ContentValues();
         // Enter values into Database
-        cv.put(TemplateTable.COLUMN_SRV_ID,         serverId);
-        cv.put(TemplateTable.COLUMN_NAME,           name);
-        cv.put(TemplateTable.COLUMN_TYPE,           type);
+        cv.put(Constants.DB.COLUMN_SRV_ID,         serverId);
+        cv.put(Constants.DB.COLUMN_NAME,           name);
+        cv.put(Constants.DB.COLUMN_TYPE,           type);
 
         JSONArray fieldsJson = new JSONArray();
         for (Field field : fields) {
             fieldsJson.put(field.dbId);
         }
-        cv.put(TemplateTable.COLUMN_FIELD_IDS, fieldsJson.toString());
+        cv.put(Constants.DB.COLUMN_FIELD_IDS, fieldsJson.toString());
 
         return cv;
     }

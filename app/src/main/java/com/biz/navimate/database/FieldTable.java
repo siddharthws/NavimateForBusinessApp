@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.objects.core.ObjDb;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Template;
 
@@ -21,32 +22,25 @@ public class FieldTable extends BaseTable {
     // Table name
     public static final String TABLE_NAME       = "field_table";
 
-    // Columns
-    public static final String COLUMN_SRV_ID        = "server_id";
-    public static final String COLUMN_TITLE         = "title";
-    public static final String COLUMN_TYPE          = "type";
-    public static final String COLUMN_VALUE         = "value";
-    public static final String COLUMN_IS_MANDATORY  = "isMandatory";
-
     // Create query
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS "   + TABLE_NAME + " (" +
-                    COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                    COLUMN_SRV_ID           + " INTEGER," +
-                    COLUMN_TITLE            + " TEXT," +
-                    COLUMN_TYPE             + " INTEGER," +
-                    COLUMN_VALUE            + " TEXT," +
-                    COLUMN_IS_MANDATORY     + " TEXT)";
+                    Constants.DB.COLUMN_ID               + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_SRV_ID           + " INTEGER," +
+                    Constants.DB.COLUMN_TITLE            + " TEXT," +
+                    Constants.DB.COLUMN_TYPE             + " INTEGER," +
+                    Constants.DB.COLUMN_VALUE            + " TEXT," +
+                    Constants.DB.COLUMN_IS_MANDATORY     + " TEXT)";
 
     // ----------------------- Constructor ----------------------- //
     public FieldTable(DbHelper dbHelper)
     {
-        super(dbHelper, TABLE_NAME, new String[]{   COLUMN_ID,
-                                                    COLUMN_SRV_ID,
-                                                    COLUMN_TITLE,
-                                                    COLUMN_TYPE,
-                                                    COLUMN_VALUE,
-                                                    COLUMN_IS_MANDATORY});
+        super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_SRV_ID,
+                                                    Constants.DB.COLUMN_TITLE,
+                                                    Constants.DB.COLUMN_TYPE,
+                                                    Constants.DB.COLUMN_VALUE,
+                                                    Constants.DB.COLUMN_IS_MANDATORY});
     }
 
     // ----------------------- Public APIs ----------------------- //

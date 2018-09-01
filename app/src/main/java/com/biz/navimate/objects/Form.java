@@ -142,25 +142,25 @@ public class Form extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_ID));
-        textServerId            = cursor.getString  (cursor.getColumnIndex(FormTable.COLUMN_SRV_ID));
-        bCloseTask              = Boolean.valueOf   (cursor.getString(cursor.getColumnIndex(FormTable.COLUMN_CLOSE_TASK)));
-        timestamp               = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_TIMESTAMP));
-        double latitude                = cursor.getDouble  (cursor.getColumnIndex(FormTable.COLUMN_LATITUDE));
-        double longitude               = cursor.getDouble  (cursor.getColumnIndex(FormTable.COLUMN_LONGITUDE));
+        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        bCloseTask              = Boolean.valueOf   (cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_CLOSE_TASK)));
+        timestamp               = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TIMESTAMP));
+        double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
+        double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
         latlng = new LatLng(latitude, longitude);
 
 
-        long   templateId        = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_TEMPLATE_ID));
+        long   templateId        = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template = (Template) DbHelper.templateTable.GetById(templateId);
 
-        Long taskId = cursor.getLong    (cursor.getColumnIndex(FormTable.COLUMN_TASK_ID));
+        Long taskId = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TASK_ID));
         task = (Task) DbHelper.taskTable.GetById(taskId);
 
         // Parse values into Form Entry objects
         values = new ArrayList<>();
         try {
-            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(FormTable.COLUMN_VALUES)));
+            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_VALUES)));
             for (int i = 0; i < valuesJson.length(); i++) {
                 JSONObject valueJson = valuesJson.getJSONObject(i);
 
@@ -182,13 +182,13 @@ public class Form extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(FormTable.COLUMN_SRV_ID,         textServerId);
-        cv.put(FormTable.COLUMN_TEMPLATE_ID,    template.dbId);
-        cv.put(FormTable.COLUMN_TASK_ID,        task != null ? task.dbId : Constants.Misc.ID_INVALID);
-        cv.put(FormTable.COLUMN_CLOSE_TASK,     bCloseTask);
-        cv.put(FormTable.COLUMN_LATITUDE,       latlng.latitude);
-        cv.put(FormTable.COLUMN_LONGITUDE,      latlng.longitude);
-        cv.put(FormTable.COLUMN_TIMESTAMP,      timestamp);
+        cv.put(Constants.DB.COLUMN_SRV_ID,         textServerId);
+        cv.put(Constants.DB.COLUMN_TEMPLATE_ID,    template.dbId);
+        cv.put(Constants.DB.COLUMN_TASK_ID,        task != null ? task.dbId : Constants.Misc.ID_INVALID);
+        cv.put(Constants.DB.COLUMN_CLOSE_TASK,     bCloseTask);
+        cv.put(Constants.DB.COLUMN_LATITUDE,       latlng.latitude);
+        cv.put(Constants.DB.COLUMN_LONGITUDE,      latlng.longitude);
+        cv.put(Constants.DB.COLUMN_TIMESTAMP,      timestamp);
 
         // Prepare JSON Array for values
         JSONArray valuesJson = new JSONArray();
@@ -203,7 +203,7 @@ public class Form extends ServerObject {
             Dbg.error(TAG, "JSON Exception while converting to DB string");
             Dbg.stack(e);
         }
-        cv.put(FormTable.COLUMN_VALUES,          valuesJson.toString());
+        cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
     }

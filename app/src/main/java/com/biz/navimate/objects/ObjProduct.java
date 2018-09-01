@@ -75,18 +75,18 @@ public class ObjProduct extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId             = cursor.getLong    (cursor.getColumnIndex(ProductTable.COLUMN_ID));
-        textServerId     = cursor.getString  (cursor.getColumnIndex(ProductTable.COLUMN_SRV_ID));
-        name             = cursor.getString  (cursor.getColumnIndex(ProductTable.COLUMN_NAME));
-        productId        = cursor.getString  (cursor.getColumnIndex(ProductTable.COLUMN_PRODUCT_ID));
+        dbId             = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        textServerId     = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        name             = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_NAME));
+        productId        = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_PRODUCT_ID));
 
-        long   templateId       = cursor.getLong    (cursor.getColumnIndex(ProductTable.COLUMN_TEMPLATE_ID));
+        long   templateId       = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template       = (Template) DbHelper.templateTable.GetById(templateId);
 
         // Parse values into Form Entry objects
         values = new ArrayList<>();
         try {
-            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(ProductTable.COLUMN_VALUES)));
+            JSONArray valuesJson    = new JSONArray(cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_VALUES)));
             for (int i = 0; i < valuesJson.length(); i++) {
                 JSONObject valueJson = valuesJson.getJSONObject(i);
 
@@ -108,10 +108,10 @@ public class ObjProduct extends ServerObject {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(ProductTable.COLUMN_SRV_ID,          textServerId);
-        cv.put(ProductTable.COLUMN_NAME,            name);
-        cv.put(ProductTable.COLUMN_PRODUCT_ID,      productId);
-        cv.put(ProductTable.COLUMN_TEMPLATE_ID,     template.dbId);
+        cv.put(Constants.DB.COLUMN_SRV_ID,          textServerId);
+        cv.put(Constants.DB.COLUMN_NAME,            name);
+        cv.put(Constants.DB.COLUMN_PRODUCT_ID,      productId);
+        cv.put(Constants.DB.COLUMN_TEMPLATE_ID,     template.dbId);
 
         // Prepare JSON Array for values
         JSONArray valuesJson = new JSONArray();
@@ -126,7 +126,7 @@ public class ObjProduct extends ServerObject {
             Dbg.error(TAG, "JSON Exception while converting to DB string");
             Dbg.stack(e);
         }
-        cv.put(ProductTable.COLUMN_VALUES,          valuesJson.toString());
+        cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
     }

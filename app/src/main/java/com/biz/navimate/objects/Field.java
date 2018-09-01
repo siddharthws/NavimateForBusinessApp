@@ -56,21 +56,21 @@ public class Field extends ServerObject {
     //
     public void fromCursor(Cursor cursor)
     {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(FieldTable.COLUMN_ID));
-        serverId                = cursor.getLong    (cursor.getColumnIndex(FieldTable.COLUMN_SRV_ID));
-        title                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_TITLE));
-        type                    = cursor.getInt     (cursor.getColumnIndex(FieldTable.COLUMN_TYPE));
-        value                   = cursor.getString  (cursor.getColumnIndex(FieldTable.COLUMN_VALUE));
+        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        serverId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
+        title                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
+        type                    = cursor.getInt     (cursor.getColumnIndex(Constants.DB.COLUMN_TYPE));
+        value                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_VALUE));
     }
 
     public ContentValues toContentValues () {
         ContentValues cv = new ContentValues();
 
         // Enter values into Database
-        cv.put(FieldTable.COLUMN_SRV_ID,         serverId);
-        cv.put(FieldTable.COLUMN_TITLE,          title);
-        cv.put(FieldTable.COLUMN_TYPE,           type);
-        cv.put(FieldTable.COLUMN_VALUE,          value);
+        cv.put(Constants.DB.COLUMN_SRV_ID,         serverId);
+        cv.put(Constants.DB.COLUMN_TITLE,          title);
+        cv.put(Constants.DB.COLUMN_TYPE,           type);
+        cv.put(Constants.DB.COLUMN_VALUE,          value);
 
         return cv;
     }
