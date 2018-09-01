@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <!-- Custom styles -->
+        <item name="android:textViewStyle">@style/AppTheme.Widget.TextView</item>
         <item name="editTextStyle">@style/AppTheme.Widget.EditText</item>
         <item name="imageButtonStyle">@style/AppTheme.Widget.ImageButton</item>
         <item name="spinnerStyle">@style/AppTheme.Widget.Spinner</item>
@@ -29,6 +30,10 @@
         <item name="android:textColor">@color/darkGrey</item>
         <item name="android:textSize">@dimen/textsize_description</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Widget.TextView.Error" parent="AppTheme.Widget.TextView.Label">
+        <item name="android:textColor">@android:color/holo_red_light</item>
     </style>
 
     <!--
