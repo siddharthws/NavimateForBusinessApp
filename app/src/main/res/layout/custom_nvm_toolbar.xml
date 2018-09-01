@@ -4,8 +4,8 @@
     <!-- Back Icon -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_tb_back"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_back_white"
         android:visibility="gone"
         android:layout_gravity="center_vertical"/>
@@ -16,16 +16,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginLeft="@dimen/m_small"
-        android:layout_gravity="center_vertical"
         android:textSize="@dimen/textsize_primary"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:layout_gravity="center_vertical"/>
 
     <!-- Edit Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_tb_edit"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_edit_white"
         android:visibility="gone"
         android:layout_gravity="center_vertical"/>
@@ -33,8 +32,8 @@
     <!-- Save Button -->
     <com.biz.navimate.views.custom.NvmImageButton
         android:id="@+id/ib_tb_save"
-        android:layout_width="@dimen/m_large"
-        android:layout_height="@dimen/m_large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_check_white"
         android:visibility="gone"
         android:layout_gravity="center_vertical"/>
