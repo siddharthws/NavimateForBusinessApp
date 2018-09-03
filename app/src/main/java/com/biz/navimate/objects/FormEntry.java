@@ -20,10 +20,6 @@ public class FormEntry {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "FORM_ENTRY";
 
-    // JSON Fields
-    public static final String JSON_KEY_OPTIONS             = "options";
-    public static final String JSON_KEY_SELECTION           = "selection";
-
     // ----------------------- Classes ----------------------- //
     // Base Class for all field types
     public static abstract class Base
@@ -150,8 +146,8 @@ public class FormEntry {
             // Create JSON Object for Radio List Data
             JSONObject radioJson = new JSONObject();
             try {
-                radioJson.put(JSON_KEY_OPTIONS, radioOptions);
-                radioJson.put(JSON_KEY_SELECTION, selection);
+                radioJson.put(Constants.Server.KEY_OPTIONS, radioOptions);
+                radioJson.put(Constants.Server.KEY_SELECTION, selection);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -185,7 +181,7 @@ public class FormEntry {
                 for (int i = 0; i < options.size(); i++) {
                     JSONObject optionJson = new JSONObject();
                     optionJson.put(Constants.Server.KEY_NAME, options.get(i));
-                    optionJson.put("selection", selection.get(i));
+                    optionJson.put(Constants.Server.KEY_SELECTION, selection.get(i));
 
                     optionsJson.put(optionJson);
                 }
@@ -330,12 +326,12 @@ public class FormEntry {
                 // Parse value in options and selection
                 try {
                     JSONObject radioJson = new JSONObject(value);
-                    JSONArray optionsJson = radioJson.getJSONArray(JSON_KEY_OPTIONS);
+                    JSONArray optionsJson = radioJson.getJSONArray(Constants.Server.KEY_OPTIONS);
                     ArrayList<String> options = new ArrayList<>();
                     for (int i = 0; i < optionsJson.length(); i++) {
                         options.add(optionsJson.getString(i));
                     }
-                    int selection = radioJson.getInt(JSON_KEY_SELECTION);
+                    int selection = radioJson.getInt(Constants.Server.KEY_SELECTION);
                     return new RadioList(field, options, selection);
                 } catch (JSONException e) {
                     Dbg.error(TAG, "Error while converting radio list data");
@@ -351,7 +347,7 @@ public class FormEntry {
                     for (int i = 0; i < optionsJson.length(); i++) {
                         JSONObject optionJson = optionsJson.getJSONObject(i);
                         String name = optionJson.getString(Constants.Server.KEY_NAME);
-                        Boolean bChecked = optionJson.getBoolean("selection");
+                        Boolean bChecked = optionJson.getBoolean(Constants.Server.KEY_SELECTION);
                         options.add(name);
                         selection.add(bChecked);
                     }
