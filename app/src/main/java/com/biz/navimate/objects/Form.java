@@ -5,9 +5,9 @@ import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.database.FieldTable;
 import com.biz.navimate.database.FormTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.core.ObjDb;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -36,23 +36,23 @@ public class Form extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public Form() {
-        super(DbObject.TYPE_FORM, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FORM, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
     }
 
     public Form(Task task) {
-        super(DbObject.TYPE_FORM, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FORM, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         this.task = task;
         this.template = task.formTemplate;
         this.bCloseTask = task.status == Task.TaskStatus.OPEN ? false : true;
     }
 
     public Form (JSONObject json) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public Form (Cursor cursor) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 

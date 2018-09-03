@@ -3,7 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.LocationReportObject;
 
 import java.util.ArrayList;
@@ -72,7 +72,7 @@ public class LocationReportTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor)
+    protected ObjDb ParseToObject(Cursor cursor)
     {
         long   dbId                    = cursor.getLong   (cursor.getColumnIndex(COLUMN_ID));
         double latitude                = cursor.getDouble (cursor.getColumnIndex(COLUMN_LATITUDE));
@@ -86,7 +86,7 @@ public class LocationReportTable extends BaseTable {
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem)
+    protected ContentValues ParseToContent(ObjDb dbItem)
     {
         LocationReportObject locationReportObject = (LocationReportObject) dbItem;
         ContentValues dbEntry = new ContentValues();

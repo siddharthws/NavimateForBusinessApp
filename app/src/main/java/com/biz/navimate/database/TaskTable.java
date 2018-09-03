@@ -3,7 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
@@ -87,7 +87,7 @@ public class TaskTable extends BaseTable {
 
     // API to get object by serverId
     public Task GetByServerId(String textServerId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Task task = (Task) dbItem;
             if (task.textServerId.equals(textServerId)) {
                 return task;
@@ -100,7 +100,7 @@ public class TaskTable extends BaseTable {
     // API to get object by lead
     public ArrayList<Task> GetByLead(Lead lead) {
         ArrayList<Task> tasks = new ArrayList<>();
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Task task = (Task) dbItem;
             if (task.lead.equals(lead)) {
                 tasks.add(task);
@@ -113,7 +113,7 @@ public class TaskTable extends BaseTable {
     // API to get object by template
     public ArrayList<Task> GetByTemplate(Template template) {
         ArrayList<Task> tasks = new ArrayList<>();
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Task task = (Task) dbItem;
             if (task.template.equals(template)) {
                 tasks.add(task);
@@ -126,7 +126,7 @@ public class TaskTable extends BaseTable {
     // API to get object by form template
     public ArrayList<Task> GetByFormTemplate(Template template) {
         ArrayList<Task> tasks = new ArrayList<>();
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Task task = (Task) dbItem;
             if (task.formTemplate.equals(template)) {
                 tasks.add(task);
@@ -150,12 +150,12 @@ public class TaskTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new Task(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((Task) dbItem).toContentValues();
     }
 }

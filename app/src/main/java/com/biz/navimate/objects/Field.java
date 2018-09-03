@@ -4,11 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.database.FieldTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.core.ObjDb;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -27,12 +26,12 @@ public class Field extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public Field (JSONObject json) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public Field (Cursor cursor) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 

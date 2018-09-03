@@ -3,17 +3,13 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -70,7 +66,7 @@ public class TemplateTable extends BaseTable {
     public ArrayList<Template> GetByType(int type) {
         ArrayList<Template> templates = new ArrayList<>();
 
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Template template = (Template) dbItem;
             if (template.type == type) {
                 templates.add(template);
@@ -82,7 +78,7 @@ public class TemplateTable extends BaseTable {
 
     // API to get object by serverId
     public Template GetByServerId(long serverId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Template template = (Template) dbItem;
             if (template.serverId == serverId) {
                 return template;
@@ -139,12 +135,12 @@ public class TemplateTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new Template(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((Template) dbItem).toContentValues();
     }
 }

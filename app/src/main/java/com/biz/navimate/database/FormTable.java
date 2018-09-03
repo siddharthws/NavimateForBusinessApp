@@ -3,8 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.constants.Constants;
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -78,7 +77,7 @@ public class FormTable extends BaseTable {
 
     // API to get object by serverId
     public Form GetByServerId(String textServerId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Form form = (Form) dbItem;
             if (form.textServerId.equals(textServerId)) {
                 return form;
@@ -122,12 +121,12 @@ public class FormTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new Form(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((Form) dbItem).toContentValues();
     }
 }

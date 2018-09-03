@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -28,7 +28,7 @@ public abstract class BaseTable {
     protected String[] columns = null;
 
     // Dynamic cache
-    protected CopyOnWriteArrayList<DbObject> cache = null;
+    protected CopyOnWriteArrayList<ObjDb> cache = null;
 
     // ----------------------- Constructor ----------------------- //
     public BaseTable(DbHelper dbHelper, String tableName, String[] columns) {
@@ -43,16 +43,16 @@ public abstract class BaseTable {
     }
 
     // ----------------------- Abstracts ----------------------- //
-    protected abstract ContentValues ParseToContent(DbObject dbItem);
+    protected abstract ContentValues ParseToContent(ObjDb dbItem);
 
-    protected abstract DbObject ParseToObject(Cursor cursor);
+    protected abstract ObjDb ParseToObject(Cursor cursor);
 
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
     // API to add / update data
-    public boolean Save(DbObject item) {
+    public boolean Save(ObjDb item) {
         // Update / Add item as per the id
-        DbObject existingItem = GetById(item.dbId);
+        ObjDb existingItem = GetById(item.dbId);
         if (existingItem != null) {
             return Update(item);
         } else {
@@ -63,7 +63,7 @@ public abstract class BaseTable {
     protected boolean RemoveById(long dbId) {
         Boolean bRemoved = false;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        DbObject itemToBeRemoved = null;
+        ObjDb itemToBeRemoved = null;
 
         // Remove this db id from table
         int affectedRows = db.delete(tableName,
@@ -74,7 +74,7 @@ public abstract class BaseTable {
             Dbg.error(TAG, "Item removal failed. Affected rows = " + affectedRows);
         } else {
             // Delete dynamic initData
-            for (DbObject dbItem : cache) {
+            for (ObjDb dbItem : cache) {
                 if (dbItem.dbId == dbId) {
                     itemToBeRemoved = dbItem;
                     break;
@@ -95,7 +95,7 @@ public abstract class BaseTable {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Delete from database
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             // Delete using ID
             int affectedRows = db.delete(tableName,
                     COLUMN_ID + "=?",
@@ -116,12 +116,12 @@ public abstract class BaseTable {
         return bCleared;
     }
 
-    public CopyOnWriteArrayList<? extends DbObject> GetAll() {
+    public CopyOnWriteArrayList<? extends ObjDb> GetAll() {
         return cache;
     }
 
-    public DbObject GetById(long id) {
-        for (DbObject dbItem : cache) {
+    public ObjDb GetById(long id) {
+        for (ObjDb dbItem : cache) {
             if (dbItem.dbId == id) {
                 return dbItem;
             }
@@ -146,7 +146,7 @@ public abstract class BaseTable {
 
         while (dbRows.moveToNext()) {
             // ParseToObject from cursor
-            DbObject dbItem = ParseToObject(dbRows);
+            ObjDb dbItem = ParseToObject(dbRows);
 
             // Add to cache
             cache.add(dbItem);
@@ -154,7 +154,7 @@ public abstract class BaseTable {
     }
 
     // API to add data to table
-    private boolean Add(DbObject dbItem) {
+    private boolean Add(ObjDb dbItem) {
         boolean bAdded = false;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -182,7 +182,7 @@ public abstract class BaseTable {
     }
 
     // API to update existing item
-    private boolean Update(DbObject dbItem) {
+    private boolean Update(ObjDb dbItem) {
         boolean bUpdated = false;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

@@ -3,7 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -75,7 +75,7 @@ public class LeadTable extends BaseTable {
 
     // API to get object by serverId
     public Lead GetByServerId(String textServerId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Lead lead = (Lead) dbItem;
             if (lead.textServerId.equals(textServerId)) {
                 return lead;
@@ -88,7 +88,7 @@ public class LeadTable extends BaseTable {
     // API to get object by template
     public ArrayList<Lead> GetByTemplate(Template template) {
         ArrayList<Lead> leads = new ArrayList<>();
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Lead lead = (Lead) dbItem;
             if (lead.template.equals(template)) {
                 leads.add(lead);
@@ -112,12 +112,12 @@ public class LeadTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new Lead(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((Lead) dbItem).toContentValues();
     }
 }

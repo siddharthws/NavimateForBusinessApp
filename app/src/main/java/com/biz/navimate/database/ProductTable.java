@@ -3,7 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.ObjProduct;
 
 public class ProductTable extends BaseTable {
@@ -44,7 +44,7 @@ public class ProductTable extends BaseTable {
     // ----------------------- Public APIs ----------------------- //
     // API to get object by serverId
     public ObjProduct GetByServerId(String textServerId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             ObjProduct product = (ObjProduct) dbItem;
             if (product.textServerId.equals(textServerId)) {
                 return product;
@@ -56,12 +56,12 @@ public class ProductTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new ObjProduct(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((ObjProduct) dbItem).toContentValues();
     }
 }
