@@ -79,9 +79,9 @@ public class Template extends ServerObject {
     //
     // Converter methods for database
     //
-    public void fromCursor(Cursor cursor)
-    {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+    public void fromCursor(Cursor cursor) {
+        super.fromDb(cursor);
+
         serverId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         name                    = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_NAME));
         type                    = cursor.getInt     (cursor.getColumnIndex(Constants.DB.COLUMN_TYPE));
@@ -104,7 +104,8 @@ public class Template extends ServerObject {
     }
 
     public ContentValues toContentValues () {
-        ContentValues cv = new ContentValues();
+        ContentValues cv = super.toDb();
+
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,         serverId);
         cv.put(Constants.DB.COLUMN_NAME,           name);

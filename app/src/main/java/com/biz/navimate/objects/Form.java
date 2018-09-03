@@ -140,9 +140,9 @@ public class Form extends ServerObject {
     //
     // Converter methods for database
     //
-    public void fromCursor(Cursor cursor)
-    {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+    public void fromCursor(Cursor cursor) {
+        super.fromDb(cursor);
+
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         bCloseTask              = Boolean.valueOf   (cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_CLOSE_TASK)));
         timestamp               = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TIMESTAMP));
@@ -179,7 +179,7 @@ public class Form extends ServerObject {
     }
 
     public ContentValues toContentValues () {
-        ContentValues cv = new ContentValues();
+        ContentValues cv = super.toDb();
 
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,         textServerId);
