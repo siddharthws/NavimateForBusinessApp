@@ -6,8 +6,7 @@ import com.biz.navimate.constants.Constants;
  * Created by Jagannath on 08-11-2017.
  */
 
-public class ObjDb
-{
+public class ObjDb {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "DB_OBJECT";
 
@@ -15,9 +14,7 @@ public class ObjDb
     public long     dbId        = Constants.Misc.ID_INVALID;
 
     // ----------------------- Constructor ----------------------- //
-    public ObjDb(long dbId) {
-        this.dbId       = dbId;
-    }
+    public ObjDb() {}
 
     @Override
     public boolean equals(Object object)

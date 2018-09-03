@@ -19,7 +19,8 @@ public class LocationReportObject extends ObjDb {
 
     // ----------------------- Constructor ----------------------- //
     public LocationReportObject (long dbId, double latitude, double longitude, long timestamp, int status, int battery, float speed) {
-        super(dbId);
+        super();
+        this.dbId = dbId;
         this.latitude = latitude;
         this.longitude = longitude;
         this.timestamp = timestamp;

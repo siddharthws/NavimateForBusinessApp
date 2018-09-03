@@ -36,23 +36,23 @@ public class Form extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public Form() {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
     }
 
     public Form(Task task) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         this.task = task;
         this.template = task.formTemplate;
         this.bCloseTask = task.status == Task.TaskStatus.OPEN ? false : true;
     }
 
     public Form (JSONObject json) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public Form (Cursor cursor) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 
