@@ -16,12 +16,11 @@ public class ServerObject extends ObjDb {
     public long     version     = Constants.Misc.ID_INVALID;
 
     // ----------------------- Constructor ----------------------- //
-    public ServerObject(int type,
-                        long dbId,
+    public ServerObject(long dbId,
                         long serverId,
                         long version)
     {
-        super(type, dbId);
+        super(dbId);
         this.serverId   = serverId;
         this.version    = version;
     }
