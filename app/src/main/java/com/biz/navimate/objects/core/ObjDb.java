@@ -1,5 +1,8 @@
 package com.biz.navimate.objects.core;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+
 import com.biz.navimate.constants.Constants;
 
 /**
@@ -33,5 +36,15 @@ public class ObjDb {
         }
 
         return bEqual;
+    }
+
+    // ----------------------- Public APIs ----------------------- //
+    // Database converter methods
+    public void fromDb(Cursor cursor) {
+        dbId    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+    }
+
+    public ContentValues toDb () {
+        return new ContentValues();
     }
 }

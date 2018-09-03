@@ -54,8 +54,9 @@ public class Field extends ServerObject {
     //
     // Converter methods for database
     //
-    public void fromCursor(Cursor cursor)
-    {
+    public void fromCursor(Cursor cursor) {
+        super.fromDb(cursor);
+
         dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
         serverId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         title                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
@@ -64,7 +65,7 @@ public class Field extends ServerObject {
     }
 
     public ContentValues toContentValues () {
-        ContentValues cv = new ContentValues();
+        ContentValues cv = super.toDb();
 
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,         serverId);

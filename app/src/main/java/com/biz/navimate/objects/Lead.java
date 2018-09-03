@@ -83,9 +83,9 @@ public class Lead extends ServerObject {
     //
     // Converter methods for database
     //
-    public void fromCursor(Cursor cursor)
-    {
-        dbId                    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+    public void fromCursor(Cursor cursor) {
+        super.fromDb(cursor);
+
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         title                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
         address                 = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
@@ -118,7 +118,7 @@ public class Lead extends ServerObject {
     }
 
     public ContentValues toContentValues () {
-        ContentValues cv = new ContentValues();
+        ContentValues cv = super.toDb();
 
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,          textServerId);

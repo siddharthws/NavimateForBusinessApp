@@ -109,9 +109,9 @@ public class Task extends ServerObject {
     //
     // Converter methods for database
     //
-    public void fromCursor(Cursor cursor)
-    {
-        dbId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+    public void fromCursor(Cursor cursor) {
+        super.fromDb(cursor);
+
         publicId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_PUBLIC_ID));
         textServerId        = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         status              = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_STATUS)));
@@ -147,7 +147,7 @@ public class Task extends ServerObject {
     }
 
     public ContentValues toContentValues () {
-        ContentValues cv = new ContentValues();
+        ContentValues cv = super.toDb();
 
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,            textServerId);
