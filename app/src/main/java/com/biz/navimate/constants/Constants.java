@@ -228,6 +228,8 @@ public class Constants {
         public static final String KEY_LAST_SYNC_TIME   = "lastSyncTime";
         public static final String KEY_PUBLIC_ID        = "publicId";
         public static final String KEY_SUBMIT_TIME      = "submitTime";
+        public static final String KEY_OPTIONS          = "options";
+        public static final String KEY_SELECTION        = "selection";
     }
 
     // Location related constants
