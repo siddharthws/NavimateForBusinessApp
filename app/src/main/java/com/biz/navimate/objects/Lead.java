@@ -33,12 +33,12 @@ public class Lead extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public Lead (JSONObject json) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public Lead (Cursor cursor) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 

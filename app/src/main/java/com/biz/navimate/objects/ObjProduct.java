@@ -27,12 +27,12 @@ public class ObjProduct extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public ObjProduct (JSONObject json) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public ObjProduct (Cursor cursor) {
-        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 
