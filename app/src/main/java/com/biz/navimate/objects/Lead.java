@@ -7,6 +7,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.database.LeadTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.core.ObjDb;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -32,12 +33,12 @@ public class Lead extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public Lead (JSONObject json) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public Lead (Cursor cursor) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 

@@ -3,7 +3,7 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.biz.navimate.objects.DbObject;
+import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Template;
 
@@ -67,7 +67,7 @@ public class FieldTable extends BaseTable {
 
     // API to get object by serverId
     public Field GetByServerId(long serverId) {
-        for (DbObject dbItem : cache) {
+        for (ObjDb dbItem : cache) {
             Field field = (Field) dbItem;
             if (field.serverId == serverId) {
                 return field;
@@ -85,12 +85,12 @@ public class FieldTable extends BaseTable {
 
     // ----------------------- Private APIs ----------------------- //
     @Override
-    protected DbObject ParseToObject(Cursor cursor) {
+    protected ObjDb ParseToObject(Cursor cursor) {
         return new Field(cursor);
     }
 
     @Override
-    protected ContentValues ParseToContent(DbObject dbItem) {
+    protected ContentValues ParseToContent(ObjDb dbItem) {
         return  ((Field) dbItem).toContentValues();
     }
 }

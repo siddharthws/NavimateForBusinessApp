@@ -7,6 +7,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.database.ProductTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.core.ObjDb;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,12 +27,12 @@ public class ObjProduct extends ServerObject {
 
     // ----------------------- Constructor ----------------------- //
     public ObjProduct (JSONObject json) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
     public ObjProduct (Cursor cursor) {
-        super(DbObject.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        super(ObjDb.TYPE_FIELD, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
 
