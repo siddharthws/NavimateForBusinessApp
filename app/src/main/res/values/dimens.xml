@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Border radius for cards -->
+    <dimen name="radius_xs">2dp</dimen>
+
     <!-- Margins -->
     <dimen name="margin_s">8dp</dimen>
 

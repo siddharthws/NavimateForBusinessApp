@@ -6,17 +6,23 @@
         android:id="@+id/tv_lbl_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/m_xs"
         style="@style/AppTheme.Widget.TextView.Label"/>
 
     <!-- Child View Container -->
-    <RelativeLayout
-        android:id="@+id/rl_lbl_child_root"
-        android:layout_width="wrap_content"
+    <com.biz.navimate.views.custom.NvmCardView
+        android:id="@+id/cv_lbl_child_root"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/m_small"
-        android:padding="@dimen/m_large"
-        android:background="@drawable/bg_white_shadow_slant">
-    </RelativeLayout>
+        android:layout_marginLeft="@dimen/m_small">
+
+        <RelativeLayout
+            android:id="@+id/rl_lbl_child_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
+
+    </com.biz.navimate.views.custom.NvmCardView>
 
     <!-- Error label -->
     <TextView
