@@ -145,6 +145,8 @@ public abstract class FieldView extends LabelBox {
                 return new NumberFieldView(ctx, root, value);
             case Constants.Template.FIELD_TYPE_RADIOLIST:
                 return new RadiolistFieldView(ctx, root, value);
+            case Constants.Template.FIELD_TYPE_CHECKLIST:
+                return new ChecklistFieldView(ctx, root, value);
         }
 
         return null;
