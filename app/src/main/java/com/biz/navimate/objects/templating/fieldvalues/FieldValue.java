@@ -31,6 +31,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_TEXT: {
                 return new TextFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_NUMBER: {
+                return new NumberFieldValue(field, value);
+            }
         }
 
         return null;

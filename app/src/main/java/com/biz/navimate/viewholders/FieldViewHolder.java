@@ -14,4 +14,10 @@ public class FieldViewHolder {
         public EtClearable etcText = null;
         public TextView tvText = null;
     }
+
+    // Number Field View holder
+    public static class Number extends Base {
+        public EtClearable etcNumber = null;
+        public TextView tvNumber = null;
+    }
 }

@@ -141,6 +141,8 @@ public abstract class FieldView extends LabelBox {
         switch (value.field.type) {
             case Constants.Template.FIELD_TYPE_TEXT:
                 return new TextFieldView(ctx, root, value);
+            case Constants.Template.FIELD_TYPE_NUMBER:
+                return new NumberFieldView(ctx, root, value);
         }
 
         return null;
