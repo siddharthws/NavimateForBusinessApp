@@ -331,6 +331,7 @@ public class Constants {
     }
 
     public static class Formatters {
-        public static SimpleDateFormat DATE_LONG = new SimpleDateFormat(Date.FORMAT_LONG);
+        public static SimpleDateFormat DATE_BACKEND = new SimpleDateFormat(Date.FORMAT_BACKEND);
+        public static SimpleDateFormat DATE_LONG    = new SimpleDateFormat(Date.FORMAT_LONG);
     }
 }

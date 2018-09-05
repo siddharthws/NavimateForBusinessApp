@@ -43,6 +43,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_CHECKBOX: {
                 return new CheckboxFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_DATE: {
+                return new DateFieldValue(field, value);
+            }
         }
 
         return null;
