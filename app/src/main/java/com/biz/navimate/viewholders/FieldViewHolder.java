@@ -4,6 +4,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biz.navimate.views.CbCustom;
+import com.biz.navimate.views.compound.DateEditorView;
 import com.biz.navimate.views.compound.EtClearable;
 import com.biz.navimate.views.custom.Dropdown;
 
@@ -40,5 +41,10 @@ public class FieldViewHolder {
     // Checkbox Field View holder
     public static class Checkbox extends Base {
         public CbCustom   cbCheckbox    = null;
+    }
+
+    // Date Field View holder
+    public static class Date extends Base {
+        public DateEditorView   dtEditor = null;
     }
 }
