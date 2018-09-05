@@ -109,7 +109,10 @@ public class ProductPickerActivity   extends     BaseActivity
     }
 
     @Override
-    public void onTextChanged(String text) {
+    public void onTextChanged(String text) { }
+
+    @Override
+    public void onTextChangedDebounced(String text) {
         // Clear list and Get Searched products
         listAdpater.Clear();
         GetProducts(0);

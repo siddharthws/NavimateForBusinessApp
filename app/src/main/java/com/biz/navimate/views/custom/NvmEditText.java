@@ -17,13 +17,12 @@ public class NvmEditText    extends     AppCompatEditText
     private static final int DEBOUNCE_INTERVAL_MS = 500;
 
     // ----------------------- Interfaces ----------------------- //
-    public interface IfaceEditText { void onTextChanged(String text);}
+    public interface IfaceEditText {
+        void onTextChanged(String text);
+        void onTextChangedDebounced(String text);
+    }
     private IfaceEditText listener = null;
     public void SetListener(IfaceEditText listener) { this.listener = listener; }
-
-    public interface IfaceEditTextImmediate { void onTextChangedImmediate(String text);}
-    private IfaceEditTextImmediate immListener = null;
-    public void SetImmediateListener(IfaceEditTextImmediate listener) { this.immListener = listener; }
 
     // ----------------------- Globals ----------------------- //
     private Handler handler = new Handler();
@@ -61,8 +60,8 @@ public class NvmEditText    extends     AppCompatEditText
         handler.postDelayed(this, debounceMs);
 
         // Trigger immediate listener if any
-        if (immListener != null) {
-            immListener.onTextChangedImmediate(getText().toString());
+        if (listener != null) {
+            listener.onTextChanged(getText().toString());
         }
     }
 
@@ -70,7 +69,7 @@ public class NvmEditText    extends     AppCompatEditText
     public void run() {
         // Trigger listener
         if (listener != null) {
-            listener.onTextChanged(getText().toString());
+            listener.onTextChangedDebounced(getText().toString());
         }
     }
 
