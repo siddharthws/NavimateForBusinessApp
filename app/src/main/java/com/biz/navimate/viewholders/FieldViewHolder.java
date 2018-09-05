@@ -36,4 +36,9 @@ public class FieldViewHolder {
         public LinearLayout llChecklist = null;
         public ArrayList<CbCustom> cbList = null;
     }
+
+    // Checkbox Field View holder
+    public static class Checkbox extends Base {
+        public CbCustom   cbCheckbox    = null;
+    }
 }
