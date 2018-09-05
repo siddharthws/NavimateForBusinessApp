@@ -1,9 +1,13 @@
 package com.biz.navimate.viewholders;
 
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.biz.navimate.views.CbCustom;
 import com.biz.navimate.views.compound.EtClearable;
 import com.biz.navimate.views.custom.Dropdown;
+
+import java.util.ArrayList;
 
 public class FieldViewHolder {
     // Base (Common) field views holder
@@ -25,5 +29,11 @@ public class FieldViewHolder {
     // Radiolist Field View holder
     public static class Radiolist extends Base {
         public Dropdown ddRadiolist    = null;
+    }
+
+    // Checklist Field View holder
+    public static class Checklist extends Base {
+        public LinearLayout llChecklist = null;
+        public ArrayList<CbCustom> cbList = null;
     }
 }

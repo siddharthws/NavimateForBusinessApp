@@ -37,6 +37,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_RADIOLIST: {
                 return new RadiolistFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_CHECKLIST: {
+                return new ChecklistFieldValue(field, value);
+            }
         }
 
         return null;
