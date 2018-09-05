@@ -40,6 +40,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_CHECKLIST: {
                 return new ChecklistFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_CHECKBOX: {
+                return new CheckboxFieldValue(field, value);
+            }
         }
 
         return null;
