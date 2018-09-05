@@ -1,5 +1,6 @@
 package com.biz.navimate.objects.templating.fieldvalues;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.Field;
 
 public abstract class FieldValue {
@@ -27,7 +28,9 @@ public abstract class FieldValue {
     // Method to parse field and value into FieldValue
     public static FieldValue newInstance(Field field, String value) {
         switch (field.type) {
-            // Placeholder
+            case Constants.Template.FIELD_TYPE_TEXT: {
+                return new TextFieldValue(field, value);
+            }
         }
 
         return null;

@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
 import com.biz.navimate.viewholders.FieldViewHolder;
 import com.biz.navimate.views.compound.LabelBox;
@@ -138,7 +139,8 @@ public abstract class FieldView extends LabelBox {
                                         ViewGroup root,
                                         FieldValue value) {
         switch (value.field.type) {
-            // Placeholder
+            case Constants.Template.FIELD_TYPE_TEXT:
+                return new TextFieldView(ctx, root, value);
         }
 
         return null;
