@@ -29,6 +29,7 @@ public class GetObjectListTask extends BaseServerTask {
     }
 
     // ----------------------- Globals ----------------------- //
+    private int type = Constants.Template.TYPE_INVALID;
     private  String text   = "";
 
     private int startIndex = 0;
@@ -37,8 +38,9 @@ public class GetObjectListTask extends BaseServerTask {
     ArrayList<ObjNvmCompact> objects = null;
 
     // ----------------------- Constructor ----------------------- //
-    public GetObjectListTask(Context parentContext, int startIndex, String text) {
+    public GetObjectListTask(Context parentContext, int type, int startIndex, String text) {
         super(parentContext, Constants.Server.URL_GET_OBJECT_LIST);
+        this.type       = type;
         this.startIndex = startIndex;
         this.text       = text;
     }
@@ -51,9 +53,11 @@ public class GetObjectListTask extends BaseServerTask {
     public Void doInBackground (Void... params) {
         // Init Request JSON
         JSONObject requestJson = new JSONObject();
-        JSONObject pager = new JSONObject();
         try {
-            requestJson.put(Constants.Server.KEY_TEXT,text);
+            requestJson.put(Constants.Server.KEY_TYPE, type);
+            requestJson.put(Constants.Server.KEY_TEXT, text);
+
+            JSONObject pager = new JSONObject();
             pager.put(Constants.Server.KEY_START, startIndex);
             pager.put(Constants.Server.KEY_COUNT, 10);
             requestJson.put(Constants.Server.KEY_PAGER, pager);

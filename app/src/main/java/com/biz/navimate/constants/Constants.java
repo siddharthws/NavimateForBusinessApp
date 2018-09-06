@@ -38,6 +38,7 @@ public class Constants {
         public static final String IMAGE_NAME           = "imageName";
         public static final String IMAGE_PATH           = "imagepath";
         public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
+        public static final String TYPE                 = "extra_type";
     }
 
     // User Preferences related constants
@@ -96,9 +97,10 @@ public class Constants {
     // Template related constants
     public static class Template {
         // Template Types
-        public static final int TYPE_FORM = 1;
-        public static final int TYPE_LEAD = 2;
-        public static final int TYPE_TASK = 3;
+        public static final int TYPE_INVALID    = 0;
+        public static final int TYPE_FORM       = 1;
+        public static final int TYPE_LEAD       = 2;
+        public static final int TYPE_TASK       = 3;
 
         // Field Types in templates
         public static final int FIELD_TYPE_NONE           = 0;
