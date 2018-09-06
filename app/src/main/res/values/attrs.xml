@@ -26,6 +26,7 @@
     <!-- Clearable Edit Text related attributes -->
     <declare-styleable name="EtClearable">
         <attr name="android:inputType" />
+        <attr name="android:hint" />
     </declare-styleable>
 
     <!-- Dropdown related attributes -->
