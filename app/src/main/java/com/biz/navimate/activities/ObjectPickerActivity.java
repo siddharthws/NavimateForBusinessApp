@@ -10,7 +10,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.lists.GenericListAdapter;
 import com.biz.navimate.objects.ListItem;
-import com.biz.navimate.server.GetProductListTask;
+import com.biz.navimate.server.GetObjectListTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.compound.EtClearable;
@@ -20,20 +20,20 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class ProductPickerActivity   extends     BaseActivity
+public class ObjectPickerActivity    extends     BaseActivity
                                      implements  AdapterView.OnItemClickListener,
                                                  RlListView.LoadMoreListener,
-                                                 IfaceServer.GetProductList,
+                                                 IfaceServer.GetObjectList,
                                                  NvmEditText.IfaceEditText {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "PRODUCT_PICKER_ACTIVITY";
+    private static final String TAG = "OBJECT_PICKER_ACTIVITY";
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
-    private ActivityHolder.ProductPicker  ui             = null;
-    private GenericListAdapter listAdpater               = null;
-    private GetProductListTask productListTask           = null;
-    private boolean bGettingProduct                      = false;
+    private ActivityHolder.ObjectPicker ui = null;
+    private GenericListAdapter listAdpater = null;
+    private GetObjectListTask objListTask = null;
+    private boolean bTaskRunning = false;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -41,31 +41,31 @@ public class ProductPickerActivity   extends     BaseActivity
     @Override
     protected void InflateLayout() {
         // Set content view
-        setContentView(R.layout.activity_product_picker);
+        setContentView(R.layout.activity_object_picker);
     }
 
     @Override
     protected void FindViews() {
         // Init view holder
-        ui = new ActivityHolder.ProductPicker();
+        ui = new ActivityHolder.ObjectPicker();
         holder = ui;
 
         // Activity View
         ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
         ui.rlvList              = (RlListView)      findViewById(R.id.rlv_products);
-        ui.etSearch             = (EtClearable)        findViewById(R.id.et_search);
+        ui.etcSearch            = (EtClearable)     findViewById(R.id.etc_search);
     }
 
     @Override
     protected void SetViews() {
         // Initialize List
         listAdpater = new GenericListAdapter(this, ui.rlvList.GetListView(), true);
-        GetProducts(0);
+        GetObjects(0);
 
         // Set Listeners
         ui.rlvList.GetListView().setOnItemClickListener(this);
         ui.rlvList.SetLoadMoreListener(this);
-        ui.etSearch.SetListener(this);
+        ui.etcSearch.SetListener(this);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ProductPickerActivity   extends     BaseActivity
 
         // Send activity result
         Intent resultData = new Intent();
-        resultData.putExtra(Constants.Extras.PICKED_PRODUCT, pickedProduct);
+        resultData.putExtra(Constants.Extras.PICKED_OBJECT, pickedProduct);
         setResult(RESULT_OK, resultData);
 
         // Finish this activity
@@ -91,21 +91,21 @@ public class ProductPickerActivity   extends     BaseActivity
     @Override
     public void onLoadMore() {
         //Get more products
-        GetProducts(listAdpater.getCount());
+        GetObjects(listAdpater.getCount());
     }
 
     @Override
-    public void onProductReceived(HashMap<String,String> products, int totalCount) {
+    public void onObjectListSuccess(HashMap<String,String> objects, int totalCount) {
         //Add products to list
-        AddToList(products, totalCount);
-        bGettingProduct = false;
+        AddToList(objects, totalCount);
+        bTaskRunning = false;
     }
 
     @Override
-    public void onProductListFailed() {
+    public void onObjectListFailed() {
         // Show error UI
         ui.rlvList.ShowError();
-        bGettingProduct = false;
+        bTaskRunning = false;
     }
 
     @Override
@@ -115,11 +115,11 @@ public class ProductPickerActivity   extends     BaseActivity
     public void onTextChangedDebounced(String text) {
         // Clear list and Get Searched products
         listAdpater.Clear();
-        GetProducts(0);
+        GetObjects(0);
     }
     // ----------------------- Public APIs ----------------------- //
     public static void Start(BaseActivity parentActivity) {
-        BaseActivity.Start(parentActivity, ProductPickerActivity.class, -1, null, Constants.RequestCodes.PRODUCT_PICKER, null);
+        BaseActivity.Start(parentActivity, ObjectPickerActivity.class, -1, null, Constants.RequestCodes.OBJECT_PICKER, null);
     }
 
     // Button Click APIs
@@ -128,9 +128,9 @@ public class ProductPickerActivity   extends     BaseActivity
     }
 
     // ----------------------- Private APIs ----------------------- //
-    private void AddToList(HashMap<String,String> products, int totalCount){
+    private void AddToList(HashMap<String,String> objects, int totalCount){
         // Put Hashmap contents into listAdapter
-        Iterator it = products.entrySet().iterator();
+        Iterator it = objects.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             String id = (String) pair.getKey();
@@ -151,17 +151,17 @@ public class ProductPickerActivity   extends     BaseActivity
         }
     }
 
-    private void GetProducts(int startIndex){
+    private void GetObjects(int startIndex){
         // Check if productList task is still running
-        if(productListTask!=null && bGettingProduct){
-            productListTask.cancel(true);
+        if(objListTask !=null && bTaskRunning){
+            objListTask.cancel(true);
         }
 
         //Start Task to get Products
-        productListTask = new GetProductListTask(getApplicationContext(),startIndex,ui.etSearch.GetText());
-        productListTask.SetListener(this);
-        productListTask.execute();
-        bGettingProduct = true;
+        objListTask = new GetObjectListTask(getApplicationContext(),startIndex,ui.etcSearch.GetText());
+        objListTask.SetListener(this);
+        objListTask.execute();
+        bTaskRunning = true;
         ui.rlvList.ShowWaiting();
     }
 }

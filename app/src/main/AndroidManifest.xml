@@ -73,7 +73,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ProductPickerActivity"
+            android:name=".activities.ObjectPickerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
