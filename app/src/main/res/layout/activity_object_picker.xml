@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:padding="@dimen/m_small"
+            android:hint="Search..."
             android:textCursorDrawable="@null"/>
 
     </LinearLayout>
