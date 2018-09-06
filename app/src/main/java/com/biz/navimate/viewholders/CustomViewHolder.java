@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.NvmEditText;
+import com.biz.navimate.views.custom.NvmImageView;
 
 public class CustomViewHolder {
     /*
@@ -45,5 +46,11 @@ public class CustomViewHolder {
     public static class EtClearable {
         public NvmEditText etText = null;
         public NvmImageButton ibClear = null;
+    }
+
+    public static class ObjectPicker {
+        public ImageButton ibEdit, ibClear = null;
+        public TextView tvText = null;
+        public NvmImageView ivIcon = null;
     }
 }
