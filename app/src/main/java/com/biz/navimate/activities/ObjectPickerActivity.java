@@ -1,6 +1,7 @@
 package com.biz.navimate.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ public class ObjectPickerActivity    extends     BaseActivity
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.ObjectPicker ui = null;
+    private int type = Constants.Template.TYPE_INVALID;
     private GenericListAdapter listAdpater = null;
     private GetObjectListTask objListTask = null;
     private boolean bTaskRunning = false;
@@ -57,6 +59,9 @@ public class ObjectPickerActivity    extends     BaseActivity
 
     @Override
     protected void SetViews() {
+        // Get type from extras
+        this.type = getIntent().getExtras().getInt(Constants.Extras.TYPE);
+
         // Initialize List
         listAdpater = new GenericListAdapter(this, ui.rlvList.GetListView(), true);
         GetObjects(0);
@@ -113,8 +118,10 @@ public class ObjectPickerActivity    extends     BaseActivity
         GetObjects(0);
     }
     // ----------------------- Public APIs ----------------------- //
-    public static void Start(BaseActivity parentActivity) {
-        BaseActivity.Start(parentActivity, ObjectPickerActivity.class, -1, null, Constants.RequestCodes.OBJECT_PICKER, null);
+    public static void Start(BaseActivity parentActivity, int type) {
+        Bundle extras = new Bundle();
+        extras.putInt(Constants.Extras.TYPE, type);
+        BaseActivity.Start(parentActivity, ObjectPickerActivity.class, -1, extras, Constants.RequestCodes.OBJECT_PICKER, null);
     }
 
     // Button Click APIs
@@ -143,16 +150,18 @@ public class ObjectPickerActivity    extends     BaseActivity
     }
 
     private void GetObjects(int startIndex){
-        // Check if productList task is still running
-        if(objListTask !=null && bTaskRunning){
+        // Check if objectList task is still running
+        if(objListTask != null && bTaskRunning){
             objListTask.cancel(true);
         }
 
-        //Start Task to get Products
-        objListTask = new GetObjectListTask(getApplicationContext(),startIndex,ui.etcSearch.GetText());
+        //Start Task to get objects
+        objListTask = new GetObjectListTask(this, type, startIndex, ui.etcSearch.GetText());
         objListTask.SetListener(this);
         objListTask.execute();
         bTaskRunning = true;
+
+        // Show waiting UI in list
         ui.rlvList.ShowWaiting();
     }
 }
