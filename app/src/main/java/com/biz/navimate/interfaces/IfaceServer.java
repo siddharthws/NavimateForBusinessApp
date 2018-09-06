@@ -2,7 +2,9 @@ package com.biz.navimate.interfaces;
 
 import com.biz.navimate.objects.ObjProduct;
 import com.biz.navimate.objects.User;
-import java.util.HashMap;
+import com.biz.navimate.objects.core.ObjNvmCompact;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 25-09-2017.
@@ -81,7 +83,7 @@ public class IfaceServer {
 
     // Get Product List Task interface
     public interface GetObjectList {
-        void onObjectListSuccess(HashMap<String, String> products, int totalCount);
+        void onObjectListSuccess(ArrayList<ObjNvmCompact> objects, int totalCount);
         void onObjectListFailed();
     }
 }

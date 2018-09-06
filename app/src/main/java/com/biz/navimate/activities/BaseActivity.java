@@ -21,6 +21,7 @@ import com.biz.navimate.interfaces.IfacePermission;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.compound.NvmToolbar;
@@ -74,6 +75,7 @@ public abstract class BaseActivity  extends     AppCompatActivity
     private IfaceResult.PhotoDraw     photoDrawlistener         = null;
     private IfaceResult.FilePicker    filePickerListener        = null;
     private IfaceResult.PlacePicker   placePickerListener       = null;
+    private IfaceResult.ObjectPicker  objPickerListener       = null;
 
     // Periodic callback handler
     private Handler refreshHandler = null;
@@ -375,6 +377,11 @@ public abstract class BaseActivity  extends     AppCompatActivity
         this.placePickerListener = listener;
     }
 
+    public void SetObjectPickerResultListener(IfaceResult.ObjectPicker listener)
+    {
+        this.objPickerListener = listener;
+    }
+
     public void SetLocationPermissionListener(IfacePermission.Location listener)
     {
         this.locationPermissionListener = listener;
@@ -565,6 +572,21 @@ public abstract class BaseActivity  extends     AppCompatActivity
                                                             place.getLatLng().longitude,
                                                             place.getAddress().toString());
                         placePickerListener.onPlacePicked(objPlace);
+                    }
+                }
+                break;
+            }
+            case Constants.RequestCodes.OBJECT_PICKER:
+            {
+                if (objPickerListener != null)
+                {
+                    if (resumeResultCode == Activity.RESULT_OK)
+                    {
+                        // Get Compact Nvm Object from extras
+                        ObjNvmCompact obj = (ObjNvmCompact) resumeResultIntent.getExtras().getSerializable(Constants.Extras.PICKED_OBJECT);
+
+                        // Trigger listener
+                        objPickerListener.onObjectPicked(obj);
                     }
                 }
                 break;

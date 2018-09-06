@@ -1,6 +1,7 @@
 package com.biz.navimate.interfaces;
 
 import com.biz.navimate.objects.ObjPlace;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 
 import java.util.ArrayList;
 
@@ -64,5 +65,10 @@ public class IfaceResult {
     public interface PlacePicker
     {
         void onPlacePicked(ObjPlace place);
+    }
+
+    public interface ObjectPicker
+    {
+        void onObjectPicked(ObjNvmCompact obj);
     }
 }
