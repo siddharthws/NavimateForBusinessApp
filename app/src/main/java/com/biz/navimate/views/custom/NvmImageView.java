@@ -3,6 +3,7 @@ package com.biz.navimate.views.custom;
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import com.biz.navimate.R;
 
@@ -29,12 +30,19 @@ public class NvmImageView extends AppCompatImageView {
     }
 
     // ----------------------- Overrides ----------------------- //
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        // Set margins to show shadow
+        int mS = (int) getResources().getDimension(R.dimen.margin_s);
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) getLayoutParams();
+        lp.setMargins(mS, mS, mS, mS);
+        setLayoutParams(lp);
+    }
+
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     // Method to initialize view
-    private void Init(Context ctx, AttributeSet a) {
-        // Set padding
-        int padding = (int) getResources().getDimension(R.dimen.margin_s);
-        setPadding(padding, padding, padding, padding);
-    }
+    private void Init(Context ctx, AttributeSet a) { }
 }
