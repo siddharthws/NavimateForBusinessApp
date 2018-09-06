@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 
 import com.biz.navimate.R;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
 import com.biz.navimate.objects.templating.fieldvalues.ObjectFieldValue;
 import com.biz.navimate.viewholders.FieldViewHolder;
@@ -50,7 +51,9 @@ public class ObjFieldView extends FieldView {
 
         // Set Object Picker type depending on field type
         switch (val.field.type) {
-            // Placeholder
+            case Constants.Template.FIELD_TYPE_PRODUCT:
+                ui.objPicker.SetType(Constants.Template.TYPE_PRODUCT);
+                break;
         }
 
         // Set text value

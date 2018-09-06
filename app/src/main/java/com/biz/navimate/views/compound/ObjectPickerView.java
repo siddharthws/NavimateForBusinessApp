@@ -93,7 +93,9 @@ public class ObjectPickerView   extends     LinearLayout
         // Set icon
         int iconId = 0;
         switch (type) {
-            // Placeholder
+            case Constants.Template.TYPE_PRODUCT:
+                iconId = R.drawable.ic_inventory_grey;
+                break;
         }
 
         if (iconId != 0) {
