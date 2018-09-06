@@ -151,6 +151,8 @@ public abstract class FieldView extends LabelBox {
                 return new CheckboxFieldView(ctx, root, value);
             case Constants.Template.FIELD_TYPE_DATE:
                 return new DateFieldView(ctx, root, value);
+            case Constants.Template.FIELD_TYPE_PRODUCT:
+                return new ObjFieldView(ctx, root, value);
         }
 
         return null;
