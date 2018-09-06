@@ -15,26 +15,26 @@ import java.util.HashMap;
 
 import okhttp3.RequestBody;
 
-public class GetProductListTask extends BaseServerTask {
+public class GetObjectListTask extends BaseServerTask {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "GET_PRODUCT_LIST_TASK";
+    private static final String TAG = "GET_OBJECT_LIST_TASK";
 
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
-    private IfaceServer.GetProductList listener = null;
-    public void SetListener(IfaceServer.GetProductList listener) {
+    private IfaceServer.GetObjectList listener = null;
+    public void SetListener(IfaceServer.GetObjectList listener) {
         this.listener = listener;
     }
 
     // ----------------------- Globals ----------------------- //
-    HashMap<String, String> products = null;
+    HashMap<String, String> objects = null;
     private int startIndex = 0;
     private int totalCount = 0;
     private  String text   = "";
 
     // ----------------------- Constructor ----------------------- //
-    public GetProductListTask(Context parentContext, int startIndex, String text) {
-        super(parentContext, Constants.Server.URL_GET_PRODUCT_LIST);
+    public GetObjectListTask(Context parentContext, int startIndex, String text) {
+        super(parentContext, Constants.Server.URL_GET_OBJECT_LIST);
         this.startIndex = startIndex;
         this.text       = text;
     }
@@ -68,19 +68,19 @@ public class GetProductListTask extends BaseServerTask {
         // Save Product in Database
         if (IsResponseValid()) {
             try{
-                products = new HashMap<>();
-                JSONArray productsJson = responseJson.getJSONArray(Constants.Server.KEY_RESULTS);
+                objects = new HashMap<>();
+                JSONArray objectsJson = responseJson.getJSONArray(Constants.Server.KEY_RESULTS);
                 this.totalCount = responseJson.getInt(Constants.Server.KEY_TOTAL_COUNT);
 
                 // Parse json data to HashMap
-                for(int i =0 ; i < productsJson.length(); i++){
-                    JSONObject product = productsJson.getJSONObject(i);
-                    String id = product.getString(Constants.Server.KEY_ID);
-                    String name = product.getString(Constants.Server.KEY_NAME);
-                    products.put(id,name);
+                for(int i =0 ; i < objectsJson.length(); i++){
+                    JSONObject obj = objectsJson.getJSONObject(i);
+                    String id = obj.getString(Constants.Server.KEY_ID);
+                    String name = obj.getString(Constants.Server.KEY_NAME);
+                    objects.put(id,name);
                 }
             } catch (JSONException e) {
-                Dbg.error(TAG, "Could not parse productJson");
+                Dbg.error(TAG, "Could not parse result json");
                 Dbg.stack(e);
             }
         }
@@ -89,17 +89,17 @@ public class GetProductListTask extends BaseServerTask {
 
     @Override
     public void onPostExecute (Void result) {
-        if (products != null) {
+        if (objects != null) {
             // Call listener
             if (listener != null) {
-                listener.onProductReceived(products, totalCount);
+                listener.onObjectListSuccess(objects, totalCount);
             }
         } else {
-            Dbg.Toast(parentContext, "Could not get product...", Toast.LENGTH_SHORT);
+            Dbg.Toast(parentContext, "Could not get results...", Toast.LENGTH_SHORT);
 
             // Call listener
             if (listener != null) {
-                listener.onProductListFailed();
+                listener.onObjectListFailed();
             }
         }
     }

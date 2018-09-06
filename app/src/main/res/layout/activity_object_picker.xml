@@ -2,13 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.ProductPickerActivity"
+    tools:context=".activities.ObjectPickerActivity"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/ll_toolbar_pick_contacts"
+        android:id="@+id/ll_toolbar_object_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/m_xs"
@@ -26,7 +26,7 @@
             android:onClick="ButtonClickBack"/>
 
         <com.biz.navimate.views.compound.EtClearable
-            android:id="@+id/et_search"
+            android:id="@+id/etc_search"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#eeeeee"
-        android:layout_below="@id/ll_toolbar_pick_contacts">
+        android:layout_below="@id/ll_toolbar_object_picker">
     </com.biz.navimate.views.RlListView>
 
 </RelativeLayout>

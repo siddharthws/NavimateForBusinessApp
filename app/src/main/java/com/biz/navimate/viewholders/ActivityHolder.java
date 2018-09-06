@@ -65,14 +65,14 @@ public class ActivityHolder {
         public RlListView rlvList                                = null;
     }
 
-    public static class ProductPicker extends Base
+    public static class ObjectPicker extends Base
     {
         // Toolbar
-        public ImageButton ibBack                                  = null;
-        public EtClearable etSearch                                = null;
+        public ImageButton ibBack       = null;
+        public EtClearable etcSearch    = null;
 
         // List
-        public RlListView rlvList                                = null;
+        public RlListView rlvList       = null;
     }
 
     public static class Task extends Base

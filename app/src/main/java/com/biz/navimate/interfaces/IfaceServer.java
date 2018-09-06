@@ -80,8 +80,8 @@ public class IfaceServer {
     }
 
     // Get Product List Task interface
-    public interface GetProductList {
-        void onProductReceived(HashMap<String, String> products, int totalCount);
-        void onProductListFailed();
+    public interface GetObjectList {
+        void onObjectListSuccess(HashMap<String, String> products, int totalCount);
+        void onObjectListFailed();
     }
 }
