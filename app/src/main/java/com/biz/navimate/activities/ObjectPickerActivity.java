@@ -10,15 +10,14 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.lists.GenericListAdapter;
 import com.biz.navimate.objects.ListItem;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 import com.biz.navimate.server.GetObjectListTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.compound.EtClearable;
 import com.biz.navimate.views.custom.NvmEditText;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class ObjectPickerActivity    extends     BaseActivity
                                      implements  AdapterView.OnItemClickListener,
@@ -70,18 +69,12 @@ public class ObjectPickerActivity    extends     BaseActivity
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        HashMap<String, String> pickedProduct = new HashMap<>();
-
-        // Get Clicked Object
+        // Get Clicked item
         ListItem.Generic clickedItem = (ListItem.Generic) listAdpater.getItem(i);
 
-        // Add picked product details
-        pickedProduct.put("sId", clickedItem.sId);
-        pickedProduct.put("name", clickedItem.title);
-
-        // Send activity result
+        // Send activity result with id and name of picked object
         Intent resultData = new Intent();
-        resultData.putExtra(Constants.Extras.PICKED_OBJECT, pickedProduct);
+        resultData.putExtra(Constants.Extras.PICKED_OBJECT, new ObjNvmCompact(clickedItem.sId, clickedItem.title));
         setResult(RESULT_OK, resultData);
 
         // Finish this activity
@@ -95,7 +88,7 @@ public class ObjectPickerActivity    extends     BaseActivity
     }
 
     @Override
-    public void onObjectListSuccess(HashMap<String,String> objects, int totalCount) {
+    public void onObjectListSuccess(ArrayList<ObjNvmCompact> objects, int totalCount) {
         //Add products to list
         AddToList(objects, totalCount);
         bTaskRunning = false;
@@ -113,8 +106,10 @@ public class ObjectPickerActivity    extends     BaseActivity
 
     @Override
     public void onTextChangedDebounced(String text) {
-        // Clear list and Get Searched products
+        // Clear list
         listAdpater.Clear();
+
+        // Get Searched objects
         GetObjects(0);
     }
     // ----------------------- Public APIs ----------------------- //
@@ -128,14 +123,10 @@ public class ObjectPickerActivity    extends     BaseActivity
     }
 
     // ----------------------- Private APIs ----------------------- //
-    private void AddToList(HashMap<String,String> objects, int totalCount){
-        // Put Hashmap contents into listAdapter
-        Iterator it = objects.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry)it.next();
-            String id = (String) pair.getKey();
-            String name = (String) pair.getValue();
-            listAdpater.Add(new ListItem.Generic(0L, id, name, 0,0,R.drawable.bg_white_shadow_slant));
+    private void AddToList(ArrayList<ObjNvmCompact> objects, int totalCount){
+        // Put object ids and names contents into listAdapter
+        for (ObjNvmCompact obj : objects) {
+            listAdpater.Add(new ListItem.Generic(0L, obj.id, obj.name, 0,0, R.drawable.bg_white_shadow_slant));
         }
 
         // Update List UI

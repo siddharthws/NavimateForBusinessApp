@@ -6,11 +6,13 @@ import android.widget.Toast;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import okhttp3.RequestBody;
@@ -27,10 +29,12 @@ public class GetObjectListTask extends BaseServerTask {
     }
 
     // ----------------------- Globals ----------------------- //
-    HashMap<String, String> objects = null;
+    private  String text   = "";
+
     private int startIndex = 0;
     private int totalCount = 0;
-    private  String text   = "";
+
+    ArrayList<ObjNvmCompact> objects = null;
 
     // ----------------------- Constructor ----------------------- //
     public GetObjectListTask(Context parentContext, int startIndex, String text) {
@@ -68,16 +72,17 @@ public class GetObjectListTask extends BaseServerTask {
         // Save Product in Database
         if (IsResponseValid()) {
             try{
-                objects = new HashMap<>();
+                objects = new ArrayList<>();
                 JSONArray objectsJson = responseJson.getJSONArray(Constants.Server.KEY_RESULTS);
                 this.totalCount = responseJson.getInt(Constants.Server.KEY_TOTAL_COUNT);
 
-                // Parse json data to HashMap
+                // Parse json data to array
                 for(int i =0 ; i < objectsJson.length(); i++){
                     JSONObject obj = objectsJson.getJSONObject(i);
                     String id = obj.getString(Constants.Server.KEY_ID);
                     String name = obj.getString(Constants.Server.KEY_NAME);
-                    objects.put(id,name);
+
+                    objects.add(new ObjNvmCompact(id, name));
                 }
             } catch (JSONException e) {
                 Dbg.error(TAG, "Could not parse result json");
