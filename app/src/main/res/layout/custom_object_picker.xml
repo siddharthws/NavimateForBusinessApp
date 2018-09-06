@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Object Icon -->
+    <com.biz.navimate.views.custom.NvmImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Object name -->
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Not set..."
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Clear Button -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cross_grey"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"/>
+
+    <!-- Edit Button -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_edit_grey"
+        android:layout_gravity="center_vertical"/>
+
+</merge>

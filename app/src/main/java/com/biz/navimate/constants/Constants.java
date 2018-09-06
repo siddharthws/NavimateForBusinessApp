@@ -101,6 +101,7 @@ public class Constants {
         public static final int TYPE_FORM       = 1;
         public static final int TYPE_LEAD       = 2;
         public static final int TYPE_TASK       = 3;
+        public static final int TYPE_PRODUCT    = 4;
 
         // Field Types in templates
         public static final int FIELD_TYPE_NONE           = 0;
