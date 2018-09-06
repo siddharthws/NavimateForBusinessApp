@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.biz.navimate.views.CbCustom;
 import com.biz.navimate.views.compound.DateEditorView;
 import com.biz.navimate.views.compound.EtClearable;
+import com.biz.navimate.views.compound.ObjectPickerView;
 import com.biz.navimate.views.custom.Dropdown;
 
 import java.util.ArrayList;
@@ -46,5 +47,10 @@ public class FieldViewHolder {
     // Date Field View holder
     public static class Date extends Base {
         public DateEditorView   dtEditor = null;
+    }
+
+    // Object Field View holder
+    public static class Object extends Base {
+        public ObjectPickerView objPicker = null;
     }
 }

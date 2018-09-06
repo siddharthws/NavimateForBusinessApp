@@ -46,6 +46,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_DATE: {
                 return new DateFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_PRODUCT: {
+                return new ObjectFieldValue(field, value);
+            }
         }
 
         return null;
