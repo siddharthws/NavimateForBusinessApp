@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,7 +12,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.LeadListAdapter;
-import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlListView;
@@ -137,7 +136,7 @@ public class LeadPickerActivity extends         BaseActivity
         listAdpater.Clear();
 
         // Add all tasks to list in reverse order of ID
-        CopyOnWriteArrayList<Lead> leads = (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll();
+        CopyOnWriteArrayList<ObjLead> leads = (CopyOnWriteArrayList<ObjLead>) DbHelper.leadTable.GetAll();
         for (int i = 0; i < leads.size(); i++) {
             listAdpater.Add(new ListItem.Lead(leads.get(i), false));
         }

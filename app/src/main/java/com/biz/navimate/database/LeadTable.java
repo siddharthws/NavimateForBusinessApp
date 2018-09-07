@@ -3,9 +3,9 @@ package com.biz.navimate.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -50,12 +50,12 @@ public class LeadTable extends BaseTable {
 
     // ----------------------- Public APIs ----------------------- //
     // API to get valid objects for syncing
-    public ArrayList<Lead> GetLeadsToSync() {
+    public ArrayList<ObjLead> GetLeadsToSync() {
         // Get list of open tasks
         ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
 
         // Create list of leads in open tasks
-        ArrayList<Lead> leads = new ArrayList<>();
+        ArrayList<ObjLead> leads = new ArrayList<>();
         for (Task task : openTasks) {
             // Add unique leads to array
             if (!leads.contains(task.lead)) {
@@ -66,9 +66,9 @@ public class LeadTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public Lead GetByServerId(String textServerId) {
+    public ObjLead GetByServerId(String textServerId) {
         for (ObjDb dbItem : cache) {
-            Lead lead = (Lead) dbItem;
+            ObjLead lead = (ObjLead) dbItem;
             if (lead.textServerId.equals(textServerId)) {
                 return lead;
             }
@@ -78,10 +78,10 @@ public class LeadTable extends BaseTable {
     }
 
     // API to get object by template
-    public ArrayList<Lead> GetByTemplate(Template template) {
-        ArrayList<Lead> leads = new ArrayList<>();
+    public ArrayList<ObjLead> GetByTemplate(Template template) {
+        ArrayList<ObjLead> leads = new ArrayList<>();
         for (ObjDb dbItem : cache) {
-            Lead lead = (Lead) dbItem;
+            ObjLead lead = (ObjLead) dbItem;
             if (lead.template.equals(template)) {
                 leads.add(lead);
             }
@@ -91,7 +91,7 @@ public class LeadTable extends BaseTable {
     }
 
     // API to remove a lead
-    public void Remove(Lead lead) {
+    public void Remove(ObjLead lead) {
         // Remove all associated tasks
         ArrayList<Task> tasks = DbHelper.taskTable.GetByLead(lead);
         for (Task task : tasks) {
@@ -105,11 +105,11 @@ public class LeadTable extends BaseTable {
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected ObjDb ParseToObject(Cursor cursor) {
-        return new Lead(cursor);
+        return new ObjLead(cursor);
     }
 
     @Override
     protected ContentValues ParseToContent(ObjDb dbItem) {
-        return  ((Lead) dbItem).toContentValues();
+        return  ((ObjLead) dbItem).toContentValues();
     }
 }

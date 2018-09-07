@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 import com.biz.navimate.R;
-import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.misc.IconGen;
 import com.biz.navimate.runnables.GrowCircleRunnable;
 import com.biz.navimate.runnables.MarkerMoveRunnable;
@@ -73,7 +72,7 @@ public class MarkerObj {
             // Init marker options and assign parameters
             MarkerOptions markerOpt = new MarkerOptions()
                                             .position(position)
-                                            .icon(BitmapDescriptorFactory.fromBitmap(IconGen.GetMarkerIcon(task.lead.title)));
+                                            .icon(BitmapDescriptorFactory.fromBitmap(IconGen.GetMarkerIcon(task.lead.name)));
 
             return markerOpt;
         }

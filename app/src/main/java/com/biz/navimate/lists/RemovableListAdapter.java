@@ -46,7 +46,7 @@ public class RemovableListAdapter   extends     BaseListAdapter
         ListHolder.Removable holder = (ListHolder.Removable) view.getTag();
 
         // Set title and description
-        holder.tvTitle.setText(item.lead.title);
+        holder.tvTitle.setText(item.lead.name);
 
         // Set btn lick listeners
         holder.ibRemove.setOnClickListener(new View.OnClickListener() {

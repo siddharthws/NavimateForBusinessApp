@@ -68,7 +68,7 @@ public class TaskInfoDialog     extends     BaseDialog
 
         // Set Text
         ui.tvId.setText("ID : " + task.publicId);
-        ui.btnLead.setText(task.lead.title);
+        ui.btnLead.setText(task.lead.name);
 
         // Set Form Fields
         for (FormEntry.Base value  : task.values) {
@@ -113,7 +113,7 @@ public class TaskInfoDialog     extends     BaseDialog
                                                                  task.lead.position.longitude +
                                                          "?q=" + task.lead.position.latitude + "," +
                                                                  task.lead.position.longitude +
-                                                           "(" + task.lead.title + ")"));
+                                                           "(" + task.lead.name + ")"));
                 context.startActivity(intent);
                 break;
             }

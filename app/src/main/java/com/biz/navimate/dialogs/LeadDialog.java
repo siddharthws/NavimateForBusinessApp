@@ -59,7 +59,7 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
         Dialog.Lead currentData = (Dialog.Lead) data;
 
         // Set Text
-        ui.tvTitle.setText(currentData.lead.title);
+        ui.tvTitle.setText(currentData.lead.name);
         ui.tvAddress.setText(currentData.lead.address);
 
         // Set Form Fields

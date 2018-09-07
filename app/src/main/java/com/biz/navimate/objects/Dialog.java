@@ -2,8 +2,8 @@ package com.biz.navimate.objects;
 
 import android.support.annotation.NonNull;
 
-import com.biz.navimate.constants.Constants;
 import com.biz.navimate.interfaces.IfaceDialog;
+import com.biz.navimate.objects.core.ObjLead;
 
 import java.util.ArrayList;
 
@@ -140,9 +140,9 @@ public class Dialog {
 
     public static class Lead extends Base
     {
-        public com.biz.navimate.objects.Lead lead = null;
+        public ObjLead lead = null;
 
-        public Lead(com.biz.navimate.objects.Lead lead)
+        public Lead(ObjLead lead)
         {
             super(TYPE_LEAD, true);
             this.lead = lead;
@@ -162,10 +162,10 @@ public class Dialog {
 
     public static class RouteBuilder extends Base
     {
-        public ArrayList<com.biz.navimate.objects.Lead> leads = null;
+        public ArrayList<ObjLead> leads = null;
         public IfaceDialog.RouteBuilder listener = null;
 
-        public RouteBuilder(@NonNull ArrayList<com.biz.navimate.objects.Lead> leads, IfaceDialog.RouteBuilder listener)
+        public RouteBuilder(@NonNull ArrayList<ObjLead> leads, IfaceDialog.RouteBuilder listener)
         {
             super(TYPE_ROUTE_BUILDER, true);
             this.leads = leads;

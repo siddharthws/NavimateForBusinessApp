@@ -6,7 +6,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.biz.navimate.R;
-import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.ListItem;
@@ -58,7 +57,7 @@ public class FormListAdapter extends BaseListAdapter {
         holder.tvForm.setText(form.template.name);
 
         // Set Lead Title
-        holder.tvLead.setText(form.task != null ? form.task.lead.title : "");
+        holder.tvLead.setText(form.task != null ? form.task.lead.name : "");
 
         // Set Sync Status
         if (form.textServerId.length() == 0) {

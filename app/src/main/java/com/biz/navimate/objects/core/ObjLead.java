@@ -1,13 +1,15 @@
-package com.biz.navimate.objects;
+package com.biz.navimate.objects.core;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.database.LeadTable;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.objects.core.ObjDb;
+import com.biz.navimate.objects.Field;
+import com.biz.navimate.objects.FormEntry;
+import com.biz.navimate.objects.ServerObject;
+import com.biz.navimate.objects.Template;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -20,24 +22,24 @@ import java.util.ArrayList;
  * Created by Siddharth on 28-09-2017.
  */
 
-public class Lead extends ServerObject {
+public class ObjLead extends ServerObject {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LEAD";
 
     // ----------------------- Globals ----------------------- //
     public String textServerId = "";
-    public String title = "", address = "";
+    public String name = "", address = "";
     public Template template = null;
     public LatLng position = new LatLng(0, 0);
     public ArrayList<FormEntry.Base> values = new ArrayList<>();
 
     // ----------------------- Constructor ----------------------- //
-    public Lead (JSONObject json) {
+    public ObjLead(JSONObject json) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
-    public Lead (Cursor cursor) {
+    public ObjLead(Cursor cursor) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }
@@ -49,7 +51,7 @@ public class Lead extends ServerObject {
     public void fromJson(JSONObject json) {
         try {
             textServerId        = json.getString(Constants.Server.KEY_ID);
-            title               = json.getString(Constants.Server.KEY_NAME);
+            name                = json.getString(Constants.Server.KEY_NAME);
             address             = json.getString(Constants.Server.KEY_ADDRESS);
 
             double latitude     = json.getDouble(Constants.Server.KEY_LAT);
@@ -87,7 +89,7 @@ public class Lead extends ServerObject {
         super.fromDb(cursor);
 
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
-        title                   = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
+        name                    = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
         address                 = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
         double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
         double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
@@ -122,7 +124,7 @@ public class Lead extends ServerObject {
 
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,          textServerId);
-        cv.put(Constants.DB.COLUMN_TITLE,           title);
+        cv.put(Constants.DB.COLUMN_TITLE,           name);
         cv.put(Constants.DB.COLUMN_ADDRESS,         address);
         cv.put(Constants.DB.COLUMN_LATITUDE,        position.latitude);
         cv.put(Constants.DB.COLUMN_LONGITUDE,       position.longitude);

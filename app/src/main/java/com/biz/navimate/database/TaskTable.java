@@ -6,7 +6,7 @@ import android.database.Cursor;
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -90,7 +90,7 @@ public class TaskTable extends BaseTable {
     }
 
     // API to get object by lead
-    public ArrayList<Task> GetByLead(Lead lead) {
+    public ArrayList<Task> GetByLead(ObjLead lead) {
         ArrayList<Task> tasks = new ArrayList<>();
         for (ObjDb dbItem : cache) {
             Task task = (Task) dbItem;
