@@ -109,10 +109,10 @@ public class TaskInfoDialog     extends     BaseDialog
             }
             case R.id.btn_maps: {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                                            Uri.parse(  "geo:" + task.lead.position.latitude + "," +
-                                                                 task.lead.position.longitude +
-                                                         "?q=" + task.lead.position.latitude + "," +
-                                                                 task.lead.position.longitude +
+                                            Uri.parse(  "geo:" + task.lead.place.lat + "," +
+                                                                 task.lead.place.lng +
+                                                         "?q=" + task.lead.place.lat + "," +
+                                                                 task.lead.place.lng +
                                                            "(" + task.lead.name + ")"));
                 context.startActivity(intent);
                 break;

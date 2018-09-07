@@ -250,7 +250,7 @@ public class HomescreenActivity     extends     BaseActivity
         for (Task task : openTasks)
         {
             // Include in bounds for camera update
-            bounds.add(task.lead.position);
+            bounds.add(task.lead.place.GetLatLng());
         }
 
         // Add current location to bounds if available

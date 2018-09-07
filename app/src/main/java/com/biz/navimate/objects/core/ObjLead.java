@@ -8,9 +8,9 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.FormEntry;
+import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.objects.ServerObject;
 import com.biz.navimate.objects.Template;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +28,9 @@ public class ObjLead extends ServerObject {
 
     // ----------------------- Globals ----------------------- //
     public String textServerId = "";
-    public String name = "", address = "";
+    public String name = "";
+    public ObjPlace place = null;
     public Template template = null;
-    public LatLng position = new LatLng(0, 0);
     public ArrayList<FormEntry.Base> values = new ArrayList<>();
 
     // ----------------------- Constructor ----------------------- //
@@ -52,11 +52,11 @@ public class ObjLead extends ServerObject {
         try {
             textServerId        = json.getString(Constants.Server.KEY_ID);
             name                = json.getString(Constants.Server.KEY_NAME);
-            address             = json.getString(Constants.Server.KEY_ADDRESS);
 
+            String address      = json.getString(Constants.Server.KEY_ADDRESS);
             double latitude     = json.getDouble(Constants.Server.KEY_LAT);
             double longitude    = json.getDouble(Constants.Server.KEY_LNG);
-            position = new LatLng(latitude, longitude);
+            place = new ObjPlace(latitude, longitude, address);
 
             // Get Local Template Object
             long templateId         = json.getLong(Constants.Server.KEY_TEMPLATE_ID);
@@ -90,10 +90,10 @@ public class ObjLead extends ServerObject {
 
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         name                    = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
-        address                 = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
+        String address          = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
         double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
         double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
-        position = new LatLng(latitude, longitude);
+        place = new ObjPlace(latitude, longitude, address);
 
         long   templateId       = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template       = (Template) DbHelper.templateTable.GetById(templateId);
@@ -125,9 +125,9 @@ public class ObjLead extends ServerObject {
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,          textServerId);
         cv.put(Constants.DB.COLUMN_TITLE,           name);
-        cv.put(Constants.DB.COLUMN_ADDRESS,         address);
-        cv.put(Constants.DB.COLUMN_LATITUDE,        position.latitude);
-        cv.put(Constants.DB.COLUMN_LONGITUDE,       position.longitude);
+        cv.put(Constants.DB.COLUMN_ADDRESS,         place.address);
+        cv.put(Constants.DB.COLUMN_LATITUDE,        place.lat);
+        cv.put(Constants.DB.COLUMN_LONGITUDE,       place.lng);
         cv.put(Constants.DB.COLUMN_TEMPLATE_ID,     template.dbId);
 
         // Prepare JSON Array for values

@@ -211,7 +211,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         for (ListItem.Lead leadItem : leadItems)
         {
             ObjLead lead = leadItem.lead;
-            checkpoints.add(lead.position);
+            checkpoints.add(lead.place.GetLatLng());
         }
 
         return checkpoints;
