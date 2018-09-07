@@ -120,7 +120,7 @@ public class LocationEditorView     extends     LinearLayout
             ui.tvText.setText("Location not set...");
         } else {
             // Set place address as text
-            ui.tvText.setText(place.GetAddress());
+            ui.tvText.setText(place.address);
         }
     }
 
