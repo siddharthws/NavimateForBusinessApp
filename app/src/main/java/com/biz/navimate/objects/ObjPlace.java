@@ -9,25 +9,25 @@ public class ObjPlace {
     // ----------------------- Classes ---------------------------//
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
-    private LatLng latlng    = null;
-    private String address   = "";
+    public double lat = 0, lng = 0;
+    public String address   = "";
 
     // ----------------------- Constructor ----------------------- //
-    public ObjPlace(double lat, double lng, String address)
-    {
-        this.latlng     = new LatLng(lat, lng);
+    public ObjPlace() { }
+
+    public ObjPlace(double lat, double lng, String address) {
+        this.lat        = lat;
+        this.lng        = lng;
         this.address    = address;
     }
 
     // ----------------------- Overrides ----------------------- //
     // ----------------------- Public APIs ----------------------- //
     public LatLng GetLatLng() {
-        return latlng;
+        return new LatLng(lat, lng);
     }
 
-    public String GetAddress() {
-        return address;
-    }
+    public boolean isValid() { return (lat != 0 || lng != 0) && (address.length() > 0); }
 
     // ----------------------- Private APIs ----------------------- //
 }
