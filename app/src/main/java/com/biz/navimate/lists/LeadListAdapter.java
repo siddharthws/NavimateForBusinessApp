@@ -59,7 +59,7 @@ public class LeadListAdapter    extends     BaseListAdapter
         ListHolder.Lead holder = (ListHolder.Lead) view.getTag();
 
         // Set title and description
-        holder.tvTitle.setText(leadItem.lead.title);
+        holder.tvTitle.setText(leadItem.lead.name);
 
         if (leadItem.bSelected) {
             holder.ivTick.setVisibility(View.VISIBLE);

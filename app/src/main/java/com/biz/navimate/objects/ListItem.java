@@ -1,6 +1,7 @@
 package com.biz.navimate.objects;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.core.ObjLead;
 
 /**
  * Created by Siddharth on 29-09-2017.
@@ -51,11 +52,11 @@ public class ListItem {
     // Data object for task list item
     public static class Lead extends Base {
         // ----------------------- Globals ----------------------- //
-        public com.biz.navimate.objects.Lead lead = null;
+        public ObjLead lead = null;
         public boolean bSelected = true;
 
         // ----------------------- Constructor ----------------------- //
-        public Lead(com.biz.navimate.objects.Lead lead, boolean bSelected)
+        public Lead(ObjLead lead, boolean bSelected)
         {
             super(TYPE_LEAD);
             this.lead               = lead;

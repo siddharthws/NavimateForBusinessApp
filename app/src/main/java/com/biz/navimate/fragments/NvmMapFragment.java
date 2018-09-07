@@ -20,7 +20,7 @@ import com.biz.navimate.maps.TouchableSupportMapFragment;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Camera;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.MarkerObj;
@@ -288,7 +288,7 @@ public class NvmMapFragment     extends     BaseFragment
 
     public void ButtonClickRoute() {
         // Launch route builder dialog
-        RlDialog.Show(new Dialog.RouteBuilder(new ArrayList<Lead>(), new IfaceDialog.RouteBuilder() {
+        RlDialog.Show(new Dialog.RouteBuilder(new ArrayList<ObjLead>(), new IfaceDialog.RouteBuilder() {
             @Override
             public void onRouteBuilt(Route.Way route) {
                 // Clear routes form map and add this one

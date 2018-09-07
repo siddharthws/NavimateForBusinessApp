@@ -67,7 +67,7 @@ public class TaskListAdapter    extends     BaseListAdapter
         Task task = taskItem.task;
 
         // Set title and description
-        holder.tvTitle.setText(task.lead.title);
+        holder.tvTitle.setText(task.lead.name);
         holder.tvDescription.setText(task.lead.address);
 
         // Set different background for Open and Closed tasks

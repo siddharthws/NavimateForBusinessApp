@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -102,8 +102,8 @@ public class TemplateTable extends BaseTable {
             }
             case Constants.Template.TYPE_LEAD: {
                 // Remove all leads with this template
-                ArrayList<Lead> leads = DbHelper.leadTable.GetByTemplate(template);
-                for (Lead lead : leads) {
+                ArrayList<ObjLead> leads = DbHelper.leadTable.GetByTemplate(template);
+                for (ObjLead lead : leads) {
                     DbHelper.leadTable.Remove(lead);
                 }
                 break;

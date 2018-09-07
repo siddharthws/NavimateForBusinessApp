@@ -5,9 +5,8 @@ import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.database.TaskTable;
 import com.biz.navimate.debug.Dbg;
-import com.biz.navimate.objects.core.ObjDb;
+import com.biz.navimate.objects.core.ObjLead;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,7 +46,7 @@ public class Task extends ServerObject {
     // ----------------------- Globals ----------------------- //
     public String textServerId                  = "";
     public String publicId                      = "";
-    public Lead lead                            = null;
+    public ObjLead lead                            = null;
     public Template formTemplate                = null;
     public Template template                    = null;
     public ArrayList<FormEntry.Base> values     = new ArrayList<>();
@@ -117,7 +116,7 @@ public class Task extends ServerObject {
         status              = Task.TaskStatus.valueOf(cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_STATUS)));
 
         long   leadId                = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_LEAD_ID));
-        lead = (Lead) DbHelper.leadTable.GetById(leadId);
+        lead = (ObjLead) DbHelper.leadTable.GetById(leadId);
 
         long   formTemplateId        = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_FORM_TEMPLATE_ID));
         formTemplate = (Template) DbHelper.templateTable.GetById(formTemplateId);

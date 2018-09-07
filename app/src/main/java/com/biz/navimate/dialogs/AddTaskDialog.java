@@ -16,7 +16,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.SpinnerAdapter;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.FormEntry;
-import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.server.AddTaskTask;
 import com.biz.navimate.viewholders.DialogHolder;
@@ -40,7 +40,7 @@ public class AddTaskDialog    extends     BaseDialog
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private DialogHolder.AddTask ui = null;
-    private Lead selectedLead;
+    private ObjLead selectedLead;
     private Template selectedFormTemplate, selectedTaskTemplate;
     private SpinnerAdapter leadAdapter, formTemplateAdapter, taskTemplateAdapter;
 
@@ -85,9 +85,9 @@ public class AddTaskDialog    extends     BaseDialog
         taskTemplateAdapter.AddItem("Select Task Template", Constants.Misc.ID_INVALID);
 
         //Add Items to Adapters
-        for(Lead leadObject : (CopyOnWriteArrayList<Lead>) DbHelper.leadTable.GetAll())
+        for(ObjLead leadObject : (CopyOnWriteArrayList<ObjLead>) DbHelper.leadTable.GetAll())
         {
-            leadAdapter.AddItem(leadObject.title, leadObject.dbId);
+            leadAdapter.AddItem(leadObject.name, leadObject.dbId);
         }
         for(Template templateObject : (CopyOnWriteArrayList<Template>) DbHelper.templateTable.GetAll())
         {
@@ -110,7 +110,7 @@ public class AddTaskDialog    extends     BaseDialog
         leadAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {
             @Override
             public void onItemSelected(long id) {
-                selectedLead = (Lead) DbHelper.leadTable.GetById(id);
+                selectedLead = (ObjLead) DbHelper.leadTable.GetById(id);
             }
         });
         formTemplateAdapter.SetListener(new SpinnerAdapter.IfaceSpinner() {

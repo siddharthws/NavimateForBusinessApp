@@ -11,9 +11,9 @@ import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
-import com.biz.navimate.objects.Lead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
@@ -163,11 +163,11 @@ public class SyncDbTask extends BaseServerTask {
             JSONObject leadJson = leadsJson.getJSONObject(i);
 
             // Get object by server ID or create new
-            Lead lead = DbHelper.leadTable.GetByServerId(leadJson.getString(Constants.Server.KEY_ID));
+            ObjLead lead = DbHelper.leadTable.GetByServerId(leadJson.getString(Constants.Server.KEY_ID));
             if (lead != null) {
                 lead.fromJson(leadJson);
             } else {
-                lead = new Lead(leadJson);
+                lead = new ObjLead(leadJson);
             }
 
             // Save object in DB
@@ -177,7 +177,7 @@ public class SyncDbTask extends BaseServerTask {
         // Remove objects as per response
         JSONArray removeIds = json.getJSONArray(Constants.Server.KEY_REMOVE);
         for (int i = 0; i < removeIds.length(); i++) {
-            Lead lead = DbHelper.leadTable.GetByServerId(removeIds.getString(i));
+            ObjLead lead = DbHelper.leadTable.GetByServerId(removeIds.getString(i));
             if (lead != null) {
                 DbHelper.leadTable.Remove(lead);
             }

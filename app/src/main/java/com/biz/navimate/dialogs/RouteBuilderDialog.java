@@ -19,7 +19,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
 import com.biz.navimate.lists.RemovableListAdapter;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Lead;
+import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Route;
@@ -86,7 +86,7 @@ public class RouteBuilderDialog     extends     BaseDialog
 
         // Init list
         adapter = new RemovableListAdapter(context, ui.lvLeads);
-        for (Lead lead : currentData.leads) {
+        for (ObjLead lead : currentData.leads) {
             adapter.Add(new ListItem.Lead(lead, false));
         }
 
@@ -109,7 +109,7 @@ public class RouteBuilderDialog     extends     BaseDialog
                         @Override
                         public void onLeadPicked(ArrayList<Long> leadIds) {
                             for (Long leadId : leadIds) {
-                                Lead lead = (Lead) DbHelper.leadTable.GetById(leadId);
+                                ObjLead lead = (ObjLead) DbHelper.leadTable.GetById(leadId);
                                 adapter.Add(new ListItem.Lead(lead, false));
                             }
                         }
@@ -153,10 +153,10 @@ public class RouteBuilderDialog     extends     BaseDialog
 
         // Re launch dialog
         ArrayList<ListItem.Lead> leadItems = (ArrayList<ListItem.Lead>) adapter.GetList();
-        ArrayList<Lead> leads = new ArrayList<>();
+        ArrayList<ObjLead> leads = new ArrayList<>();
         for (ListItem.Lead leadItem : leadItems)
         {
-            Lead lead = leadItem.lead;
+            ObjLead lead = leadItem.lead;
             leads.add(lead);
         }
         RlDialog.Show(new Dialog.RouteBuilder(leads, currentData.listener));
@@ -210,7 +210,7 @@ public class RouteBuilderDialog     extends     BaseDialog
         ArrayList<LatLng> checkpoints = new ArrayList<>();
         for (ListItem.Lead leadItem : leadItems)
         {
-            Lead lead = leadItem.lead;
+            ObjLead lead = leadItem.lead;
             checkpoints.add(lead.position);
         }
 
