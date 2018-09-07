@@ -32,6 +32,7 @@ public class LeadTable extends BaseTable {
                     Constants.DB.COLUMN_ADDRESS        + " TEXT," +
                     Constants.DB.COLUMN_LATITUDE       + " REAL," +
                     Constants.DB.COLUMN_LONGITUDE      + " REAL," +
+                    Constants.DB.COLUMN_OWNER_ID       + " INTEGER," +
                     Constants.DB.COLUMN_TEMPLATE_ID    + " INTEGER," +
                     Constants.DB.COLUMN_VALUES         + " TEXT)";
 
@@ -44,6 +45,7 @@ public class LeadTable extends BaseTable {
                                                     Constants.DB.COLUMN_ADDRESS,
                                                     Constants.DB.COLUMN_LATITUDE,
                                                     Constants.DB.COLUMN_LONGITUDE,
+                                                    Constants.DB.COLUMN_OWNER_ID,
                                                     Constants.DB.COLUMN_TEMPLATE_ID,
                                                     Constants.DB.COLUMN_VALUES});
     }
