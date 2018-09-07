@@ -61,7 +61,7 @@ public class MarkerObj {
 
         public Task(com.biz.navimate.objects.Task task)
         {
-            super(MARKER_TYPE_TASK, task.lead.position);
+            super(MARKER_TYPE_TASK, task.lead.place.GetLatLng());
             this.task = task;
         }
 

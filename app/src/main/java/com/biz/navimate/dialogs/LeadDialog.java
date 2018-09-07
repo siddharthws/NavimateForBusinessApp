@@ -60,7 +60,7 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
 
         // Set Text
         ui.tvTitle.setText(currentData.lead.name);
-        ui.tvAddress.setText(currentData.lead.address);
+        ui.tvAddress.setText(currentData.lead.place.address);
 
         // Set Form Fields
         for (FormEntry.Base value : currentData.lead.values) {
