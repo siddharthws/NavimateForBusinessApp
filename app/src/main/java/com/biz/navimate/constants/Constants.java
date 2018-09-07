@@ -178,6 +178,7 @@ public class Constants {
         public static final String KEY_DATA             = "data";
         public static final String KEY_TEMPLATE_DATA    = "templateData";
         public static final String KEY_VALUES           = "values";
+        public static final String KEY_OWNER            = "owner";
 
         // Task related keys
         public static final String KEY_STATUS           = "status";

@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.ObjPlace;
@@ -30,6 +31,7 @@ public class ObjLead extends ServerObject {
     public String textServerId = "";
     public String name = "";
     public ObjPlace place = null;
+    public long ownerId = 0L;
     public Template template = null;
     public ArrayList<FormEntry.Base> values = new ArrayList<>();
 
@@ -57,6 +59,8 @@ public class ObjLead extends ServerObject {
             double latitude     = json.getDouble(Constants.Server.KEY_LAT);
             double longitude    = json.getDouble(Constants.Server.KEY_LNG);
             place = new ObjPlace(latitude, longitude, address);
+
+            ownerId             = json.getJSONObject(Constants.Server.KEY_OWNER).getLong(Constants.Server.KEY_ID);
 
             // Get Local Template Object
             long templateId         = json.getLong(Constants.Server.KEY_TEMPLATE_ID);
@@ -90,10 +94,13 @@ public class ObjLead extends ServerObject {
 
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         name                    = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_TITLE));
+
         String address          = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_ADDRESS));
         double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
         double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
         place = new ObjPlace(latitude, longitude, address);
+
+        ownerId                 = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_OWNER_ID));
 
         long   templateId       = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
         template       = (Template) DbHelper.templateTable.GetById(templateId);
@@ -128,6 +135,7 @@ public class ObjLead extends ServerObject {
         cv.put(Constants.DB.COLUMN_ADDRESS,         place.address);
         cv.put(Constants.DB.COLUMN_LATITUDE,        place.lat);
         cv.put(Constants.DB.COLUMN_LONGITUDE,       place.lng);
+        cv.put(Constants.DB.COLUMN_OWNER_ID,        ownerId);
         cv.put(Constants.DB.COLUMN_TEMPLATE_ID,     template.dbId);
 
         // Prepare JSON Array for values
@@ -146,5 +154,9 @@ public class ObjLead extends ServerObject {
         cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
+    }
+
+    public boolean isOwned() {
+        return ownerId == 0 || ownerId == Preferences.GetUser().appId;
     }
 }
