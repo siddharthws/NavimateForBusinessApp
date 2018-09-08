@@ -23,6 +23,8 @@ public abstract class ObjNvm extends ObjDb {
     // ----------------------- Globals ----------------------- //
     public int type = Constants.Template.TYPE_INVALID;
 
+    public boolean bDirty = false;
+
     public String serverId = "";
 
     public Template template = null;
@@ -45,6 +47,8 @@ public abstract class ObjNvm extends ObjDb {
     @Override
     public void fromDb(Cursor cursor) {
         super.fromDb(cursor);
+
+        bDirty = Boolean.valueOf(cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_DIRTY)));
 
         serverId = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
 
@@ -76,6 +80,9 @@ public abstract class ObjNvm extends ObjDb {
     public ContentValues toDb () {
         ContentValues cv = super.toDb();
 
+        // Firty Object Checking
+        cv.put(Constants.DB.COLUMN_DIRTY, String.valueOf(bDirty));
+
         // Enter values into Database
         cv.put(Constants.DB.COLUMN_SRV_ID,         serverId);
         cv.put(Constants.DB.COLUMN_TEMPLATE_ID,    template.dbId);
@@ -104,6 +111,9 @@ public abstract class ObjNvm extends ObjDb {
     //
     public void fromServer(JSONObject json) {
         try {
+            // Mark as not dirty
+            bDirty = false;
+
             serverId = json.getString(Constants.Server.KEY_ID);
 
             // Get Local Template Object

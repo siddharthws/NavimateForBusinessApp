@@ -27,6 +27,7 @@ public class LeadTable extends BaseTable {
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     Constants.DB.COLUMN_ID             + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_DIRTY          + " TEXT," +
                     Constants.DB.COLUMN_SRV_ID         + " TEXT," +
                     Constants.DB.COLUMN_TITLE          + " TEXT," +
                     Constants.DB.COLUMN_ADDRESS        + " TEXT," +
@@ -40,6 +41,7 @@ public class LeadTable extends BaseTable {
     public LeadTable(DbHelper dbHelper)
     {
         super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_DIRTY,
                                                     Constants.DB.COLUMN_SRV_ID,
                                                     Constants.DB.COLUMN_TITLE,
                                                     Constants.DB.COLUMN_ADDRESS,
@@ -51,20 +53,16 @@ public class LeadTable extends BaseTable {
     }
 
     // ----------------------- Public APIs ----------------------- //
-    // API to get valid objects for syncing
-    public ArrayList<ObjLead> GetLeadsToSync() {
-        // Get list of open tasks
-        ArrayList<Task> openTasks = DbHelper.taskTable.GetOpenTasks();
-
-        // Create list of leads in open tasks
-        ArrayList<ObjLead> leads = new ArrayList<>();
-        for (Task task : openTasks) {
-            // Add unique leads to array
-            if (!leads.contains(task.lead)) {
-                leads.add(task.lead);
+    // API to get dirty objects
+    public ArrayList<ObjLead> GetDirty() {
+        ArrayList<ObjLead> objs = new ArrayList<>();
+        for (ObjDb dbItem : cache) {
+            if (((ObjLead) dbItem).bDirty) {
+                objs.add((ObjLead) dbItem);
             }
         }
-        return leads;
+
+        return objs;
     }
 
     // API to get object by serverId
