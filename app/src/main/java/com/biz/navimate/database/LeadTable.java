@@ -68,10 +68,10 @@ public class LeadTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public ObjLead GetByServerId(String textServerId) {
+    public ObjLead GetByServerId(String serverId) {
         for (ObjDb dbItem : cache) {
             ObjLead lead = (ObjLead) dbItem;
-            if (lead.textServerId.equals(textServerId)) {
+            if (lead.serverId.equals(serverId)) {
                 return lead;
             }
         }
@@ -112,6 +112,6 @@ public class LeadTable extends BaseTable {
 
     @Override
     protected ContentValues ParseToContent(ObjDb dbItem) {
-        return  ((ObjLead) dbItem).toContentValues();
+        return  ((ObjLead) dbItem).toDb();
     }
 }

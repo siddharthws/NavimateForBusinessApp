@@ -165,7 +165,7 @@ public class SyncDbTask extends BaseServerTask {
             // Get object by server ID or create new
             ObjLead lead = DbHelper.leadTable.GetByServerId(leadJson.getString(Constants.Server.KEY_ID));
             if (lead != null) {
-                lead.fromJson(leadJson);
+                lead.fromServer(leadJson);
             } else {
                 lead = new ObjLead(leadJson);
             }

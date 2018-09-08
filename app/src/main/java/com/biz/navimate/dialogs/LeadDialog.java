@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.biz.navimate.R;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.FormEntry;
+import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
 import com.biz.navimate.viewholders.DialogHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.RlFormField;
@@ -63,8 +64,9 @@ public class LeadDialog extends BaseDialog implements View.OnClickListener {
         ui.tvAddress.setText(currentData.lead.place.address);
 
         // Set Form Fields
-        for (FormEntry.Base value : currentData.lead.values) {
-            RlFormField fieldUi = new RlFormField(context, value, true);
+        for (FieldValue value : currentData.lead.values) {
+            FormEntry.Base entry = FormEntry.Parse(value.field, value.toString());
+            RlFormField fieldUi = new RlFormField(context, entry, true);
             ui.llFields.addView(fieldUi);
             ui.fields.add(fieldUi);
         }
