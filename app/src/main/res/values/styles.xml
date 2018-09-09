@@ -27,7 +27,7 @@
     </style>
 
     <style name="AppTheme.Widget.TextView.Label" parent="AppTheme.Widget.TextView">
-        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textColor">@color/grey_5</item>
         <item name="android:textSize">@dimen/textsize_description</item>
         <item name="android:textStyle">bold</item>
     </style>
@@ -43,7 +43,7 @@
         <item name="android:fontFamily">@font/nvm_font</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textCursorDrawable">@null</item>
-        <item name="backgroundTint">@color/lightGrey</item>
+        <item name="backgroundTint">@color/grey_d</item>
     </style>
 
     <!--

@@ -30,7 +30,7 @@
             android:layout_centerVertical="true"
             android:textStyle="bold"
             android:textSize="@dimen/textsize_primary_small"
-            android:textColor="@color/darkGrey"/>
+            android:textColor="@color/grey_5"/>
 
     </RelativeLayout>
 
@@ -38,7 +38,7 @@
         android:id="@+id/vw_drawer_group_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightGrey"
+        android:background="@color/grey_d"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:visibility="gone"/>
@@ -46,7 +46,7 @@
         android:id="@+id/vw_drawer_item_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightGrey"
+        android:background="@color/grey_d"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:visibility="gone"/>
