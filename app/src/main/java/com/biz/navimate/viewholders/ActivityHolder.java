@@ -57,10 +57,6 @@ public class ActivityHolder {
 
     public static class LeadPicker extends Base
     {
-        // Toolbar
-        public ImageButton ibDone, ibBack                        = null;
-        public TextView tvSelectedCount                          = null;
-
         // List
         public RlListView rlvList                                = null;
     }
