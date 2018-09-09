@@ -33,15 +33,17 @@ public class GetObjectListTask extends BaseServerTask {
     private  String text   = "";
 
     private int startIndex = 0;
+    private int count = 0;
     private int totalCount = 0;
 
     ArrayList<ObjNvmCompact> objects = null;
 
     // ----------------------- Constructor ----------------------- //
-    public GetObjectListTask(Context parentContext, int type, int startIndex, String text) {
+    public GetObjectListTask(Context parentContext, int type, int startIndex, int count, String text) {
         super(parentContext, Constants.Server.URL_GET_OBJECT_LIST);
         this.type       = type;
         this.startIndex = startIndex;
+        this.count      = count;
         this.text       = text;
     }
 
@@ -59,7 +61,7 @@ public class GetObjectListTask extends BaseServerTask {
 
             JSONObject pager = new JSONObject();
             pager.put(Constants.Server.KEY_START, startIndex);
-            pager.put(Constants.Server.KEY_COUNT, 10);
+            pager.put(Constants.Server.KEY_COUNT, count);
             requestJson.put(Constants.Server.KEY_PAGER, pager);
         }
         catch (JSONException e) {

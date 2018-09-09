@@ -156,7 +156,7 @@ public class ObjectPickerActivity    extends     BaseActivity
         }
 
         //Start Task to get objects
-        objListTask = new GetObjectListTask(this, type, startIndex, ui.etcSearch.GetText());
+        objListTask = new GetObjectListTask(this, type, startIndex, 10, ui.etcSearch.GetText());
         objListTask.SetListener(this);
         objListTask.execute();
         bTaskRunning = true;
