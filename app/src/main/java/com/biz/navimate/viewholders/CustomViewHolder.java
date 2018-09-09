@@ -1,6 +1,7 @@
 package com.biz.navimate.viewholders;
 
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -15,10 +16,13 @@ public class CustomViewHolder {
      */
     // Toolbar
     public static class NvmToolbar {
-        public ImageButton  ibSave = null,
+        public ImageButton  ibSearch = null,
+                            ibSave = null,
                             ibEdit = null,
                             ibBack = null;
         public TextView tvText = null;
+        public com.biz.navimate.views.compound.EtClearable etcSearch = null;
+        public LinearLayout llButtons = null;
     }
 
     // Label Box
