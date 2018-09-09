@@ -11,21 +11,23 @@ import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.viewholders.CustomViewHolder;
+import com.biz.navimate.views.custom.NvmEditText;
 import com.biz.navimate.views.custom.NvmImageButton;
 
 public class NvmToolbar     extends     LinearLayout
-                            implements  View.OnClickListener {
+                            implements  View.OnClickListener,
+                                        NvmEditText.IfaceEditText {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "NVM_TOOLBAR";
 
     // ----------------------- Interfaces ----------------------- //
-    public interface IfaceToolbar {
-        void onToolbarButtonClick(int id);
-    }
+    public interface IfaceToolbar { void onToolbarButtonClick(int id);}
     private IfaceToolbar listener = null;
-    public void SetListener(IfaceToolbar listener) {
-        this.listener = listener;
-    }
+    public void SetListener(IfaceToolbar listener) { this.listener = listener; }
+
+    public interface IfaceToolbarSearch { void onToolbarSearch(String text); }
+    private IfaceToolbarSearch searchListener = null;
+    public void SetSearchListener(IfaceToolbarSearch listener) { this.searchListener = listener; }
 
     // ----------------------- Globals ----------------------- //
     private Context ctx = null;
@@ -50,8 +52,35 @@ public class NvmToolbar     extends     LinearLayout
     // ----------------------- Overrides ----------------------- //
     @Override
     public void onClick(View view) {
-        if (listener != null) {
-            listener.onToolbarButtonClick(view.getId());
+        switch (view.getId()) {
+            case R.id.ib_tb_search:
+                ui.etcSearch.setVisibility(VISIBLE);
+                ui.tvText.setVisibility(GONE);
+                ui.llButtons.setVisibility(GONE);
+                break;
+            case R.id.ib_tb_back:
+                if (ui.etcSearch.getVisibility() == VISIBLE) {
+                    ui.etcSearch.setVisibility(GONE);
+                    ui.tvText.setVisibility(VISIBLE);
+                    ui.llButtons.setVisibility(VISIBLE);
+                } else if (listener != null) {
+                    listener.onToolbarButtonClick(view.getId());
+                }
+                break;
+            default:
+                if (listener != null) {
+                    listener.onToolbarButtonClick(view.getId());
+                }
+        }
+    }
+
+    @Override
+    public void onTextChanged(String text) { }
+
+    @Override
+    public void onTextChangedDebounced(String text) {
+        if (searchListener != null) {
+            searchListener.onToolbarSearch(text);
         }
     }
 
@@ -68,6 +97,9 @@ public class NvmToolbar     extends     LinearLayout
         switch (id) {
             case R.id.ib_tb_back:
                 view = ui.ibBack;
+                break;
+            case R.id.ib_tb_search:
+                view = ui.ibSearch;
                 break;
             case R.id.ib_tb_edit:
                 view = ui.ibEdit;
@@ -92,16 +124,21 @@ public class NvmToolbar     extends     LinearLayout
         inflater.inflate(R.layout.custom_nvm_toolbar, this, true);
 
         // Init UI
-        ui.tvText   = (TextView)        findViewById(R.id.tv_tb_text);
-        ui.ibBack   = (NvmImageButton)  findViewById(R.id.ib_tb_back);
-        ui.ibEdit   = (NvmImageButton)  findViewById(R.id.ib_tb_edit);
-        ui.ibSave   = (NvmImageButton)  findViewById(R.id.ib_tb_save);
+        ui.tvText       = (TextView)        findViewById(R.id.tv_tb_text);
+        ui.etcSearch    = (EtClearable)     findViewById(R.id.etc_tb_search);
+        ui.llButtons    = (LinearLayout)    findViewById(R.id.ll_tb_buttons);
+        ui.ibBack       = (NvmImageButton)  findViewById(R.id.ib_tb_back);
+        ui.ibSearch     = (NvmImageButton)  findViewById(R.id.ib_tb_search);
+        ui.ibEdit       = (NvmImageButton)  findViewById(R.id.ib_tb_edit);
+        ui.ibSave       = (NvmImageButton)  findViewById(R.id.ib_tb_save);
 
         // Set UI properties
         SetUiAttributes(attrs);
 
         // Set listeners
+        ui.etcSearch.SetListener(this);
         ui.ibBack.setOnClickListener(this);
+        ui.ibSearch.setOnClickListener(this);
         ui.ibEdit.setOnClickListener(this);
         ui.ibSave.setOnClickListener(this);
     }
@@ -127,6 +164,7 @@ public class NvmToolbar     extends     LinearLayout
             try {
                 // Show buttons based on input
                 if(a.getBoolean(R.styleable.NvmToolbar_backBtn, false)) { ShowButton(R.id.ib_tb_back, true); }
+                if(a.getBoolean(R.styleable.NvmToolbar_searchBtn, false)) { ShowButton(R.id.ib_tb_search, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_editBtn, false)) { ShowButton(R.id.ib_tb_edit, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_saveBtn, false)) { ShowButton(R.id.ib_tb_save, true); }
 
