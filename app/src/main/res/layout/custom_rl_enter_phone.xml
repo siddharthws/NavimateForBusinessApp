@@ -72,7 +72,7 @@
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/et_country_code"
-            android:background="@color/lightGrey"/>
+            android:background="@color/grey_d"/>
 
         <EditText
             android:id="@+id/et_phone_number"

@@ -33,7 +33,7 @@ public class CbCustom extends AppCompatCheckBox {
                 new int[][]{new int[]{-android.R.attr.state_enabled}, //disabled
                             new int[]{android.R.attr.state_enabled} //enabled
                 },
-                new int[] { ContextCompat.getColor(getContext(), R.color.darkGrey),
+                new int[] { ContextCompat.getColor(getContext(), R.color.grey_5),
                             ContextCompat.getColor(getContext(), R.color.colorPrimary)
                 }
         );

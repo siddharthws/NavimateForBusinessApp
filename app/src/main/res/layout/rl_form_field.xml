@@ -154,7 +154,7 @@
                     android:layout_centerInParent="true"
                     android:textSize="@dimen/textsize_primary_small"
                     android:text="Click here to upload image"
-                    android:background="@color/lightGrey"/>
+                    android:background="@color/grey_d"/>
 
             </RelativeLayout>
 
@@ -173,7 +173,7 @@
                     android:layout_centerInParent="true"
                     android:textSize="@dimen/textsize_primary_small"
                     android:text="Click here to upload file"
-                    android:background="@color/lightGrey"/>
+                    android:background="@color/grey_d"/>
 
             </RelativeLayout>
 
@@ -201,7 +201,7 @@
                     android:layout_centerInParent="true"
                     android:textSize="@dimen/textsize_primary_small"
                     android:text="Click here to upload signature"
-                    android:background="@color/lightGrey"/>
+                    android:background="@color/grey_d"/>
 
             </RelativeLayout>
 
@@ -220,7 +220,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/lightGrey"
+        android:background="@color/grey_d"
         android:layout_marginTop="@dimen/m_small"
         android:layout_alignParentBottom="true"/>
 
