@@ -24,7 +24,7 @@ public class IfaceResult {
 
     public interface LeadPicker
     {
-        void onLeadPicked(ArrayList<Long> leads);
+        void onLeadPicked(ObjNvmCompact obj);
     }
 
     public interface Zxing

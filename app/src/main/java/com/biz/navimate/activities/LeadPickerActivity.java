@@ -3,15 +3,14 @@ package com.biz.navimate.activities;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.lists.LeadListAdapter;
 import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.ListItem;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlListView;
 
@@ -28,7 +27,6 @@ public class LeadPickerActivity extends         BaseActivity
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.LeadPicker  ui              = null;
     private LeadListAdapter listAdpater                  = null;
-    private ArrayList<Long> pickedLeads                  = null;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -51,10 +49,6 @@ public class LeadPickerActivity extends         BaseActivity
 
     @Override
     protected void SetViews() {
-        // Init picked lists
-        pickedLeads     = new ArrayList<>();
-        ui.toolbar.SetTitle("0 leads picked...");
-
         // Initialize List
         listAdpater = new LeadListAdapter(this, ui.rlvList.GetListView());
         InitList();
@@ -66,12 +60,8 @@ public class LeadPickerActivity extends         BaseActivity
     @Override
     public void onToolbarButtonClick(int id) {
         super.onToolbarButtonClick(id);
-
-        switch (id) {
-            case R.id.ib_tb_save:
-                ButtonClickDone(null);
-                break;
-        }
+        
+        switch (id) { }
     }
 
     @Override
@@ -80,30 +70,15 @@ public class LeadPickerActivity extends         BaseActivity
         // Get Clicked Object
         ListItem.Lead clickedItem = (ListItem.Lead) listAdpater.getItem(i);
 
-        // Check if item was already selected
-        if (pickedLeads.contains(clickedItem.lead.dbId))
-        {
-            // Remove from selected list
-            pickedLeads.remove((Object) clickedItem.lead.dbId);
+        // Send activity result
+        Intent resultData = new Intent();
+        resultData.putExtra(Constants.Extras.PICKED_OBJECT,
+                            new ObjNvmCompact(  clickedItem.lead.serverId,
+                                                clickedItem.lead.name));
+        setResult(RESULT_OK, resultData);
 
-            // Remove tick mark from item view
-            clickedItem.bSelected = false;
-        }
-        else
-        {
-            // Add to picked leads
-            pickedLeads.add(clickedItem.lead.dbId);
-
-            // Add a tick icon to view to indicate selection
-            clickedItem.bSelected = true;
-        }
-
-        // Reset selected count
-        int numSelected = pickedLeads.size();
-        ui.toolbar.SetTitle(numSelected + " leads selected...");
-
-        // Refresh List Adapter
-        listAdpater.notifyDataSetChanged();
+        // Finish this activity
+        finish();
     }
 
     // ----------------------- Public APIs ----------------------- //
@@ -116,24 +91,6 @@ public class LeadPickerActivity extends         BaseActivity
     public void ButtonClickBack(View view)
     {
         super.onBackPressed();
-    }
-
-    public void ButtonClickDone(View view)
-    {
-        // Ensure some contacts are selected
-        if (pickedLeads.size() == 0)
-        {
-            Dbg.Toast(this, "No leads selected...", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        // Send activity result
-        Intent resultData = new Intent();
-        resultData.putExtra(Constants.Extras.LEAD_PICKER, pickedLeads);
-        setResult(RESULT_OK, resultData);
-
-        // Finish this activity
-        finish();
     }
 
     // ----------------------- Private APIs ----------------------- //

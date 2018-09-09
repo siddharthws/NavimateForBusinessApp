@@ -24,6 +24,7 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Route;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.core.ObjNvmCompact;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.tasks.DirectionsTask;
@@ -107,11 +108,9 @@ public class RouteBuilderDialog     extends     BaseDialog
                 if (currentActivity != null) {
                     currentActivity.SetLeadPickerResultListener(new IfaceResult.LeadPicker() {
                         @Override
-                        public void onLeadPicked(ArrayList<Long> leadIds) {
-                            for (Long leadId : leadIds) {
-                                ObjLead lead = (ObjLead) DbHelper.leadTable.GetById(leadId);
-                                adapter.Add(new ListItem.Lead(lead, false));
-                            }
+                        public void onLeadPicked(ObjNvmCompact obj) {
+                            ObjLead lead = (ObjLead) DbHelper.leadTable.GetByServerId(obj.id);
+                            adapter.Add(new ListItem.Lead(lead, false));
                         }
                     });
                     LeadPickerActivity.Start(currentActivity);

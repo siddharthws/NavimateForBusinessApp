@@ -445,7 +445,11 @@ public abstract class BaseActivity  extends     AppCompatActivity
                 {
                     if (resumeResultCode == Activity.RESULT_OK)
                     {
-                        leadPickerListener.onLeadPicked((ArrayList<Long>) resumeResultIntent.getSerializableExtra(Constants.Extras.LEAD_PICKER));
+                        // Get Compact Nvm Object from extras
+                        ObjNvmCompact obj = (ObjNvmCompact) resumeResultIntent.getExtras().getSerializable(Constants.Extras.PICKED_OBJECT);
+
+                        // Trigger listener
+                        leadPickerListener.onLeadPicked(obj);
                     }
                 }
                 break;
