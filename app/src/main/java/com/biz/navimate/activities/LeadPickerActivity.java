@@ -3,8 +3,6 @@ package com.biz.navimate.activities;
 import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz.navimate.R;
@@ -48,9 +46,6 @@ public class LeadPickerActivity extends         BaseActivity
         holder = ui;
 
         // Activity View
-        ui.ibDone               = (ImageButton)     findViewById(R.id.ib_toolbar_done);
-        ui.ibBack               = (ImageButton)     findViewById(R.id.ib_toolbar_back);
-        ui.tvSelectedCount      = (TextView)        findViewById(R.id.tv_selected_count);
         ui.rlvList              = (RlListView)      findViewById(R.id.rlv_leads);
     }
 
@@ -58,7 +53,7 @@ public class LeadPickerActivity extends         BaseActivity
     protected void SetViews() {
         // Init picked lists
         pickedLeads     = new ArrayList<>();
-        ui.tvSelectedCount.setText("0 leads picked...");
+        ui.toolbar.SetTitle("0 leads picked...");
 
         // Initialize List
         listAdpater = new LeadListAdapter(this, ui.rlvList.GetListView());
@@ -66,6 +61,17 @@ public class LeadPickerActivity extends         BaseActivity
 
         // Set Listeners
         ui.rlvList.GetListView().setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onToolbarButtonClick(int id) {
+        super.onToolbarButtonClick(id);
+
+        switch (id) {
+            case R.id.ib_tb_save:
+                ButtonClickDone(null);
+                break;
+        }
     }
 
     @Override
@@ -94,7 +100,7 @@ public class LeadPickerActivity extends         BaseActivity
 
         // Reset selected count
         int numSelected = pickedLeads.size();
-        ui.tvSelectedCount.setText(numSelected + " leads selected...");
+        ui.toolbar.SetTitle(numSelected + " leads selected...");
 
         // Refresh List Adapter
         listAdpater.notifyDataSetChanged();

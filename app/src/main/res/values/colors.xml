@@ -5,6 +5,7 @@
     <color name="colorAccent">#FFFFFF</color>
 
     <!-- Shades of grey -->
+    <color name="grey_e">#eeeeee</color>
     <color name="grey_d">#dddddd</color>
     <color name="grey_5">#555555</color>
 
