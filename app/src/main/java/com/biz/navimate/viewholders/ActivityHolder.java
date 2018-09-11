@@ -111,4 +111,7 @@ public class ActivityHolder {
         public ImageView ivImage         = null;
         public Toolbar toolbar           = null;
     }
+
+    public static class LeadDetails extends Base {
+    }
 }
