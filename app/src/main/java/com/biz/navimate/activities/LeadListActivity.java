@@ -17,9 +17,8 @@ import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.compound.NvmToolbar;
 
 import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class LeadPickerActivity extends         BaseActivity
+public class LeadListActivity   extends         BaseActivity
                                 implements      AdapterView.OnItemClickListener,
                                                 NvmToolbar.IfaceToolbarSearch,
                                                 IfaceServer.GetObjectList,
@@ -32,7 +31,7 @@ public class LeadPickerActivity extends         BaseActivity
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
-    private ActivityHolder.LeadPicker  ui = null;
+    private ActivityHolder.LeadList ui = null;
     private GenericListAdapter adapter = null;
     private GetObjectListTask objListTask = null;
     private boolean bTaskRunning = false;
@@ -45,13 +44,13 @@ public class LeadPickerActivity extends         BaseActivity
     @Override
     protected void InflateLayout() {
         // Set content view
-        setContentView(R.layout.activity_lead_picker);
+        setContentView(R.layout.activity_lead_list);
     }
 
     @Override
     protected void FindViews() {
         // Init view holder
-        ui = new ActivityHolder.LeadPicker();
+        ui = new ActivityHolder.LeadList();
         holder = ui;
 
         // Activity View
@@ -136,7 +135,7 @@ public class LeadPickerActivity extends         BaseActivity
         Bundle extras = new Bundle();
         extras.putInt(Constants.Extras.MODE, MODE_VIEWER);
 
-        BaseActivity.Start(parentActivity, LeadPickerActivity.class, -1, extras, Constants.RequestCodes.INVALID, null);
+        BaseActivity.Start(parentActivity, LeadListActivity.class, -1, extras, Constants.RequestCodes.INVALID, null);
     }
 
     public static void StartPicker(BaseActivity parentActivity)
@@ -144,7 +143,7 @@ public class LeadPickerActivity extends         BaseActivity
         Bundle extras = new Bundle();
         extras.putInt(Constants.Extras.MODE, MODE_PICKER);
 
-        BaseActivity.Start(parentActivity, LeadPickerActivity.class, -1, extras, Constants.RequestCodes.LEAD_PICKER, null);
+        BaseActivity.Start(parentActivity, LeadListActivity.class, -1, extras, Constants.RequestCodes.LEAD_PICKER, null);
     }
 
     // Button Click APIs
