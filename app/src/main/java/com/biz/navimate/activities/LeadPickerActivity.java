@@ -1,6 +1,7 @@
 package com.biz.navimate.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -26,6 +27,9 @@ public class LeadPickerActivity extends         BaseActivity
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "PICK_CONTACTS_ACTIVITY";
 
+    private static final int MODE_VIEWER = 1;
+    private static final int MODE_PICKER = 2;
+
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
     private ActivityHolder.LeadPicker  ui = null;
@@ -33,6 +37,7 @@ public class LeadPickerActivity extends         BaseActivity
     private GetObjectListTask objListTask = null;
     private boolean bTaskRunning = false;
     private String searchText = "";
+    private int mode = 0;
 
     // ----------------------- Constructor ----------------------- //
     // ----------------------- Overrides ----------------------- //
@@ -55,6 +60,9 @@ public class LeadPickerActivity extends         BaseActivity
 
     @Override
     protected void SetViews() {
+        // Read extras
+        mode = getIntent().getExtras().getInt(Constants.Extras.MODE);
+
         // Initialize List
         adapter = new GenericListAdapter(this, ui.rlvList.GetListView(), true);
         GetObjects(0, 30);
@@ -76,17 +84,20 @@ public class LeadPickerActivity extends         BaseActivity
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
     {
         // Get Clicked Object
-        ListItem.Lead clickedItem = (ListItem.Lead) adapter.getItem(i);
+        ListItem.Generic clickedItem = (ListItem.Generic) adapter.getItem(i);
 
-        // Send activity result
-        Intent resultData = new Intent();
-        resultData.putExtra(Constants.Extras.PICKED_OBJECT,
-                            new ObjNvmCompact(  clickedItem.lead.serverId,
-                                                clickedItem.lead.name));
-        setResult(RESULT_OK, resultData);
+        if (mode == MODE_VIEWER) {
+            // TODO : Add support for laucnhing lead details activity
+        } else {
+            // Send activity result
+            Intent resultData = new Intent();
+            resultData.putExtra(Constants.Extras.PICKED_OBJECT,
+                    new ObjNvmCompact(  clickedItem.sId, clickedItem.title));
+            setResult(RESULT_OK, resultData);
 
-        // Finish this activity
-        finish();
+            // Finish this activity
+            finish();
+        }
     }
 
     @Override
@@ -120,9 +131,20 @@ public class LeadPickerActivity extends         BaseActivity
     }
 
     // ----------------------- Public APIs ----------------------- //
-    public static void Start(BaseActivity parentActivity)
+    public static void StartViewer(BaseActivity parentActivity)
     {
-        BaseActivity.Start(parentActivity, LeadPickerActivity.class, -1, null, Constants.RequestCodes.LEAD_PICKER, null);
+        Bundle extras = new Bundle();
+        extras.putInt(Constants.Extras.MODE, MODE_VIEWER);
+
+        BaseActivity.Start(parentActivity, LeadPickerActivity.class, -1, extras, Constants.RequestCodes.INVALID, null);
+    }
+
+    public static void StartPicker(BaseActivity parentActivity)
+    {
+        Bundle extras = new Bundle();
+        extras.putInt(Constants.Extras.MODE, MODE_PICKER);
+
+        BaseActivity.Start(parentActivity, LeadPickerActivity.class, -1, extras, Constants.RequestCodes.LEAD_PICKER, null);
     }
 
     // Button Click APIs

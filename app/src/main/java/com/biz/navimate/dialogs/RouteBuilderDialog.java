@@ -113,7 +113,7 @@ public class RouteBuilderDialog     extends     BaseDialog
                             adapter.Add(new ListItem.Lead(lead, false));
                         }
                     });
-                    LeadPickerActivity.Start(currentActivity);
+                    LeadPickerActivity.StartPicker(currentActivity);
                 }
                 break;
             }
