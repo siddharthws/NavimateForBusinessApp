@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.core.ObjNvm;
 
 /**
  * Created by Jagannath on 08-11-2017.
@@ -90,5 +92,24 @@ public class DbHelper extends SQLiteOpenHelper
         db.execSQL("DROP TABLE IF EXISTS " + ProductTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TemplateTable.TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + FieldTable.TABLE_NAME);
+    }
+
+    public static ObjNvm GetNvmObject(int type, String id) {
+        switch (type) {
+            case Constants.Template.TYPE_LEAD: {
+                return leadTable.GetByServerId(id);
+            }
+        }
+
+        return null;
+    }
+
+    public static void SaveNvmObject(int type, ObjNvm obj) {
+        switch (type) {
+            case Constants.Template.TYPE_LEAD: {
+                leadTable.Save(obj);
+                break;
+            }
+        }
     }
 }

@@ -14,9 +14,11 @@ import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.activities.LeadListActivity;
 import com.biz.navimate.application.App;
+import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
+import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.lists.RemovableListAdapter;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.core.ObjLead;
@@ -24,8 +26,10 @@ import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.Route;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.core.ObjNvm;
 import com.biz.navimate.objects.core.ObjNvmCompact;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
+import com.biz.navimate.server.GetObjectDetailsTask;
 import com.biz.navimate.services.LocationService;
 import com.biz.navimate.tasks.DirectionsTask;
 import com.biz.navimate.viewholders.DialogHolder;
@@ -108,9 +112,21 @@ public class RouteBuilderDialog     extends     BaseDialog
                 if (currentActivity != null) {
                     currentActivity.SetLeadPickerResultListener(new IfaceResult.LeadPicker() {
                         @Override
-                        public void onLeadPicked(ObjNvmCompact obj) {
-                            ObjLead lead = (ObjLead) DbHelper.leadTable.GetByServerId(obj.id);
-                            adapter.Add(new ListItem.Lead(lead, false));
+                        public void onLeadPicked(ObjNvmCompact compactObj) {
+                            // Get lead object
+                            GetObjectDetailsTask objTask = new GetObjectDetailsTask(context, Constants.Template.TYPE_LEAD, compactObj.id);
+                            objTask.SetListener(new IfaceServer.GetObjectDetails() {
+                                @Override
+                                public void onObjectDetailsSuccess(ObjNvm obj) {
+                                    adapter.Add(new ListItem.Lead((ObjLead) obj, false));
+                                }
+
+                                @Override
+                                public void onObjectDetailsFailed() {
+                                    Dbg.Toast(context,"Could not get details for " + compactObj.name, Toast.LENGTH_SHORT);
+                                }
+                            });
+                            objTask.execute();
                         }
                     });
                     LeadListActivity.StartPicker(currentActivity);
