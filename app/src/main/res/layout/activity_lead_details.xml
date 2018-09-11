@@ -31,6 +31,43 @@
             android:showDividers="middle"
             android:orientation="vertical">
 
+            <!-- Name -->
+            <com.biz.navimate.views.templating.fields.TextFieldView
+                android:id="@+id/tfv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </com.biz.navimate.views.templating.fields.TextFieldView>
+
+            <!-- Location -->
+            <com.biz.navimate.views.compound.LabelBox
+                android:id="@+id/lbl_lead_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:label="Location">
+
+                <com.biz.navimate.views.compound.LocationEditorView
+                    android:id="@+id/lcv_lead_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </com.biz.navimate.views.compound.LocationEditorView>
+
+            </com.biz.navimate.views.compound.LabelBox>
+
+            <!-- Template -->
+            <com.biz.navimate.views.compound.LabelBox
+                android:id="@+id/lbl_lead_template"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:label="Template">
+
+                <com.biz.navimate.views.custom.Dropdown
+                    android:id="@+id/dd_lead_template"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </com.biz.navimate.views.custom.Dropdown>
+
+            </com.biz.navimate.views.compound.LabelBox>
+
         </LinearLayout>
 
     </com.biz.navimate.views.compound.NvmScrollView>
