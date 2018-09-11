@@ -41,6 +41,7 @@ public class Constants {
         public static final String TYPE                 = "extra_type";
         public static final String MODE                 = "mode";
         public static final String ID                   = "id";
+        public static final String IS_EDITABLE          = "is_editable";
     }
 
     // User Preferences related constants

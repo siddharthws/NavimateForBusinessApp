@@ -43,6 +43,8 @@ public class LeadDetailsActivity    extends     BaseActivity
     private Field nameField = null;
     private ArrayList<Template> templates = null;
 
+    private boolean bEditable = true;
+
     private String id = "";
 
     // ----------------------- Constructor ----------------------- //
@@ -50,9 +52,10 @@ public class LeadDetailsActivity    extends     BaseActivity
         BaseActivity.Start(parentActivity, LeadDetailsActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
     }
 
-    public static void Start(BaseActivity parentActivity, String id) {
+    public static void Start(BaseActivity parentActivity, String id, boolean bEditable) {
         Bundle extras = new Bundle();
         extras.putString(Constants.Extras.ID, id);
+        extras.putBoolean(Constants.Extras.IS_EDITABLE, bEditable);
 
         BaseActivity.Start(parentActivity, LeadDetailsActivity.class, -1, extras, Constants.RequestCodes.INVALID, null);
     }
@@ -108,6 +111,9 @@ public class LeadDetailsActivity    extends     BaseActivity
     @Override
     public void onToolbarButtonClick(int id) {
         switch (id) {
+            case R.id.ib_tb_edit:
+                SetEditable(true);
+                break;
             default:
                 super.onToolbarButtonClick(id);
         }
@@ -166,6 +172,7 @@ public class LeadDetailsActivity    extends     BaseActivity
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             id = extras.getString(Constants.Extras.ID);
+            bEditable = extras.getBoolean(Constants.Extras.IS_EDITABLE, true);
         }
 
         // init lead from id or create new
@@ -200,6 +207,35 @@ public class LeadDetailsActivity    extends     BaseActivity
 
         // Init fields
         ResetFieldViews();
+
+        // Set UI's editability
+        SetEditable(bEditable);
+    }
+
+    // method to set editability of UI
+    private void SetEditable(boolean bEditable) {
+        // Update Cache
+        this.bEditable = bEditable;
+
+        // Toggle field visibility
+        ui.tfvname.SetEditable(bEditable);
+        ui.lcvLocation.SetEditable(bEditable);
+        ui.ddTemplate.setEnabled(bEditable);
+        for (FieldView fieldView : ui.fields) {
+            fieldView.SetEditable(bEditable);
+        }
+
+        // Toggle toolbar buttons based on editability
+        if (bEditable) {
+            ui.toolbar.ShowButton(R.id.ib_tb_edit, false);
+        } else {
+            ui.toolbar.ShowButton(R.id.ib_tb_edit, true);
+        }
+
+        // Remove edit button if lead is not owned
+        if (!lead.isOwned()) {
+            ui.toolbar.ShowButton(R.id.ib_tb_edit, false);
+        }
     }
 
     // Methods to reset all field editors being displayed as per current cache data
