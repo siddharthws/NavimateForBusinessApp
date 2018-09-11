@@ -183,7 +183,7 @@ public class AddTaskDialog    extends     BaseDialog
             entries.add(rlField.GetEntry());
         }
 
-        AddTaskTask addTaskTask = new AddTaskTask(context, selectedLead.serverId, selectedFormTemplate.serverId, selectedTaskTemplate.serverId, entries);
+        AddTaskTask addTaskTask = new AddTaskTask(context, selectedLead.dbId, selectedFormTemplate.serverId, selectedTaskTemplate.serverId, entries);
         addTaskTask.execute();
     }
 }

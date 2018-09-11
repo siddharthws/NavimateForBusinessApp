@@ -121,7 +121,9 @@ public class EtClearable    extends     LinearLayout
             try {
                 // Apply input type to edit text
                 int inputType = a.getInt(R.styleable.EtClearable_android_inputType, InputType.TYPE_CLASS_TEXT);
-                SetInputType(inputType);
+                if (inputType != InputType.TYPE_CLASS_TEXT) {
+                    SetInputType(inputType);
+                }
 
                 // Add hint to edit text
                 String hint = a.getString(R.styleable.EtClearable_android_hint);

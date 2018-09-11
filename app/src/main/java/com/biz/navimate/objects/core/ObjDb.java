@@ -9,24 +9,23 @@ import com.biz.navimate.constants.Constants;
  * Created by Jagannath on 08-11-2017.
  */
 
-public class ObjDb {
+public abstract class ObjDb {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "DB_OBJECT";
+    private static final String TAG = "OBJ_DB";
 
     // ----------------------- Globals ----------------------- //
-    public long     dbId        = Constants.Misc.ID_INVALID;
+    public long dbId = Constants.Misc.ID_INVALID;
 
     // ----------------------- Constructor ----------------------- //
     public ObjDb() {}
 
+    // ----------------------- Overrides ----------------------- //
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
         boolean bEqual = false;
 
         // Validate Object Instance
-        if ((object != null) && (object instanceof ObjDb))
-        {
+        if ((object != null) && (object instanceof ObjDb)) {
             // Cast object to compare
             ObjDb compareObject = (ObjDb) object;
 
@@ -41,7 +40,7 @@ public class ObjDb {
     // ----------------------- Public APIs ----------------------- //
     // Database converter methods
     public void fromDb(Cursor cursor) {
-        dbId    = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_ID));
+        dbId = cursor.getLong(cursor.getColumnIndex(Constants.DB.COLUMN_ID));
     }
 
     public ContentValues toDb () {

@@ -43,6 +43,8 @@ public class ObjLead extends ObjNvm {
     // Converter methods for JSON
     @Override
     public void fromServer(JSONObject json) {
+        super.fromServer(json);
+
         try {
             name                = json.getString(Constants.Server.KEY_NAME);
             ownerId             = json.getJSONObject(Constants.Server.KEY_OWNER).getLong(Constants.Server.KEY_ID);
