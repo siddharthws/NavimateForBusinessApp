@@ -76,6 +76,10 @@
             android:name=".activities.ObjectPickerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.LeadDetailsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!-- Services -->
         <service android:name=".firebase.FcmMessagingService">
