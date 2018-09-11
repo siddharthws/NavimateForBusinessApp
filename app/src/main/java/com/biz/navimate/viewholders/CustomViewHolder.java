@@ -19,6 +19,7 @@ public class CustomViewHolder {
         public ImageButton  ibSearch = null,
                             ibSave = null,
                             ibEdit = null,
+                            ibAdd = null,
                             ibBack = null;
         public TextView tvText = null;
         public com.biz.navimate.views.compound.EtClearable etcSearch = null;
