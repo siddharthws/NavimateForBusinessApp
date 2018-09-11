@@ -1,16 +1,24 @@
 package com.biz.navimate.activities;
 
+import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.adapters.spinner.BaseSpinnerAdapter;
 import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
+import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceServer;
+import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.core.ObjLead;
+import com.biz.navimate.objects.core.ObjNvm;
 import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
+import com.biz.navimate.server.GetObjectDetailsTask;
 import com.biz.navimate.viewholders.ActivityHolder;
+import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.compound.LabelBox;
 import com.biz.navimate.views.compound.LocationEditorView;
 import com.biz.navimate.views.custom.Dropdown;
@@ -21,7 +29,8 @@ import java.util.ArrayList;
 
 public class LeadDetailsActivity    extends     BaseActivity
                                     implements  BaseSpinnerAdapter.IfaceSpinner,
-                                                TextFieldView.IfaceTextField {
+                                                TextFieldView.IfaceTextField,
+                                                IfaceServer.GetObjectDetails {
     // ----------------------- Constants ----------------------- //
     private static final String TAG = "LEAD_DETAILS_ACTIVITY";
 
@@ -34,9 +43,18 @@ public class LeadDetailsActivity    extends     BaseActivity
     private Field nameField = null;
     private ArrayList<Template> templates = null;
 
+    private String id = "";
+
     // ----------------------- Constructor ----------------------- //
     public static void Start(BaseActivity parentActivity) {
         BaseActivity.Start(parentActivity, LeadDetailsActivity.class, -1, null, Constants.RequestCodes.INVALID, null);
+    }
+
+    public static void Start(BaseActivity parentActivity, String id) {
+        Bundle extras = new Bundle();
+        extras.putString(Constants.Extras.ID, id);
+
+        BaseActivity.Start(parentActivity, LeadDetailsActivity.class, -1, extras, Constants.RequestCodes.INVALID, null);
     }
 
     // ----------------------- Abstracts ----------------------- //
@@ -65,6 +83,7 @@ public class LeadDetailsActivity    extends     BaseActivity
 
     @Override
     protected void SetViews() {
+        // Initialize params
         InitParams();
 
         // Init field object for name
@@ -118,11 +137,46 @@ public class LeadDetailsActivity    extends     BaseActivity
     @Override
     public void onTextFieldChangedDebounced(String text) {}
 
+    // Listeners for getting the data object
+    @Override
+    public void onObjectDetailsSuccess(ObjNvm obj) {
+        // Save in cache
+        this.lead = new ObjLead((ObjLead) obj);
+
+        // Update UI
+        InitLeadDetailsUi();
+
+        // Hide waiting dialog
+        RlDialog.Hide();
+    }
+
+    @Override
+    public void onObjectDetailsFailed() {
+        // Show error text
+        Dbg.Toast(this, "Could not get details...", Toast.LENGTH_SHORT);
+
+        // Hide waiting dialog
+        RlDialog.Hide();
+    }
+
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     // Method to initialize params
     private void InitParams() {
-        lead = new ObjLead();
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            id = extras.getString(Constants.Extras.ID);
+        }
+
+        // init lead from id or create new
+        if (id.length() > 0) {
+            GetObjectDetailsTask objDetailsTask = new GetObjectDetailsTask(this, Constants.Template.TYPE_LEAD, id);
+            objDetailsTask.SetListener(this);
+            objDetailsTask.execute();
+            RlDialog.Show(new Dialog.Waiting("Getting details..."));
+        } else {
+            lead = new ObjLead();
+        }
     }
 
     // Method to inti UI with details from lead object

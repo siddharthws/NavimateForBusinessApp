@@ -40,6 +40,7 @@ public class Constants {
         public static final String SIGNATURE_IMAGE_PATH = "signature_image_path";
         public static final String TYPE                 = "extra_type";
         public static final String MODE                 = "mode";
+        public static final String ID                   = "id";
     }
 
     // User Preferences related constants
