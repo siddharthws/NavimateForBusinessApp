@@ -25,6 +25,13 @@ public class Field extends ServerObject {
     public String value = "";
 
     // ----------------------- Constructor ----------------------- //
+    public Field (String title, int type, String value) {
+        super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
+        this.title = title;
+        this.type = type;
+        this.value = value;
+    }
+
     public Field (JSONObject json) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);

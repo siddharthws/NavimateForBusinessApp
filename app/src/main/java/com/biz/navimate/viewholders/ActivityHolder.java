@@ -4,6 +4,7 @@ import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biz.navimate.fragments.NvmMapFragment;
@@ -16,7 +17,14 @@ import com.biz.navimate.views.RlListView;
 import com.biz.navimate.views.RlVerifyPhone;
 import com.biz.navimate.views.VwSignature;
 import com.biz.navimate.views.compound.EtClearable;
+import com.biz.navimate.views.compound.LabelBox;
+import com.biz.navimate.views.compound.LocationEditorView;
 import com.biz.navimate.views.compound.NvmToolbar;
+import com.biz.navimate.views.custom.Dropdown;
+import com.biz.navimate.views.templating.fields.FieldView;
+import com.biz.navimate.views.templating.fields.TextFieldView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -113,5 +121,12 @@ public class ActivityHolder {
     }
 
     public static class LeadDetails extends Base {
+        public LinearLayout llRoot = null;
+        public TextFieldView tfvname = null;
+        public LabelBox lblLocation = null;
+        public LocationEditorView lcvLocation = null;
+        public LabelBox lblTemplate = null;
+        public Dropdown ddTemplate = null;
+        public ArrayList<FieldView> fields = null;
     }
 }
