@@ -2,6 +2,7 @@ package com.biz.navimate.interfaces;
 
 import com.biz.navimate.objects.ObjProduct;
 import com.biz.navimate.objects.User;
+import com.biz.navimate.objects.core.ObjNvm;
 import com.biz.navimate.objects.core.ObjNvmCompact;
 
 import java.util.ArrayList;
@@ -85,5 +86,11 @@ public class IfaceServer {
     public interface GetObjectList {
         void onObjectListSuccess(ArrayList<ObjNvmCompact> objects, int totalCount);
         void onObjectListFailed();
+    }
+
+    // Get Product List Task interface
+    public interface GetObjectDetails {
+        void onObjectDetailsSuccess(ObjNvm obj);
+        void onObjectDetailsFailed();
     }
 }

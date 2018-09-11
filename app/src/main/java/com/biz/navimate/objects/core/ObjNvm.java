@@ -181,4 +181,14 @@ public abstract class ObjNvm extends ObjDb {
             values.add(FieldValue.newInstance(field, field.value));
         }
     }
+
+    // ----------------------- Static APIs ----------------------- //
+    public static ObjNvm newInstance(int type, JSONObject json) {
+        switch (type) {
+            case Constants.Template.TYPE_LEAD:
+                return new ObjLead(json);
+        }
+
+        return null;
+    }
 }

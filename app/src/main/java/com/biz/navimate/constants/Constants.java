@@ -126,22 +126,23 @@ public class Constants {
         private static final String URL_BASE            = "https://biz.navimateapp.com";       // Release
 
         // Http URLs
-        public static final String URL_GET_PROFILE      = URL_BASE + "/api/reps/profile";
-        public static final String URL_OTP_SMS          = URL_BASE + "/api/reps/otp";
-        public static final String URL_UPDATE_FCM       = URL_BASE + "/api/reps/fcm";
-        public static final String URL_UPDATE_NAME      = URL_BASE + "/api/reps/name";
-        public static final String URL_REGISTER         = URL_BASE + "/api/reps/register";
-        public static final String URL_UPLOAD_PHOTO     = URL_BASE + "/api/photos/upload";
-        public static final String URL_UPLOAD_FILE      = URL_BASE + "/api/photos/uploadFile";
-        public static final String URL_CHECK_UPDATE     = URL_BASE + "/api/app/update";
-        public static final String URL_SYNC             = URL_BASE + "/api/reps/sync";
-        public static final String URL_SYNC_FORMS       = URL_BASE + "/api/reps/sync/forms";
-        public static final String URL_ADD_TASK         = URL_BASE + "/api/reps/addTask";
-        public static final String URL_ACRA             = URL_BASE + "/api/app/acra";
-        public static final String URL_APP_START        = URL_BASE + "/api/reps/appStart";
-        public static final String URL_LOCATION_REPORT  = URL_BASE + "/api/reps/locationReport";
-        public static final String URL_GET_PRODUCT      = URL_BASE + "/api/reps/product/id";
-        public static final String URL_GET_OBJECT_LIST  = URL_BASE + "/api/reps/objects/search";
+        public static final String URL_GET_PROFILE          = URL_BASE + "/api/reps/profile";
+        public static final String URL_OTP_SMS              = URL_BASE + "/api/reps/otp";
+        public static final String URL_UPDATE_FCM           = URL_BASE + "/api/reps/fcm";
+        public static final String URL_UPDATE_NAME          = URL_BASE + "/api/reps/name";
+        public static final String URL_REGISTER             = URL_BASE + "/api/reps/register";
+        public static final String URL_UPLOAD_PHOTO         = URL_BASE + "/api/photos/upload";
+        public static final String URL_UPLOAD_FILE          = URL_BASE + "/api/photos/uploadFile";
+        public static final String URL_CHECK_UPDATE         = URL_BASE + "/api/app/update";
+        public static final String URL_SYNC                 = URL_BASE + "/api/reps/sync";
+        public static final String URL_SYNC_FORMS           = URL_BASE + "/api/reps/sync/forms";
+        public static final String URL_ADD_TASK             = URL_BASE + "/api/reps/addTask";
+        public static final String URL_ACRA                 = URL_BASE + "/api/app/acra";
+        public static final String URL_APP_START            = URL_BASE + "/api/reps/appStart";
+        public static final String URL_LOCATION_REPORT      = URL_BASE + "/api/reps/locationReport";
+        public static final String URL_GET_PRODUCT          = URL_BASE + "/api/reps/product/id";
+        public static final String URL_GET_OBJECT_LIST      = URL_BASE + "/api/reps/objects/search";
+        public static final String URL_GET_OBJECT_DETAILS   = URL_BASE + "/api/reps/objects/details";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
