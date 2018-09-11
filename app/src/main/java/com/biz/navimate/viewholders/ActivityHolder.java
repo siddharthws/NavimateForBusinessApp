@@ -55,7 +55,7 @@ public class ActivityHolder {
         public RlDrawer rlDrawer = null;
     }
 
-    public static class LeadPicker extends Base
+    public static class LeadList extends Base
     {
         // List
         public RlListView rlvList                                = null;

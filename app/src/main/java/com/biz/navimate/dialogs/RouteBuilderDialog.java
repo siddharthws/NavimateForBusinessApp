@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
-import com.biz.navimate.activities.LeadPickerActivity;
+import com.biz.navimate.activities.LeadListActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
@@ -113,7 +113,7 @@ public class RouteBuilderDialog     extends     BaseDialog
                             adapter.Add(new ListItem.Lead(lead, false));
                         }
                     });
-                    LeadPickerActivity.StartPicker(currentActivity);
+                    LeadListActivity.StartPicker(currentActivity);
                 }
                 break;
             }
