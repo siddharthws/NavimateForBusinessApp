@@ -108,7 +108,7 @@ public abstract class FieldView extends LabelBox {
         }
 
         // Return error flag
-        return bErr;
+        return !bErr;
     }
 
     // ----------------------- Private APIs ----------------------- //
