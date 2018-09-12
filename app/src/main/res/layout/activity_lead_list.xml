@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         app:title="Pick Leads"
         app:backBtn="true"
-        app:searchBtn="true">
+        app:searchBtn="true"
+        app:addBtn="true">
     </com.biz.navimate.views.compound.NvmToolbar>
 
     <com.biz.navimate.views.RlListView
