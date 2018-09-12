@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.biz.navimate.R;
+import com.biz.navimate.activities.LeadDetailsActivity;
+import com.biz.navimate.application.App;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.FormEntry;
@@ -104,7 +106,7 @@ public class TaskInfoDialog     extends     BaseDialog
                 break;
             }
             case R.id.btn_lead: {
-                RlDialog.Show(new Dialog.Lead(task.lead));
+                LeadDetailsActivity.Start(App.GetCurrentActivity(), task.lead.serverId, false);
                 break;
             }
             case R.id.btn_maps: {

@@ -76,7 +76,11 @@ public class LeadListActivity   extends         BaseActivity
     public void onToolbarButtonClick(int id) {
         super.onToolbarButtonClick(id);
         
-        switch (id) { }
+        switch (id) {
+            case R.id.ib_tb_add:
+                LeadDetailsActivity.Start(this);
+                break;
+        }
     }
 
     @Override
@@ -86,7 +90,7 @@ public class LeadListActivity   extends         BaseActivity
         ListItem.Generic clickedItem = (ListItem.Generic) adapter.getItem(i);
 
         if (mode == MODE_VIEWER) {
-            // TODO : Add support for laucnhing lead details activity
+            LeadDetailsActivity.Start(this, clickedItem.sId, false);
         } else {
             // Send activity result
             Intent resultData = new Intent();
