@@ -39,6 +39,14 @@ public class ObjLead extends ObjNvm {
         fromDb(cursor);
     }
 
+    public ObjLead(ObjLead obj) {
+        super(obj);
+
+        this.name = obj.name;
+        this.place = obj.place != null ? new ObjPlace(obj.place.lat, obj.place.lng, obj.place.address) : null;
+        this.ownerId = obj.ownerId;
+    }
+
     // ----------------------- Overrides ----------------------- //
     // Converter methods for JSON
     @Override

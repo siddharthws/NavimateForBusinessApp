@@ -19,6 +19,10 @@ public abstract class ObjDb {
     // ----------------------- Constructor ----------------------- //
     public ObjDb() {}
 
+    public ObjDb(ObjDb obj) {
+        this.dbId = obj.dbId;
+    }
+
     // ----------------------- Overrides ----------------------- //
     @Override
     public boolean equals(Object object) {

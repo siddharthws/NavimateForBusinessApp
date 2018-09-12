@@ -42,6 +42,20 @@ public abstract class ObjNvm extends ObjDb {
         SetTemplate(template);
     }
 
+    public ObjNvm(ObjNvm obj) {
+        super(obj);
+
+        this.type = obj.type;
+        this.bDirty = obj.bDirty;
+        this.serverId = obj.serverId;
+        this.template = obj.template;
+
+        this.values = new ArrayList<>();
+        for (FieldValue val : obj.values) {
+            this.values.add(FieldValue.newInstance(val.field, val.toString()));
+        }
+    }
+
     // ----------------------- Overrides ----------------------- //
     // DB Converter methods
     @Override
