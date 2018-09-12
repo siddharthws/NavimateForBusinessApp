@@ -12,6 +12,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
+import com.biz.navimate.objects.ObjPlace;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.core.ObjNvm;
@@ -246,6 +247,11 @@ public class LeadDetailsActivity    extends     BaseActivity
     }
 
     public void Save () {
+        // Validate data
+        if (!Validate()) {
+            return;
+        }
+
         // Update local cache
         UpdateCache();
 
@@ -277,6 +283,41 @@ public class LeadDetailsActivity    extends     BaseActivity
             FieldView view = FieldView.newInstance(this, ui.llRoot, value);
             ui.fields.add(view);
         }
+    }
+
+    // Method to Validate values filled by user in UI
+    private boolean Validate() {
+        // Check name
+        if (!ui.tfvname.Validate()) {
+            return false;
+        }
+
+        // Check location
+        ObjPlace place = ui.lcvLocation.Get();
+        if (place == null || !place.isValid()) {
+            ui.lblLocation.ShowError("Please select a valid location");
+            return false;
+        } else {
+            ui.lblLocation.HideError();
+        }
+
+        // Check template
+        int templateIdx = ui.ddTemplate.getSelectedItemPosition();
+        if (templateIdx < 0) {
+            ui.lblTemplate.ShowError("Please select a valid template");
+            return false;
+        } else {
+            ui.lblTemplate.HideError();
+        }
+
+        // Validate each field
+        for (FieldView fieldView : ui.fields) {
+            if (!fieldView.Validate()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Method to update lead cache from UI
