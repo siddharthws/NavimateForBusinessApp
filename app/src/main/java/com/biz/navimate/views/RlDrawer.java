@@ -36,10 +36,12 @@ public class RlDrawer extends     RelativeLayout
     public static final int DRAWER_ACTION_FORMS         = 2;
     public static final int DRAWER_ACTION_TASK          = 3;
     public static final int DRAWER_ACTION_SUBMIT_FORM   = 4;
+    public static final int DRAWER_ACTION_LEADS         = 5;
 
     // Drawer List Items
     public static final ListItem.Drawer[] DRAWER_ITEMS =
             {
+                    new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM,              DRAWER_ACTION_LEADS,               "Leads",        R.mipmap.ic_lead_grey),
                     new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM,              DRAWER_ACTION_TASK,                "Tasks",        R.mipmap.icon_briefcase),
                     new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM,              DRAWER_ACTION_FORMS,               "Forms",        R.mipmap.icon_form_grey),
                     new ListItem.Drawer(ListItem.TYPE_DRAWER_ITEM_SEPARATOR,    DRAWER_ACTION_NONE,                "",    0),

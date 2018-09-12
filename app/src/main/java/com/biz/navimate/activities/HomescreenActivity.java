@@ -170,6 +170,10 @@ public class HomescreenActivity     extends     BaseActivity
     @Override
     public void onDrawerItemClick(int actionId) {
         switch (actionId) {
+            case RlDrawer.DRAWER_ACTION_LEADS : {
+                LeadListActivity.StartViewer(this);
+                break;
+            }
             case RlDrawer.DRAWER_ACTION_TASK : {
                 TaskActivity.Start(this);
                 break;
