@@ -20,6 +20,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import okhttp3.RequestBody;
 
 /**
@@ -72,6 +74,9 @@ public class SyncDbTask extends BaseServerTask {
             if (IsResponseValid()) {
                 ParseResponse();
             }
+
+            // Send dirty leads to server
+            SyncDirtyLeads();
         }catch(JSONException e) {
             Dbg.error(TAG, "Exception while parsing data for task");
             Dbg.stack(e);
@@ -230,6 +235,46 @@ public class SyncDbTask extends BaseServerTask {
 
             // Save object in DB
             DbHelper.formTable.Save(form);
+        }
+    }
+
+    private void SyncDirtyLeads() {
+        // Get all dirty leads
+        ArrayList<ObjLead> leads = DbHelper.leadTable.GetDirty();
+
+        // Prep lead JSON
+        JSONObject json = new JSONObject();
+        try {
+            JSONArray leadsJson = new JSONArray();
+            for (ObjLead lead : leads) {
+                leadsJson.put(lead.toServer());
+            }
+
+            json.put(Constants.Server.KEY_LEADS, leadsJson);
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Could not parse leads into JSON");
+            return;
+        }
+
+        // Execute server request
+        this.url = Constants.Server.URL_EDIT_LEADS;
+        reqBuilder.method("POST", RequestBody.create(JSON, json.toString()));
+        super.doInBackground();
+
+        // Parse response
+        if (IsResponseValid()) {
+            try {
+                JSONArray ids = responseJson.getJSONArray(Constants.Server.KEY_IDS);
+                for (int i = 0; i < ids.length(); i++) {
+                    ObjLead lead = leads.get(i);
+                    lead.serverId = ids.getString(i);
+                    lead.bDirty = false;
+                    DbHelper.leadTable.Save(lead);
+                }
+            } catch (JSONException e) {
+                Dbg.error(TAG, "Could not parse lead IDs from response JSON");
+                return;
+            }
         }
     }
 }

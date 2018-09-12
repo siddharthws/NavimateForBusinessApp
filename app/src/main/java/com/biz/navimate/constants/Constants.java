@@ -139,6 +139,7 @@ public class Constants {
         public static final String URL_SYNC                 = URL_BASE + "/api/reps/sync";
         public static final String URL_SYNC_FORMS           = URL_BASE + "/api/reps/sync/forms";
         public static final String URL_ADD_TASK             = URL_BASE + "/api/reps/addTask";
+        public static final String URL_EDIT_LEADS           = URL_BASE + "/api/reps/leads/edit";
         public static final String URL_ACRA                 = URL_BASE + "/api/app/acra";
         public static final String URL_APP_START            = URL_BASE + "/api/reps/appStart";
         public static final String URL_LOCATION_REPORT      = URL_BASE + "/api/reps/locationReport";
@@ -218,6 +219,7 @@ public class Constants {
 
         // Misc Keys
         public static final String KEY_ID               = "id";
+        public static final String KEY_IDS              = "ids";
         public static final String KEY_VERSION          = "ver";
         public static final String KEY_NAME             = "name";
         public static final String KEY_PHONE            = "phoneNumber";
