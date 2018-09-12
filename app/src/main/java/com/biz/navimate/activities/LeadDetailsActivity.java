@@ -16,7 +16,9 @@ import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.core.ObjNvm;
 import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
+import com.biz.navimate.objects.templating.fieldvalues.TextFieldValue;
 import com.biz.navimate.server.GetObjectDetailsTask;
+import com.biz.navimate.server.SyncDbTask;
 import com.biz.navimate.viewholders.ActivityHolder;
 import com.biz.navimate.views.RlDialog;
 import com.biz.navimate.views.compound.LabelBox;
@@ -111,6 +113,9 @@ public class LeadDetailsActivity    extends     BaseActivity
     @Override
     public void onToolbarButtonClick(int id) {
         switch (id) {
+            case R.id.ib_tb_save:
+                Save();
+                break;
             case R.id.ib_tb_edit:
                 SetEditable(true);
                 break;
@@ -228,7 +233,9 @@ public class LeadDetailsActivity    extends     BaseActivity
         // Toggle toolbar buttons based on editability
         if (bEditable) {
             ui.toolbar.ShowButton(R.id.ib_tb_edit, false);
+            ui.toolbar.ShowButton(R.id.ib_tb_save, true);
         } else {
+            ui.toolbar.ShowButton(R.id.ib_tb_save, false);
             ui.toolbar.ShowButton(R.id.ib_tb_edit, true);
         }
 
@@ -236,6 +243,25 @@ public class LeadDetailsActivity    extends     BaseActivity
         if (!lead.isOwned()) {
             ui.toolbar.ShowButton(R.id.ib_tb_edit, false);
         }
+    }
+
+    public void Save () {
+        // Update local cache
+        UpdateCache();
+
+        // Save Lead Object in table
+        lead.bDirty = true;
+        DbHelper.leadTable.Save(lead);
+
+        // Trigger DB Syncing
+        SyncDbTask syncDb = new SyncDbTask(this, false);
+        syncDb.execute();
+
+        // Show success text
+        Dbg.Toast(this, "Lead saved successfully...", Toast.LENGTH_SHORT);
+
+        // Set UI as non editable
+        SetEditable(false);
     }
 
     // Methods to reset all field editors being displayed as per current cache data
@@ -250,6 +276,20 @@ public class LeadDetailsActivity    extends     BaseActivity
         for (FieldValue value : lead.values) {
             FieldView view = FieldView.newInstance(this, ui.llRoot, value);
             ui.fields.add(view);
+        }
+    }
+
+    // Method to update lead cache from UI
+    private void UpdateCache() {
+        // Set name, place and template from UI
+        lead.name       = ((TextFieldValue) ui.tfvname.GetValue()).text;
+        lead.place      = ui.lcvLocation.Get();
+        lead.template   = templates.get(ui.ddTemplate.getSelectedItemPosition());
+
+        // Reset field values using field views
+        lead.values.clear();
+        for (FieldView fieldView : ui.fields) {
+            lead.values.add(fieldView.GetValue());
         }
     }
 }
