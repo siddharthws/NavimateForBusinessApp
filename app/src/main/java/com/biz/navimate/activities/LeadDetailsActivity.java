@@ -117,6 +117,9 @@ public class LeadDetailsActivity    extends     BaseActivity
             case R.id.ib_tb_save:
                 Save();
                 break;
+            case R.id.ib_tb_cross:
+                Cancel();
+                break;
             case R.id.ib_tb_edit:
                 SetEditable(true);
                 break;
@@ -183,10 +186,7 @@ public class LeadDetailsActivity    extends     BaseActivity
 
         // init lead from id or create new
         if (id.length() > 0) {
-            GetObjectDetailsTask objDetailsTask = new GetObjectDetailsTask(this, Constants.Template.TYPE_LEAD, id);
-            objDetailsTask.SetListener(this);
-            objDetailsTask.execute();
-            RlDialog.Show(new Dialog.Waiting("Getting details..."));
+            TriggerGetDetailsTask(true);
         } else {
             lead = new ObjLead();
         }
@@ -235,7 +235,13 @@ public class LeadDetailsActivity    extends     BaseActivity
         if (bEditable) {
             ui.toolbar.ShowButton(R.id.ib_tb_edit, false);
             ui.toolbar.ShowButton(R.id.ib_tb_save, true);
+
+            // Show cancel button only if this is an existing lead
+            if (id.length() > 0) {
+                ui.toolbar.ShowButton(R.id.ib_tb_cross, true);
+            }
         } else {
+            ui.toolbar.ShowButton(R.id.ib_tb_cross, false);
             ui.toolbar.ShowButton(R.id.ib_tb_save, false);
             ui.toolbar.ShowButton(R.id.ib_tb_edit, true);
         }
@@ -268,6 +274,14 @@ public class LeadDetailsActivity    extends     BaseActivity
 
         // Set UI as non editable
         SetEditable(false);
+    }
+
+    public void Cancel () {
+        // Set UI as non editable
+        SetEditable(false);
+
+        // Reset lead object using task
+        TriggerGetDetailsTask(false);
     }
 
     // Methods to reset all field editors being displayed as per current cache data
@@ -331,6 +345,19 @@ public class LeadDetailsActivity    extends     BaseActivity
         lead.values.clear();
         for (FieldView fieldView : ui.fields) {
             lead.values.add(fieldView.GetValue());
+        }
+    }
+
+    // method to trigger task to get lead details from db / server
+    private void TriggerGetDetailsTask(boolean bDialog) {
+        // Trigger task
+        GetObjectDetailsTask objDetailsTask = new GetObjectDetailsTask(this, Constants.Template.TYPE_LEAD, id);
+        objDetailsTask.SetListener(this);
+        objDetailsTask.execute();
+
+        // Show waiting dialog
+        if (bDialog) {
+            RlDialog.Show(new Dialog.Waiting("Getting details..."));
         }
     }
 }
