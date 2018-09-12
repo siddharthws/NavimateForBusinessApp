@@ -17,6 +17,7 @@ public class CustomViewHolder {
     // Toolbar
     public static class NvmToolbar {
         public ImageButton  ibSearch = null,
+                            ibCross = null,
                             ibSave = null,
                             ibEdit = null,
                             ibAdd = null,

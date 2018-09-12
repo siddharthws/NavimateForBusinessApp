@@ -68,6 +68,14 @@
             android:src="@drawable/ic_check_white"
             android:visibility="gone"/>
 
+        <!-- Cross Button -->
+        <com.biz.navimate.views.custom.NvmImageButton
+            android:id="@+id/ib_tb_cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cross_white"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </merge>

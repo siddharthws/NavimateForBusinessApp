@@ -107,6 +107,9 @@ public class NvmToolbar     extends     LinearLayout
             case R.id.ib_tb_add:
                 view = ui.ibAdd;
                 break;
+            case R.id.ib_tb_cross:
+                view = ui.ibCross;
+                break;
             case R.id.ib_tb_save:
                 view = ui.ibSave;
                 break;
@@ -134,6 +137,7 @@ public class NvmToolbar     extends     LinearLayout
         ui.ibSearch     = (NvmImageButton)  findViewById(R.id.ib_tb_search);
         ui.ibEdit       = (NvmImageButton)  findViewById(R.id.ib_tb_edit);
         ui.ibAdd        = (NvmImageButton)  findViewById(R.id.ib_tb_add);
+        ui.ibCross      = (NvmImageButton)  findViewById(R.id.ib_tb_cross);
         ui.ibSave       = (NvmImageButton)  findViewById(R.id.ib_tb_save);
 
         // Set UI properties
@@ -145,6 +149,7 @@ public class NvmToolbar     extends     LinearLayout
         ui.ibSearch.setOnClickListener(this);
         ui.ibEdit.setOnClickListener(this);
         ui.ibAdd.setOnClickListener(this);
+        ui.ibCross.setOnClickListener(this);
         ui.ibSave.setOnClickListener(this);
     }
 
@@ -172,6 +177,7 @@ public class NvmToolbar     extends     LinearLayout
                 if(a.getBoolean(R.styleable.NvmToolbar_searchBtn, false)) { ShowButton(R.id.ib_tb_search, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_editBtn, false)) { ShowButton(R.id.ib_tb_edit, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_addBtn, false)) { ShowButton(R.id.ib_tb_add, true); }
+                if(a.getBoolean(R.styleable.NvmToolbar_crossBtn, false)) { ShowButton(R.id.ib_tb_cross, true); }
                 if(a.getBoolean(R.styleable.NvmToolbar_saveBtn, false)) { ShowButton(R.id.ib_tb_save, true); }
 
                 // Set Title in toolbar

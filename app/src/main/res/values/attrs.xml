@@ -16,6 +16,7 @@
         <attr name="searchBtn"  format="boolean" />
         <attr name="editBtn"    format="boolean" />
         <attr name="addBtn"     format="boolean" />
+        <attr name="crossBtn"   format="boolean" />
         <attr name="saveBtn"    format="boolean" />
     </declare-styleable>
 
