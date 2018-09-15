@@ -127,7 +127,17 @@ public class SyncFormsTask extends BaseServerTask {
                 }
             }
 
-            if (!bImagesSynced || !bFilesSynced) {
+            // Sync invoices with server
+            boolean bInvoicesSynced = true;
+            if (bInvoicesSynced) {
+                ArrayList<Object> invoices = GetFormInvoices(form);
+                for (Object invoice : invoices) {
+                    bInvoicesSynced = SyncInvoice(invoice);
+                    if (!bInvoicesSynced) {break;}
+                }
+            }
+
+            if (!bImagesSynced || !bFilesSynced || !bInvoicesSynced) {
                 // Skip this form submission if image sync failed
                 continue;
             }
@@ -176,6 +186,11 @@ public class SyncFormsTask extends BaseServerTask {
         }
 
         return files;
+    }
+
+    private ArrayList<Object> GetFormInvoices(Form form) {
+        // Placeholder
+        return new ArrayList<>();
     }
 
     private boolean SyncImage(String image) {
@@ -241,6 +256,11 @@ public class SyncFormsTask extends BaseServerTask {
         // Delete File since succesfully synced
         file.delete();
 
+        return true;
+    }
+
+    private boolean SyncInvoice(Object invoice) {
+        // Placeholder
         return true;
     }
 

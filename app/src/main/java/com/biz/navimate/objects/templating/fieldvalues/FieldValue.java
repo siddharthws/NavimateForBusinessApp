@@ -49,6 +49,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_PRODUCT: {
                 return new ObjectFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_INVOICE: {
+                // Placeholder
+            }
         }
 
         return null;

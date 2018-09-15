@@ -119,6 +119,7 @@ public class Constants {
         public static final int FIELD_TYPE_DATE           = 9;
         public static final int FIELD_TYPE_FILE           = 10;
         public static final int FIELD_TYPE_PRODUCT        = 11;
+        public static final int FIELD_TYPE_INVOICE        = 12;
     }
 
     // Server related constants

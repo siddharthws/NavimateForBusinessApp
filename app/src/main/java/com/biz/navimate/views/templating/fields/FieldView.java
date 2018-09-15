@@ -153,6 +153,8 @@ public abstract class FieldView extends LabelBox {
                 return new DateFieldView(ctx, root, value);
             case Constants.Template.FIELD_TYPE_PRODUCT:
                 return new ObjFieldView(ctx, root, value);
+            case Constants.Template.FIELD_TYPE_INVOICE:
+                // Placeholder
         }
 
         return null;
