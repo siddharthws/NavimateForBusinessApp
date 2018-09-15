@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.NvmEditText;
 import com.biz.navimate.views.custom.NvmImageView;
+import com.biz.navimate.views.custom.PhotoThumbnailView;
 
 public class CustomViewHolder {
     /*
@@ -58,5 +59,11 @@ public class CustomViewHolder {
         public ImageButton ibEdit, ibClear = null;
         public TextView tvText = null;
         public NvmImageView ivIcon = null;
+    }
+
+    public static class PhotoEditor {
+        public ImageButton ibEdit, ibClear = null;
+        public TextView tvError = null;
+        public PhotoThumbnailView ptThumbnail = null;
     }
 }
