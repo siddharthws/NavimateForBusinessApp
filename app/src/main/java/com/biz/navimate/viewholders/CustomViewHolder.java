@@ -66,4 +66,10 @@ public class CustomViewHolder {
         public TextView tvError = null;
         public PhotoThumbnailView ptThumbnail = null;
     }
+
+    public static class SignEditor {
+        public ImageButton ibEdit, ibClear = null;
+        public TextView tvError = null;
+        public PhotoThumbnailView ptThumbnail = null;
+    }
 }
