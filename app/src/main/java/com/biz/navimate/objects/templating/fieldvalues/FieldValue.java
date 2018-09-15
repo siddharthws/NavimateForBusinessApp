@@ -52,6 +52,9 @@ public abstract class FieldValue {
             case Constants.Template.FIELD_TYPE_PHOTO: {
                 return new PhotoFieldValue(field, value);
             }
+            case Constants.Template.FIELD_TYPE_SIGN: {
+                return new SignFieldValue(field, value);
+            }
             case Constants.Template.FIELD_TYPE_INVOICE: {
                 // Placeholder
             }
