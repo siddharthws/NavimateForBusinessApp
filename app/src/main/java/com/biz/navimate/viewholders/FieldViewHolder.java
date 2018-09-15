@@ -8,6 +8,7 @@ import com.biz.navimate.views.compound.DateEditorView;
 import com.biz.navimate.views.compound.EtClearable;
 import com.biz.navimate.views.compound.ObjectPickerView;
 import com.biz.navimate.views.compound.PhotoEditorView;
+import com.biz.navimate.views.compound.SignEditorView;
 import com.biz.navimate.views.custom.Dropdown;
 
 import java.util.ArrayList;
@@ -55,8 +56,13 @@ public class FieldViewHolder {
         public ObjectPickerView objPicker = null;
     }
 
-    // Date Field View holder
+    // Photo Field View holder
     public static class Photo extends Base {
         public PhotoEditorView peEditor = null;
+    }
+
+    // Signature Field View holder
+    public static class Sign extends Base {
+        public SignEditorView seEditor = null;
     }
 }
