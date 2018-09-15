@@ -117,7 +117,7 @@ public abstract class BaseActivity  extends     AppCompatActivity
         FindViews();
 
         // Find Toolbar
-        holder.toolbar       = (NvmToolbar) findViewById(R.id.toolbar);
+        holder.toolbar       = (NvmToolbar) findViewById(R.id.nvm_toolbar);
         if (holder.toolbar != null) {
             holder.toolbar.SetListener(this);
         }

@@ -10,7 +10,7 @@
 
     <!-- Toolbar -->
     <com.biz.navimate.views.compound.NvmToolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/nvm_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:backBtn="true">
