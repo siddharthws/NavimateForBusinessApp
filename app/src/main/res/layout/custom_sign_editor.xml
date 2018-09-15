@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Photo Icon -->
+    <!-- Signature Icon -->
     <com.biz.navimate.views.custom.NvmImageView
-        android:id="@+id/iv_camera"
+        android:id="@+id/iv_sign"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_camera_grey"
+        android:src="@mipmap/ic_sign_grey"
         android:layout_gravity="center_vertical"/>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical">
 
-        <!-- Thumbnail of the photo currently set -->
+        <!-- Thumbnail of the signature currently set -->
         <com.biz.navimate.views.custom.PhotoThumbnailView
             android:id="@+id/pt_thumbnail"
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:id="@+id/tv_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Photo not set..."/>
+            android:text="Signature not set..."/>
 
     </LinearLayout>
 

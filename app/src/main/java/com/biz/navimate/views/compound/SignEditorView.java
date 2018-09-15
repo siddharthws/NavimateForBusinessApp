@@ -1,10 +1,6 @@
 package com.biz.navimate.views.compound;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,56 +11,49 @@ import android.widget.Toast;
 
 import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
-import com.biz.navimate.activities.PhotoEditorActivity;
+import com.biz.navimate.activities.SignatureActivity;
 import com.biz.navimate.application.App;
-import com.biz.navimate.constants.Constants;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceResult;
-import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.CustomViewHolder;
 import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.PhotoThumbnailView;
 
-import java.io.File;
-
-public class PhotoEditorView    extends     LinearLayout
+public class SignEditorView     extends     LinearLayout
                                 implements  View.OnClickListener,
-                                            IfaceResult.Photo,
-                                            IfaceResult.PhotoEditor {
+                                            IfaceResult.Signature {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "PHOTO_EDITOR_VIEW";
+    private static final String TAG = "SIGN_EDITOR_VIEW";
 
     // ----------------------- Interfaces ----------------------- //
-    public interface IfacePhotoEditor {
-        void onPhotoChanged(String name);
+    public interface IfaceSignEditor {
+        void onSignChanged(String name);
     }
-    private IfacePhotoEditor listener = null;
-    public void SetListener(IfacePhotoEditor listener) {
+    private IfaceSignEditor listener = null;
+    public void SetListener(IfaceSignEditor listener) {
         this.listener = listener;
     }
 
     // ----------------------- Globals ----------------------- //
     private Context ctx = null;
 
-    private CustomViewHolder.PhotoEditor ui = new CustomViewHolder.PhotoEditor();
+    private CustomViewHolder.SignEditor ui = new CustomViewHolder.SignEditor();
     private String filename = "";
-
-    private File tempPhotoFile = null;
 
     private boolean bEditable = true;
 
     // ----------------------- Constructors ----------------------- //
-    public PhotoEditorView(Context context) {
+    public SignEditorView(Context context) {
         super(context);
         Init(context, null);
     }
 
-    public PhotoEditorView(Context context, AttributeSet attrs) {
+    public SignEditorView(Context context, AttributeSet attrs) {
         super(context, attrs);
         Init(context, attrs);
     }
 
-    public PhotoEditorView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SignEditorView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         Init(context, attrs);
     }
@@ -74,33 +63,18 @@ public class PhotoEditorView    extends     LinearLayout
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ib_clear:
-                // Reset current photo
+                // Reset
                 Set("");
                 break;
             case R.id.ib_edit:
-                // Start Camera to capture photo
-                LaunchCamera();
+                // Start activity to capture signature
+                LaunchSignatureActivity();
                 break;
         }
     }
 
     @Override
-    public void onPhotoResult() {
-        // Check if photo file exists
-        if (tempPhotoFile == null || !tempPhotoFile.exists()) {
-            Dbg.Toast(ctx, "Could not get photo from camera...", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        // Scale Image
-        String scaledImageName = Statics.ScaleImageFile(getContext(), tempPhotoFile.getAbsolutePath());
-
-        // Trigger Photo Editor
-        LaunchPhotoEditor(scaledImageName);
-    }
-
-    @Override
-    public void onPhotoEditorResult(String fileName) {
+    public void onSignatureResult(String fileName) {
         Set(fileName);
     }
 
@@ -148,7 +122,7 @@ public class PhotoEditorView    extends     LinearLayout
             ui.ptThumbnail.setVisibility(GONE);
 
             // Set blank text
-            ui.tvError.setText("Photo not set...");
+            ui.tvError.setText("Signature not set...");
         } else {
             // Try setting photo in thumbnail view
             ui.ptThumbnail.Set(filename);
@@ -162,7 +136,7 @@ public class PhotoEditorView    extends     LinearLayout
                 ui.ptThumbnail.setVisibility(GONE);
 
                 // Set error text
-                ui.tvError.setText("Photo not available...");
+                ui.tvError.setText("Signature not available...");
             }
         }
     }
@@ -176,52 +150,19 @@ public class PhotoEditorView    extends     LinearLayout
     }
 
     // Methods to launch camera to capture photo
-    private void LaunchCamera() {
+    private void LaunchSignatureActivity() {
         // Get current activity
         BaseActivity currentActivity = App.GetCurrentActivity();
         if (currentActivity == null) {
-            Dbg.Toast(getContext(), "Could not launch camera...", Toast.LENGTH_SHORT);
+            Dbg.Toast(getContext(), "Could not launch signature activity...", Toast.LENGTH_SHORT);
             return;
         }
-
-        // Ensure camera is present
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(currentActivity.getPackageManager()) == null) {
-            Dbg.Toast(getContext(), "Camera App not found...", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        // Create the File where the photo should go
-        tempPhotoFile = Statics.CreateTempImageFile(getContext());
-        if (tempPhotoFile == null) {
-            Dbg.Toast(getContext(), "Cannot create photo in storage...", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        // Add target URI to camera intent
-        Uri photoURI = FileProvider.getUriForFile(getContext(), "com.biz.navimate.fileprovider", tempPhotoFile);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
         // Set result listener
-        currentActivity.SetPhotoResultListener(this);
+        currentActivity.SetSignResultListener(this);
 
         // Trigger Camera intent
-        currentActivity.startActivityForResult(takePictureIntent, Constants.RequestCodes.PHOTO);
-    }
-
-    private void LaunchPhotoEditor(String filename) {
-        // Get current activity
-        BaseActivity currentActivity = App.GetCurrentActivity();
-        if (currentActivity == null) {
-            Dbg.Toast(getContext(), "Could not launch photo editor...", Toast.LENGTH_SHORT);
-            return;
-        }
-
-        // Set photo editor listener
-        currentActivity.SetPhotoEditorListener(this);
-
-        // Trigger Photo Editor Activity
-        PhotoEditorActivity.Start(currentActivity, filename);
+        SignatureActivity.Start(currentActivity);
     }
 
     // Method to initialize view
@@ -230,7 +171,7 @@ public class PhotoEditorView    extends     LinearLayout
 
         // Inflate Layout
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.custom_photo_editor, this, true);
+        inflater.inflate(R.layout.custom_sign_editor, this, true);
 
         // Set UI properties
         SetUiAttributes();
@@ -249,7 +190,7 @@ public class PhotoEditorView    extends     LinearLayout
     // Method to set any extra attributes
     private void SetUiAttributes() {
         // Set Layout Params
-        LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER_VERTICAL;
         setLayoutParams(params);
 
