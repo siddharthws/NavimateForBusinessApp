@@ -6,6 +6,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.biz.navimate.views.compound.FileThumbnailView;
 import com.biz.navimate.views.custom.NvmImageButton;
 import com.biz.navimate.views.custom.NvmEditText;
 import com.biz.navimate.views.custom.NvmImageView;
@@ -71,5 +72,9 @@ public class CustomViewHolder {
         public ImageButton ibEdit, ibClear = null;
         public TextView tvError = null;
         public PhotoThumbnailView ptThumbnail = null;
+    }
+
+    public static class FileThumbnail {
+        public TextView tvFiletype = null;
     }
 }
