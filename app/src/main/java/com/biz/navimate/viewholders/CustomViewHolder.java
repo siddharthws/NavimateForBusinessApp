@@ -77,4 +77,10 @@ public class CustomViewHolder {
     public static class FileThumbnail {
         public TextView tvFiletype = null;
     }
+
+    public static class FileEditor {
+        public ImageButton ibEdit, ibClear = null;
+        public TextView tvError = null;
+        public FileThumbnailView ftThumbnail = null;
+    }
 }
