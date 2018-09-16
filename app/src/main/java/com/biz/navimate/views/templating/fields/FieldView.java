@@ -157,6 +157,8 @@ public abstract class FieldView extends LabelBox {
                 return new PhotoFieldView(ctx, root, value);
             case Constants.Template.FIELD_TYPE_SIGN:
                 return new SignFieldView(ctx, root, value);
+            case Constants.Template.FIELD_TYPE_FILE:
+                return new FileFieldView(ctx, root, value);
             case Constants.Template.FIELD_TYPE_INVOICE:
                 // Placeholder
         }

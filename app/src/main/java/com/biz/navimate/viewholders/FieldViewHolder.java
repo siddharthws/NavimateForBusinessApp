@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.biz.navimate.views.CbCustom;
 import com.biz.navimate.views.compound.DateEditorView;
 import com.biz.navimate.views.compound.EtClearable;
+import com.biz.navimate.views.compound.FileEditorView;
 import com.biz.navimate.views.compound.ObjectPickerView;
 import com.biz.navimate.views.compound.PhotoEditorView;
 import com.biz.navimate.views.compound.SignEditorView;
@@ -64,5 +65,10 @@ public class FieldViewHolder {
     // Signature Field View holder
     public static class Sign extends Base {
         public SignEditorView seEditor = null;
+    }
+
+    // Signature Field View holder
+    public static class File extends Base {
+        public FileEditorView feEditor = null;
     }
 }
