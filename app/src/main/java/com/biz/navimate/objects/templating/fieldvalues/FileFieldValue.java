@@ -1,6 +1,10 @@
 package com.biz.navimate.objects.templating.fieldvalues;
 
+import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Field;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 public class FileFieldValue extends FieldValue {
     // ----------------------- Constants ----------------------- //
@@ -23,12 +27,21 @@ public class FileFieldValue extends FieldValue {
     // String converter methods
     @Override
     public String toString() {
-        return filename;
+        JSONArray array = new JSONArray();
+        array.put(filename);
+        return array.toString();
     }
 
     @Override
     public void fromString(String value) {
-        this.filename = value;
+        try {
+            JSONArray fileArray = new JSONArray(value);
+            if (fileArray.length() > 0) {
+                filename = fileArray.getString(0);
+            }
+        } catch (JSONException e) {
+            Dbg.error(TAG, "Could not parse array from value");
+        }
     }
 
     @Override
