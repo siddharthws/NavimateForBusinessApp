@@ -428,7 +428,7 @@ public class RlFormField extends RelativeLayout implements IfacePermission.Call 
                     BaseActivity activity = App.GetCurrentActivity();
                     if ((activity != null) && (takePictureIntent.resolveActivity(activity.getPackageManager()) != null)) {
                         // Create the File where the photo should go
-                        final File photoFile = Statics.CreateTempImageFile(getContext());
+                        final File photoFile = Statics.CreatePicture(getContext());
 
                         // Continue only if the File was successfully created
                         if (photoFile != null) {

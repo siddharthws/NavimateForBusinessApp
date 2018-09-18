@@ -192,7 +192,7 @@ public class PhotoEditorView    extends     LinearLayout
         }
 
         // Create the File where the photo should go
-        tempPhotoFile = Statics.CreateTempImageFile(getContext());
+        tempPhotoFile = Statics.CreatePicture(getContext());
         if (tempPhotoFile == null) {
             Dbg.Toast(getContext(), "Cannot create photo in storage...", Toast.LENGTH_SHORT);
             return;

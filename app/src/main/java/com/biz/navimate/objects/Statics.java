@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Looper;
@@ -156,36 +155,23 @@ public class Statics {
     }
 
     // File related APIs
-    public static File CreateTempImageFile(Context context) {
-        // Create an image file name
-        String imageFileName = UUID.randomUUID().toString();
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = null;
-        try {
-            image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    storageDir      /* directory */
-            );
-        } catch (IOException e) {
-            Dbg.error(TAG, "Error while creating file");
-            Dbg.stack(e);
-        }
-        return image;
+    public static File CreatePicture(Context context) {
+        // Create a jpg picture with UUID Name
+        return CreateFile(context, UUID.randomUUID().toString() + ".jpg", Environment.DIRECTORY_PICTURES);
     }
 
-    public static File CreateFile(Context context, String ext) {
+    public static File CreateDocument(Context context, String ext) {
+        // Create a document with UUID Name
+        return CreateFile(context, UUID.randomUUID().toString() + "." + ext, Environment.DIRECTORY_DOCUMENTS);
+    }
+
+    public static File CreateFile(Context ctx, String nameWithExt, String dir) {
+        // Get storage directory file
+        File storageDir = ctx.getExternalFilesDir(dir);
+
         // Create an image file name
-        String fileName = UUID.randomUUID().toString();
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        File file = null;
-        ext = ext != null ? '.' + ext : null;
-        try {
-            file = File.createTempFile(fileName, ext, storageDir);
-        } catch (IOException e) {
-            Dbg.error(TAG, "Error while creating file");
-            Dbg.stack(e);
-        }
+        File file = new File(storageDir, nameWithExt);
+
         return file;
     }
 
@@ -211,7 +197,7 @@ public class Statics {
         view.draw(canvas);
 
         // Save bitmap to file
-        File file = CreateTempImageFile(context);
+        File file = CreatePicture(context);
         if (file == null) {
             Dbg.Toast(context, "Could not create Image... ", Toast.LENGTH_SHORT);
             return null;
@@ -317,6 +303,24 @@ public class Statics {
         }
 
         return file;
+    }
+
+    public static String GetFileExt(String absPath) {
+        if (absPath.indexOf("?") > -1) {
+            absPath = absPath.substring(0, absPath.indexOf("?"));
+        }
+        if (absPath.lastIndexOf(".") == -1) {
+            return null;
+        } else {
+            String ext = absPath.substring(absPath.lastIndexOf(".") + 1);
+            if (ext.indexOf("%") > -1) {
+                ext = ext.substring(0, ext.indexOf("%"));
+            }
+            if (ext.indexOf("/") > -1) {
+                ext = ext.substring(0, ext.indexOf("/"));
+            }
+            return ext.toLowerCase();
+        }
     }
 
     // Formatting helper APIs
