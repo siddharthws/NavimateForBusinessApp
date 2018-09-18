@@ -1,6 +1,7 @@
 package com.biz.navimate.viewholders;
 
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -80,12 +81,14 @@ public class CustomViewHolder {
     }
 
     public static class FileThumbnail {
+        public RelativeLayout rlIcon = null;
+        public TextView tvStatus = null;
         public TextView tvFiletype = null;
+        public ProgressBar pbWaiting = null;
     }
 
     public static class FileEditor {
         public ImageButton ibEdit, ibClear = null;
-        public TextView tvError = null;
         public FileThumbnailView ftThumbnail = null;
     }
 }

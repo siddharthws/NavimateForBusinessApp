@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Background Image -->
-    <ImageView
-        android:id="@+id/iv_file_thumbnail"
+    <RelativeLayout
+        android:id="@+id/rl_icon_container"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+
+        <!-- Background Image -->
+        <ImageView
+            android:id="@+id/iv_file_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_file_primary"
+            android:scaleType="fitCenter"/>
+
+        <!-- Textview for showing filetype -->
+        <TextView
+            android:id="@+id/tv_filetype"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@id/iv_file_thumbnail"
+            android:layout_marginBottom="@dimen/margin_s"
+            style="@style/AppTheme.Widget.TextView.Label"
+            android:textColor="@android:color/white"/>
+
+    </RelativeLayout>
+
+    <!-- Spinner to show waiting -->
+    <ProgressBar
+        android:id="@+id/pb_waiting"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/ic_file_primary"
-        android:scaleType="fitCenter"/>
+        android:layout_alignParentLeft="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/pb_primary"
+        android:visibility="gone"/>
 
-    <!-- Textview for showing filetype -->
+    <!-- Textview for showing status -->
     <TextView
-        android:id="@+id/tv_filetype"
+        android:id="@+id/tv_status"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignBottom="@id/iv_file_thumbnail"
-        android:layout_marginBottom="@dimen/margin_s"
-        style="@style/AppTheme.Widget.TextView.Label"
-        android:textColor="@android:color/white"/>
+        android:text="Not set..."/>
 
 </merge>

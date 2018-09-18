@@ -9,27 +9,13 @@
         android:src="@drawable/ic_file_grey"
         android:layout_gravity="center_vertical"/>
 
-    <LinearLayout
+    <!-- Thumbnail of the currently set file -->
+    <com.biz.navimate.views.compound.FileThumbnailView
+        android:id="@+id/ft_thumbnail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical">
-
-        <!-- Thumbnail of the currently set file -->
-        <com.biz.navimate.views.compound.FileThumbnailView
-            android:id="@+id/ft_thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <!-- Textbox for showing error -->
-        <TextView
-            android:id="@+id/tv_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No file selected..."/>
-
-    </LinearLayout>
+        android:layout_gravity="center_vertical"/>
 
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
