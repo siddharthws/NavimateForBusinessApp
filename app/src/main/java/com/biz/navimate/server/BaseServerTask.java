@@ -71,6 +71,14 @@ public abstract class BaseServerTask extends AsyncTask<Void, Integer, Void>
     }
 
     // ----------------------- Public APIs ----------------------- //
+    protected void ParseOkHttpResponse(Response response) throws JSONException, IOException {
+        if (response.code() == HttpURLConnection.HTTP_OK) {
+            responseJson = new JSONObject(response.body().string());
+        } else {
+            Dbg.error(TAG, "Response Code = " + response.code());
+        }
+    }
+
     // ----------------------- Private APIs ----------------------- //
     protected boolean IsResponseValid()
     {
@@ -99,15 +107,13 @@ public abstract class BaseServerTask extends AsyncTask<Void, Integer, Void>
         try {
             // Execute request and get response
             Request request = reqBuilder.build();
-            Response response = httpClient.newCall(request).execute();
 
-            // Validate and parse reponse
-            if (response.code() == HttpURLConnection.HTTP_OK) {
-                responseJson = new JSONObject(response.body().string());
-                bResult = true;
-            } else {
-                Dbg.error(TAG, "Response Code = " + response.code());
-            }
+            // get and parse response
+            Response response = httpClient.newCall(request).execute();
+            ParseOkHttpResponse(response);
+
+            // Set result flag
+            bResult = (response.code() == HttpURLConnection.HTTP_OK);
         } catch (IOException e) {
             Dbg.error(TAG, "IO exception while making server request");
             Dbg.stack(e);
