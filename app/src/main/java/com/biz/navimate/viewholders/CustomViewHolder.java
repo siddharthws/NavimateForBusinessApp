@@ -2,6 +2,7 @@ package com.biz.navimate.viewholders;
 
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -62,15 +63,19 @@ public class CustomViewHolder {
         public NvmImageView ivIcon = null;
     }
 
+    public static class PhotoThumbnail {
+        public TextView tvStatus = null;
+        public ProgressBar pbWaiting = null;
+        public NvmImageButton ibPhoto = null;
+    }
+
     public static class PhotoEditor {
         public ImageButton ibEdit, ibClear = null;
-        public TextView tvError = null;
         public PhotoThumbnailView ptThumbnail = null;
     }
 
     public static class SignEditor {
         public ImageButton ibEdit, ibClear = null;
-        public TextView tvError = null;
         public PhotoThumbnailView ptThumbnail = null;
     }
 

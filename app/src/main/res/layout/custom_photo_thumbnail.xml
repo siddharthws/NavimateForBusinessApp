@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Thumbnail -->
+    <com.biz.navimate.views.custom.NvmImageButton
+        android:id="@+id/ib_photo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        android:visibility="gone"/>
+
+    <!-- Spinner to show waiting -->
+    <ProgressBar
+        android:id="@+id/pb_waiting"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/pb_primary"
+        android:visibility="gone"/>
+
+    <!-- Textview for showing status -->
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Not set..."/>
+
+</merge>
