@@ -85,7 +85,7 @@ public class FileEditorView     extends     LinearLayout
         this.filename = name;
 
         // Update Image
-        RefreshImage();
+        ui.ftThumbnail.Set(filename);
 
         // Update Clear Icon visibility
         RefreshClear();
@@ -114,33 +114,6 @@ public class FileEditorView     extends     LinearLayout
     }
 
     // ----------------------- Private APIs ----------------------- //
-    // Method to refresh the text view based on selected date
-    private void RefreshImage() {
-        if (filename.length() == 0) {
-            // Show text view only
-            ui.tvError.setVisibility(VISIBLE);
-            ui.ftThumbnail.setVisibility(GONE);
-
-            // Set blank text
-            ui.tvError.setText("No file selected...");
-        } else {
-            // Try setting photo in thumbnail view
-            ui.ftThumbnail.Set(filename);
-
-            // Update UI depending on whether photo could be set successfully or not
-            if (ui.ftThumbnail.Get().equals(filename)) {
-                ui.ftThumbnail.setVisibility(VISIBLE);
-                ui.tvError.setVisibility(GONE);
-            } else {
-                ui.tvError.setVisibility(VISIBLE);
-                ui.ftThumbnail.setVisibility(GONE);
-
-                // Set error text
-                ui.tvError.setText("File not available...");
-            }
-        }
-    }
-
     private void RefreshClear() {
         if (filename.length() == 0) {
             ui.ibClear.setVisibility(GONE);
@@ -181,7 +154,6 @@ public class FileEditorView     extends     LinearLayout
         SetUiAttributes();
 
         // Init UI
-        ui.tvError      = (TextView)        findViewById(R.id.tv_error);
         ui.ftThumbnail  = (FileThumbnailView)  findViewById(R.id.ft_thumbnail);
         ui.ibClear      = (NvmImageButton)  findViewById(R.id.ib_clear);
         ui.ibEdit       = (NvmImageButton)  findViewById(R.id.ib_edit);
