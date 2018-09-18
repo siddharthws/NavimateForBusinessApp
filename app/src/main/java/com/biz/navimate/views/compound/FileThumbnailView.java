@@ -71,7 +71,7 @@ public class FileThumbnailView      extends     RelativeLayout
         this.filename = filename;
 
         // Set filetype text
-        ui.tvFiletype.setText(getExt(absolutePath).toUpperCase());
+        ui.tvFiletype.setText(Statics.GetFileExt(absolutePath).toUpperCase());
     }
 
     public String Get() {
@@ -112,7 +112,7 @@ public class FileThumbnailView      extends     RelativeLayout
         }
 
         // get mimetype & URI of file
-        String ext = getExt(absolutePath);
+        String ext = Statics.GetFileExt(absolutePath);
         String mimetype = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext);
         Uri uri = FileProvider.getUriForFile(getContext(), "com.biz.navimate.fileprovider", file);
 
@@ -124,23 +124,5 @@ public class FileThumbnailView      extends     RelativeLayout
 
         // Launch Activity
         currentActivity.startActivity(fileViewerIntent);
-    }
-
-    private String getExt(String absPath) {
-        if (absPath.indexOf("?") > -1) {
-            absPath = absPath.substring(0, absPath.indexOf("?"));
-        }
-        if (absPath.lastIndexOf(".") == -1) {
-            return null;
-        } else {
-            String ext = absPath.substring(absPath.lastIndexOf(".") + 1);
-            if (ext.indexOf("%") > -1) {
-                ext = ext.substring(0, ext.indexOf("%"));
-            }
-            if (ext.indexOf("/") > -1) {
-                ext = ext.substring(0, ext.indexOf("/"));
-            }
-            return ext.toLowerCase();
-        }
     }
 }

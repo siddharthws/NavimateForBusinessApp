@@ -31,7 +31,6 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by Siddharth on 22-09-2017.
@@ -548,7 +547,7 @@ public abstract class BaseActivity  extends     AppCompatActivity
                         String extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimetype);
 
                         // Create a temp file with selected extension
-                        File file = Statics.CreateFile(this, extension);
+                        File file = Statics.CreateDocument(this, extension);
 
                         // Fill file using input stream from content resolver
                         Statics.CopyFileFromUri(this, file, fileUri);
