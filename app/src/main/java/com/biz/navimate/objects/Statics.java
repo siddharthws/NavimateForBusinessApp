@@ -323,6 +323,17 @@ public class Statics {
         }
     }
 
+    public static boolean isFileExist(Context ctx, String name, String dir) {
+        // get absolute path of file
+        String absPath = GetAbsolutePath(ctx, name, dir);
+
+        // create file object
+        File file = new File(absPath);
+
+        // Check file existence
+        return file.exists();
+    }
+
     // Formatting helper APIs
     public static String GetFormattedDate(long timeMs, String format)
     {
