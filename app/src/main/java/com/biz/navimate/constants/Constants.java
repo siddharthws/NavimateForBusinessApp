@@ -147,6 +147,7 @@ public class Constants {
         public static final String URL_GET_PRODUCT          = URL_BASE + "/api/reps/product/id";
         public static final String URL_GET_OBJECT_LIST      = URL_BASE + "/api/reps/objects/search";
         public static final String URL_GET_OBJECT_DETAILS   = URL_BASE + "/api/reps/objects/details";
+        public static final String URL_GET_FILE             = URL_BASE + "/api/files/get";
 
         // Stomp URLs
         public static final String URL_STOMP            = URL_BASE + "/ws-endpoint/websocket";
@@ -242,6 +243,7 @@ public class Constants {
         public static final String KEY_SUBMIT_TIME      = "submitTime";
         public static final String KEY_OPTIONS          = "options";
         public static final String KEY_SELECTION        = "selection";
+        public static final String KEY_FILE_NAME        = "filename";
     }
 
     // Location related constants

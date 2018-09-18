@@ -93,4 +93,10 @@ public class IfaceServer {
         void onObjectDetailsSuccess(ObjNvm obj);
         void onObjectDetailsFailed();
     }
+
+    // Get file Task interface
+    public interface GetFile {
+        void onFileSuccess();
+        void onFileFailed();
+    }
 }
