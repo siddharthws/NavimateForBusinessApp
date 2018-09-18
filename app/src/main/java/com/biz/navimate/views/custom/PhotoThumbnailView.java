@@ -5,26 +5,38 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biz.navimate.R;
 import com.biz.navimate.activities.BaseActivity;
 import com.biz.navimate.activities.ViewPhotoActivity;
 import com.biz.navimate.application.App;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.server.GetFileTask;
+import com.biz.navimate.viewholders.CustomViewHolder;
 
-import java.io.File;
-
-public class PhotoThumbnailView extends NvmImageButton implements View.OnClickListener {
+public class PhotoThumbnailView     extends     RelativeLayout
+                                    implements  View.OnClickListener,
+                                                IfaceServer.GetFile {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "NVM_IMAGE_BUTTON";
+    private static final String TAG = "PHOTO_THUMBNAIL_VIEW";
 
     // ----------------------- Interfaces ----------------------- //
     // ----------------------- Globals ----------------------- //
+    private Context ctx = null;
+    private CustomViewHolder.PhotoThumbnail ui = new CustomViewHolder.PhotoThumbnail();
+
     private String filename = "";
     private Bitmap bitmap = null;
+
+    private GetFileTask fileTask = null;
 
     // ----------------------- Constructors ----------------------- //
     public PhotoThumbnailView(Context context) {
@@ -44,39 +56,45 @@ public class PhotoThumbnailView extends NvmImageButton implements View.OnClickLi
 
     // ----------------------- Overrides ----------------------- //
     @Override
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-
-        // Set height / width
-        ViewGroup.LayoutParams lp = getLayoutParams();
-        lp.height = Statics.GetPxFromDip(100);
-        lp.width = Statics.GetPxFromDip(100);
-        setLayoutParams(lp);
-    }
-
-    @Override
     public void onClick(View view) {
         // Launch Photo Viewer
         LaunchPhotoViewer();
     }
 
+    @Override
+    public void onFileSuccess() {
+        // Show image only
+        ui.ibPhoto.setVisibility(VISIBLE);
+        ui.pbWaiting.setVisibility(GONE);
+        ui.tvStatus.setVisibility(GONE);
+
+        // Recycle Bitmap
+        if (bitmap != null) { bitmap.recycle(); }
+
+        // Set bitmap from file
+        String absolutePath = Statics.GetAbsolutePath(getContext(), filename, Environment.DIRECTORY_PICTURES);
+        bitmap = BitmapFactory.decodeFile(absolutePath);
+        ui.ibPhoto.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onFileFailed() {
+        // Show status text view only
+        ui.tvStatus.setVisibility(VISIBLE);
+        ui.pbWaiting.setVisibility(GONE);
+        ui.ibPhoto.setVisibility(GONE);
+
+        // Show error
+        ui.tvStatus.setText("Not available...");
+    }
+
     // ----------------------- Public APIs ----------------------- //
     public void Set(String filename) {
-        // Get file object and validate
-        String absolutePath = Statics.GetAbsolutePath(getContext(), filename, Environment.DIRECTORY_PICTURES);
-        File imageFile = new File(absolutePath);
-        if (!imageFile.exists()) {
-            Dbg.error(TAG, "Photo file not found...");
-            return;
-        }
-
         // Cache filename
         this.filename = filename;
 
-        // Set bitmap from file
-        if (bitmap != null) { bitmap.recycle(); }
-        bitmap = BitmapFactory.decodeFile(absolutePath);
-        setImageBitmap(bitmap);
+        // Update Text
+        RefreshUI();
     }
 
     public String Get() {
@@ -86,11 +104,41 @@ public class PhotoThumbnailView extends NvmImageButton implements View.OnClickLi
     // ----------------------- Private APIs ----------------------- //
     // Method to initialize view
     private void Init(Context ctx, AttributeSet a) {
-        // Set Scaletype to fit center
-        setScaleType(ScaleType.FIT_CENTER);
+        this.ctx = ctx;
 
-        // set click listener
-        setOnClickListener(this);
+        // Inflate Layout
+        LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater.inflate(R.layout.custom_photo_thumbnail, this, true);
+
+        // Init UI
+        ui.tvStatus     = (TextView)        findViewById(R.id.tv_status);
+        ui.pbWaiting    = (ProgressBar)     findViewById(R.id.pb_waiting);
+        ui.ibPhoto      = (NvmImageButton)  findViewById(R.id.ib_photo);
+
+        // Set listeners
+        ui.ibPhoto.setOnClickListener(this);
+    }
+
+    // Method to refresh UI components
+    private void RefreshUI() {
+        if (filename.length() == 0) {
+            // Show blank status
+            ui.tvStatus.setVisibility(VISIBLE);
+            ui.pbWaiting.setVisibility(GONE);
+            ui.ibPhoto.setVisibility(GONE);
+
+            ui.tvStatus.setText("Not set...");
+        } else {
+            // Show waiting sttaus
+            ui.pbWaiting.setVisibility(VISIBLE);
+            ui.tvStatus.setVisibility(GONE);
+            ui.ibPhoto.setVisibility(GONE);
+
+            // Try getting file using task
+            fileTask = new GetFileTask(ctx, Environment.DIRECTORY_PICTURES, filename);
+            fileTask.SetListener(this);
+            fileTask.execute();
+        }
     }
 
     // Method to launch photo viewer activity

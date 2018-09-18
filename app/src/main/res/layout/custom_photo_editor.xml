@@ -9,27 +9,13 @@
         android:src="@drawable/ic_camera_grey"
         android:layout_gravity="center_vertical"/>
 
-    <LinearLayout
+    <!-- Thumbnail of the photo currently set -->
+    <com.biz.navimate.views.custom.PhotoThumbnailView
+        android:id="@+id/pt_thumbnail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_gravity="center_vertical">
-
-        <!-- Thumbnail of the photo currently set -->
-        <com.biz.navimate.views.custom.PhotoThumbnailView
-            android:id="@+id/pt_thumbnail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-
-        <!-- Textbox for showing error -->
-        <TextView
-            android:id="@+id/tv_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Photo not set..."/>
-
-    </LinearLayout>
+        android:layout_gravity="center_vertical"/>
 
     <!-- Clear Button -->
     <com.biz.navimate.views.custom.NvmImageButton
