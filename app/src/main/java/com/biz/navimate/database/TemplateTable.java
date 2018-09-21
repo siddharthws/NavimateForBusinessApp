@@ -4,10 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -88,8 +88,8 @@ public class TemplateTable extends BaseTable {
         switch (template.type) {
             case Constants.Template.TYPE_FORM: {
                 // Remove all forms with this template
-                ArrayList<Form> forms = DbHelper.formTable.GetByTemplate(template);
-                for (Form form : forms) {
+                ArrayList<ObjForm> forms = DbHelper.formTable.GetByTemplate(template);
+                for (ObjForm form : forms) {
                     DbHelper.formTable.Remove(form);
                 }
 

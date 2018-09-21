@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.database.DbHelper;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.viewholders.ListHolder;
@@ -51,7 +51,7 @@ public class FormListAdapter extends BaseListAdapter {
         ListHolder.Form  holder     = (ListHolder.Form) view.getTag();
 
         // Get objects
-        Form form = (Form) DbHelper.formTable.GetById(item.formId);
+        ObjForm form = (ObjForm) DbHelper.formTable.GetById(item.formId);
 
         // Set Template Name
         holder.tvForm.setText(form.template.name);

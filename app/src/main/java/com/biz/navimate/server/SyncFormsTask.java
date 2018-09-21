@@ -10,7 +10,7 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
 import com.biz.navimate.views.RlDialog;
@@ -43,7 +43,7 @@ public class SyncFormsTask extends BaseServerTask {
 
     // ----------------------- Globals ----------------------- //
     private int unsyncedCountBefore = 0;
-    private ArrayList<Form> unsyncedForms = new ArrayList<>();
+    private ArrayList<ObjForm> unsyncedForms = new ArrayList<>();
     private boolean bDialog = false;
 
     // ----------------------- Constructor ----------------------- //
@@ -108,7 +108,7 @@ public class SyncFormsTask extends BaseServerTask {
 
         // Try syncing images for forms
         JSONArray formsJson = new JSONArray();
-        for (Form form : unsyncedForms) {
+        for (ObjForm form : unsyncedForms) {
             // Sync images with server
             ArrayList<String> images = GetFormImages(form);
             boolean bImagesSynced = true;
@@ -159,7 +159,7 @@ public class SyncFormsTask extends BaseServerTask {
         }
     }
 
-    private ArrayList<String> GetFormImages(Form form) {
+    private ArrayList<String> GetFormImages(ObjForm form) {
         ArrayList<String> images = new ArrayList<>();
 
         // Iterate through values
@@ -174,7 +174,7 @@ public class SyncFormsTask extends BaseServerTask {
         return images;
     }
 
-    private ArrayList<String> GetFormFiles(Form form) {
+    private ArrayList<String> GetFormFiles(ObjForm form) {
         ArrayList<String> files = new ArrayList<>();
 
         // Iterate through values
@@ -188,7 +188,7 @@ public class SyncFormsTask extends BaseServerTask {
         return files;
     }
 
-    private ArrayList<Object> GetFormInvoices(Form form) {
+    private ArrayList<Object> GetFormInvoices(ObjForm form) {
         // Placeholder
         return new ArrayList<>();
     }
@@ -271,7 +271,7 @@ public class SyncFormsTask extends BaseServerTask {
             JSONArray formsJson = responseJson.getJSONArray(Constants.Server.KEY_FORMS);
             for (int i = 0; i < formsJson.length(); i++) {
                 // Update server Id of form object
-                Form form = unsyncedForms.get(i);
+                ObjForm form = unsyncedForms.get(i);
                 form.textServerId = formsJson.getString(i);
                 DbHelper.formTable.Save(form);
             }

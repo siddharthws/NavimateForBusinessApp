@@ -10,7 +10,7 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.core.ObjLead;
@@ -226,11 +226,11 @@ public class SyncDbTask extends BaseServerTask {
             JSONObject formJson = formsJson.getJSONObject(i);
 
             // Get object by server ID or create new
-            Form form = DbHelper.formTable.GetByServerId(formJson.getString(Constants.Server.KEY_ID));
+            ObjForm form = DbHelper.formTable.GetByServerId(formJson.getString(Constants.Server.KEY_ID));
             if (form != null) {
                 form.fromJson(formJson);
             } else {
-                form = new Form(formJson);
+                form = new ObjForm(formJson);
             }
 
             // Save object in DB

@@ -5,7 +5,7 @@ import android.database.Cursor;
 
 import com.biz.navimate.objects.core.ObjDb;
 import com.biz.navimate.constants.Constants;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.core.ObjLead;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
@@ -131,8 +131,8 @@ public class TaskTable extends BaseTable {
     // API to remove task and associated objects
     public void Remove(Task task) {
         // Remove all associated forms
-        ArrayList<Form> forms = DbHelper.formTable.GetByTask(task);
-        for (Form form : forms) {
+        ArrayList<ObjForm> forms = DbHelper.formTable.GetByTask(task);
+        for (ObjForm form : forms) {
             DbHelper.formTable.Remove(form);
         }
 
