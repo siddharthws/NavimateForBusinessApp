@@ -143,7 +143,7 @@ public class HomescreenActivity     extends     BaseActivity
         }
 
         // Set Forms Count
-        int formsCount = DbHelper.formTable.GetUnsyncedForms().size();
+        int formsCount = DbHelper.formTable.GetDirty().size();
         if (formsCount == 0) {
             ui.tvFormCount.setVisibility(View.INVISIBLE);
         } else {

@@ -61,7 +61,7 @@ public class SyncFormsTask extends BaseServerTask {
         }
 
         // Save no. of unsynced forms
-        unsyncedCountBefore = DbHelper.formTable.GetUnsyncedForms().size();
+        unsyncedCountBefore = DbHelper.formTable.GetDirty().size();
     }
 
     @Override
@@ -80,16 +80,6 @@ public class SyncFormsTask extends BaseServerTask {
             RlDialog.Hide();
         }
 
-        // Show toast
-        int unsyncedFormsCount = DbHelper.formTable.GetUnsyncedForms().size();
-        if (unsyncedFormsCount == 0) {
-            Dbg.Toast(parentContext, "All forms have been synced...", Toast.LENGTH_LONG);
-        } else if (unsyncedFormsCount == unsyncedCountBefore) {
-            Dbg.Toast(parentContext, "No forms could be synced !!!", Toast.LENGTH_LONG);
-        } else {
-            Dbg.Toast(parentContext, "Some forms could not be synced !!!", Toast.LENGTH_LONG);
-        }
-
         // Refresh Homescreen
         HomescreenActivity.RefreshHome();
 
@@ -104,7 +94,7 @@ public class SyncFormsTask extends BaseServerTask {
     // Sync entry point functions
     private void SyncForms () {
         // Get list of all unsynced forms
-        unsyncedForms = DbHelper.formTable.GetUnsyncedForms();
+        unsyncedForms = DbHelper.formTable.GetDirty();
 
         // Try syncing images for forms
         JSONArray formsJson = new JSONArray();
@@ -273,6 +263,7 @@ public class SyncFormsTask extends BaseServerTask {
                 // Update server Id of form object
                 ObjForm form = unsyncedForms.get(i);
                 form.serverId = formsJson.getString(i);
+                form.bDirty = false;
                 DbHelper.formTable.Save(form);
             }
         } catch (JSONException e) {

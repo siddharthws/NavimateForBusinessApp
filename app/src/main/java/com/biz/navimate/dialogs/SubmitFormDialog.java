@@ -249,6 +249,7 @@ public class SubmitFormDialog   extends     BaseDialog
         form.timestamp = System.currentTimeMillis();
 
         // Save Form Object
+        form.bDirty = true;
         DbHelper.formTable.Save(form);
 
         // Update Task status if applicable
