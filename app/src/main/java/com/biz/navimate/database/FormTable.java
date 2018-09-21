@@ -28,6 +28,7 @@ public class FormTable extends BaseTable {
     public static final String CREATE_TABLE =
             "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
                     Constants.DB.COLUMN_ID            + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                    Constants.DB.COLUMN_DIRTY          + " TEXT," +
                     Constants.DB.COLUMN_SRV_ID        + " TEXT," +
                     Constants.DB.COLUMN_TEMPLATE_ID   + " INTEGER," +
                     Constants.DB.COLUMN_TASK_ID       + " INTEGER," +
@@ -42,6 +43,7 @@ public class FormTable extends BaseTable {
     public FormTable(DbHelper dbHelper)
     {
         super(dbHelper, TABLE_NAME, new String[]{   Constants.DB.COLUMN_ID,
+                                                    Constants.DB.COLUMN_DIRTY,
                                                     Constants.DB.COLUMN_SRV_ID,
                                                     Constants.DB.COLUMN_TEMPLATE_ID,
                                                     Constants.DB.COLUMN_TASK_ID,
@@ -54,18 +56,16 @@ public class FormTable extends BaseTable {
     }
 
     // ----------------------- Public APIs ----------------------- //
-    // API to get valid objects for syncing
-    public ArrayList<ObjForm> GetUnsyncedForms() {
-        ArrayList<ObjForm> forms = new ArrayList<>();
-
-        // Create list of forms that have not been sent to server
-        for (ObjForm form : (CopyOnWriteArrayList<ObjForm>) GetAll()) {
-            if (form.serverId.length() == 0) {
-                forms.add(form);
+    // API to get dirty objects
+    public ArrayList<ObjForm> GetDirty() {
+        ArrayList<ObjForm> objs = new ArrayList<>();
+        for (ObjDb dbItem : cache) {
+            if (((ObjForm) dbItem).bDirty) {
+                objs.add((ObjForm) dbItem);
             }
         }
 
-        return forms;
+        return objs;
     }
 
     // API to get object by serverId
