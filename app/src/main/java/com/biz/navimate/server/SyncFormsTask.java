@@ -11,8 +11,8 @@ import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.core.ObjForm;
-import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.Statics;
+import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
 import com.biz.navimate.views.RlDialog;
 
 import org.json.JSONArray;
@@ -143,7 +143,7 @@ public class SyncFormsTask extends BaseServerTask {
             }
 
             // Add form Json to sync data
-            formsJson.put(form.toJson());
+            formsJson.put(form.toServer());
         }
 
         // Sync all form data with server
@@ -163,7 +163,7 @@ public class SyncFormsTask extends BaseServerTask {
         ArrayList<String> images = new ArrayList<>();
 
         // Iterate through values
-        for (FormEntry.Base value : form.values) {
+        for (FieldValue value : form.values) {
             if (((value.field.type == Constants.Template.FIELD_TYPE_PHOTO) ||
                 (value.field.type == Constants.Template.FIELD_TYPE_SIGN)) &&
                 (value.toString().length() > 0)) {
@@ -178,7 +178,7 @@ public class SyncFormsTask extends BaseServerTask {
         ArrayList<String> files = new ArrayList<>();
 
         // Iterate through values
-        for (FormEntry.Base value : form.values) {
+        for (FieldValue value : form.values) {
             if ((value.field.type == Constants.Template.FIELD_TYPE_FILE) &&
                     (value.toString().length() > 0)) {
                 files.add(value.toString());
@@ -272,7 +272,7 @@ public class SyncFormsTask extends BaseServerTask {
             for (int i = 0; i < formsJson.length(); i++) {
                 // Update server Id of form object
                 ObjForm form = unsyncedForms.get(i);
-                form.textServerId = formsJson.getString(i);
+                form.serverId = formsJson.getString(i);
                 DbHelper.formTable.Save(form);
             }
         } catch (JSONException e) {
