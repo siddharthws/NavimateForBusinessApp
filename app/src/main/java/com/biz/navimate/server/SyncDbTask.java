@@ -228,7 +228,7 @@ public class SyncDbTask extends BaseServerTask {
             // Get object by server ID or create new
             ObjForm form = DbHelper.formTable.GetByServerId(formJson.getString(Constants.Server.KEY_ID));
             if (form != null) {
-                form.fromJson(formJson);
+                form.fromServer(formJson);
             } else {
                 form = new ObjForm(formJson);
             }

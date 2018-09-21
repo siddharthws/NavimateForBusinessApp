@@ -23,6 +23,7 @@ import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
+import com.biz.navimate.objects.templating.fieldvalues.FieldValue;
 import com.biz.navimate.runnables.LocationUpdateRunnable;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.services.LocationService;
@@ -124,9 +125,9 @@ public class SubmitFormDialog   extends     BaseDialog
             SetFields(form.values);
         } else if (form.template != null) {
             // Prepare array for fields and values
-            ArrayList<FormEntry.Base> entries = new ArrayList<>();
+            ArrayList<FieldValue> entries = new ArrayList<>();
             for (Field field : form.template.fields) {
-                entries.add(FormEntry.Parse(field, field.value));
+                entries.add(FieldValue.newInstance(field, field.value));
             }
 
             // Set fields to default data of this template
@@ -154,9 +155,9 @@ public class SubmitFormDialog   extends     BaseDialog
 
         // Apply template & fields to form
         form.template = newTemplate;
-        ArrayList<FormEntry.Base> entries = new ArrayList<>();
+        ArrayList<FieldValue> entries = new ArrayList<>();
         for (Field field : form.template.fields) {
-            entries.add(FormEntry.Parse(field, field.value));
+            entries.add(FieldValue.newInstance(field, field.value));
         }
         SetFields(entries);
     }
@@ -210,7 +211,8 @@ public class SubmitFormDialog   extends     BaseDialog
         // Parse Submitted fields and save in form
         form.values = new ArrayList<>();
         for (RlFormField rlField : ui.fields) {
-            form.values.add(rlField.GetEntry());
+            FormEntry.Base entry = rlField.GetEntry();
+            form.values.add(FieldValue.newInstance(entry.field, entry.toString()));
         }
 
         // Check for current location
@@ -222,15 +224,15 @@ public class SubmitFormDialog   extends     BaseDialog
     }
 
     // Method to set fields as per given value IDs
-    private void SetFields(ArrayList<FormEntry.Base> entries) {
+    private void SetFields(ArrayList<FieldValue> entries) {
         // Clear existing fields
         ui.llFields.removeAllViews();
         ui.fields.clear();
 
         // Set Form Fields UI using data values
-        for (FormEntry.Base entry : entries) {
+        for (FieldValue entry : entries) {
             // Prepare Form Field UI
-            RlFormField fieldUi = new RlFormField(context, entry, ((Dialog.SubmitForm) data).bReadOnly);
+            RlFormField fieldUi = new RlFormField(context, FormEntry.Parse(entry.field, entry.toString()), ((Dialog.SubmitForm) data).bReadOnly);
 
             // Add view to Linear Layout and save in cache
             ui.llFields.addView(fieldUi);

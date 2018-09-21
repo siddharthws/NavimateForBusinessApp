@@ -60,7 +60,7 @@ public class FormTable extends BaseTable {
 
         // Create list of forms that have not been sent to server
         for (ObjForm form : (CopyOnWriteArrayList<ObjForm>) GetAll()) {
-            if (form.textServerId.length() == 0) {
+            if (form.serverId.length() == 0) {
                 forms.add(form);
             }
         }
@@ -69,10 +69,10 @@ public class FormTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public ObjForm GetByServerId(String textServerId) {
+    public ObjForm GetByServerId(String serverId) {
         for (ObjDb dbItem : cache) {
             ObjForm form = (ObjForm) dbItem;
-            if (form.textServerId.equals(textServerId)) {
+            if (form.serverId.equals(serverId)) {
                 return form;
             }
         }
@@ -120,6 +120,6 @@ public class FormTable extends BaseTable {
 
     @Override
     protected ContentValues ParseToContent(ObjDb dbItem) {
-        return  ((ObjForm) dbItem).toContentValues();
+        return  ((ObjForm) dbItem).toDb();
     }
 }
