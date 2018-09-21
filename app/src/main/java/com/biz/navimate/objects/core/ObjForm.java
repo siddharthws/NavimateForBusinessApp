@@ -7,6 +7,7 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.database.FormTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.misc.Preferences;
 import com.biz.navimate.objects.Field;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.ServerObject;
@@ -36,6 +37,7 @@ public class ObjForm extends ServerObject {
     public Long timestamp                       = 0L;
     public LatLng latlng                        = new LatLng(0, 0);
     public Task task                            = null;
+    public long ownerId                         = 0L;
     public Template template                    = null;
     public ArrayList<FormEntry.Base> values     = new ArrayList<>();
 
@@ -78,6 +80,8 @@ public class ObjForm extends ServerObject {
             double latitude     = formJson.getDouble(Constants.Server.KEY_LAT);
             double longitude    = formJson.getDouble(Constants.Server.KEY_LNG);
             latlng = new LatLng(latitude, longitude);
+
+            ownerId             = formJson.getJSONObject(Constants.Server.KEY_REP).getLong(Constants.Server.KEY_ID);
 
             // Get Local Template Object
             long templateId         = formJson.getLong(Constants.Server.KEY_TEMPLATE_ID);
@@ -151,9 +155,12 @@ public class ObjForm extends ServerObject {
         textServerId            = cursor.getString  (cursor.getColumnIndex(Constants.DB.COLUMN_SRV_ID));
         bCloseTask              = Boolean.valueOf   (cursor.getString(cursor.getColumnIndex(Constants.DB.COLUMN_CLOSE_TASK)));
         timestamp               = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TIMESTAMP));
+
         double latitude         = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LATITUDE));
         double longitude        = cursor.getDouble  (cursor.getColumnIndex(Constants.DB.COLUMN_LONGITUDE));
         latlng = new LatLng(latitude, longitude);
+
+        ownerId                 = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_OWNER_ID));
 
 
         long   templateId        = cursor.getLong    (cursor.getColumnIndex(Constants.DB.COLUMN_TEMPLATE_ID));
@@ -193,6 +200,7 @@ public class ObjForm extends ServerObject {
         cv.put(Constants.DB.COLUMN_CLOSE_TASK,     bCloseTask);
         cv.put(Constants.DB.COLUMN_LATITUDE,       latlng.latitude);
         cv.put(Constants.DB.COLUMN_LONGITUDE,      latlng.longitude);
+        cv.put(Constants.DB.COLUMN_OWNER_ID,       ownerId);
         cv.put(Constants.DB.COLUMN_TIMESTAMP,      timestamp);
 
         // Prepare JSON Array for values
@@ -211,5 +219,9 @@ public class ObjForm extends ServerObject {
         cv.put(Constants.DB.COLUMN_VALUES,          valuesJson.toString());
 
         return cv;
+    }
+
+    public boolean isOwned() {
+        return ownerId == 0 || ownerId == Preferences.GetUser().appId;
     }
 }

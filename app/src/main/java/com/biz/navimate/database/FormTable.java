@@ -35,6 +35,7 @@ public class FormTable extends BaseTable {
                     Constants.DB.COLUMN_CLOSE_TASK    + " TEXT," +
                     Constants.DB.COLUMN_LATITUDE      + " REAL," +
                     Constants.DB.COLUMN_LONGITUDE     + " REAL," +
+                    Constants.DB.COLUMN_OWNER_ID      + " INTEGER," +
                     Constants.DB.COLUMN_TIMESTAMP     + " INTEGER)";
 
     // ----------------------- Constructor ----------------------- //
@@ -48,6 +49,7 @@ public class FormTable extends BaseTable {
                                                     Constants.DB.COLUMN_CLOSE_TASK,
                                                     Constants.DB.COLUMN_LATITUDE,
                                                     Constants.DB.COLUMN_LONGITUDE,
+                                                    Constants.DB.COLUMN_OWNER_ID,
                                                     Constants.DB.COLUMN_TIMESTAMP});
     }
 

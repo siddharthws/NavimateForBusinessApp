@@ -244,6 +244,7 @@ public class Constants {
         public static final String KEY_OPTIONS          = "options";
         public static final String KEY_SELECTION        = "selection";
         public static final String KEY_FILE_NAME        = "filename";
+        public static final String KEY_REP              = "rep";
     }
 
     // Location related constants
