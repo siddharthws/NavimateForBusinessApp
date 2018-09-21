@@ -17,7 +17,7 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.debug.Dbg;
 import com.biz.navimate.objects.Dialog;
 import com.biz.navimate.objects.Field;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.FormEntry;
 import com.biz.navimate.objects.LocationObj;
 import com.biz.navimate.objects.LocationUpdate;
@@ -86,7 +86,7 @@ public class SubmitFormDialog   extends     BaseDialog
     {
         // Get current data
         Dialog.SubmitForm currentData = (Dialog.SubmitForm) data;
-        Form form = currentData.form;
+        ObjForm form = currentData.form;
 
         // Cache a list of form templates
         templates = DbHelper.templateTable.GetByType(Constants.Template.TYPE_FORM);
@@ -144,7 +144,7 @@ public class SubmitFormDialog   extends     BaseDialog
     @Override
     public void onItemSelected(int position) {
         // Get current data
-        Form form = ((Dialog.SubmitForm) data).form;
+        ObjForm form = ((Dialog.SubmitForm) data).form;
 
         // Ignore if the selected template is the same as current template
         Template newTemplate = templates.get(position);
@@ -195,7 +195,7 @@ public class SubmitFormDialog   extends     BaseDialog
     // ----------------------- Public APIs ----------------------- //
     // ----------------------- Private APIs ----------------------- //
     private void ButtonClickSubmit(){
-        Form form = ((Dialog.SubmitForm) data).form;
+        ObjForm form = ((Dialog.SubmitForm) data).form;
 
         // Check if a form template has been selected
         if (form.template == null) {
@@ -240,7 +240,7 @@ public class SubmitFormDialog   extends     BaseDialog
 
     private void SubmitForm() {
         // Get form object
-        Form form = ((Dialog.SubmitForm) data).form;
+        ObjForm form = ((Dialog.SubmitForm) data).form;
 
         // Set any remaining data in form before saving
         form.bCloseTask = ui.cbCloseTask.isChecked();

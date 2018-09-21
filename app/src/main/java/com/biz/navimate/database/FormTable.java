@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.biz.navimate.constants.Constants;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.core.ObjDb;
-import com.biz.navimate.objects.Form;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.objects.Template;
 
@@ -53,11 +53,11 @@ public class FormTable extends BaseTable {
 
     // ----------------------- Public APIs ----------------------- //
     // API to get valid objects for syncing
-    public ArrayList<Form> GetUnsyncedForms() {
-        ArrayList<Form> forms = new ArrayList<>();
+    public ArrayList<ObjForm> GetUnsyncedForms() {
+        ArrayList<ObjForm> forms = new ArrayList<>();
 
         // Create list of forms that have not been sent to server
-        for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
+        for (ObjForm form : (CopyOnWriteArrayList<ObjForm>) GetAll()) {
             if (form.textServerId.length() == 0) {
                 forms.add(form);
             }
@@ -67,9 +67,9 @@ public class FormTable extends BaseTable {
     }
 
     // API to get object by serverId
-    public Form GetByServerId(String textServerId) {
+    public ObjForm GetByServerId(String textServerId) {
         for (ObjDb dbItem : cache) {
-            Form form = (Form) dbItem;
+            ObjForm form = (ObjForm) dbItem;
             if (form.textServerId.equals(textServerId)) {
                 return form;
             }
@@ -78,11 +78,11 @@ public class FormTable extends BaseTable {
         return null;
     }
 
-    public ArrayList<Form> GetByTemplate(Template template) {
-        ArrayList<Form> forms = new ArrayList<>();
+    public ArrayList<ObjForm> GetByTemplate(Template template) {
+        ArrayList<ObjForm> forms = new ArrayList<>();
 
         // Create list of forms that have not been sent to server
-        for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
+        for (ObjForm form : (CopyOnWriteArrayList<ObjForm>) GetAll()) {
             if (form.template.dbId == template.dbId) {
                 forms.add(form);
             }
@@ -91,11 +91,11 @@ public class FormTable extends BaseTable {
         return forms;
     }
 
-    public ArrayList<Form> GetByTask(Task task) {
-        ArrayList<Form> forms = new ArrayList<>();
+    public ArrayList<ObjForm> GetByTask(Task task) {
+        ArrayList<ObjForm> forms = new ArrayList<>();
 
         // Create list of forms that have not been sent to server
-        for (Form form : (CopyOnWriteArrayList<Form>) GetAll()) {
+        for (ObjForm form : (CopyOnWriteArrayList<ObjForm>) GetAll()) {
             if (form.task != null && form.task.dbId == task.dbId) {
                 forms.add(form);
             }
@@ -105,7 +105,7 @@ public class FormTable extends BaseTable {
     }
 
     // API to remove a template
-    public void Remove(Form form) {
+    public void Remove(ObjForm form) {
         // Remove Form
         RemoveById(form.dbId);
     }
@@ -113,11 +113,11 @@ public class FormTable extends BaseTable {
     // ----------------------- Private APIs ----------------------- //
     @Override
     protected ObjDb ParseToObject(Cursor cursor) {
-        return new Form(cursor);
+        return new ObjForm(cursor);
     }
 
     @Override
     protected ContentValues ParseToContent(ObjDb dbItem) {
-        return  ((Form) dbItem).toContentValues();
+        return  ((ObjForm) dbItem).toContentValues();
     }
 }

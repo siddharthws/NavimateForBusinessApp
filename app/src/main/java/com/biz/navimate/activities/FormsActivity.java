@@ -3,7 +3,6 @@ package com.biz.navimate.activities;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
 import com.biz.navimate.R;
 import com.biz.navimate.constants.Constants;
@@ -11,7 +10,7 @@ import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.interfaces.IfaceServer;
 import com.biz.navimate.lists.FormListAdapter;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.server.SyncFormsTask;
 import com.biz.navimate.viewholders.ActivityHolder;
@@ -67,7 +66,7 @@ public class FormsActivity  extends     BaseActivity
     {
         // Get Clicked Object
         ListItem.Form clickedItem = (ListItem.Form) listAdpater.getItem(i);
-        Form form = (Form) DbHelper.formTable.GetById(clickedItem.formId);
+        ObjForm form = (ObjForm) DbHelper.formTable.GetById(clickedItem.formId);
 
         // Open Form Dialog
         RlDialog.Show(new Dialog.SubmitForm(form, true));
@@ -104,7 +103,7 @@ public class FormsActivity  extends     BaseActivity
         listAdpater.Clear();
 
         // Add form items in reverse order
-        CopyOnWriteArrayList<Form> forms = (CopyOnWriteArrayList<Form>) DbHelper.formTable.GetAll();
+        CopyOnWriteArrayList<ObjForm> forms = (CopyOnWriteArrayList<ObjForm>) DbHelper.formTable.GetAll();
         for (int i = forms.size() - 1; i >= 0; i--) {
             listAdpater.Add(new ListItem.Form(forms.get(i).dbId));
         }

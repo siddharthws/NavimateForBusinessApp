@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.biz.navimate.R;
 import com.biz.navimate.interfaces.IfaceList;
 import com.biz.navimate.objects.Dialog;
-import com.biz.navimate.objects.Form;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.ListItem;
 import com.biz.navimate.objects.Task;
 import com.biz.navimate.viewholders.ListHolder;
@@ -83,7 +83,7 @@ public class TaskListAdapter    extends     BaseListAdapter
             public void onClick(View v) {
                 if (listener != null) {
                     // Create new form object
-                    Form form = new Form(task);
+                    ObjForm form = new ObjForm(task);
 
                     // Open Submit form dialog with this form
                     RlDialog.Show(new Dialog.SubmitForm(form, false));

@@ -1,4 +1,4 @@
-package com.biz.navimate.objects;
+package com.biz.navimate.objects.core;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -7,6 +7,11 @@ import com.biz.navimate.constants.Constants;
 import com.biz.navimate.database.DbHelper;
 import com.biz.navimate.database.FormTable;
 import com.biz.navimate.debug.Dbg;
+import com.biz.navimate.objects.Field;
+import com.biz.navimate.objects.FormEntry;
+import com.biz.navimate.objects.ServerObject;
+import com.biz.navimate.objects.Task;
+import com.biz.navimate.objects.Template;
 import com.biz.navimate.objects.core.ObjDb;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -21,9 +26,9 @@ import java.util.ArrayList;
  * Created by Siddharth on 28-09-2017.
  */
 
-public class Form extends ServerObject {
+public class ObjForm extends ServerObject {
     // ----------------------- Constants ----------------------- //
-    private static final String TAG = "FORM";
+    private static final String TAG = "OBJ_FORM";
 
     // ----------------------- Globals ----------------------- //
     public String textServerId                  = "";
@@ -35,23 +40,23 @@ public class Form extends ServerObject {
     public ArrayList<FormEntry.Base> values     = new ArrayList<>();
 
     // ----------------------- Constructor ----------------------- //
-    public Form() {
+    public ObjForm() {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
     }
 
-    public Form(Task task) {
+    public ObjForm(Task task) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         this.task = task;
         this.template = task.formTemplate;
         this.bCloseTask = task.status == Task.TaskStatus.OPEN ? false : true;
     }
 
-    public Form (JSONObject json) {
+    public ObjForm(JSONObject json) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromJson(json);
     }
 
-    public Form (Cursor cursor) {
+    public ObjForm(Cursor cursor) {
         super(Constants.Misc.ID_INVALID, Constants.Misc.ID_INVALID);
         fromCursor(cursor);
     }

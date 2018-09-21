@@ -3,6 +3,7 @@ package com.biz.navimate.objects;
 import android.support.annotation.NonNull;
 
 import com.biz.navimate.interfaces.IfaceDialog;
+import com.biz.navimate.objects.core.ObjForm;
 import com.biz.navimate.objects.core.ObjLead;
 
 import java.util.ArrayList;
@@ -115,10 +116,10 @@ public class Dialog {
 
     public static class SubmitForm extends Base
     {
-        public Form form = null;
+        public ObjForm form = null;
         public boolean bReadOnly = false;
 
-        public SubmitForm(Form form, boolean bReadOnly)
+        public SubmitForm(ObjForm form, boolean bReadOnly)
         {
             super(TYPE_SUBMIT_FORM, false);
 
